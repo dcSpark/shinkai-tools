@@ -1,4 +1,4 @@
-﻿tools/echo/node_modules
+﻿tools/**/node_modules
+tools/**/dist
 ts/node_modules
-tools/echo/dist
 rust/target

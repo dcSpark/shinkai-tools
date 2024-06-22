@@ -1,5 +1,5 @@
 use std::path::Path;
-use rquickjs::{async_with, AsyncContext, AsyncRuntime, FromJs};
+use rquickjs::{async_with, AsyncContext, AsyncRuntime, FromJs, Object};
 use nanoid::nanoid;
 use crate::quickjs_runtime::execution_error::ExecutionError;
 
@@ -45,7 +45,7 @@ impl Script {
         let result = async_with!(self.context.clone().unwrap() => |ctx|{
             let eval_promise_result = ctx.eval_promise::<_>(js_code);
 
-            let result = eval_promise_result.unwrap().into_future::<T>().await.map_err(|e| {
+            let result = eval_promise_result.unwrap().into_future::<Object>().await.map_err(|e| {
                 let exception = ctx.catch().try_into_exception();
                 if exception.is_ok() {
                     let message = exception.clone().unwrap().message().unwrap();
@@ -54,7 +54,16 @@ impl Script {
                 }
                 return ExecutionError::new(e.to_string(), None);
             });
-            result
+            match result {
+                Ok(wrapped_value) => {
+                    println!("execute id:{}\n unwrapping value promise response", id);
+                    let value = wrapped_value.get::<&str, T>("value");
+                    return Ok(value.unwrap())
+                }
+                Err(error) => {
+                    return Err(error)
+                }
+            }
         }).await;
         result
     }

@@ -57,8 +57,10 @@ impl Script {
             match result {
                 Ok(wrapped_value) => {
                     println!("execute id:{}\n unwrapping value promise response", id);
-                    let value = wrapped_value.get::<&str, T>("value");
-                    return Ok(value.unwrap())
+                    let value = wrapped_value.get::<&str, T>("value").map_err(|e| {
+                        ExecutionError::new(e.to_string(), None)
+                    });
+                    return value
                 }
                 Err(error) => {
                     return Err(error)

@@ -1,5 +1,7 @@
 use std::path::Path;
-use super::script::Script;
+use rquickjs::Object;
+
+use super::{execution_error::ExecutionError, script::Script};
 
 pub struct Tool {
     script: Script
@@ -10,24 +12,28 @@ impl Tool {
         Tool { script: Script::new() }
     }
 
-    pub async fn load(&mut self, file: impl AsRef<Path>) {
+    pub async fn load(&mut self, file: impl AsRef<Path>, args: &str) -> Result<(), ExecutionError> {
         self.script.init().await;
-        let _ = self.script.from_file(file).await;
-        let _ = self.script.execute_promise::<()>(r#"
-            const toolInstance = new tool.Tool();
-        "#.to_string()).await;
+        let load_script_from_file_result = self.script.from_file(file).await;
+        if load_script_from_file_result.is_err() {
+            return load_script_from_file_result;
+        }
+        let result = self.script.execute_promise::<()>(format!(r#"
+            const toolInstance = new tool.Tool({args});
+        "#).to_string()).await;
+        result
     }
-    pub async fn run(&mut self, args: &str) {
+    pub async fn config(&mut self, args: &str) -> Result<(), ExecutionError> {
+        let result = self.script.call_promise::<()>("toolInstance.setConfig", args).await;
+        match result {
+            Ok(_) => Ok(()),
+            Err(error) => Err(error),
+        }
+    }
+    pub async fn run(&mut self, args: &str) -> Result<String, ExecutionError> {
         // This String generic type is hardcoded atm
         // We should decide what's is going to be the output for run method
         let result = self.script.call_promise::<String>("toolInstance.run", args).await;
-        match result {
-            Ok(result) => {
-                println!("run result {}", result);
-            },
-            Err(e) => {
-                println!("run error result {}", e.message());
-            }
-        }
+        result
     }
 }

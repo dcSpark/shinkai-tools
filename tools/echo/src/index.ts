@@ -10,6 +10,7 @@ export class Tool extends BaseTool<Config, Params, Result> {
     async run(params: {
         message: string
     }): Promise<string> {
+        console.log('run echo from js', 4);
         return Promise.resolve(`echoing: ${params.message}`);
     }
 }

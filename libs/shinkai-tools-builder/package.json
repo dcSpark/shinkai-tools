@@ -1,3 +1,4 @@
 {
-  "name": "@shinkai_protocol/shinkai-tools-builder"
+  "name": "@shinkai_protocol/shinkai-tools-builder",
+  "type": "commonjs"
 }

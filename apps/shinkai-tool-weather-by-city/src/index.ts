@@ -1,4 +1,4 @@
-import { BaseTool } from "@shinkai_protocol/tool";
+import { BaseTool } from "@shinkai_protocol/shinkai-tools-builder";
 
 type Config = {
     apiKey: string;

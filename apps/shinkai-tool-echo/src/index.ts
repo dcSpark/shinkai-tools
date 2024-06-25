@@ -1,4 +1,4 @@
-import { BaseTool } from "@shinkai_network/shinkai-tools-builder";
+import { BaseTool } from "@shinkai_protocol/shinkai-tools-builder";
 
 type Config = never;
 type Params = {

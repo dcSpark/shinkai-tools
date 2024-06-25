@@ -1,4 +1,4 @@
 {
   "name": "@shinkai_protocol/shinkai-tool-weathger-by-city",
-  "type": "module"
+  "type": "commonjs"
 }

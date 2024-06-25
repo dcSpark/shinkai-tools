@@ -1,4 +1,4 @@
 {
   "name": "@shinkai_protocol/shinkai-tool-echo",
-  "type": "module"
+  "type": "commonjs"
 }

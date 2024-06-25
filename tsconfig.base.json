@@ -16,7 +16,7 @@
     "baseUrl": ".",
     "strict": true,
     "paths": {
-      "@shinkai_network/shinkai-tools-builder": [
+      "@shinkai_protocol/shinkai-tools-builder": [
         "libs/shinkai-tools-builder/src/index.ts"
       ],
     }

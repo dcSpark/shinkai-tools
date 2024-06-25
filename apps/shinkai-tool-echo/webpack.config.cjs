@@ -16,7 +16,9 @@ module.exports = {
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
-    plugins: [new TsconfigPathsPlugin({/* options: see below */})],
+    plugins: [new TsconfigPathsPlugin({
+      configFile: 'apps/shinkai-tool-echo/tsconfig.json',
+    })],
   },
   output: {
     path: path.join(__dirname, 'dist'), // this can be any path and directory you want

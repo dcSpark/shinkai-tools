@@ -1,0 +1,25 @@
+{
+  "name": "@shinkai_protocol/shinkai-tool-weather-by-city",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/shinkai-tool-weather-by-city/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "options": {
+        "webpackConfig": "apps/shinkai-tool-weather-by-city/webpack.config.js"
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "apps/shinkai-tool-weather-by-city/**/*.ts",
+          "apps/shinkai-tool-weather-by-city/package.json"
+        ]
+      }
+    }
+  }
+}

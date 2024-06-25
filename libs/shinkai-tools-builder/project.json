@@ -1,0 +1,25 @@
+{
+  "name": "@shinkai_protocol/shinkai-tools-builder",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shinkai-tools-builder/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "options": {
+        "webpackConfig": "libs/shinkai-tools-builder/webpack.config.js"
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "libs/shinkai-tools-builder/**/*.ts",
+          "libs/shinkai-tools-builder/package.json"
+        ]
+      }
+    }
+  }
+}

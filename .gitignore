@@ -1,7 +1,7 @@
 ﻿apps/**/node_modules
 libs/**/node_modules
 
-libs/shinkai-tools-executor/target
+libs/shinkai-tools-runner/target
 
 node_modules
 dist

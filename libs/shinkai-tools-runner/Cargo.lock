@@ -1150,20 +1150,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "rust"
-version = "0.1.0"
-dependencies = [
- "futures",
- "nanoid",
- "patch",
- "reqwest",
- "rquickjs",
- "serde",
- "serde_json",
- "tokio",
-]
-
-[[package]]
 name = "rustc-demangle"
 version = "0.1.24"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1307,6 +1293,20 @@ dependencies = [
  "itoa",
  "ryu",
  "serde",
+]
+
+[[package]]
+name = "shinkai-tools-runner"
+version = "0.7.0"
+dependencies = [
+ "futures",
+ "nanoid",
+ "patch",
+ "reqwest",
+ "rquickjs",
+ "serde",
+ "serde_json",
+ "tokio",
 ]
 
 [[package]]

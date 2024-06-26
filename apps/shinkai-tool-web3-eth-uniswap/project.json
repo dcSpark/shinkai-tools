@@ -1,0 +1,37 @@
+{
+  "name": "@shinkai_protocol/shinkai-tool-web3-eth-uniswap",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/shinkai-tool-web3-eth-uniswap/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "compiler": "tsc",
+        "outputPath": "dist/apps/shinkai-tool-web3-eth-uniswap",
+        "main": "apps/shinkai-tool-web3-eth-uniswap/src/index.ts",
+        "tsConfig": "apps/shinkai-tool-web3-eth-uniswap/tsconfig.json",
+        "webpackConfig": "apps/shinkai-tool-web3-eth-uniswap/webpack.config.js"
+      },
+      "configurations": {
+        "development": {
+        },
+        "production": {
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "apps/shinkai-tool-web3-eth-uniswap/**/*.ts",
+          "apps/shinkai-tool-web3-eth-uniswap/package.json"
+        ]
+      }
+    }
+  }
+}

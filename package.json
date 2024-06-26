@@ -15,6 +15,8 @@
     "@nx/webpack": "^19.3.1",
     "@types/node": "^20.14.0",
     "@typescript-eslint/eslint-plugin": "^7.14.1",
+    "buffer": "^6.0.3",
+    "crypto-browserify": "^3.12.0",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-import": "^2.29.1",
@@ -22,6 +24,8 @@
     "lodash": "^4.17.21",
     "nx": "19.3.1",
     "prettier": "^3.3.2",
+    "stream-browserify": "^3.0.0",
+    "text-encoding-utf-8": "^1.0.2",
     "ts-loader": "^9.5.1",
     "tsconfig-paths-webpack-plugin": "^4.1.0",
     "typescript": "^5.5.2",
@@ -31,5 +35,8 @@
   "engines": {
     "node": ">=20.x.x",
     "npm": "10.x.x"
+  },
+  "dependencies": {
+    "micro-eth-signer": "^0.10.0"
   }
 }

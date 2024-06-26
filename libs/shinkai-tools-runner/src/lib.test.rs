@@ -1,6 +1,6 @@
 use std::path::Path;
 
-use super::*;
+use crate::quickjs_runtime;
 
 #[tokio::test]
 async fn shinkai_tool_echo() {

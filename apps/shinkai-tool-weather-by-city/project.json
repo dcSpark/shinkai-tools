@@ -3,7 +3,9 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "apps/shinkai-tool-weather-by-city/src",
   "projectType": "library",
-  "tags": [],
+  "tags": [
+    "tool"
+  ],
   "targets": {
     "build": {
       "executor": "@nx/webpack:webpack",

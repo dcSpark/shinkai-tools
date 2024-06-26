@@ -1300,6 +1300,7 @@ name = "shinkai_tools_runner"
 version = "0.7.0"
 dependencies = [
  "futures",
+ "lazy_static",
  "nanoid",
  "patch",
  "reqwest",

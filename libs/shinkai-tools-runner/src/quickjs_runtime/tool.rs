@@ -1,4 +1,3 @@
-use rquickjs::Object;
 use std::path::Path;
 
 use super::{execution_error::ExecutionError, script::Script};

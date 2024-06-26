@@ -6,6 +6,7 @@ libs/shinkai-tools-runner/target
 node_modules
 dist
 tmp
+target
 
 .nx/cache
 .nx/workspace-data

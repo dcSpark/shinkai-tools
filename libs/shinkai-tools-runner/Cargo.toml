@@ -1,5 +1,5 @@
 [package]
-name = "shinkai-tools-runner"
+name = "shinkai_tools_runner"
 version = "0.7.0"
 edition = "2021"
 

@@ -8,8 +8,8 @@ This repository is a comprehensive collection of tools and utilities designed to
 The primary components of this repository include:
 
 * `apps/shinkai-tool-*` These are small JavaScript tools designed to perform specific tasks. Each tool is a self-contained project with its own configuration and build process, allowing for easy maintenance and updates.
-* The `libs/shinkai-tools-builder` is a TypeScript library that provides the necessary classes and types to build new tools, making it easier to create and integrate new tools into the Shinkai ecosystem.
-* The `libs/shinkai-tools-runner` is a Rust library used to execute a tool in a secured and performant JavaScript environment, providing a safe and efficient way to run tools within the Shinkai ecosystem.
+* `libs/shinkai-tools-builder` is a TypeScript library that provides the necessary classes and types to build new tools, making it easier to create and integrate new tools into the Shinkai ecosystem.
+* `libs/shinkai-tools-runner` is a Rust library used to execute a tool in a secured and performant JavaScript environment, providing a safe and efficient way to run tools within the Shinkai ecosystem.
 
 ## Getting started
 

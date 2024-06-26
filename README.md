@@ -1,14 +1,13 @@
 ## Shinkai Tools
 
-This repository serves as the ecosystem to execute Shinkai tools, provided by the Shinkai team or third-party developers, in a secure environment. It provides a sandboxed space for executing these tools, ensuring that they run safely and efficiently, while also allowing for seamless integration with Rust code.
+Shinkai Tools serves as the ecosystem to execute Shinkai tools, provided by the Shinkai team or third-party developers, in a secure environment. It provides a sandboxed space for executing these tools, 
+ensuring that they run safely and efficiently, while also allowing for seamless integration with Rust code.
 
-This repository is a collection of tools and utilities designed to facilitate the integration of JavaScript and Rust code. It provides a framework for executing JavaScript scripts within a Rust environment, allowing for seamless communication and data exchange between the two languages.
-
-The repository includes a set of tools and examples that demonstrate how to load, execute, and interact with JavaScript scripts from Rust. This enables developers to leverage the strengths of both languages, combining the performance and safety of Rust with the dynamic nature and versatility of JavaScript.
+This repository is a comprehensive collection of tools and utilities designed to facilitate the integration of JavaScript and Rust code. It provides a framework for executing JavaScript scripts within a Rust environment, allowing for seamless communication and data exchange between the two languages.
 
 The primary components of this repository include:
 
-* `apps/shinkai-tool-*` All these projects are small JavaScript tools designed to perform specific tasks. These tools are built using JavaScript and are intended to be executed within the Shinkai ecosystem. Each tool is a self-contained project with its own configuration and build process, allowing for easy maintenance and updates.
+* `apps/shinkai-tool-*` These are small JavaScript tools designed to perform specific tasks. Each tool is a self-contained project with its own configuration and build process, allowing for easy maintenance and updates.
 * The `libs/shinkai-tools-builder` is a TypeScript library that provides the necessary classes and types to build new tools, making it easier to create and integrate new tools into the Shinkai ecosystem.
 * The `libs/shinkai-tools-runner` is a Rust library used to execute a tool in a secured and performant JavaScript environment, providing a safe and efficient way to run tools within the Shinkai ecosystem.
 
@@ -34,16 +33,14 @@ To execute a tool from the Rust side, you can follow these steps:
 
 Here's an example:
 ```rust
-use shinkai_tools_runner::quickjs_runtime::tool::Tool;
-use std::path::Path;
+use shinkai_tools_runner::built_in_tools::get_tool;
+use shinkai_tools_runner::tools::tool::Tool;
 
 #[tokio::main]
 async fn main() {
-    let tool_path = Path::new("../tools/echo/dist/index.js")
-        .canonicalize()
-        .unwrap();
-    let mut tool = quickjs_runtime::tool::Tool::new();
-    let _ = tool.load(tool_path, "").await;
-    let _ = tool.run("{ \"message\": \"valparaíso\" }").await;
+    let code = get_tool("shinkai-tool-echo").unwrap();
+    let mut tool = Tool::new();
+    let _ = tool.load_from_code(code, "").await;
+    let run_result = tool.run("{ \"message\": \"valparaíso\" }").await;
 }
 ```

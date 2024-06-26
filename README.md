@@ -1,4 +1,4 @@
-## Shinkai Tool Playground
+## Shinkai Tools
 
 This repository serves as the ecosystem to execute Shinkai tools, provided by the Shinkai team or third-party developers, in a secure environment. It provides a sandboxed space for executing these tools, ensuring that they run safely and efficiently, while also allowing for seamless integration with Rust code.
 

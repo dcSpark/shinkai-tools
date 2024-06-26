@@ -23,6 +23,24 @@
         }
       }
     },
+    "test": {
+      "executor": "nx:run-commands",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "development",
+      "options": {
+        "cwd": "libs/shinkai-tools-runner",
+        "command": "cargo test"
+      },
+      "configurations": {
+        "development": {
+        },
+        "production": {
+          "args": [
+            "--release"
+          ]
+        }
+      }
+    },
     "lint": {
       "executor": "nx:run-commands",
       "outputs": ["{options.outputPath}"],

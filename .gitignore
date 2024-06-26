@@ -1,4 +1,12 @@
-﻿tools/**/node_modules
-tools/**/dist
-ts/node_modules
-rust/target
+﻿apps/**/node_modules
+libs/**/node_modules
+
+libs/shinkai-tools-runner/target
+
+node_modules
+dist
+tmp
+target
+
+.nx/cache
+.nx/workspace-data

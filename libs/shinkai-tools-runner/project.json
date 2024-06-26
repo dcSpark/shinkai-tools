@@ -1,0 +1,69 @@
+{
+  "name": "@shinkai_protocol/shinkai-tools-runner",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shinkai-tools-runner/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build-tools": {
+      "executor": "nx:run-commands",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "command": "nx run-many -t build --projects=tag:tool"
+      }
+    },
+    "build": {
+      "dependsOn": ["build-tools"],
+      "executor": "nx:run-commands",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "cwd": "libs/shinkai-tools-runner",
+        "command": "cargo build"
+      },
+      "configurations": {
+        "development": {
+        },
+        "production": {
+          "args": [
+            "--release"
+          ]
+        }
+      }
+    },
+    "test": {
+      "dependsOn": ["build-tools"],
+      "executor": "nx:run-commands",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "development",
+      "options": {
+        "cwd": "libs/shinkai-tools-runner",
+        "command": "cargo test --features=built-in-tools"
+      },
+      "configurations": {
+        "development": {
+        },
+        "production": {
+          "args": [
+            "--release"
+          ]
+        }
+      }
+    },
+    "lint": {
+      "executor": "nx:run-commands",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "cwd": "libs/shinkai-tools-runner",
+        "command": "cargo clippy"
+      },
+      "configurations": {
+        "development": {
+        },
+        "production": {
+        }
+      }
+    }
+  }
+}

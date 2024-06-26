@@ -1,33 +1,28 @@
-## Shinkai Tool Playground
+## Shinkai Tools
 
-This repository serves as the ecosystem to execute Shinkai tools, provided by the Shinkai team or third-party developers, in a secure environment. It provides a sandboxed space for executing these tools, ensuring that they run safely and efficiently, while also allowing for seamless integration with Rust code.
+Shinkai Tools serves as the ecosystem to execute Shinkai tools, provided by the Shinkai team or third-party developers, in a secure environment. It provides a sandboxed space for executing these tools, 
+ensuring that they run safely and efficiently, while also allowing for seamless integration with Rust code.
 
-This repository is a collection of tools and utilities designed to facilitate the integration of JavaScript and Rust code. It provides a framework for executing JavaScript scripts within a Rust environment, allowing for seamless communication and data exchange between the two languages.
-
-The repository includes a set of tools and examples that demonstrate how to load, execute, and interact with JavaScript scripts from Rust. This enables developers to leverage the strengths of both languages, combining the performance and safety of Rust with the dynamic nature and versatility of JavaScript.
+This repository is a comprehensive collection of tools and utilities designed to facilitate the integration of JavaScript and Rust code. It provides a framework for executing JavaScript scripts within a Rust environment, allowing for seamless communication and data exchange between the two languages.
 
 The primary components of this repository include:
 
-1. **QuickJS Runtime**: A Rust library that provides a runtime environment for executing JavaScript scripts. It allows for the creation of a JavaScript context, loading of scripts, and execution of functions with support for asynchronous operations.
-2. **Tool Framework**: A set of Rust modules that facilitate the creation and management of tools that can be executed from Rust. This includes loading and running JavaScript scripts, as well as providing a way to pass arguments and receive results.
-3. **Examples and Utilities**: A collection of examples and utility scripts that demonstrate how to use the QuickJS Runtime and Tool Framework. These examples cover various scenarios, such as executing scripts, calling functions, and handling errors.
+* `apps/shinkai-tool-*` These are small JavaScript tools designed to perform specific tasks. Each tool is a self-contained project with its own configuration and build process, allowing for easy maintenance and updates.
+* `libs/shinkai-tools-builder` is a TypeScript library that provides the necessary classes and types to build new tools, making it easier to create and integrate new tools into the Shinkai ecosystem.
+* `libs/shinkai-tools-runner` is a Rust library used to execute a tool in a secured and performant JavaScript environment, providing a safe and efficient way to run tools within the Shinkai ecosystem.
 
 ## Getting started
 
 ### Init Typescript side
 ```
-cd ts/ && npm ci
-cd tools/echo/ && npm ci && npm run build
-cd tools/weather_by_city/ && npm ci && npm run build
+# In windows admin privileges is required because rquickjs-sys uses a git patch
+npm ci
+npx nx run-many -t lint
+npx nx run-many -t build
+npx nx run-many -t test
 ```
 
-### Init Rust side
-```
-# This requires admin privileges on windows because rquickjs applies a git patch for compatibility
-cd rust/ && cargo build && cargo run
-```
-
-## How to use a tool from Rust side
+## How to use a tool from Rust side (using shinkai_tools_runner)
 
 To execute a tool from the Rust side, you can follow these steps:
 
@@ -38,16 +33,14 @@ To execute a tool from the Rust side, you can follow these steps:
 
 Here's an example:
 ```rust
-use crate::quickjs_runtime::tool::Tool;
-use std::path::Path;
+use shinkai_tools_runner::built_in_tools::get_tool;
+use shinkai_tools_runner::tools::tool::Tool;
 
 #[tokio::main]
 async fn main() {
-    let tool_path = Path::new("../tools/echo/dist/index.js")
-        .canonicalize()
-        .unwrap();
-    let mut tool = quickjs_runtime::tool::Tool::new();
-    let _ = tool.load(tool_path, "").await;
-    let _ = tool.run("{ \"message\": \"valparaíso\" }").await;
+    let code = get_tool("shinkai-tool-echo").unwrap();
+    let mut tool = Tool::new();
+    let _ = tool.load_from_code(code, "").await;
+    let run_result = tool.run("{ \"message\": \"valparaíso\" }").await;
 }
 ```

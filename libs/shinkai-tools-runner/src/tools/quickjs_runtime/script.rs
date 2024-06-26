@@ -1,10 +1,11 @@
-use crate::quickjs_runtime::context_globals::console_log::console_log;
-use crate::quickjs_runtime::context_globals::fetch::fetch;
-use crate::quickjs_runtime::context_globals::set_timeout::set_timeout_spawn;
-use crate::quickjs_runtime::execution_error::ExecutionError;
+use super::context_globals::console_log::console_log;
+use super::context_globals::fetch::fetch;
+use super::context_globals::set_timeout::set_timeout_spawn;
+use super::execution_error::ExecutionError;
+
 use nanoid::nanoid;
 use rquickjs::{async_with, function::Func, AsyncContext, AsyncRuntime, FromJs, Object};
-use std::path::Path;
+
 pub struct Script {
     runtime: Option<AsyncRuntime>,
     context: Option<AsyncContext>,
@@ -30,15 +31,6 @@ impl Script {
         runtime.set_max_stack_size(1024 * 1024).await; // 1 MB
         let context = AsyncContext::full(&runtime).await;
         (runtime, context.unwrap())
-    }
-
-    pub async fn from_file(&mut self, file: impl AsRef<Path>) -> Result<(), ExecutionError> {
-        println!(
-            "loading script from file path:{}",
-            file.as_ref().to_str().unwrap()
-        );
-        let js_code: String = std::fs::read_to_string(file).unwrap();
-        self.execute_promise(js_code).await
     }
 
     pub async fn call_promise<T: for<'js> FromJs<'js> + 'static>(

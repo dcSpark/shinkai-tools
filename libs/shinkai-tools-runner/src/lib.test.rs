@@ -1,27 +1,23 @@
-use std::path::Path;
+use crate::built_in_tools::get_tool;
+use crate::tools::tool::Tool;
 
-use crate::quickjs_runtime;
 
 #[tokio::test]
 async fn shinkai_tool_echo() {
-    let tool_path = Path::new("../../dist/apps/shinkai-tool-echo/index.js")
-        .canonicalize()
-        .unwrap();
-    let mut tool = quickjs_runtime::tool::Tool::new();
-    let _ = tool.load_from_path(tool_path, "").await;
+    let code = get_tool("shinkai-tool-echo").unwrap();
+    let mut tool = Tool::new();
+    let _ = tool.load_from_code(code, "").await;
     let run_result = tool.run("{ \"message\": \"valparaíso\" }").await;
     assert_eq!(run_result.unwrap(), "echoing: valparaíso");
 }
 
 #[tokio::test]
 async fn shinkai_tool_weather_by_city() {
-    let tool_path = Path::new("../../dist/apps/shinkai-tool-weather-by-city/index.js")
-        .canonicalize()
-        .unwrap();
-    let mut tool = quickjs_runtime::tool::Tool::new();
+    let code = get_tool("shinkai-tool-weather-by-city").unwrap();
+    let mut tool = Tool::new();
     let _ = tool
-        .load_from_path(
-            tool_path,
+        .load_from_code(
+            code,
             "{ \"apiKey\": \"63d35ff6068c3103ccd1227526935675\" }",
         )
         .await;
@@ -60,7 +56,7 @@ async fn shinkai_tool_inline() {
 
     globalThis.tool = { Tool };
 "#;
-    let mut tool = quickjs_runtime::tool::Tool::new();
+    let mut tool = Tool::new();
     let _ = tool.load_from_code(js_code, "").await;
     let run_result = tool.run("{ \"name\": \"world\" }").await;
     assert_eq!(run_result.unwrap(), "Hello, world!");
@@ -68,11 +64,9 @@ async fn shinkai_tool_inline() {
 
 #[tokio::test]
 async fn shinkai_tool_web3_eth_balance() {
-    let tool_path = Path::new("../../dist/apps/shinkai-tool-web3-eth-balance/index.js")
-        .canonicalize()
-        .unwrap();
-    let mut tool = quickjs_runtime::tool::Tool::new();
-    let _ = tool.load_from_path(tool_path, "").await;
+    let code = get_tool("shinkai-tool-web3-eth-balance").unwrap();
+    let mut tool = Tool::new();
+    let _ = tool.load_from_code(code, "").await;
     let run_result = tool
         .run("{ \"address\": \"0x388c818ca8b9251b393131c08a736a67ccb19297\" }")
         .await;
@@ -81,11 +75,9 @@ async fn shinkai_tool_web3_eth_balance() {
 
 #[tokio::test]
 async fn shinkai_tool_web3_eth_uniswap() {
-    let tool_path = Path::new("../../dist/apps/shinkai-tool-web3-eth-uniswap/index.js")
-        .canonicalize()
-        .unwrap();
-    let mut tool = quickjs_runtime::tool::Tool::new();
-    let _ = tool.load_from_path(tool_path, "").await;
+    let code = get_tool("shinkai-tool-web3-eth-uniswap").unwrap();
+    let mut tool = Tool::new();
+    let _ = tool.load_from_code(code, "").await;
     let run_result = tool
         .run(
             r#"{

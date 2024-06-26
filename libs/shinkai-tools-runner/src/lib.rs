@@ -1,4 +1,4 @@
-pub mod quickjs_runtime;
+pub mod tools;
 
 #[cfg(feature = "built-in-tools")]
 pub mod built_in_tools;

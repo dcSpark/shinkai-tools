@@ -4,6 +4,12 @@ pub struct Tool {
     script: Script,
 }
 
+impl Default for Tool {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl Tool {
     pub fn new() -> Self {
         Tool {

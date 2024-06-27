@@ -17,3 +17,9 @@ impl ExecutionError {
         self.stack.as_deref()
     }
 }
+
+impl std::fmt::Display for ExecutionError {
+  fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+      write!(f, "ExecutionError: {}", self.message)
+  }
+}

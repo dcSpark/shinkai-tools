@@ -3,10 +3,10 @@ use crate::built_in_tools::{get_tool, get_tools};
 #[tokio::test]
 async fn get_tools_all_load() {
     let tools = get_tools();
-    for tool_code in tools {
+    for (tool_name, tool_code) in tools {
         let mut tool_instance = crate::tools::tool::Tool::new();
         let load_result = tool_instance.load_from_code(&tool_code, "").await;
-        assert!(load_result.is_ok());
+        assert!(load_result.is_ok(), "Tool {} failed to load", tool_name);
     }
 }
 

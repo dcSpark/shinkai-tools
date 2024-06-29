@@ -1,24 +1,47 @@
-export interface ITool<TConfig, TParams, TResult> {
-    config: TConfig;
-    run(params: TParams): Promise<TResult>;
-    setConfig(config: TConfig): TConfig;
-    getConfig(): TConfig;
+import { ToolDefinition } from './tool-definition';
+
+export interface RunResult<T> {
+  data: T;
 }
 
-export abstract class BaseTool<TConfig, TParams, TResult> implements ITool<TConfig, TParams, TResult> {
-    config: TConfig;
+export interface ITool<
+  TConfig extends Record<string, any>,
+  TParameters extends Record<string, any>,
+  TResult extends Record<string, any>,
+> {
+  definition: ToolDefinition<TConfig, TParameters, TResult>;
+  config: TConfig;
+  getDefinition(): ToolDefinition<TConfig, TParameters, TResult>;
+  run(params: TParameters): Promise<RunResult<TResult>>;
+  setConfig(config: TConfig): TConfig;
+  getConfig(): TConfig;
+}
 
-    constructor(config: TConfig) {
-        this.config = config;
-    }
+export abstract class BaseTool<
+  TConfig extends Record<string, any>,
+  TParameters extends Record<string, any>,
+  TResult extends Record<string, any>,
+> implements ITool<TConfig, TParameters, TResult>
+{
+  abstract readonly definition: ToolDefinition<TConfig, TParameters, TResult>;
 
-    abstract run(params: TParams): Promise<TResult>;
-    
-    setConfig(value: TConfig): TConfig {
-        this.config = value;
-        return this.config;
-    }
-    getConfig(): TConfig {
-        return this.config;
-    }
+  config: TConfig;
+
+  constructor(config: TConfig) {
+    this.config = config;
+  }
+
+  abstract run(params: TParameters): Promise<RunResult<TResult>>;
+
+  getDefinition(): ToolDefinition<TConfig, TParameters, TResult> {
+    return this.definition;
+  }
+
+  setConfig(value: TConfig): TConfig {
+    this.config = value;
+    return this.config;
+  }
+  getConfig(): TConfig {
+    return this.config;
+  }
 }

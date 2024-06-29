@@ -1,11 +1,9 @@
 {
-  "name": "@shinkai_protocol/shinkai-tool-web3-eth-uniswap",
+  "name": "@shinkai_protocol/shinkai-tools-bundler",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/shinkai-tool-web3-eth-uniswap/src",
+  "sourceRoot": "libs/shinkai-tools-bundler/src",
   "projectType": "library",
-  "tags": [
-    "tool"
-  ],
+  "tags": [],
   "targets": {
     "build": {
       "executor": "@nx/webpack:webpack",
@@ -13,10 +11,11 @@
       "defaultConfiguration": "production",
       "options": {
         "compiler": "tsc",
-        "outputPath": "dist/apps/shinkai-tool-web3-eth-uniswap",
-        "main": "apps/shinkai-tool-web3-eth-uniswap/src/index.ts",
-        "tsConfig": "apps/shinkai-tool-web3-eth-uniswap/tsconfig.app.json",
-        "webpackConfig": "apps/shinkai-tool-web3-eth-uniswap/webpack.config.ts"
+        "outputFileName": "index.js",
+        "outputPath": "dist/libs/shinkai-tools-bundler",
+        "main": "libs/shinkai-tools-bundler/src/index.ts",
+        "tsConfig": "libs/shinkai-tools-bundler/tsconfig.json",
+        "webpackConfig": "libs/shinkai-tools-bundler/webpack.config.ts"
       },
       "configurations": {
         "development": {
@@ -30,8 +29,8 @@
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": [
-          "apps/shinkai-tool-web3-eth-uniswap/**/*.ts",
-          "apps/shinkai-tool-web3-eth-uniswap/package.json"
+          "libs/shinkai-tools-bundler/**/*.ts",
+          "libs/shinkai-tools-bundler/package.json"
         ]
       }
     }

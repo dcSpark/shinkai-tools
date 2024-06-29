@@ -1,5 +1,4 @@
 {
   "singleQuote": true,
-  "tailwindFunctions": ["clsx", "cn", "cva"],
-  "plugins": [""]
+  "plugins": []
 }

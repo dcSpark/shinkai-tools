@@ -4,7 +4,7 @@ use super::context_globals::set_timeout::set_timeout_spawn;
 use super::execution_error::ExecutionError;
 
 use nanoid::nanoid;
-use rquickjs::{async_with, function::Func, AsyncContext, AsyncRuntime, FromJs, Object};
+use rquickjs::{async_with, function::Func, AsyncContext, AsyncRuntime, Object, Value};
 
 pub struct Script {
     runtime: Option<AsyncRuntime>,
@@ -33,20 +33,20 @@ impl Script {
         (runtime, context.unwrap())
     }
 
-    pub async fn call_promise<T: for<'js> FromJs<'js> + 'static>(
+    pub async fn call_promise(
         &mut self,
         fn_name: &str,
         json_args: &str,
-    ) -> Result<T, ExecutionError> {
+    ) -> Result<serde_json::Value, ExecutionError> {
         println!("calling fn:{}", fn_name);
         let js_code: String = format!("await {fn_name}({json_args})");
-        self.execute_promise::<T>(js_code).await
+        self.execute_promise(js_code).await
     }
 
-    pub async fn execute_promise<T: for<'js> FromJs<'js> + 'static>(
+    pub async fn execute_promise(
         &mut self,
         js_code: String,
-    ) -> Result<T, ExecutionError> {
+    ) -> Result<serde_json::Value, ExecutionError> {
         let id = nanoid!();
         let id_clone = id.clone();
         println!(
@@ -97,10 +97,22 @@ impl Script {
                         let json_str: String = json_str.to_string().expect("Failed to convert to String"); // Convert to Rust String
                         println!("id:{} value from code execution result {}", id.clone(), json_str);
                     }
-                    let value = wrapped_value.get::<&str, T>("value").map_err(|e| {
+                    let js_value = wrapped_value.get::<&str, Value>("value").map_err(|e| {
                         ExecutionError::new(e.to_string(), None)
-                    });
-                    return value
+                    })?;
+                    let stringifyed_js_value = ctx.json_stringify(js_value).map_err(|e| {
+                        ExecutionError::new(e.to_string(), None)
+                    })?;
+                    if stringifyed_js_value.is_none() {
+                        return Ok(serde_json::Value::Null);
+                    }
+                    let stringifyed_value = stringifyed_js_value.unwrap().to_string().map_err(|e| {
+                        ExecutionError::new(e.to_string(), None)
+                    })?;
+                    let value = serde_json::from_str::<serde_json::Value>(&stringifyed_value).map_err(|e| {
+                        ExecutionError::new(e.to_string(), None)
+                    })?;
+                    Ok(value)
                 }
                 Err(error) => {
                     return Err(error)

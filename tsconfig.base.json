@@ -19,6 +19,9 @@
       "@shinkai_protocol/shinkai-tools-builder": [
         "libs/shinkai-tools-builder/src/index.ts"
       ],
+      "@shinkai_protocol/shinkai-tools-bundler": [
+        "libs/shinkai-tools-bundler/src/index.ts"
+      ],
     }
   },
   "exclude": [

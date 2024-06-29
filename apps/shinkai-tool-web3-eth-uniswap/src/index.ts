@@ -1,6 +1,10 @@
 import { weieth } from 'micro-eth-signer';
 import { ArchiveNodeProvider } from 'micro-eth-signer/net';
-import { BaseTool } from "@shinkai_protocol/shinkai-tools-builder";
+import {
+  BaseTool,
+  RunResult,
+  ToolDefinition,
+} from '@shinkai_protocol/shinkai-tools-builder';
 
 type Config = {};
 
@@ -8,13 +12,40 @@ type Params = {
   address: string;
 };
 
-type Result = string;
+type Result = { balance: string };
 
 export class Tool extends BaseTool<Config, Params, Result> {
-  async run(params: Params): Promise<string> {
+  definition: ToolDefinition<Config, Params, Result> = {
+    id: 'shinkai-tool-web3-eth-uniswap',
+    name: 'Shinkai: Web3 ETH Uniswap',
+    description:
+      'Fetches the balance of an Ethereum address in ETH using Uniswap.',
+    author: 'Shinkai',
+    keywords: ['ethereum', 'balance', 'web3', 'shinkai'],
+    configurations: {
+      type: 'object',
+      properties: {},
+      required: [],
+    },
+    parameters: {
+      type: 'object',
+      required: ['address'],
+      properties: {
+        address: { type: 'string' },
+      },
+    },
+    result: {
+      type: 'object',
+      properties: {
+        balance: { type: 'string' },
+      },
+      required: ['balance'],
+    },
+  };
+  async run(params: Params): Promise<RunResult<Result>> {
     const provider = new ArchiveNodeProvider({
       call: async (method: string, ...args: any[]) => {
-        const response = await fetch("https://eth.llamarpc.com", {
+        const response = await fetch('https://eth.llamarpc.com', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -31,26 +62,28 @@ export class Tool extends BaseTool<Config, Params, Result> {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        type Response = { error: any, result: any }
-        const data = await response.json() as Response;
+        type Response = { error: any; result: any };
+        const data = (await response.json()) as Response;
         if (data.error) {
           throw new Error(data.error.message);
         }
 
         return data.result;
-      }
+      },
     });
-    console.log("Provider created");
+    console.log('Provider created');
 
     try {
       const { balance } = await provider.unspent(params.address);
       const balanceInEth = weieth.encode(balance);
-      return `Balance of ${params.address}: ${balanceInEth} ETH`;
+      return {
+        data: { balance: `Balance of ${params.address}: ${balanceInEth} ETH` },
+      };
     } catch (error) {
       if (error instanceof Error) {
-        return `Error: ${error.message}`;
+        return { data: { balance: `Error: ${error.message}` } };
       } else {
-        return `An unknown error occurred`;
+        return { data: { balance: `An unknown error occurred` } };
       }
     }
   }

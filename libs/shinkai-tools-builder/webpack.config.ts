@@ -1,10 +1,10 @@
-const { composePlugins, withNx } = require('@nx/webpack');
-const _ = require('lodash');
+import { composePlugins, withNx } from '@nx/webpack';
+import { merge } from 'lodash';
 
 module.exports = composePlugins(
   withNx(),
   (config, { options, context }) => {
-    return _.merge(config, {
+    return merge(config, {
       target: 'es6',
       output: {
         library: {

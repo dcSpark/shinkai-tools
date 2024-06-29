@@ -3,9 +3,7 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "apps/shinkai-tool-echo/src",
   "projectType": "library",
-  "tags": [
-    "tool"
-  ],
+  "tags": ["tool"],
   "targets": {
     "build": {
       "executor": "@nx/webpack:webpack",
@@ -15,14 +13,12 @@
         "compiler": "tsc",
         "outputPath": "dist/apps/shinkai-tool-echo",
         "main": "apps/shinkai-tool-echo/src/index.ts",
-        "tsConfig": "apps/shinkai-tool-echo/tsconfig.json",
-        "webpackConfig": "apps/shinkai-tool-echo/webpack.config.js"
+        "tsConfig": "apps/shinkai-tool-echo/tsconfig.app.json",
+        "webpackConfig": "apps/shinkai-tool-echo/webpack.config.ts"
       },
       "configurations": {
-        "development": {
-        },
-        "production": {
-        }
+        "development": {},
+        "production": {}
       }
     },
     "lint": {

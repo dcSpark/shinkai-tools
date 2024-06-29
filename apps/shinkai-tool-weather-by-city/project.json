@@ -15,8 +15,8 @@
         "compiler": "tsc",
         "outputPath": "dist/apps/shinkai-tool-weather-by-city",
         "main": "apps/shinkai-tool-weather-by-city/src/index.ts",
-        "tsConfig": "apps/shinkai-tool-weather-by-city/tsconfig.json",
-        "webpackConfig": "apps/shinkai-tool-weather-by-city/webpack.config.js"
+        "tsConfig": "apps/shinkai-tool-weather-by-city/tsconfig.app.json",
+        "webpackConfig": "apps/shinkai-tool-weather-by-city/webpack.config.ts"
       },
       "configurations": {
         "development": {

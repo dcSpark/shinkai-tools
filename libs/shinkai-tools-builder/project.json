@@ -15,7 +15,7 @@
         "outputPath": "dist/libs/shinkai-tools-builder",
         "main": "libs/shinkai-tools-builder/src/index.ts",
         "tsConfig": "libs/shinkai-tools-builder/tsconfig.json",
-        "webpackConfig": "libs/shinkai-tools-builder/webpack.config.js"
+        "webpackConfig": "libs/shinkai-tools-builder/webpack.config.ts"
       },
       "configurations": {
         "development": {

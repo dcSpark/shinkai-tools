@@ -1,20 +1,55 @@
-import { BaseTool } from "@shinkai_protocol/shinkai-tools-builder";
+import {
+  BaseTool,
+  RunResult,
+  ToolDefinition,
+} from '@shinkai_protocol/shinkai-tools-builder';
 
 type Config = {
-    apiKey: string;
+  apiKey: string;
 };
-
 type Params = {
-    city: string;
+  city: string;
 };
-
-type Result = string;
-
+type Result = {
+  weather: string;
+};
 export class Tool extends BaseTool<Config, Params, Result> {
-    async run(params: Params): Promise<string> {
-        // response type is still an small subset of fetch Response type
-        const response = await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${params.city}&appid=${this.config.apiKey}`, {});
-        const data = await response.body;
-        return `${JSON.stringify(data)}`;
-    }
+  definition: ToolDefinition<Config, Params, Result> = {
+    id: 'shinkai-tool-weather-by-city',
+    name: 'Shinkai: Weather By City',
+    description: 'Get weather information for a city name',
+    configurations: {
+      type: 'object',
+      properties: {
+        apiKey: { type: 'string' },
+      },
+      required: ['apiKey'],
+    },
+    parameters: {
+      type: 'object',
+      properties: {
+        city: { type: 'string' },
+      },
+      required: ['city'],
+    },
+    result: {
+      type: 'object',
+      properties: {
+        weather: { type: 'string' },
+      },
+      required: ['weather'],
+    },
+    author: '',
+    keywords: [],
+  };
+
+  async run(params: Params): Promise<RunResult<Result>> {
+    // response type is still an small subset of fetch Response type
+    const response = await fetch(
+      `http://api.openweathermap.org/data/2.5/weather?q=${params.city}&appid=${this.config.apiKey}`,
+      {},
+    );
+    const data = await response.body;
+    return { data: { weather: `${JSON.stringify(data)}` } };
+  }
 }

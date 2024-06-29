@@ -1,38 +1,39 @@
 use lazy_static::lazy_static;
 use std::collections::HashMap;
 
+use crate::tools::tool_definition::ToolDefinition;
+
 lazy_static! {
-    static ref TOOLS_PATHS: HashMap<&'static str, &'static str> = {
+    static ref TOOLS_PATHS: HashMap<&'static str, &'static ToolDefinition> = {
         let mut m = HashMap::new();
         m.insert(
             "shinkai-tool-echo",
-            include_str!("../../../dist/apps/shinkai-tool-echo/index.js"),
+            Box::leak(Box::new(serde_json::from_str::<ToolDefinition>(include_str!("../../../dist/apps/shinkai-tool-echo/definition.json")).unwrap())) as &'static ToolDefinition,
         );
         m.insert(
             "shinkai-tool-weather-by-city",
-            include_str!("../../../dist/apps/shinkai-tool-weather-by-city/index.js"),
+            Box::leak(Box::new(serde_json::from_str::<ToolDefinition>(include_str!("../../../dist/apps/shinkai-tool-weather-by-city/definition.json")).unwrap())) as &'static ToolDefinition,
         );
         m.insert(
             "shinkai-tool-web3-eth-balance",
-            include_str!("../../../dist/apps/shinkai-tool-web3-eth-balance/index.js"),
+            Box::leak(Box::new(serde_json::from_str::<ToolDefinition>(include_str!("../../../dist/apps/shinkai-tool-web3-eth-balance/definition.json")).unwrap())) as &'static ToolDefinition,
         );
         m.insert(
             "shinkai-tool-web3-eth-uniswap",
-            include_str!("../../../dist/apps/shinkai-tool-web3-eth-uniswap/index.js"),
+            Box::leak(Box::new(serde_json::from_str::<ToolDefinition>(include_str!("../../../dist/apps/shinkai-tool-web3-eth-uniswap/definition.json")).unwrap())) as &'static ToolDefinition,
         );
         m
     };
 }
 
-pub fn get_tool(name: &str) -> Option<&&str> {
+pub fn get_tool(name: &str) -> Option<&&ToolDefinition> {
     TOOLS_PATHS.get(name)
 }
 
-// TODO: In the future this method should return a Tool array (having name, version, code, etc)
-pub fn get_tools() -> Vec<(String, String)> {
+pub fn get_tools() -> Vec<(String, ToolDefinition)> {
     TOOLS_PATHS
         .iter()
-        .map(|(&name, &code)| (name.to_string(), code.to_string()))
+        .map(|(&name, &definition)| (name.to_string(), definition.clone()))
         .collect()
 }
 

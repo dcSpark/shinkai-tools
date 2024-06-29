@@ -9,7 +9,7 @@ nanoid = "0.4.0"
 patch = "0.7.0"
 reqwest = { version = "0.11.26", features = ["blocking"] }
 rquickjs = { version = "0.6.2", features = ["full-async", "futures", "dump-promise"] }
-serde = "1.0.188"
+serde = { version = "1.0.188", features = ["derive"] }
 serde_json = "1.0.117"
 tokio = { version = "1.36.0", features = ["full"] }
 lazy_static = "1.5.0"

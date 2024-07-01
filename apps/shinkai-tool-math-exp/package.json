@@ -1,0 +1,7 @@
+{
+  "name": "@shinkai_protocol/shinkai-tool-math-exp",
+  "type": "commonjs",
+  "dependencies": {
+    "expr-eval": "^2.0.2"
+  }
+}

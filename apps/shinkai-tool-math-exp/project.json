@@ -1,0 +1,35 @@
+{
+  "name": "@shinkai_protocol/shinkai-tool-math-exp",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/shinkai-tool-math-exp/src",
+  "projectType": "library",
+  "tags": ["tool"],
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "compiler": "tsc",
+        "outputPath": "dist/apps/shinkai-tool-math-exp",
+        "main": "apps/shinkai-tool-math-exp/src/index.ts",
+        "tsConfig": "apps/shinkai-tool-math-exp/tsconfig.app.json",
+        "webpackConfig": "apps/shinkai-tool-math-exp/webpack.config.ts"
+      },
+      "configurations": {
+        "development": {},
+        "production": {}
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "apps/shinkai-tool-math-exp/**/*.ts",
+          "apps/shinkai-tool-math-exp/package.json"
+        ]
+      }
+    }
+  }
+}

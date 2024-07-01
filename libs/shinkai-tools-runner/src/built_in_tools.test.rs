@@ -14,7 +14,7 @@ async fn get_tools_all_load() {
 
 #[tokio::test]
 async fn list_tools_count() {
-    assert_eq!(get_tools().len(), 4);
+    assert!(get_tools().len() >= 5);
 }
 
 #[tokio::test]

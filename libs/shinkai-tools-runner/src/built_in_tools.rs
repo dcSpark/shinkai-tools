@@ -56,6 +56,16 @@ lazy_static! {
                 .unwrap(),
             )),
         );
+        m.insert(
+            "shinkai-tool-download-page",
+            &*Box::leak(Box::new(
+                serde_json::from_str::<ToolDefinition>(include_str!(concat!(
+                    env!("CARGO_MANIFEST_DIR"),
+                    "/tools/shinkai-tool-download-page/definition.json"
+                )))
+                .unwrap(),
+            )),
+        );
         m
     };
 }

@@ -1,0 +1,35 @@
+{
+  "name": "@shinkai_protocol/shinkai-tool-download-page",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/shinkai-tool-download-page/src",
+  "projectType": "library",
+  "tags": ["tool"],
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "compiler": "tsc",
+        "outputPath": "dist/apps/shinkai-tool-download-page",
+        "main": "apps/shinkai-tool-download-page/src/index.ts",
+        "tsConfig": "apps/shinkai-tool-download-page/tsconfig.app.json",
+        "webpackConfig": "apps/shinkai-tool-download-page/webpack.config.ts"
+      },
+      "configurations": {
+        "development": {},
+        "production": {}
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "apps/shinkai-tool-download-page/**/*.ts",
+          "apps/shinkai-tool-download-page/package.json"
+        ]
+      }
+    }
+  }
+}

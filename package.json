@@ -15,6 +15,7 @@
     "@nx/webpack": "^19.3.1",
     "@types/lodash": "^4.17.6",
     "@types/node": "^20.14.0",
+    "@types/turndown": "^5.0.4",
     "@typescript-eslint/eslint-plugin": "^7.14.1",
     "buffer": "^6.0.3",
     "copyfiles": "^2.4.1",
@@ -42,6 +43,7 @@
   "dependencies": {
     "ajv": "^7.2.4",
     "expr-eval": "^2.0.2",
-    "micro-eth-signer": "^0.10.0"
+    "micro-eth-signer": "^0.10.0",
+    "turndown": "^7.2.0"
   }
 }

@@ -47,3 +47,11 @@ async fn main() {
     assert_eq!(run_result.data["message"], "echoing: new york");
 }
 ```
+
+## Adding a New Shinkai Tool
+
+To add a new Shinkai tool to this project, follow these simple steps:
+
+1. **Run the Hygen command**: Run `npx hygen shinkai-tool new` to create a new tool. This command will guide you through the process of creating a new tool, including setting up the directory structure and generating the necessary files.
+
+That's it! With this single command, you'll have a new Shinkai tool set up and ready to go.

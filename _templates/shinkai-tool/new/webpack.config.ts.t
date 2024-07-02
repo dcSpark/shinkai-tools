@@ -1,3 +1,6 @@
+---
+to: apps/shinkai-tool-<%= name %>/webpack.config.ts
+---
 import * as path from 'path';
 
 import { composePlugins, withNx } from '@nx/webpack';
@@ -10,7 +13,7 @@ module.exports = composePlugins(withNx(), (config, { options, context }) => {
     config,
     withToolWebpackConfig({
       entry: path.join(__dirname, 'src/index.ts'),
-      outputPath: path.join(__dirname, '../../dist/apps/shinkai-tool-download-page'),
+      outputPath: path.join(__dirname, '../../dist/apps/shinkai-tool-<%= name %>'),
       tsConfigFile: path.join(__dirname, 'tsconfig.app.json'),
     }),
   );

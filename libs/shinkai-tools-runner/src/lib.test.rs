@@ -98,3 +98,20 @@ async fn shinkai_tool_web3_eth_uniswap() {
         .await;
     assert!(run_result.is_ok());
 }
+
+#[tokio::test]
+async fn shinkai_tool_download_page() {
+    let tool_definition = get_tool("shinkai-tool-download-page").unwrap();
+    let mut tool = Tool::new();
+    let _ = tool
+        .load_from_code(&tool_definition.code.clone().unwrap(), "")
+        .await;
+    let run_result = tool
+        .run(
+            r#"{
+    "url": "https://shinkai.com"
+}"#,
+        )
+        .await;
+    assert!(run_result.is_ok());
+}

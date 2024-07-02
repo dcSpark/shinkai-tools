@@ -8,48 +8,53 @@ lazy_static! {
         let mut m = HashMap::new();
         m.insert(
             "shinkai-tool-echo",
-            Box::leak(Box::new(
-                serde_json::from_str::<ToolDefinition>(include_str!(
-                    "../../../dist/apps/shinkai-tool-echo/definition.json"
-                ))
+            &*Box::leak(Box::new(
+                serde_json::from_str::<ToolDefinition>(include_str!(concat!(
+                    env!("CARGO_MANIFEST_DIR"),
+                    "/tools/shinkai-tool-echo/definition.json"
+                )))
                 .unwrap(),
-            )) as &'static ToolDefinition,
+            )),
         );
         m.insert(
             "shinkai-tool-weather-by-city",
-            Box::leak(Box::new(
-                serde_json::from_str::<ToolDefinition>(include_str!(
-                    "../../../dist/apps/shinkai-tool-weather-by-city/definition.json"
-                ))
+            &*Box::leak(Box::new(
+                serde_json::from_str::<ToolDefinition>(include_str!(concat!(
+                    env!("CARGO_MANIFEST_DIR"),
+                    "/tools/shinkai-tool-weather-by-city/definition.json"
+                )))
                 .unwrap(),
-            )) as &'static ToolDefinition,
+            )),
         );
         m.insert(
             "shinkai-tool-web3-eth-balance",
-            Box::leak(Box::new(
-                serde_json::from_str::<ToolDefinition>(include_str!(
-                    "../../../dist/apps/shinkai-tool-web3-eth-balance/definition.json"
-                ))
+            &*Box::leak(Box::new(
+                serde_json::from_str::<ToolDefinition>(include_str!(concat!(
+                    env!("CARGO_MANIFEST_DIR"),
+                    "/tools/shinkai-tool-web3-eth-balance/definition.json"
+                )))
                 .unwrap(),
-            )) as &'static ToolDefinition,
+            )),
         );
         m.insert(
             "shinkai-tool-web3-eth-uniswap",
-            Box::leak(Box::new(
-                serde_json::from_str::<ToolDefinition>(include_str!(
-                    "../../../dist/apps/shinkai-tool-web3-eth-uniswap/definition.json"
-                ))
+            &*Box::leak(Box::new(
+                serde_json::from_str::<ToolDefinition>(include_str!(concat!(
+                    env!("CARGO_MANIFEST_DIR"),
+                    "/tools/shinkai-tool-web3-eth-uniswap/definition.json"
+                )))
                 .unwrap(),
-            )) as &'static ToolDefinition,
+            )),
         );
         m.insert(
             "shinkai-tool-math-exp",
-            Box::leak(Box::new(
-                serde_json::from_str::<ToolDefinition>(include_str!(
-                    "../../../dist/apps/shinkai-tool-math-exp/definition.json"
-                ))
+            &*Box::leak(Box::new(
+                serde_json::from_str::<ToolDefinition>(include_str!(concat!(
+                    env!("CARGO_MANIFEST_DIR"),
+                    "/tools/shinkai-tool-math-exp/definition.json"
+                )))
                 .unwrap(),
-            )) as &'static ToolDefinition,
+            )),
         );
         m
     };

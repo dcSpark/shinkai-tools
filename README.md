@@ -38,9 +38,12 @@ use shinkai_tools_runner::tools::tool::Tool;
 
 #[tokio::main]
 async fn main() {
-    let code = get_tool("shinkai-tool-echo").unwrap();
+    let tool_definition = get_tool("shinkai-tool-echo").unwrap();
     let mut tool = Tool::new();
-    let _ = tool.load_from_code(code, "").await;
-    let run_result = tool.run("{ \"message\": \"valparaíso\" }").await;
+    let _ = tool
+        .load_from_code(&tool_definition.code.clone().unwrap(), "")
+        .await;
+    let run_result = tool.run("{ \"message\": \"new york\" }").await.unwrap();
+    assert_eq!(run_result.data["message"], "echoing: new york");
 }
 ```

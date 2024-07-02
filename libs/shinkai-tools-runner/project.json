@@ -9,7 +9,11 @@
       "executor": "nx:run-commands",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "command": "nx run-many -t build --projects=tag:tool"
+        "parallel": false,
+        "commands": [
+          "nx run-many -t build --projects=tag:tool",
+          "npx copyfiles --up 2 --verbose dist/apps/shinkai-tool-*/definition.json libs/shinkai-tools-runner/tools"
+        ]
       }
     },
     "build": {
@@ -22,12 +26,9 @@
         "command": "cargo build"
       },
       "configurations": {
-        "development": {
-        },
+        "development": {},
         "production": {
-          "args": [
-            "--release"
-          ]
+          "args": ["--release"]
         }
       }
     },
@@ -41,12 +42,9 @@
         "command": "cargo test --features=built-in-tools"
       },
       "configurations": {
-        "development": {
-        },
+        "development": {},
         "production": {
-          "args": [
-            "--release"
-          ]
+          "args": ["--release"]
         }
       }
     },
@@ -59,10 +57,21 @@
         "command": "cargo clippy"
       },
       "configurations": {
-        "development": {
-        },
-        "production": {
-        }
+        "development": {},
+        "production": {}
+      }
+    },
+    "publish": {
+      "dependsOn": ["build-tools"],
+      "executor": "nx:run-commands",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "command": "cargo publish -p shinkai_tools_runner --allow-dirty"
+      },
+      "configurations": {
+        "development": {},
+        "production": {}
       }
     }
   }

@@ -1,6 +1,6 @@
 {
   "name": "@shinkai_protocol/source",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "This repository serves as the ecosystem to execute Shinkai tools, provided by the Shinkai team or third-party developers, in a secure environment. It provides a sandboxed space for executing these tools, ensuring that they run safely and efficiently, while also allowing for seamless integration with Rust code.",
   "main": "index.js",
   "author": "",
@@ -17,6 +17,7 @@
     "@types/node": "^20.14.0",
     "@typescript-eslint/eslint-plugin": "^7.14.1",
     "buffer": "^6.0.3",
+    "copyfiles": "^2.4.1",
     "crypto-browserify": "^3.12.0",
     "enhanced-resolve": "^4.5.0",
     "eslint": "^8.57.0",

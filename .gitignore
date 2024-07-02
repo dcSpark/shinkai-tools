@@ -10,3 +10,4 @@ target
 
 .nx/cache
 .nx/workspace-data
+libs/shinkai-tools-runner/tools

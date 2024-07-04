@@ -15,7 +15,7 @@ export const withToolWebpackConfig = ({
   const outputFilename = 'index.js';
   const outputDefinitionFilename = 'definition.json';
   return {
-    target: 'es6',
+    target: 'es2020',
     externals: [],
     entry: entry,
     module: {
@@ -49,7 +49,7 @@ export const withToolWebpackConfig = ({
         type: 'var',
         name: 'tool',
       },
-      chunkFormat: 'commonjs',
+      chunkFormat: 'module',
     },
     optimization: {
       minimize: false,

@@ -49,7 +49,10 @@ export class Tool extends BaseTool<Config, Params, Result> {
       `http://api.openweathermap.org/data/2.5/weather?q=${params.city}&appid=${this.config.apiKey}`,
       {},
     );
-    const data = await response.body;
+    if (!response.ok) {
+      throw new Error(`Failed to fetch weather data, status: ${response.status}`);
+    }
+    const data = await response.json();
     return { data: { weather: `${JSON.stringify(data)}` } };
   }
 }

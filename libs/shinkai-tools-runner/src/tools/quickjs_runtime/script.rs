@@ -1,10 +1,8 @@
-use super::context_globals::console_log::console_log;
-use super::context_globals::fetch::fetch;
-use super::context_globals::set_timeout::set_timeout_spawn;
+use super::context_globals::init_globals;
 use super::execution_error::ExecutionError;
 
 use nanoid::nanoid;
-use rquickjs::{async_with, function::Func, AsyncContext, AsyncRuntime, Object, Value};
+use rquickjs::{async_with, AsyncContext, AsyncRuntime, Object, Value};
 
 pub struct Script {
     runtime: Option<AsyncRuntime>,
@@ -30,6 +28,9 @@ impl Script {
         runtime.set_memory_limit(1024 * 1024 * 1024).await; // 1 GB
         runtime.set_max_stack_size(1024 * 1024).await; // 1 MB
         let context = AsyncContext::full(&runtime).await;
+        context.as_ref().unwrap().with(|ctx| {
+            let _ = init_globals(&ctx);
+        }).await;
         (runtime, context.unwrap())
     }
 
@@ -56,13 +57,6 @@ impl Script {
         );
         let js_code_clone = js_code.clone(); // Clone js_code here
         let result = async_with!(self.context.clone().unwrap() => |ctx|{
-            let globals = ctx.globals();
-            let console = Object::new(ctx.clone()).unwrap();
-            let _ = console.set("log", Func::from(console_log));
-            let _ = globals.set("console", console);
-            let _ = globals.set("fetch", Func::from(fetch));
-            let _ = globals.set("setTimeout", Func::from(set_timeout_spawn));
-
             let eval_promise_result = ctx.eval_promise::<_>(js_code);
 
             let result = eval_promise_result.unwrap().into_future::<Object>().await.map_err(|e| {

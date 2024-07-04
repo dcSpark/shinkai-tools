@@ -1,3 +1,12 @@
-pub mod console_log;
-pub mod fetch;
-pub mod set_timeout;
+use rquickjs::{Ctx, Result};
+
+mod console;
+mod fetch;
+mod timers;
+
+pub fn init_globals(ctx: &Ctx<'_>) -> Result<()> {
+    console::init(ctx)?;
+    fetch::init(ctx)?;
+    timers::init(ctx)?;
+    Ok(())
+}

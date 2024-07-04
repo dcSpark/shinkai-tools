@@ -1,6 +1,6 @@
 import { BaseTool, RunResult } from '@shinkai_protocol/shinkai-tools-builder';
 import { ToolDefinition } from 'libs/shinkai-tools-builder/src/tool-definition';
-import * as TurndownService from 'turndown';
+import TurndownService from 'turndown';
 
 type Config = {};
 type Params = {

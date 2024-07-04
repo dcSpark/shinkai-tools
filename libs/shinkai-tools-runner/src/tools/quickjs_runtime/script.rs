@@ -1,3 +1,5 @@
+use std::time::Duration;
+
 use super::context_globals::init_globals;
 use super::execution_error::ExecutionError;
 
@@ -7,6 +9,7 @@ use rquickjs::{async_with, AsyncContext, AsyncRuntime, Object, Value};
 pub struct Script {
     runtime: Option<AsyncRuntime>,
     context: Option<AsyncContext>,
+    terminate: bool,
 }
 
 impl Script {
@@ -14,23 +17,34 @@ impl Script {
         Script {
             runtime: None,
             context: None,
+            terminate: false,
         }
     }
 
     pub async fn init(&mut self) {
-        let (runtime, context) = Self::build_runtime().await;
+        let (runtime, context) = self.build_runtime().await;
         self.runtime = Some(runtime);
         self.context = Some(context);
+        let terminate = self.terminate;
+        self.runtime
+            .as_ref()
+            .unwrap()
+            .set_interrupt_handler(Some(Box::new(move || terminate)))
+            .await;
     }
 
-    async fn build_runtime() -> (AsyncRuntime, AsyncContext) {
+    async fn build_runtime(&self) -> (AsyncRuntime, AsyncContext) {
         let runtime: AsyncRuntime = AsyncRuntime::new().unwrap();
         runtime.set_memory_limit(1024 * 1024 * 1024).await; // 1 GB
         runtime.set_max_stack_size(1024 * 1024).await; // 1 MB
         let context = AsyncContext::full(&runtime).await;
-        context.as_ref().unwrap().with(|ctx| {
-            let _ = init_globals(&ctx);
-        }).await;
+        context
+            .as_ref()
+            .unwrap()
+            .with(|ctx| {
+                let _ = init_globals(&ctx);
+            })
+            .await;
         (runtime, context.unwrap())
     }
 
@@ -38,15 +52,17 @@ impl Script {
         &mut self,
         fn_name: &str,
         json_args: &str,
+        max_execution_time_ms: u64,
     ) -> Result<serde_json::Value, ExecutionError> {
         println!("calling fn:{}", fn_name);
         let js_code: String = format!("await {fn_name}({json_args})");
-        self.execute_promise(js_code).await
+        self.execute_promise(js_code, max_execution_time_ms).await
     }
 
     pub async fn execute_promise(
         &mut self,
         js_code: String,
+        max_execution_time_ms: u64,
     ) -> Result<serde_json::Value, ExecutionError> {
         let id = nanoid!();
         let id_clone = id.clone();
@@ -56,7 +72,8 @@ impl Script {
             &js_code[..20.min(js_code.len())]
         );
         let js_code_clone = js_code.clone(); // Clone js_code here
-        let result = async_with!(self.context.clone().unwrap() => |ctx|{
+        let context_clone = self.context.clone().unwrap();
+        let result = async_with!(context_clone => |ctx|{
             let eval_promise_result = ctx.eval_promise::<_>(js_code);
 
             let result = eval_promise_result.unwrap().into_future::<Object>().await.map_err(|e| {
@@ -112,11 +129,19 @@ impl Script {
                     return Err(error)
                 }
             }
-        })
-        .await;
-        if let Some(error) = result.as_ref().err() {
-            println!("id:{} run error result: {}", id_clone, error.message());
+        });
+        tokio::select! {
+            result = result => {
+                if let Some(error) = result.as_ref().err() {
+                    println!("id:{} run error result: {}", id_clone, error.message());
+                }
+                result
+            }
+            _ = tokio::time::sleep(Duration::from_millis(max_execution_time_ms)) => {
+                println!("sending termination signal");
+                self.terminate = true;
+                Err(ExecutionError::new("max execution time reached".to_string(), None))
+            }
         }
-        result
     }
 }

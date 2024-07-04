@@ -15,6 +15,9 @@ impl Default for Tool {
 }
 
 impl Tool {
+    pub const MAX_EXECUTION_TIME_MS_INTERNAL_OPS: u64 = 1000;
+    pub const MAX_EXECUTION_TIME_MS_INTERNAL_RUN_OP: u64 = 60 * 1000;
+
     pub fn new() -> Self {
         Tool {
             script: Script::new(),
@@ -27,7 +30,9 @@ impl Tool {
         configurations: &str,
     ) -> Result<(), ExecutionError> {
         self.script.init().await;
-        self.script.execute_promise(code.to_string()).await?;
+        self.script
+            .execute_promise(code.to_string(), Self::MAX_EXECUTION_TIME_MS_INTERNAL_OPS)
+            .await?;
         self.script
             .execute_promise(
                 format!(
@@ -36,6 +41,7 @@ impl Tool {
         "#
                 )
                 .to_string(),
+                1000,
             )
             .await?;
         Ok(())
@@ -44,7 +50,11 @@ impl Tool {
     pub async fn get_definition(&mut self) -> Result<ToolDefinition, ExecutionError> {
         let run_result = self
             .script
-            .call_promise("toolInstance.getDefinition", "")
+            .call_promise(
+                "toolInstance.getDefinition",
+                "",
+                Self::MAX_EXECUTION_TIME_MS_INTERNAL_OPS,
+            )
             .await?;
         Ok(serde_json::from_value::<ToolDefinition>(run_result).unwrap())
     }
@@ -52,7 +62,11 @@ impl Tool {
     pub async fn config(&mut self, configurations: &str) -> Result<(), ExecutionError> {
         let result = self
             .script
-            .call_promise("toolInstance.setConfig", configurations)
+            .call_promise(
+                "toolInstance.setConfig",
+                configurations,
+                Self::MAX_EXECUTION_TIME_MS_INTERNAL_OPS,
+            )
             .await;
         match result {
             Ok(_) => Ok(()),
@@ -60,12 +74,20 @@ impl Tool {
         }
     }
 
-    pub async fn run(&mut self, parameters: &str) -> Result<RunResult, ExecutionError> {
+    pub async fn run(
+        &mut self,
+        parameters: &str,
+        max_execution_time_ms: Option<u64>,
+    ) -> Result<RunResult, ExecutionError> {
         // This String generic type is hardcoded atm
         // We should decide what's is going to be the output for run method
         let run_result = self
             .script
-            .call_promise("toolInstance.run", parameters)
+            .call_promise(
+                "toolInstance.run",
+                parameters,
+                max_execution_time_ms.unwrap_or(Self::MAX_EXECUTION_TIME_MS_INTERNAL_RUN_OP),
+            )
             .await?;
         Ok(serde_json::from_value::<RunResult>(run_result).unwrap())
     }

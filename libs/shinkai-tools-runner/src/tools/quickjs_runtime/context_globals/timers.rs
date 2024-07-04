@@ -40,7 +40,9 @@ fn set_timeout<'js>(
             }
             _ = tokio::time::sleep(Duration::from_millis(delay)) => {
                 println!("calling setTimeout callback after {} ms", delay);
-                callback.call::<_, ()>(()).unwrap();
+                if let Err(e) = callback.call::<_, ()>(()) {
+                    println!("error calling callback: {}", e);
+                }
             }
         }
     });

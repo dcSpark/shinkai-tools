@@ -8,7 +8,10 @@ async fn shinkai_tool_echo() {
     let _ = tool
         .load_from_code(&tool_definition.code.clone().unwrap(), "")
         .await;
-    let run_result = tool.run("{ \"message\": \"valparaíso\" }").await.unwrap();
+    let run_result = tool
+        .run("{ \"message\": \"valparaíso\" }", None)
+        .await
+        .unwrap();
     assert_eq!(run_result.data["message"], "echoing: valparaíso");
 }
 
@@ -26,7 +29,7 @@ async fn shinkai_tool_weather_by_city() {
         You can also call config method
         let _ = tool.config("{ \"apiKey\": \"63d35ff6068c3103ccd1227526935675\" }").await;
     */
-    let run_result = tool.run("{ \"city\": \"valparaíso\" }").await;
+    let run_result = tool.run("{ \"city\": \"valparaíso\" }", None).await;
     assert!(run_result.is_ok());
 }
 
@@ -59,7 +62,7 @@ async fn shinkai_tool_inline() {
 "#;
     let mut tool = Tool::new();
     let _ = tool.load_from_code(js_code, "").await;
-    let run_result = tool.run("{ \"name\": \"world\" }").await.unwrap();
+    let run_result = tool.run("{ \"name\": \"world\" }", None).await.unwrap();
     assert_eq!(run_result.data, "Hello, world!");
 }
 
@@ -71,7 +74,10 @@ async fn shinkai_tool_web3_eth_balance() {
         .load_from_code(&tool_definition.code.clone().unwrap(), "")
         .await;
     let run_result = tool
-        .run("{ \"address\": \"0x388c818ca8b9251b393131c08a736a67ccb19297\" }")
+        .run(
+            "{ \"address\": \"0x388c818ca8b9251b393131c08a736a67ccb19297\" }",
+            None,
+        )
         .await;
     println!("{}", run_result.as_ref().unwrap().data);
     assert!(run_result.is_ok());
@@ -94,6 +100,7 @@ async fn shinkai_tool_web3_eth_uniswap() {
     "toAddress": "0xd8da6bf26964af9d7eed9e03e53415d37aa96045",
     "slippagePercent": 0.5
 }"#,
+            None,
         )
         .await;
     assert!(run_result.is_ok());
@@ -111,6 +118,7 @@ async fn shinkai_tool_download_page() {
             r#"{
                 "url": "https://shinkai.com"
             }"#,
+            None,
         )
         .await;
     assert!(run_result.is_ok());
@@ -149,7 +157,7 @@ async fn set_timeout() {
     let mut tool = Tool::new();
     let _ = tool.load_from_code(js_code, "").await;
     let start_time = std::time::Instant::now();
-    let _ = tool.run("").await.unwrap();
+    let _ = tool.run("", None).await.unwrap();
     let elapsed_time = start_time.elapsed();
     assert!(elapsed_time.as_millis() > 3000);
 }
@@ -189,7 +197,7 @@ async fn set_timeout_no_delay_param() {
     let mut tool = Tool::new();
     let _ = tool.load_from_code(js_code, "").await;
     let start_time = std::time::Instant::now();
-    let run_result = tool.run("").await.unwrap();
+    let run_result = tool.run("", None).await.unwrap();
     let elapsed_time = start_time.elapsed();
     assert!(elapsed_time.as_millis() <= 50);
     assert_eq!(run_result.data, 1);
@@ -235,7 +243,7 @@ async fn clear_timeout() {
     let mut tool = Tool::new();
     let _ = tool.load_from_code(js_code, "").await;
     let start_time = std::time::Instant::now();
-    let _ = tool.run("").await.unwrap();
+    let _ = tool.run("", None).await.unwrap();
     let elapsed_time = start_time.elapsed();
     assert!(elapsed_time.as_millis() >= 1500 && elapsed_time.as_millis() <= 1550);
 }
@@ -279,7 +287,7 @@ async fn set_interval() {
     let mut tool = Tool::new();
     let _ = tool.load_from_code(js_code, "").await;
     let start_time = std::time::Instant::now();
-    let run_result = tool.run("").await.unwrap();
+    let run_result = tool.run("", None).await.unwrap();
     let elapsed_time = start_time.elapsed();
     assert_eq!(run_result.data, 5);
     assert!(elapsed_time.as_millis() <= 1100);
@@ -330,8 +338,54 @@ async fn clear_interval() {
     let mut tool = Tool::new();
     let _ = tool.load_from_code(js_code, "").await;
     let start_time = std::time::Instant::now();
-    let run_result = tool.run("").await.unwrap();
+    let run_result = tool.run("", None).await.unwrap();
     let elapsed_time = start_time.elapsed();
     assert!(run_result.data.as_number().unwrap().as_u64().unwrap() <= 11);
     assert!(elapsed_time.as_millis() <= 2050);
+}
+
+#[tokio::test]
+async fn max_execution_time() {
+    let js_code = r#"
+    class BaseTool {
+        constructor(config) {
+            this.config = config;
+        }
+        setConfig(value) {
+            this.config = value;
+            return this.config;
+        }
+        getConfig() {
+            return this.config;
+        }
+    }
+    class Tool extends BaseTool {
+        constructor(config) {
+            super(config);
+        }
+        async run() {
+            let startedAt = Date.now();
+            while (true) {
+                const elapse = Date.now() - startedAt;
+                console.log(`while true every ${500}ms, elapse ${elapse} ms`);
+                await new Promise(async (resolve) => {
+                    setTimeout(() => {
+                        resolve();
+                    }, 500);
+                }); 
+            }
+            
+            return { data: true };
+        }
+    }
+    globalThis.tool = { Tool };
+"#;
+    let mut tool = Tool::new();
+    let _ = tool.load_from_code(js_code, "").await;
+    let start_time = std::time::Instant::now();
+    let run_result = tool.run("", Some(10000)).await;
+    let elapsed_time = start_time.elapsed();
+    assert!(run_result.is_err());
+    assert!(elapsed_time.as_millis() <= 10050);
+    assert!(run_result.err().unwrap().message().contains("time reached"));
 }

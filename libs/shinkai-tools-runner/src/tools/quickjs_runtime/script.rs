@@ -106,7 +106,7 @@ impl Script {
                 Ok(wrapped_value) => {
                     if let Ok(Some(json_str)) = ctx.json_stringify(wrapped_value.as_ref()) {
                         let json_str: String = json_str.to_string().expect("Failed to convert to String"); // Convert to Rust String
-                        println!("id:{} value from code execution result {}", id.clone(), json_str);
+                        println!("id:{} value from code execution result {}", id.clone(), &json_str[..500.min(json_str.len())]);
                     }
                     let js_value = wrapped_value.get::<&str, Value>("value").map_err(|e| {
                         ExecutionError::new(e.to_string(), None)

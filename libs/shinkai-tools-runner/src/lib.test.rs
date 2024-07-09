@@ -389,3 +389,31 @@ async fn max_execution_time() {
     assert!(elapsed_time.as_millis() <= 10050);
     assert!(run_result.err().unwrap().message().contains("time reached"));
 }
+
+#[tokio::test]
+async fn shinkai_tool_download_page_stack_overflow() {
+    let managed_thread = std::thread::Builder::new().stack_size(8 * 1024 * 1024);
+    let run_result = managed_thread
+        .spawn(move || {
+            let managed_runtime =
+                tokio::runtime::Runtime::new().expect("Failed to create Tokio runtime");
+            managed_runtime.block_on(async {
+                let tool_definition = get_tool("shinkai-tool-download-page").unwrap();
+                let mut tool = Tool::new();
+                let _ = tool
+                    .load_from_code(&tool_definition.code.clone().unwrap(), "")
+                    .await;
+                tool.run(
+                    r#"{
+                        "url": "https://en.wikipedia.org/wiki/Prospect_Park_(Brooklyn)"
+                    }"#,
+                    None,
+                )
+                .await
+            })
+        })
+        .unwrap()
+        .join()
+        .unwrap();
+    assert!(run_result.is_ok());
+}

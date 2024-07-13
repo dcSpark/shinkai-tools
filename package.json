@@ -45,6 +45,7 @@
     "ajv": "^7.2.4",
     "expr-eval": "^2.0.2",
     "micro-eth-signer": "^0.10.0",
+    "networkanalysis-ts": "^1.0.0",
     "turndown": "^7.2.0"
   }
 }

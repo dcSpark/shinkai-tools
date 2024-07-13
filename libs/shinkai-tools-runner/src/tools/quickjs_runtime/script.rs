@@ -12,6 +12,12 @@ pub struct Script {
     terminate: bool,
 }
 
+impl Default for Script {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl Script {
     pub fn new() -> Self {
         Script {
@@ -36,7 +42,7 @@ impl Script {
     async fn build_runtime(&self) -> (AsyncRuntime, AsyncContext) {
         let runtime: AsyncRuntime = AsyncRuntime::new().unwrap();
         runtime.set_memory_limit(1024 * 1024 * 1024).await; // 1 GB
-        runtime.set_max_stack_size(1024 * 1024).await; // 1 MB
+        runtime.set_max_stack_size(4 * 1024 * 1024).await; // 4 MB
         let context = AsyncContext::full(&runtime).await;
         context
             .as_ref()

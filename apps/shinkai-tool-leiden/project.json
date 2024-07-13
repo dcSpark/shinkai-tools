@@ -1,0 +1,35 @@
+{
+  "name": "@shinkai_protocol/shinkai-tool-leiden",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/shinkai-tool-leiden/src",
+  "projectType": "library",
+  "tags": ["tool"],
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "compiler": "tsc",
+        "outputPath": "dist/apps/shinkai-tool-leiden",
+        "main": "apps/shinkai-tool-leiden/src/index.ts",
+        "tsConfig": "apps/shinkai-tool-leiden/tsconfig.app.json",
+        "webpackConfig": "apps/shinkai-tool-leiden/webpack.config.ts"
+      },
+      "configurations": {
+        "development": {},
+        "production": {}
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "apps/shinkai-tool-leiden/**/*.ts",
+          "apps/shinkai-tool-leiden/package.json"
+        ]
+      }
+    }
+  }
+}

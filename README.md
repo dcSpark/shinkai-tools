@@ -1,5 +1,7 @@
 ## Shinkai Tools
 
+[![Mutable.ai Auto Wiki](https://img.shields.io/badge/Auto_Wiki-Mutable.ai-blue)](https://wiki.mutable.ai/dcSpark/shinkai-tools)
+
 Shinkai Tools serves as the ecosystem to execute Shinkai tools, provided by the Shinkai team or third-party developers, in a secure environment. It provides a sandboxed space for executing these tools, 
 ensuring that they run safely and efficiently, while also allowing for seamless integration with Rust code.
 
@@ -10,6 +12,12 @@ The primary components of this repository include:
 * `apps/shinkai-tool-*` These are small JavaScript tools designed to perform specific tasks. Each tool is a self-contained project with its own configuration and build process, allowing for easy maintenance and updates.
 * `libs/shinkai-tools-builder` is a TypeScript library that provides the necessary classes and types to build new tools, making it easier to create and integrate new tools into the Shinkai ecosystem.
 * `libs/shinkai-tools-runner` is a Rust library used to execute a tool in a secured and performant JavaScript environment, providing a safe and efficient way to run tools within the Shinkai ecosystem.
+
+## Documentation
+
+General Documentation: [https://docs.shinkai.com](https://docs.shinkai.com)
+
+More In Depth Codebase Documentation (Mutable.ai): [https://wiki.mutable.ai/dcSpark/shinkai-tools](https://wiki.mutable.ai/dcSpark/shinkai-tools)
 
 ## Getting started
 

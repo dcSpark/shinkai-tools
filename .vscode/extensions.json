@@ -1,10 +1,11 @@
 {
-    "recommendations": [
-        "vadimcn.vscode-lldb",
-        "dbaeumer.vscode-eslint",
-        "github.vscode-github-actions",
-        "esbenp.prettier-vscode",
-        "nrwl.angular-console",
-        "rust-lang.rust-analyzer"
-    ]
+  "recommendations": [
+    "vadimcn.vscode-lldb",
+    "dbaeumer.vscode-eslint",
+    "github.vscode-github-actions",
+    "esbenp.prettier-vscode",
+    "nrwl.angular-console",
+    "rust-lang.rust-analyzer",
+    "firsttris.vscode-jest-runner"
+  ]
 }

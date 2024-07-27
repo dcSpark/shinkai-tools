@@ -11,9 +11,7 @@
     "allowSyntheticDefaultImports": true,
     "target": "ES2020",
     "module": "ES2020",
-    "lib": [
-      "ES2020",
-    ],
+    "lib": ["ES2020"],
     "baseUrl": ".",
     "strict": true,
     "paths": {
@@ -22,11 +20,8 @@
       ],
       "@shinkai_protocol/shinkai-tools-bundler": [
         "libs/shinkai-tools-bundler/src/index.ts"
-      ],
+      ]
     }
   },
-  "exclude": [
-    "node_modules",
-    "dist"
-  ]
+  "exclude": ["node_modules", "dist"]
 }

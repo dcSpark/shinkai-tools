@@ -1,8 +1,8 @@
 import * as path from 'path';
+import * as webpack from 'webpack';
 import { composePlugins, withNx } from '@nx/webpack';
 import { merge } from 'lodash';
 import { withToolWebpackConfig } from '@shinkai_protocol/shinkai-tools-bundler';
-import webpack from 'webpack';
 
 module.exports = composePlugins(withNx(), (config, { options, context }) => {
   return merge(

@@ -1,0 +1,35 @@
+{
+  "name": "@shinkai_protocol/shinkai-tool-internet-search-duckduckgo",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/shinkai-tool-internet-search-duckduckgo/src",
+  "projectType": "library",
+  "tags": ["tool"],
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "compiler": "tsc",
+        "outputPath": "dist/apps/shinkai-tool-internet-search-duckduckgo",
+        "main": "apps/shinkai-tool-internet-search-duckduckgo/src/index.ts",
+        "tsConfig": "apps/shinkai-tool-internet-search-duckduckgo/tsconfig.app.json",
+        "webpackConfig": "apps/shinkai-tool-internet-search-duckduckgo/webpack.config.ts"
+      },
+      "configurations": {
+        "development": {},
+        "production": {}
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "apps/shinkai-tool-internet-search-duckduckgo/**/*.ts",
+          "apps/shinkai-tool-internet-search-duckduckgo/package.json"
+        ]
+      }
+    }
+  }
+}

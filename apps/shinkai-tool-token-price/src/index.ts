@@ -14,9 +14,9 @@ type Result = {
 
 export class Tool extends BaseTool<Config, Params, Result> {
   definition: ToolDefinition<Config, Params, Result> = {
-    id: 'shinkai-tool-chainlink-price',
-    name: 'Shinkai: Chainlink Price',
-    description: 'Fetches the price of a coin or token using Chainlink.',
+    id: 'shinkai-tool-token-price',
+    name: 'Shinkai: Token Price using Chainlink (Limited)',
+    description: 'Fetches the price of a coin or token using Chainlink. It doesn\'t have many tokens.',
     author: 'Shinkai',
     keywords: ['chainlink', 'price', 'symbol', 'shinkai'],
     configurations: {

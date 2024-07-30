@@ -1,7 +1,7 @@
 {
-  "name": "@shinkai_protocol/shinkai-tool-ethplorer-tokens",
+  "name": "@shinkai_protocol/shinkai-tool-token-price",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/shinkai-tool-ethplorer-tokens/src",
+  "sourceRoot": "apps/shinkai-tool-token-price/src",
   "projectType": "library",
   "tags": ["tool"],
   "targets": {
@@ -11,10 +11,10 @@
       "defaultConfiguration": "production",
       "options": {
         "compiler": "tsc",
-        "outputPath": "dist/apps/shinkai-tool-ethplorer-tokens",
-        "main": "apps/shinkai-tool-ethplorer-tokens/src/index.ts",
-        "tsConfig": "apps/shinkai-tool-ethplorer-tokens/tsconfig.app.json",
-        "webpackConfig": "apps/shinkai-tool-ethplorer-tokens/webpack.config.ts"
+        "outputPath": "dist/apps/shinkai-tool-token-price",
+        "main": "apps/shinkai-tool-token-price/src/index.ts",
+        "tsConfig": "apps/shinkai-tool-token-price/tsconfig.app.json",
+        "webpackConfig": "apps/shinkai-tool-token-price/webpack.config.ts"
       },
       "configurations": {
         "development": {},
@@ -26,8 +26,8 @@
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": [
-          "apps/shinkai-tool-ethplorer-tokens/**/*.ts",
-          "apps/shinkai-tool-ethplorer-tokens/package.json"
+          "apps/shinkai-tool-token-price/**/*.ts",
+          "apps/shinkai-tool-token-price/package.json"
         ]
       }
     }

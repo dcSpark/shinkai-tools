@@ -1,0 +1,35 @@
+{
+  "name": "@shinkai_protocol/shinkai-tool-ethplorer-tokens",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/shinkai-tool-ethplorer-tokens/src",
+  "projectType": "library",
+  "tags": ["tool"],
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "compiler": "tsc",
+        "outputPath": "dist/apps/shinkai-tool-ethplorer-tokens",
+        "main": "apps/shinkai-tool-ethplorer-tokens/src/index.ts",
+        "tsConfig": "apps/shinkai-tool-ethplorer-tokens/tsconfig.app.json",
+        "webpackConfig": "apps/shinkai-tool-ethplorer-tokens/webpack.config.ts"
+      },
+      "configurations": {
+        "development": {},
+        "production": {}
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "apps/shinkai-tool-ethplorer-tokens/**/*.ts",
+          "apps/shinkai-tool-ethplorer-tokens/package.json"
+        ]
+      }
+    }
+  }
+}

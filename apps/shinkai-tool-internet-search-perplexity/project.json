@@ -1,7 +1,7 @@
 {
-  "name": "@shinkai_protocol/shinkai-tool-internet-search-duckduckgo",
+  "name": "@shinkai_protocol/shinkai-tool-internet-search-perplexity",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/shinkai-tool-internet-search-duckduckgo/src",
+  "sourceRoot": "apps/shinkai-tool-internet-search-perplexity/src",
   "projectType": "library",
   "tags": ["tool"],
   "targets": {
@@ -11,10 +11,10 @@
       "defaultConfiguration": "production",
       "options": {
         "compiler": "tsc",
-        "outputPath": "dist/apps/shinkai-tool-internet-search-duckduckgo",
-        "main": "apps/shinkai-tool-internet-search-duckduckgo/src/index.ts",
-        "tsConfig": "apps/shinkai-tool-internet-search-duckduckgo/tsconfig.app.json",
-        "webpackConfig": "apps/shinkai-tool-internet-search-duckduckgo/webpack.config.ts"
+        "outputPath": "dist/apps/shinkai-tool-internet-search-perplexity",
+        "main": "apps/shinkai-tool-internet-search-perplexity/src/index.ts",
+        "tsConfig": "apps/shinkai-tool-internet-search-perplexity/tsconfig.app.json",
+        "webpackConfig": "apps/shinkai-tool-internet-search-perplexity/webpack.config.ts"
       },
       "configurations": {
         "development": {},
@@ -26,8 +26,8 @@
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": [
-          "apps/shinkai-tool-internet-search-duckduckgo/**/*.ts",
-          "apps/shinkai-tool-internet-search-duckduckgo/package.json"
+          "apps/shinkai-tool-internet-search-perplexity/**/*.ts",
+          "apps/shinkai-tool-internet-search-perplexity/package.json"
         ]
       }
     }

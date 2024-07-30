@@ -2,8 +2,8 @@ import { BaseTool, RunResult } from '@shinkai_protocol/shinkai-tools-builder';
 import { ToolDefinition } from 'libs/shinkai-tools-builder/src/tool-definition';
 const TurndownService = require('turndown');
 const { chromium } = require('playwright-extra');
-const fs = require('fs');
-const path = require('path');
+// const fs = require('fs');
+// const path = require('path');
 
 const stealth = require('puppeteer-extra-plugin-stealth');
 
@@ -68,13 +68,13 @@ export class Tool extends BaseTool<Config, Params, Result> {
 
     console.log('Taking a screenshot...');
     console.log('__dirname:', __dirname); // Log the __dirname
-    const screenshotPath = path.join(__dirname, 'screenshot.png');
-    try {
-      await page.screenshot({ path: screenshotPath });
-      console.log(`Screenshot saved to ${screenshotPath}`);
-    } catch (error) {
-      console.error('Error taking screenshot:', error);
-    }
+    // const screenshotPath = path.join(__dirname, 'screenshot.png');
+    // try {
+    //   await page.screenshot({ path: screenshotPath });
+    //   console.log(`Screenshot saved to ${screenshotPath}`);
+    // } catch (error) {
+    //   console.error('Error taking screenshot:', error);
+    // }
 
     console.log('Filling textarea with query:', params.query);
     await page.fill('textarea', params.query);
@@ -86,18 +86,18 @@ export class Tool extends BaseTool<Config, Params, Result> {
     await page.waitForSelector('button:has(svg[data-icon="arrow-right"])');
 
     console.log('Waiting for results to load...');
-    await page.waitForTimeout(2000); // Wait for 3 seconds to ensure the page is fully loaded
+    await page.waitForTimeout(3000); // Wait for 3 seconds to ensure the page is fully loaded
     // await page.waitForSelector('.result');
 
     console.log('Taking a screenshot...');
     console.log('__dirname:', __dirname); // Log the __dirname
-    const screenshotPath2 = path.join(__dirname, 'screenshot2.png');
-    try {
-      await page.screenshot({ path: screenshotPath2 });
-      console.log(`Screenshot saved to ${screenshotPath2}`);
-    } catch (error) {
-      console.error('Error taking screenshot:', error);
-    }
+    // const screenshotPath2 = path.join(__dirname, 'screenshot2.png');
+    // try {
+    //   await page.screenshot({ path: screenshotPath2 });
+    //   console.log(`Screenshot saved to ${screenshotPath2}`);
+    // } catch (error) {
+    //   console.error('Error taking screenshot:', error);
+    // }
 
     console.log('Extracting HTML content...');
     const htmlContent = await page.evaluate(() => {

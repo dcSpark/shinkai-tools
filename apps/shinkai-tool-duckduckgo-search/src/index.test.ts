@@ -1,15 +1,6 @@
 import { Tool } from '../src/index';
 global.fetch = require('node-fetch');
 
-
-test('exists definition', async () => {
-  const tool = new Tool({});
-  const definition = tool.getDefinition();
-  const result = await tool.run({ message: 'hi' });
-  expect(definition).toBeInstanceOf(Object);
-  expect(result.data.message).toBe('echoing: hi');
-});
-
 test('searches DuckDuckGo and gets a response', async () => {
   const tool = new Tool({});
   const result = await tool.run({ message: 'best movie of all time' });

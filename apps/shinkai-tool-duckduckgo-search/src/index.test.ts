@@ -1,4 +1,6 @@
 import { Tool } from '../src/index';
+global.fetch = require('node-fetch');
+
 
 test('exists definition', async () => {
   const tool = new Tool({});

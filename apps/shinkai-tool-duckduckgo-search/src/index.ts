@@ -1,7 +1,5 @@
 import { BaseTool, RunResult } from '@shinkai_protocol/shinkai-tools-builder';
 import { ToolDefinition } from 'libs/shinkai-tools-builder/src/tool-definition';
-import * as cheerio from 'cheerio';
-const fetch = require('node-fetch');
 
 type Config = {};
 type Params = {

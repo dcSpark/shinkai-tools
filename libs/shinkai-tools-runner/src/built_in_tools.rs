@@ -87,25 +87,36 @@ lazy_static! {
             )),
         );
         m.insert(
-          "shinkai-tool-ethplorer-tokens",
-          &*Box::leak(Box::new(
-              serde_json::from_str::<ToolDefinition>(include_str!(concat!(
-                  env!("CARGO_MANIFEST_DIR"),
-                  "/tools/shinkai-tool-ethplorer-tokens/definition.json"
-              )))
-              .unwrap(),
-          )),
+            "shinkai-tool-ethplorer-tokens",
+            &*Box::leak(Box::new(
+                serde_json::from_str::<ToolDefinition>(include_str!(concat!(
+                    env!("CARGO_MANIFEST_DIR"),
+                    "/tools/shinkai-tool-ethplorer-tokens/definition.json"
+                )))
+                .unwrap(),
+            )),
         );
-        m.insert(
-          "shinkai-tool-ethplorer-tokens",
-          &*Box::leak(Box::new(
-              serde_json::from_str::<ToolDefinition>(include_str!(concat!(
-                  env!("CARGO_MANIFEST_DIR"),
-                  "/tools/shinkai-tool-ethplorer-tokens/definition.json"
-              )))
-              .unwrap(),
-          )),
-        );
+      // https://bugzilla.mozilla.org/show_bug.cgi?id=1681809
+      //   m.insert(
+      //     "shinkai-tool-token-price",
+      //     &*Box::leak(Box::new(
+      //         serde_json::from_str::<ToolDefinition>(include_str!(concat!(
+      //             env!("CARGO_MANIFEST_DIR"),
+      //             "/tools/shinkai-tool-token-price/definition.json"
+      //         )))
+      //         .unwrap(),
+      //     )),
+      // );
+      m.insert(
+        "shinkai-tool-duckduckgo-search",
+        &*Box::leak(Box::new(
+            serde_json::from_str::<ToolDefinition>(include_str!(concat!(
+                env!("CARGO_MANIFEST_DIR"),
+                "/tools/shinkai-tool-duckduckgo-search/definition.json"
+            )))
+            .unwrap(),
+        )),
+    );
         // ntim: New tools will be inserted here, don't remove this comment
         m
     };

@@ -450,3 +450,24 @@ async fn shinkai_tool_leiden() {
     println!("Execution time: {:?}", elapsed_time); // Print the elapsed time
     assert!(run_result.data["bestClustering"]["nClusters"].as_u64().unwrap() > 0);
 }
+
+#[tokio::test]
+async fn shinkai_tool_duckduckgo_search() {
+    let tool_definition = get_tool("shinkai-tool-duckduckgo-search").unwrap();
+    let mut tool = Tool::new();
+    let _ = tool
+        .load_from_code(&tool_definition.code.clone().unwrap(), "")
+        .await;
+    let run_result = tool
+        .run("{ \"message\": \"best movie of all time\" }", None)
+        .await
+        .unwrap();
+    let message = run_result.data["message"].as_str().unwrap();
+    let search_results: Vec<serde_json::Value> = serde_json::from_str(message).unwrap();
+
+    // assert!(search_results.is_array());
+    assert!(!search_results.is_empty());
+    assert!(search_results[0].get("title").is_some());
+    assert!(search_results[0].get("url").is_some());
+    assert!(search_results[0].get("description").is_some());
+}

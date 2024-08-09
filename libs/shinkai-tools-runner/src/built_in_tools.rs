@@ -97,16 +97,16 @@ lazy_static! {
             )),
         );
       // https://bugzilla.mozilla.org/show_bug.cgi?id=1681809
-      //   m.insert(
-      //     "shinkai-tool-token-price",
-      //     &*Box::leak(Box::new(
-      //         serde_json::from_str::<ToolDefinition>(include_str!(concat!(
-      //             env!("CARGO_MANIFEST_DIR"),
-      //             "/tools/shinkai-tool-token-price/definition.json"
-      //         )))
-      //         .unwrap(),
-      //     )),
-      // );
+        m.insert(
+          "shinkai-tool-token-price",
+          &*Box::leak(Box::new(
+              serde_json::from_str::<ToolDefinition>(include_str!(concat!(
+                  env!("CARGO_MANIFEST_DIR"),
+                  "/tools/shinkai-tool-token-price/definition.json"
+              )))
+              .unwrap(),
+          )),
+      );
       m.insert(
         "shinkai-tool-duckduckgo-search",
         &*Box::leak(Box::new(

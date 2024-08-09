@@ -1,3 +1,7 @@
+import { TextEncoder as NodeTextEncoder, TextDecoder as NodeTextDecoder } from 'util';
+global.TextEncoder = NodeTextEncoder as any;
+global.TextDecoder = NodeTextDecoder as any;
+
 import { Tool } from '../src/index';
 global.fetch = require('node-fetch');
 

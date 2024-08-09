@@ -1,5 +1,6 @@
 import { BaseTool, RunResult } from '@shinkai_protocol/shinkai-tools-builder';
 import { ToolDefinition } from 'libs/shinkai-tools-builder/src/tool-definition';
+import { URL } from 'whatwg-url';
 
 type Config = {};
 type Params = {
@@ -11,6 +12,13 @@ interface SearchResult {
   title: string;
   description: string;
   url: string;
+}
+
+// Custom function to build query string
+function buildQueryString(params: Record<string, string>): string {
+  return Object.keys(params)
+    .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
+    .join('&');
 }
 
 export class Tool extends BaseTool<Config, Params, Result> {
@@ -42,9 +50,13 @@ export class Tool extends BaseTool<Config, Params, Result> {
   };
 
   private static async getVQD(keywords: string): Promise<string> {
+    const body = buildQueryString({ q: keywords });
     const response = await fetch('https://duckduckgo.com', {
       method: 'POST',
-      body: new URLSearchParams({ q: keywords }),
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body,
     });
     const text = await response.text();
     // console.log('DuckDuckGo response HTML:', text);
@@ -91,8 +103,11 @@ export class Tool extends BaseTool<Config, Params, Result> {
   }
 
   private static async textSearch(keywords: string): Promise<any[]> {
+    console.log('textSearch: ', keywords);
     const vqd = await this.getVQD(keywords);
+    console.log('vqd: ', vqd);
     const url = new URL('https://links.duckduckgo.com/d.js');
+    console.log('before url.searchParams.append');
     url.searchParams.append('q', keywords);
     url.searchParams.append('vqd', vqd);
     url.searchParams.append('kl', 'wt-wt');
@@ -102,17 +117,22 @@ export class Tool extends BaseTool<Config, Params, Result> {
     url.searchParams.append('df', '');
     url.searchParams.append('ex', '-1');
 
+    console.log('before urlString');
+    const urlString = url.toString();
+    console.log('urlString: ', urlString);
+
     const response = await fetch(url.toString(), {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
       },
     });
+    console.log('response: ', response);
     const text = await response.text();
     console.log('DuckDuckGo search response:', text);
 
     // Parse the response using the custom parser
-    const results = Tool.parseDuckDuckGoResponse(text);
+    const results = this.parseDuckDuckGoResponse(text);
     if (results.length === 0) {
       throw new Error('Failed to extract search results');
     }
@@ -122,8 +142,11 @@ export class Tool extends BaseTool<Config, Params, Result> {
 
   async run(params: Params): Promise<RunResult<Result>> {
     console.log('run duckduckgo search from js', 4);
+    console.log('second message', 4);
+    console.log('params: ', params);
     try {
       const results = await Tool.textSearch(params.message);
+      console.log('results: ', results);
       return { data: { message: JSON.stringify(results) } };
     } catch (error) {
       let errorMessage = 'An unknown error occurred';

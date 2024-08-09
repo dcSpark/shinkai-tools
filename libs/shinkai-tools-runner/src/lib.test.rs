@@ -462,6 +462,7 @@ async fn shinkai_tool_duckduckgo_search() {
         .run("{ \"message\": \"best movie of all time\" }", None)
         .await
         .unwrap();
+      eprintln!("result: {:?}", run_result.data);
     let message = run_result.data["message"].as_str().unwrap();
     let search_results: Vec<serde_json::Value> = serde_json::from_str(message).unwrap();
 

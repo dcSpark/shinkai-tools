@@ -1,16 +1,6 @@
 import { BaseTool, RunResult } from '@shinkai_protocol/shinkai-tools-builder';
 import { ToolDefinition } from 'libs/shinkai-tools-builder/src/tool-definition';
 import { URL } from 'whatwg-url';
-import { TextEncoder as PolyfillTextEncoder, TextDecoder as PolyfillTextDecoder } from 'text-encoding'; // Import polyfill
-
-// Ensure TextEncoder and TextDecoder are available globally
-if (typeof globalThis.TextEncoder === 'undefined') {
-  globalThis.TextEncoder = TextEncoder;
-}
-if (typeof globalThis.TextDecoder === 'undefined') {
-  globalThis.TextDecoder = TextDecoder;
-}
-
 
 type Config = {};
 type Params = {

@@ -3,26 +3,17 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "apps/shinkai-tool-web3-eth-uniswap/src",
   "projectType": "library",
-  "tags": [
-    "tool"
-  ],
+  "tags": ["tool"],
   "targets": {
     "build": {
-      "executor": "@nx/webpack:webpack",
-      "outputs": ["{options.outputPath}"],
+      "executor": "nx:run-commands",
       "defaultConfiguration": "production",
       "options": {
-        "compiler": "tsc",
-        "outputPath": "dist/apps/shinkai-tool-web3-eth-uniswap",
-        "main": "apps/shinkai-tool-web3-eth-uniswap/src/index.ts",
-        "tsConfig": "apps/shinkai-tool-web3-eth-uniswap/tsconfig.app.json",
-        "webpackConfig": "apps/shinkai-tool-web3-eth-uniswap/webpack.config.ts"
+        "command": "npx ts-node scripts/tool-bundler.ts --entry ./apps/shinkai-tool-web3-eth-uniswap/src/index.ts --outputFolder ./dist/apps/shinkai-tool-web3-eth-uniswap"
       },
       "configurations": {
-        "development": {
-        },
-        "production": {
-        }
+        "development": {},
+        "production": {}
       }
     },
     "lint": {

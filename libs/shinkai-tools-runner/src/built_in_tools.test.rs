@@ -1,14 +1,17 @@
+use serde_json::Value;
+
 use crate::built_in_tools::{get_tool, get_tools};
 
 #[tokio::test]
 async fn get_tools_all_load() {
     let tools = get_tools();
     for (tool_name, tool_definition) in tools {
-        let mut tool_instance = crate::tools::tool::Tool::new();
-        let load_result = tool_instance
-            .load_from_code(&tool_definition.code.unwrap(), "")
+        let mut tool_instance = crate::tools::tool::Tool::new(tool_definition.code.unwrap(), Value::Null);
+        let defintion = tool_instance
+            .get_definition()
             .await;
-        assert!(load_result.is_ok(), "Tool {} failed to load", tool_name);
+        assert_eq!(defintion.as_ref().unwrap().id, tool_name);
+        assert!(defintion.is_ok(), "Tool {} failed to load", tool_name);
     }
 }
 

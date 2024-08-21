@@ -17,12 +17,6 @@ reqwest = { version = "0.11.26", features = ["blocking"] }
 hex-simd = "0.8.0"
 base64-simd = "0.8.0"
 phf = { version = "0.11.2", features = ["macros"] }
-rquickjs = { version = "0.6.2", features = [
-  "full-async",
-  "futures",
-  "macro",
-  "array-buffer",
-] }
 serde = { version = "1.0.188", features = ["derive"] }
 serde_json = "1.0.117"
 tokio = { version = "1.36.0", features = ["full"] }
@@ -30,6 +24,11 @@ lazy_static = "1.5.0"
 tokio-util = "0.7.11"
 derive_more = "0.99.18"
 derivative = "2.2.0"
+dispose = "0.5.0"
+
+[build-dependencies]
+copy_to_output = "2.2.0"
+glob = "0.3"
 
 [features]
 built-in-tools = []

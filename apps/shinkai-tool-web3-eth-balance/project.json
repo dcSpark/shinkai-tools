@@ -8,21 +8,14 @@
   ],
   "targets": {
     "build": {
-      "executor": "@nx/webpack:webpack",
-      "outputs": ["{options.outputPath}"],
+      "executor": "nx:run-commands",
       "defaultConfiguration": "production",
       "options": {
-        "compiler": "tsc",
-        "outputPath": "dist/apps/shinkai-tool-web3-eth-balance",
-        "main": "apps/shinkai-tool-web3-eth-balance/src/index.ts",
-        "tsConfig": "apps/shinkai-tool-web3-eth-balance/tsconfig.app.json",
-        "webpackConfig": "apps/shinkai-tool-web3-eth-balance/webpack.config.ts"
+        "command": "npx ts-node scripts/tool-bundler.ts --entry ./apps/shinkai-tool-web3-eth-balance/src/index.ts --outputFolder ./dist/apps/shinkai-tool-web3-eth-balance"
       },
       "configurations": {
-        "development": {
-        },
-        "production": {
-        }
+        "development": {},
+        "production": {}
       }
     },
     "lint": {

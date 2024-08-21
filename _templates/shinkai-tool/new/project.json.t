@@ -9,15 +9,10 @@ to: apps/shinkai-tool-<%= name %>/project.json
   "tags": ["tool"],
   "targets": {
     "build": {
-      "executor": "@nx/webpack:webpack",
-      "outputs": ["{options.outputPath}"],
+      "executor": "nx:run-commands",
       "defaultConfiguration": "production",
       "options": {
-        "compiler": "tsc",
-        "outputPath": "dist/apps/shinkai-tool-<%= name %>",
-        "main": "apps/shinkai-tool-<%= name %>/src/index.ts",
-        "tsConfig": "apps/shinkai-tool-<%= name %>/tsconfig.app.json",
-        "webpackConfig": "apps/shinkai-tool-<%= name %>/webpack.config.ts"
+        "command": "npx ts-node scripts/tool-bundler.ts --entry ./apps/shinkai-tool-<%= name %>/src/index.ts --outputFolder ./dist/apps/shinkai-tool-<%= name %>"
       },
       "configurations": {
         "development": {},

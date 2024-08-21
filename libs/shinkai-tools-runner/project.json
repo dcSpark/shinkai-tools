@@ -5,25 +5,20 @@
   "projectType": "library",
   "tags": [],
   "targets": {
-    "build-tools": {
-      "executor": "nx:run-commands",
-      "outputs": ["{options.outputPath}"],
-      "options": {
-        "parallel": false,
-        "commands": [
-          "nx run-many -t build --projects=tag:tool",
-          "npx copyfiles --up 2 --verbose dist/apps/shinkai-tool-*/definition.json libs/shinkai-tools-runner/tools"
-        ]
-      }
-    },
     "build": {
-      "dependsOn": ["build-tools"],
+      "dependsOn": [
+        { "projects": ["tag:tool", "@shinkai_protocol/shinkai-tools-backend"], "target": "build" }
+      ],
       "executor": "nx:run-commands",
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
         "cwd": "libs/shinkai-tools-runner",
-        "command": "cargo build"
+        "commands": [
+          "npx copyfiles --up 2 --verbose dist/apps/shinkai-tool-*/definition.json libs/shinkai-tools-runner/tools",
+          "npx copyfiles --up 3 --verbose dist/apps/shinkai-tools-backend/shinkai-tools-backend* libs/shinkai-tools-runner/shinka-tools-runner-resources/",
+          "cargo build"
+        ]
       },
       "configurations": {
         "development": {},
@@ -33,7 +28,9 @@
       }
     },
     "test": {
-      "dependsOn": ["build-tools"],
+      "dependsOn": [
+        "^build"
+      ],
       "executor": "nx:run-commands",
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "development",
@@ -49,6 +46,9 @@
       }
     },
     "lint": {
+      "dependsOn": [
+        { "projects": ["tag:tool", "@shinkai_protocol/shinkai-tools-backend"], "target": "build" }
+      ],
       "executor": "nx:run-commands",
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
@@ -62,7 +62,9 @@
       }
     },
     "publish": {
-      "dependsOn": ["build-tools"],
+      "dependsOn": [
+        "^build"
+      ],
       "executor": "nx:run-commands",
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",

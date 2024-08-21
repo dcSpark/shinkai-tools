@@ -6,15 +6,10 @@
   "tags": ["tool"],
   "targets": {
     "build": {
-      "executor": "@nx/webpack:webpack",
-      "outputs": ["{options.outputPath}"],
+      "executor": "nx:run-commands",
       "defaultConfiguration": "production",
       "options": {
-        "compiler": "tsc",
-        "outputPath": "dist/apps/shinkai-tool-math-exp",
-        "main": "apps/shinkai-tool-math-exp/src/index.ts",
-        "tsConfig": "apps/shinkai-tool-math-exp/tsconfig.app.json",
-        "webpackConfig": "apps/shinkai-tool-math-exp/webpack.config.ts"
+        "command": "npx ts-node scripts/tool-bundler.ts --entry ./apps/shinkai-tool-math-exp/src/index.ts --outputFolder ./dist/apps/shinkai-tool-math-exp"
       },
       "configurations": {
         "development": {},

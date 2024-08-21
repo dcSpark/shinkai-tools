@@ -47,12 +47,12 @@ type Result = {
 
 export class Tool extends BaseTool<Config, Params, Result> {
   definition: ToolDefinition<Config, Params, Result> = {
-    id: 'shinkai-tool-etherscan-tokens',
-    name: 'Shinkai: Etherscan Tokens',
+    id: 'shinkai-tool-ethplorer-tokens',
+    name: 'Shinkai: Ethplorer Tokens',
     description:
-      'Fetches Etherscan page for an address and returns detailed token information',
+      'Fetches Ethplorer page for an address and returns detailed token information',
     author: 'Shinkai',
-    keywords: ['etherscan', 'address', 'tokens', 'shinkai'],
+    keywords: ['ethplorer', 'address', 'tokens', 'shinkai'],
     configurations: {
       type: 'object',
       properties: {},
@@ -98,7 +98,7 @@ export class Tool extends BaseTool<Config, Params, Result> {
   async run(params: Params): Promise<RunResult<Result>> {
     const url = `https://api.ethplorer.io/getAddressInfo/${params.address}?apiKey=freekey`;
     const response = await fetch(url);
-    const data = await response.json() as {
+    const data = (await response.json()) as {
       address: string;
       ETH?: {
         balance: number;

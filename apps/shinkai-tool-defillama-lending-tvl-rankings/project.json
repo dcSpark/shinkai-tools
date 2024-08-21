@@ -1,0 +1,30 @@
+{
+  "name": "@shinkai_protocol/shinkai-tool-defillama-lending-tvl-rankings",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/shinkai-tool-defillama-lending-tvl-rankings/src",
+  "projectType": "library",
+  "tags": ["tool"],
+  "targets": {
+    "build": {
+      "executor": "nx:run-commands",
+      "defaultConfiguration": "production",
+      "options": {
+        "command": "npx ts-node scripts/tool-bundler.ts --entry ./apps/shinkai-tool-defillama-lending-tvl-rankings/src/index.ts --outputFolder ./dist/apps/shinkai-tool-defillama-lending-tvl-rankings"
+      },
+      "configurations": {
+        "development": {},
+        "production": {}
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "apps/shinkai-tool-defillama-lending-tvl-rankings/**/*.ts",
+          "apps/shinkai-tool-defillama-lending-tvl-rankings/package.json"
+        ]
+      }
+    }
+  }
+}

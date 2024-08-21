@@ -1,6 +1,7 @@
 import { BaseTool, RunResult } from '@shinkai_protocol/shinkai-tools-builder';
 import { ToolDefinition } from 'libs/shinkai-tools-builder/src/tool-definition';
 import TurndownService from 'turndown';
+import axios from 'axios';
 
 type Config = {};
 type Params = {
@@ -39,8 +40,9 @@ export class Tool extends BaseTool<Config, Params, Result> {
   };
 
   async run(params: Params): Promise<RunResult<Result>> {
-    const response = await fetch(params.url);
-    const html = await response.text();
+    await process.nextTick(() => { });
+    const response = await axios.get(params.url);
+    const html = response.data;
     const turndownService = new TurndownService();
     const markdown = turndownService.turndown(html);
     return Promise.resolve({ data: { markdown } });

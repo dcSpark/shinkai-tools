@@ -22,7 +22,7 @@ impl ShinkaiToolsBackend {
         }
 
         // Spawn the child process using native spawn
-        let child_process = Command::new("./shinka-tools-runner-resources/shinkai-tools-backend").spawn().map_err(|e| {
+        let child_process = Command::new("./shinkai-tools-runner-resources/shinkai-tools-backend").spawn().map_err(|e| {
             println!("Error spawning child process: {}", e);
             e
         })?;

@@ -11,4 +11,4 @@ target
 .nx/cache
 .nx/workspace-data
 libs/shinkai-tools-runner/tools
-libs/shinkai-tools-runner/shinka-tools-runner-resources
+libs/shinkai-tools-runner/shinkai-tools-runner-resources

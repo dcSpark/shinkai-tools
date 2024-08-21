@@ -3,6 +3,7 @@ import {
   RunResult,
   ToolDefinition,
 } from '@shinkai_protocol/shinkai-tools-builder';
+import axios from 'axios';
 
 type Config = {
   apiKey: string;
@@ -44,15 +45,17 @@ export class Tool extends BaseTool<Config, Params, Result> {
   };
 
   async run(params: Params): Promise<RunResult<Result>> {
-    // response type is still an small subset of fetch Response type
-    const response = await fetch(
-      `http://api.openweathermap.org/data/2.5/weather?q=${params.city}&appid=${this.config.apiKey}`,
-      {},
-    );
-    if (!response.ok) {
-      throw new Error(`Failed to fetch weather data, status: ${response.status}`);
+    try {
+      await process.nextTick(() => { });
+      const response = await axios.get(
+        `http://api.openweathermap.org/data/2.5/weather?q=${params.city}&appid=${this.config.apiKey}`
+      );
+      return { data: { weather: JSON.stringify(response.data) } };
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        throw new Error(`Failed to fetch weather data, status: ${error.response?.status}`);
+      }
+      throw error;
     }
-    const data = await response.json();
-    return { data: { weather: `${JSON.stringify(data)}` } };
   }
 }

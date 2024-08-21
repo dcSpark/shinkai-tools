@@ -7,7 +7,10 @@
   "targets": {
     "build": {
       "dependsOn": [
-        { "projects": ["tag:tool", "@shinkai_protocol/shinkai-tools-backend"], "target": "build" }
+        {
+          "projects": ["tag:tool", "@shinkai_protocol/shinkai-tools-backend"],
+          "target": "build"
+        }
       ],
       "executor": "nx:run-commands",
       "outputs": ["{options.outputPath}"],
@@ -15,10 +18,11 @@
       "options": {
         "cwd": "libs/shinkai-tools-runner",
         "commands": [
-          "npx copyfiles --up 2 --verbose dist/apps/shinkai-tool-*/definition.json libs/shinkai-tools-runner/tools",
-          "npx copyfiles --up 3 --verbose dist/apps/shinkai-tools-backend/shinkai-tools-backend* libs/shinkai-tools-runner/shinka-tools-runner-resources/",
+          "npx copyfiles --up 4 --verbose ./../../dist/apps/shinkai-tool-*/definition.json ./tools/",
+          "npx copyfiles --up 5 --verbose ./../../dist/apps/shinkai-tools-backend/shinkai-tools-backend* ./shinkai-tools-runner-resources/",
           "cargo build"
-        ]
+        ],
+        "parallel": false
       },
       "configurations": {
         "development": {},
@@ -28,9 +32,7 @@
       }
     },
     "test": {
-      "dependsOn": [
-        "^build"
-      ],
+      "dependsOn": ["build"],
       "executor": "nx:run-commands",
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "development",
@@ -46,9 +48,7 @@
       }
     },
     "lint": {
-      "dependsOn": [
-        { "projects": ["tag:tool", "@shinkai_protocol/shinkai-tools-backend"], "target": "build" }
-      ],
+      "dependsOn": ["build"],
       "executor": "nx:run-commands",
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
@@ -62,9 +62,7 @@
       }
     },
     "publish": {
-      "dependsOn": [
-        "^build"
-      ],
+      "dependsOn": ["build"],
       "executor": "nx:run-commands",
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",

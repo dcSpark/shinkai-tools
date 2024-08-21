@@ -1,5 +1,6 @@
 import { BaseTool, RunResult } from '@shinkai_protocol/shinkai-tools-builder';
 import { ToolDefinition } from 'libs/shinkai-tools-builder/src/tool-definition';
+import axios from 'axios';
 
 type Config = {};
 type Params = {
@@ -97,8 +98,9 @@ export class Tool extends BaseTool<Config, Params, Result> {
 
   async run(params: Params): Promise<RunResult<Result>> {
     const url = `https://api.ethplorer.io/getAddressInfo/${params.address}?apiKey=freekey`;
-    const response = await fetch(url);
-    const data = (await response.json()) as {
+    await process.nextTick(() => { });
+    const response = await axios.get(url);
+    const data = response.data as {
       address: string;
       ETH?: {
         balance: number;

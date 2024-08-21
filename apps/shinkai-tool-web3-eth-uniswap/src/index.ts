@@ -5,6 +5,7 @@ import {
   RunResult,
   ToolDefinition,
 } from '@shinkai_protocol/shinkai-tools-builder';
+import axios from 'axios';
 
 type Config = {};
 
@@ -45,30 +46,30 @@ export class Tool extends BaseTool<Config, Params, Result> {
   async run(params: Params): Promise<RunResult<Result>> {
     const provider = new ArchiveNodeProvider({
       call: async (method: string, ...args: any[]) => {
-        const response = await fetch('https://eth.llamarpc.com', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
+        try {
+          await process.nextTick(() => { });
+          const response = await axios.post('https://eth.llamarpc.com', {
             jsonrpc: '2.0',
             id: 1,
             method,
             params: args,
-          }),
-        });
+          }, {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
 
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+          if (response.data.error) {
+            throw new Error(response.data.error.message);
+          }
+
+          return response.data.result;
+        } catch (error) {
+          if (axios.isAxiosError(error)) {
+            throw new Error(`HTTP error! status: ${error.response?.status}`);
+          }
+          throw error;
         }
-
-        type Response = { error: any; result: any };
-        const data = (await response.json()) as Response;
-        if (data.error) {
-          throw new Error(data.error.message);
-        }
-
-        return data.result;
       },
     });
     console.log('Provider created');

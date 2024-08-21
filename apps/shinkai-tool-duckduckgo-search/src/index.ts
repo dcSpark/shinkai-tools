@@ -4,6 +4,7 @@ import {
   ToolDefinition,
 } from '@shinkai_protocol/shinkai-tools-builder';
 import { URL } from 'whatwg-url';
+import axios from 'axios';
 
 type Config = {};
 type Params = {
@@ -56,14 +57,13 @@ export class Tool extends BaseTool<Config, Params, Result> {
 
   private static async getVQD(keywords: string): Promise<string> {
     const body = buildQueryString({ q: keywords });
-    const response = await fetch('https://duckduckgo.com', {
-      method: 'POST',
+    await process.nextTick(() => { });
+    const response = await axios.post('https://duckduckgo.com', body, {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
-      body,
     });
-    const text = await response.text();
+    const text = response.data;
     // console.log('DuckDuckGo response HTML:', text);
 
     // Extract vqd token using a regular expression
@@ -128,14 +128,14 @@ export class Tool extends BaseTool<Config, Params, Result> {
     const urlString = url.toString();
     console.log('urlString: ', urlString);
 
-    const response = await fetch(url.toString(), {
-      method: 'GET',
+    await process.nextTick(() => { });
+    const response = await axios.get(url.toString(), {
       headers: {
         'Content-Type': 'application/json',
       },
     });
     console.log('response: ', response);
-    const text = await response.text();
+    const text = response.data;
     console.log('DuckDuckGo search response:', text);
 
     // Parse the response using the custom parser

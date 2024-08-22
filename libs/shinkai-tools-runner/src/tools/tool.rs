@@ -37,7 +37,7 @@ impl Tool {
     }
 
     async fn internal_get_definition(&self) -> Result<ToolDefinition, ExecutionError> {
-        println!("Preparing to get tool definition for code: {}", self.code);
+        println!("Preparing to get tool definition for code");
 
         let body = serde_json::json!({
             "code": self.code,

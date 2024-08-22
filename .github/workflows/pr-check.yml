@@ -12,6 +12,7 @@ jobs:
   check:
     runs-on: ubuntu-22.04
     environment: development
+    timeout-minutes: 7
     steps:
       - name: Check out repository
         uses: actions/checkout@v4

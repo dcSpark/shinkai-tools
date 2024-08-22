@@ -137,6 +137,66 @@ lazy_static! {
                 .unwrap(),
             )),
         );
+        m.insert(
+          "shinkai-tool-aave-loan-requester",
+          &*Box::leak(Box::new(
+              serde_json::from_str::<ToolDefinition>(include_str!(concat!(
+                  env!("CARGO_MANIFEST_DIR"),
+                  "/tools/shinkai-tool-aave-loan-requester/definition.json"
+              )))
+              .unwrap(),
+          )),
+      );
+      m.insert(
+        "shinkai-tool-coinbase-call-faucet",
+        &*Box::leak(Box::new(
+            serde_json::from_str::<ToolDefinition>(include_str!(concat!(
+                env!("CARGO_MANIFEST_DIR"),
+                "/tools/shinkai-tool-coinbase-call-faucet/definition.json"
+            )))
+            .unwrap(),
+        )),
+    );
+    m.insert(
+      "shinkai-tool-coinbase-create-wallet",
+      &*Box::leak(Box::new(
+          serde_json::from_str::<ToolDefinition>(include_str!(concat!(
+              env!("CARGO_MANIFEST_DIR"),
+              "/tools/shinkai-tool-coinbase-create-wallet/definition.json"
+          )))
+          .unwrap(),
+      )),
+  );
+  m.insert(
+    "shinkai-tool-coinbase-get-balance",
+    &*Box::leak(Box::new(
+        serde_json::from_str::<ToolDefinition>(include_str!(concat!(
+            env!("CARGO_MANIFEST_DIR"),
+            "/tools/shinkai-tool-coinbase-get-balance/definition.json"
+        )))
+        .unwrap(),
+    )),
+);
+m.insert(
+  "shinkai-tool-coinbase-send-tx",
+  &*Box::leak(Box::new(
+      serde_json::from_str::<ToolDefinition>(include_str!(concat!(
+          env!("CARGO_MANIFEST_DIR"),
+          "/tools/shinkai-tool-coinbase-send-tx/definition.json"
+      )))
+      .unwrap(),
+  )),
+);
+m.insert(
+  "shinkai-tool-coinbase-get-transactions",
+  &*Box::leak(Box::new(
+      serde_json::from_str::<ToolDefinition>(include_str!(concat!(
+          env!("CARGO_MANIFEST_DIR"),
+          "/tools/shinkai-tool-coinbase-get-transactions/definition.json"
+      )))
+      .unwrap(),
+  )),
+);
         // ntim: New tools will be inserted here, don't remove this comment
         m
     };

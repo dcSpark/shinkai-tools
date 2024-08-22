@@ -31,7 +31,8 @@ export class Tool extends BaseTool<Config, Params, Result> {
   definition: ToolDefinition<Config, Params, Result> = {
     id: 'shinkai-tool-duckduckgo-search',
     name: 'Shinkai: DuckDuckGo Search',
-    description: 'Searches the DuckDuckGo search engine',
+    description:
+      'Searches the DuckDuckGo search engine. Example result: [{"title": "IMDb Top 250 Movies", "description": "Find out which <b>movies</b> are rated as the <b>best</b> <b>of</b> <b>all</b> <b>time</b> by IMDb users. See the list of 250 titles sorted by ranking, genre, year, and rating, and learn how the list is determined.", "url": "https://www.imdb.com/chart/top/"}]',
     author: 'Shinkai',
     keywords: ['duckduckgo', 'search', 'shinkai'],
     configurations: {

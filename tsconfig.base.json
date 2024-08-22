@@ -20,6 +20,9 @@
       ],
       "@shinkai_protocol/shinkai-tools-bundler": [
         "libs/shinkai-tools-bundler/src/index.ts"
+      ],
+      "@shinkai_protocol/shinkai-viem": [
+        "libs/shinkai-viem/src/index.ts"
       ]
     }
   },

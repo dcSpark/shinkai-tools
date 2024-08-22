@@ -1,0 +1,38 @@
+{
+  "name": "@shinkai_protocol/shinkai-tool-aave-loan-requester",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/shinkai-tool-aave-loan-requester/src",
+  "projectType": "library",
+  "tags": ["tool"],
+  "targets": {
+    "build": {
+      "dependsOn": [
+        { "projects": "@shinkai_protocol/shinkai-viem", "target": "build" }
+      ],
+      "executor": "nx:run-commands",
+      "defaultConfiguration": "production",
+      "options": {
+        "commands": [
+          "npx ts-node apps/shinkai-tool-aave-loan-requester/generate-shinkai-viem-export.ts",
+          "npx ts-node scripts/tool-bundler.ts --entry ./apps/shinkai-tool-aave-loan-requester/src/index.ts --outputFolder ./dist/apps/shinkai-tool-aave-loan-requester"
+        ],
+        "parallel": false
+      },
+      "configurations": {
+        "development": {},
+        "production": {}
+      }
+    },
+    "lint": {
+      "dependsOn": ["build"],
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "apps/shinkai-tool-aave-loan-requester/**/*.ts",
+          "apps/shinkai-tool-aave-loan-requester/package.json"
+        ]
+      }
+    }
+  }
+}

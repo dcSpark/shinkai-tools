@@ -1,0 +1,39 @@
+{
+  "name": "@shinkai_protocol/shinkai-tool-aave-state",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/shinkai-tool-aave-state/src",
+  "projectType": "library",
+  "tags": ["tool"],
+  "targets": {
+    "build": {
+      "dependsOn": [
+        { "projects": "@shinkai_protocol/shinkai-viem", "target": "build" }
+      ],
+      "executor": "nx:run-commands",
+      "defaultConfiguration": "production",
+      "options": {
+        "commands": [
+          "npx copyfiles --up 3 --verbose dist/libs/shinkai-viem/* apps/shinkai-tool-aave-state/src/bundled-resources/",
+          "npx ts-node scripts/tool-bundler.ts --entry ./apps/shinkai-tool-aave-state/src/index.ts --outputFolder ./dist/apps/shinkai-tool-aave-state"
+        ]
+      },
+      "configurations": {
+        "development": {},
+        "production": {}
+      }
+    },
+    "lint": {
+      "dependsOn": [
+        { "projects": "@shinkai_protocol/shinkai-viem", "target": "build" }
+      ],
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "apps/shinkai-tool-aave-state/**/*.ts",
+          "apps/shinkai-tool-aave-state/package.json"
+        ]
+      }
+    }
+  }
+}

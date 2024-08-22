@@ -10,18 +10,17 @@ fn main() {
     let target_path =
         Path::new(&env::var("OUT_DIR").unwrap()).join("shinkai-tools-runner-resources");
 
+    let shinkai_tools_backend_binary_name = if cfg!(target_os = "windows") {
+        "shinkai-tools-backend.exe"
+    } else {
+        "shinkai-tools-backend"
+    };
+    let source = resources_path.join(shinkai_tools_backend_binary_name);
+    let backend_path = target_path.join("shinkai-tools-backend");
     if resources_path.exists() {
         fs::create_dir_all(&target_path).unwrap();
-        for entry in fs::read_dir(resources_path).unwrap() {
-            let entry = entry.unwrap();
-            let file_name = entry.file_name();
-            let source = entry.path();
-            let destination = target_path.join(file_name);
-            fs::copy(source, destination).unwrap();
-        }
+        fs::copy(source, backend_path.clone()).unwrap();
     }
-
-    let backend_path = target_path.join("shinkai-tools-backend");
 
     if !cfg!(target_os = "windows") {
         let output = std::process::Command::new("chmod")

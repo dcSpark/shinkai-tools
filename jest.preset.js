@@ -4,4 +4,5 @@ module.exports = {
   ...nxPreset,
   testEnvironment: 'node',
   detectOpenHandles: true,
+  forceExit: true,
 };

@@ -1,0 +1,30 @@
+{
+  "name": "@shinkai_protocol/shinkai-viem",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shinkai-viem/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "nx:run-commands",
+      "defaultConfiguration": "production",
+      "options": {
+        "command": "esbuild libs/shinkai-viem/src/index.ts --bundle --outfile=dist/libs/shinkai-viem/shinkai-viem.js"
+      },
+      "configurations": {
+        "development": {},
+        "production": {}
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "libs/shinkai-viem/**/*.ts",
+          "libs/shinkai-viem/package.json"
+        ]
+      }
+    }
+  }
+}

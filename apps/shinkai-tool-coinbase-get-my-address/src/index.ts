@@ -17,12 +17,11 @@ type Result = {
 
 export class Tool extends BaseTool<Config, Params, Result> {
   definition: ToolDefinition<Config, Params, Result> = {
-    id: 'shinkai-tool-coinbase-get-balance',
-    name: 'Shinkai: Coinbase Balance Getter',
-    description:
-      'Tool for getting the balance of a Coinbase wallet after restoring it',
+    id: 'shinkai-tool-coinbase-get-my-address',
+    name: 'Shinkai: Coinbase My Address Getter',
+    description: 'Tool for getting the default address of a Coinbase wallet',
     author: 'Shinkai',
-    keywords: ['coinbase', 'balance', 'shinkai'],
+    keywords: ['coinbase', 'address', 'shinkai'],
     configurations: {
       type: 'object',
       properties: {
@@ -70,12 +69,12 @@ export class Tool extends BaseTool<Config, Params, Result> {
     console.log(`Wallet retrieved: `, wallet.toString());
 
     // Retrieve the list of balances for the wallet
-    let balances = await wallet.listBalances();
-    console.log(`Balances: `, balances);
+    let address = await wallet.getDefaultAddress();
+    console.log(`Default Address: `, address);
 
     return {
       data: {
-        data: `Balances: ${balances.toString()}`,
+        data: `Default Address: ${address?.getId()}`,
       },
     };
   }

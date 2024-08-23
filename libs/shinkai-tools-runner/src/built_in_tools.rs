@@ -197,6 +197,16 @@ m.insert(
       .unwrap(),
   )),
 );
+m.insert(
+  "shinkai-tool-coinbase-get-my-address",
+  &*Box::leak(Box::new(
+      serde_json::from_str::<ToolDefinition>(include_str!(concat!(
+          env!("CARGO_MANIFEST_DIR"),
+          "/tools/shinkai-tool-coinbase-get-my-address/definition.json"
+      )))
+      .unwrap(),
+  )),
+);
         // ntim: New tools will be inserted here, don't remove this comment
         m
     };

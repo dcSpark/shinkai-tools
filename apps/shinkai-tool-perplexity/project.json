@@ -1,7 +1,7 @@
 {
-  "name": "@shinkai_protocol/shinkai-tool-perplexity-api",
+  "name": "@shinkai_protocol/shinkai-tool-perplexity",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/shinkai-tool-perplexity-api/src",
+  "sourceRoot": "apps/shinkai-tool-perplexity/src",
   "projectType": "library",
   "tags": ["tool"],
   "targets": {
@@ -9,7 +9,7 @@
       "executor": "nx:run-commands",
       "defaultConfiguration": "production",
       "options": {
-        "command": "npx ts-node scripts/tool-bundler.ts --entry ./apps/shinkai-tool-perplexity-api/src/index.ts --outputFolder ./dist/apps/shinkai-tool-perplexity-api"
+        "command": "npx ts-node scripts/tool-bundler.ts --entry ./apps/shinkai-tool-perplexity/src/index.ts --outputFolder ./dist/apps/shinkai-tool-perplexity"
       },
       "configurations": {
         "development": {},
@@ -21,8 +21,8 @@
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": [
-          "apps/shinkai-tool-perplexity-api/**/*.ts",
-          "apps/shinkai-tool-perplexity-api/package.json"
+          "apps/shinkai-tool-perplexity/**/*.ts",
+          "apps/shinkai-tool-perplexity/package.json"
         ]
       }
     }

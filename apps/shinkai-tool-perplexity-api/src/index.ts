@@ -1,8 +1,7 @@
-import {
-  BaseTool,
-  RunResult,
-  ToolDefinition,
-} from '@shinkai_protocol/shinkai-tools-builder';
+import { BaseTool, RunResult } from '@shinkai_protocol/shinkai-tools-builder';
+import { ToolDefinition } from 'libs/shinkai-tools-builder/src/tool-definition';
+import TurndownService from 'turndown';
+import axios from 'axios';
 
 type Config = {
   apiKey: string;
@@ -10,6 +9,7 @@ type Config = {
 type Params = {
   query: string;
 };
+
 type Result = {
   response: string;
 };
@@ -25,8 +25,10 @@ interface PerplexityResponse {
 export class Tool extends BaseTool<Config, Params, Result> {
   definition: ToolDefinition<Config, Params, Result> = {
     id: 'shinkai-tool-perplexity-api',
-    name: 'Shinkai: Perplexity API Web Search',
-    description: 'Search the web using Perplexity API',
+    name: 'Shinkai: Perplexity API',
+    description: 'Searches the web using Perplexity API (limited)',
+    author: 'Shinkai',
+    keywords: ['perplexity', 'api', 'shinkai'],
     configurations: {
       type: 'object',
       properties: {
@@ -48,8 +50,6 @@ export class Tool extends BaseTool<Config, Params, Result> {
       },
       required: ['response'],
     },
-    author: '',
-    keywords: [],
   };
 
   async run(params: Params): Promise<RunResult<Result>> {

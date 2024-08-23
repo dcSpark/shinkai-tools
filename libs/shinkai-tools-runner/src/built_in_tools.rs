@@ -207,6 +207,16 @@ m.insert(
       .unwrap(),
   )),
 );
+m.insert(
+  "shinkai-tool-perplexity",
+  &*Box::leak(Box::new(
+      serde_json::from_str::<ToolDefinition>(include_str!(concat!(
+          env!("CARGO_MANIFEST_DIR"),
+          "/tools/shinkai-tool-perplexity/definition.json"
+      )))
+      .unwrap(),
+  )),
+);
         m.insert(
           "shinkai-tool-perplexity-api",
           &*Box::leak(Box::new(

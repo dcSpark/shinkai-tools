@@ -5,12 +5,10 @@ import { Coinbase, CoinbaseOptions } from '@coinbase/coinbase-sdk';
 type Config = {
   name: string;
   privateKey: string;
-  walletId?: string;
+  walletId: string;
   useServerSigner?: string;
 };
-type Params = {
-  walletId?: string;
-};
+type Params = {};
 type Result = {
   data: string;
 };
@@ -28,16 +26,14 @@ export class Tool extends BaseTool<Config, Params, Result> {
       properties: {
         name: { type: 'string' },
         privateKey: { type: 'string' },
-        walletId: { type: 'string', nullable: true },
+        walletId: { type: 'string' },
         useServerSigner: { type: 'string', nullable: true },
       },
       required: ['name', 'privateKey'],
     },
     parameters: {
       type: 'object',
-      properties: {
-        walletId: { type: 'string', nullable: true },
-      },
+      properties: {},
       required: [],
     },
     result: {
@@ -59,7 +55,7 @@ export class Tool extends BaseTool<Config, Params, Result> {
     const user = await coinbase.getDefaultUser();
 
     // Prioritize walletId from Params over Config
-    const walletId = params.walletId || this.config.walletId;
+    const walletId = this.config.walletId;
 
     // Throw an error if walletId is not defined
     if (!walletId) {

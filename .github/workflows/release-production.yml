@@ -84,7 +84,7 @@ jobs:
           aws_key_id: ${{ secrets.R2_ACCESS_KEY_ID }}
           aws_secret_access_key: ${{ secrets.R2_SECRET_ACCESS_KEY }}
           aws_bucket: shinkai-download
-          source_dir: ./files-to-r2/${{ needs.prebuild.outputs.version }}.zip
+          source_dir: ./files-to-r2/
           destination_dir: ./shinkai-tools-backend/binaries/production/${{ matrix.arch }}/
 
   publish-libraries:

@@ -72,7 +72,12 @@ jobs:
         run: |
           mkdir files-to-r2 && mkdir files-to-r2/${{ needs.prebuild.outputs.version }}
           cp ./dist/apps/shinkai-tools-backend/${{ env.BINARY_NAME }} files-to-r2/${{ needs.prebuild.outputs.version }}/${{ env.BINARY_NAME }}
-          
+
+      - name: Compress files
+        run: |
+          7z a -tzip files-to-r2/${{ needs.prebuild.outputs.version }}.zip files-to-r2/${{ needs.prebuild.outputs.version }}
+          rm -rf files-to-r2/${{ needs.prebuild.outputs.version }}
+
       - name: Upload updates.json to R2
         uses: shallwefootball/s3-upload-action@master
         with:

@@ -64,11 +64,11 @@ jobs:
           npm ci --no-audit --prefer-offline
 
       - name: Run NX build
-        run: npx nx build @shinkai_protocol/shinkai-tools-runner --skip-nx-cache --verbose
+        run: npx nx build @shinkai_protocol/shinkai-tools-backend --skip-nx-cache --verbose
 
       - name: Prepare folder to upload
         env:
-          BINARY_NAME: shinkai-tools-runner${{ matrix.os == 'windows-2022' && '.exe' || '' }}
+          BINARY_NAME: shinkai-tools-backend${{ matrix.os == 'windows-2022' && '.exe' || '' }}
         run: |
           mkdir files-to-r2 && mkdir files-to-r2/${{ needs.prebuild.outputs.version }}
           cp ./dist/apps/shinkai-tools-backend/${{ env.BINARY_NAME }} files-to-r2/${{ needs.prebuild.outputs.version }}/${{ env.BINARY_NAME }}

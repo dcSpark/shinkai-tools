@@ -64,7 +64,7 @@ jobs:
           npm ci --no-audit --prefer-offline
 
       - name: Run NX build
-        run: npx nx build shinkai-tools-runner --skip-nx-cache --verbose
+        run: npx nx build @shinkai_protocol/shinkai-tools-runner --skip-nx-cache --verbose
 
       - name: Prepare folder to upload
         env:

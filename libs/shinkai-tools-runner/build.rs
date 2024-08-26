@@ -1,5 +1,4 @@
 use std::env;
-use std::fmt::format;
 use std::fs;
 use std::io::Write;
 use std::path::Path;

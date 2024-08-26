@@ -68,7 +68,7 @@ jobs:
 
       - name: Prepare folder to upload
         env:
-          BINARY_NAME: shinkai-tools-backend${{ matrix.os == 'windows-2022' && '.exe' || '' }}
+          BINARY_NAME: shinkai-tools-backend${{ matrix.arch == 'x86_64-pc-windows-msvc' && '.exe' || '' }}
         run: |
           mkdir files-to-r2 && mkdir files-to-r2/${{ needs.prebuild.outputs.version }}
           cp ./dist/apps/shinkai-tools-backend/${{ env.BINARY_NAME }} files-to-r2/${{ needs.prebuild.outputs.version }}/${{ env.BINARY_NAME }}
@@ -81,7 +81,7 @@ jobs:
           aws_secret_access_key: ${{ secrets.R2_SECRET_ACCESS_KEY }}
           aws_bucket: shinkai-download
           source_dir: ./files-to-r2/
-          destination_dir: ./shinkai-tools-backend/binaries/production/${{ matrix.os }}/
+          destination_dir: ./shinkai-tools-backend/binaries/production/${{ matrix.arch }}/
 
   publish-libraries:
     needs: release-shinkai-tools-backend

@@ -24,7 +24,7 @@ jobs:
         uses: Saionaro/extract-package-version@v1.2.1
 
       - name: Check version match
-        if: ${{ github.ref_name != steps.package-version.outputs.version }}
+        if: ${{ github.ref_name != format('v{0}', steps.package-version.outputs.version) }}
         uses: actions/github-script@v3
         with:
           script: |

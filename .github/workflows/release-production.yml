@@ -75,12 +75,7 @@ jobs:
 
       - name: Compress files
         run: |
-          7z a -tzip files-to-r2/${{ needs.prebuild.outputs.version }}.zip files-to-r2/${{ needs.prebuild.outputs.version }}
-          if [ "${{ matrix.os }}" == "windows-2022" ]; then
-            rm -Force files-to-r2/${{ needs.prebuild.outputs.version }}
-          else
-            rm -rf files-to-r2/${{ needs.prebuild.outputs.version }}
-          fi
+          7z a -tzip files-to-r2/${{ needs.prebuild.outputs.version }}.zip files-to-r2/${{ needs.prebuild.outputs.version }} -sdel
 
       - name: Upload updates.json to R2
         uses: shallwefootball/s3-upload-action@master

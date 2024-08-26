@@ -88,7 +88,7 @@ jobs:
           destination_dir: ./shinkai-tools-backend/binaries/production/${{ matrix.arch }}/
 
   publish-libraries:
-    needs: release-shinkai-tools-backend
+    needs: [prebuild, release-shinkai-tools-backend]
     runs-on: ubuntu-22.04
     environment: production
     steps:

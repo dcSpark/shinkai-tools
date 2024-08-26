@@ -75,7 +75,7 @@ jobs:
 
       - name: Compress files
         run: |
-          cd ./files-to-r2 && 7z a -tzip files-to-r2/${{ needs.prebuild.outputs.version }}.zip . -sdel
+          cd ./files-to-r2 && 7z a -tzip ${{ needs.prebuild.outputs.version }}.zip . -sdel
 
       - name: Upload updates.json to R2
         uses: shallwefootball/s3-upload-action@master

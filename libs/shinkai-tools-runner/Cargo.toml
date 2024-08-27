@@ -31,6 +31,7 @@ tokio-util = "0.7.11"
 derive_more = "0.99.18"
 derivative = "2.2.0"
 dispose = "0.5.0"
+zip = "2.2.0"
 
 [build-dependencies]
 copy_to_output = "2.2.0"

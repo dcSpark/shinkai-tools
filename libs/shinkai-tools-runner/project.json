@@ -67,7 +67,7 @@
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
-        "command": "cargo publish -p shinkai_tools_runner --allow-dirty --no-verify"
+        "command": "cargo publish -p shinkai_tools_runner --allow-dirty"
       },
       "configurations": {
         "development": {},

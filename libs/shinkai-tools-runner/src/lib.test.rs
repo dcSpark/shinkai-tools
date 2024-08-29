@@ -7,6 +7,7 @@ async fn shinkai_tool_echo() {
     let tool = Tool::new(
         tool_definition.code.clone().unwrap(),
         serde_json::Value::Null,
+        None,
     );
     let run_result = tool
         .run(serde_json::json!({ "message": "valparaíso" }), None)
@@ -21,6 +22,7 @@ async fn shinkai_tool_weather_by_city() {
     let tool = Tool::new(
         tool_definition.code.clone().unwrap(),
         serde_json::json!({ "apiKey": "63d35ff6068c3103ccd1227526935675" }),
+        None,
     );
     let run_result = tool
         .run(serde_json::json!({ "city": "valparaíso" }), None)
@@ -55,7 +57,7 @@ async fn shinkai_tool_inline() {
 
     globalThis.tool = { Tool };
 "#;
-    let tool = Tool::new(js_code.to_string(), serde_json::Value::Null);
+    let tool = Tool::new(js_code.to_string(), serde_json::Value::Null, None);
     let run_result = tool
         .run(serde_json::json!({ "name": "world" }), None)
         .await
@@ -69,6 +71,7 @@ async fn shinkai_tool_web3_eth_balance() {
     let tool = Tool::new(
         tool_definition.code.clone().unwrap(),
         serde_json::Value::Null,
+        None,
     );
     let run_result = tool
         .run(
@@ -86,6 +89,7 @@ async fn shinkai_tool_web3_eth_uniswap() {
     let tool = Tool::new(
         tool_definition.code.clone().unwrap(),
         serde_json::Value::Null,
+        None,
     );
     let run_result = tool
         .run(
@@ -109,6 +113,7 @@ async fn shinkai_tool_download_page() {
     let tool = Tool::new(
         tool_definition.code.clone().unwrap(),
         serde_json::Value::Null,
+        None,
     );
     let run_result = tool
         .run(
@@ -178,6 +183,7 @@ async fn shinkai_tool_download_page_stack_overflow() {
                 let tool = Tool::new(
                     tool_definition.code.clone().unwrap(),
                     serde_json::Value::Null,
+                    None,
                 );
                 tool.run(
                     serde_json::json!({
@@ -200,6 +206,7 @@ async fn shinkai_tool_leiden() {
     let tool = Tool::new(
         tool_definition.code.clone().unwrap(),
         serde_json::Value::Null,
+        None,
     );
     let edges = vec![
         (2, 1, 1),
@@ -303,6 +310,7 @@ async fn shinkai_tool_duckduckgo_search() {
     let tool = Tool::new(
         tool_definition.code.clone().unwrap(),
         serde_json::Value::Null,
+        None,
     );
     let run_result = tool
         .run(
@@ -328,6 +336,7 @@ async fn shinkai_tool_playwright_example() {
     let tool = Tool::new(
         tool_definition.code.clone().unwrap(),
         serde_json::json!({ "chromePath": std::env::var("CHROME_PATH").ok().unwrap_or("".to_string()) }),
+        None,
     );
     let run_result = tool
         .run(
@@ -353,6 +362,7 @@ async fn shinkai_tool_defillama_lending_tvl_rankings() {
     let tool = Tool::new(
         tool_definition.code.clone().unwrap(),
         serde_json::json!({ "chromePath": std::env::var("CHROME_PATH").ok().unwrap_or("".to_string()) }),
+        None,
     );
     let run_result = tool.run(serde_json::json!({ "all": true }), None).await;
     assert!(run_result.is_ok());
@@ -365,6 +375,7 @@ async fn shinkai_tool_aave_loan_requester() {
     let tool = Tool::new(
         tool_definition.code.clone().unwrap(),
         serde_json::json!({ "chromePath": std::env::var("CHROME_PATH").ok().unwrap_or("".to_string()) }),
+        None,
     );
     let run_result = tool
         .run(

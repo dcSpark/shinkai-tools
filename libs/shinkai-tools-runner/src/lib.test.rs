@@ -385,3 +385,21 @@ async fn shinkai_tool_aave_loan_requester() {
         .await;
     assert!(run_result.is_ok());
 }
+
+#[tokio::test]
+async fn shinkai_tool_youtube_transcript() {
+    let tool_definition = get_tool("shinkai-youtube-transcript").unwrap();
+    let tool = Tool::new(
+        tool_definition.code.clone().unwrap(),
+        serde_json::Value::Null,
+        None,
+    );
+    let run_result = tool
+        .run(
+            serde_json::json!({ "url": "https://www.youtube.com/watch?v=GQ9yRPfsDPk" }),
+            None,
+        )
+        .await;
+    assert!(run_result.is_ok());
+    assert!(!run_result.unwrap().data["transcript"].as_array().unwrap().is_empty());
+}

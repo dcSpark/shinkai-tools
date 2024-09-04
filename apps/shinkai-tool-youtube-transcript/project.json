@@ -1,0 +1,30 @@
+{
+  "name": "@shinkai_protocol/shinkai-tool-youtube-transcript",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/shinkai-tool-youtube-transcript/src",
+  "projectType": "library",
+  "tags": ["tool"],
+  "targets": {
+    "build": {
+      "executor": "nx:run-commands",
+      "defaultConfiguration": "production",
+      "options": {
+        "command": "npx ts-node scripts/tool-bundler.ts --entry ./apps/shinkai-tool-youtube-transcript/src/index.ts --outputFolder ./dist/apps/shinkai-tool-youtube-transcript"
+      },
+      "configurations": {
+        "development": {},
+        "production": {}
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "apps/shinkai-tool-youtube-transcript/**/*.ts",
+          "apps/shinkai-tool-youtube-transcript/package.json"
+        ]
+      }
+    }
+  }
+}

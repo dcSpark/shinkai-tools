@@ -96,7 +96,7 @@ lazy_static! {
                 .unwrap(),
             )),
         );
-      // https://bugzilla.mozilla.org/show_bug.cgi?id=1681809
+        // https://bugzilla.mozilla.org/show_bug.cgi?id=1681809
         m.insert(
           "shinkai-tool-token-price",
           &*Box::leak(Box::new(
@@ -106,17 +106,17 @@ lazy_static! {
               )))
               .unwrap(),
           )),
-      );
-      m.insert(
-        "shinkai-tool-duckduckgo-search",
-        &*Box::leak(Box::new(
-            serde_json::from_str::<ToolDefinition>(include_str!(concat!(
-                env!("CARGO_MANIFEST_DIR"),
-                "/tools/shinkai-tool-duckduckgo-search/definition.json"
-            )))
-            .unwrap(),
-        )),
-    );
+        );
+        m.insert(
+            "shinkai-tool-duckduckgo-search",
+            &*Box::leak(Box::new(
+                serde_json::from_str::<ToolDefinition>(include_str!(concat!(
+                    env!("CARGO_MANIFEST_DIR"),
+                    "/tools/shinkai-tool-duckduckgo-search/definition.json"
+                )))
+                .unwrap(),
+            )),
+        );
         m.insert(
             "shinkai-tool-playwright-example",
             &*Box::leak(Box::new(
@@ -138,75 +138,85 @@ lazy_static! {
             )),
         );
         m.insert(
-          "shinkai-tool-aave-loan-requester",
-          &*Box::leak(Box::new(
-              serde_json::from_str::<ToolDefinition>(include_str!(concat!(
-                  env!("CARGO_MANIFEST_DIR"),
-                  "/tools/shinkai-tool-aave-loan-requester/definition.json"
-              )))
-              .unwrap(),
+            "shinkai-tool-aave-loan-requester",
+            &*Box::leak(Box::new(
+                serde_json::from_str::<ToolDefinition>(include_str!(concat!(
+                    env!("CARGO_MANIFEST_DIR"),
+                    "/tools/shinkai-tool-aave-loan-requester/definition.json"
+                )))
+                .unwrap(),
           )),
-      );
-      m.insert(
-        "shinkai-tool-coinbase-call-faucet",
-        &*Box::leak(Box::new(
+        );
+          m.insert(
+            "shinkai-tool-coinbase-call-faucet",
+            &*Box::leak(Box::new(
+                serde_json::from_str::<ToolDefinition>(include_str!(concat!(
+                    env!("CARGO_MANIFEST_DIR"),
+                    "/tools/shinkai-tool-coinbase-call-faucet/definition.json"
+                )))
+                .unwrap(),
+            )),
+        );
+        m.insert(
+            "shinkai-tool-coinbase-create-wallet",
+            &*Box::leak(Box::new(
+                serde_json::from_str::<ToolDefinition>(include_str!(concat!(
+                    env!("CARGO_MANIFEST_DIR"),
+                    "/tools/shinkai-tool-coinbase-create-wallet/definition.json"
+                )))
+                .unwrap(),
+            )),
+        );
+        m.insert(
+            "shinkai-tool-coinbase-get-balance",
+            &*Box::leak(Box::new(
+                serde_json::from_str::<ToolDefinition>(include_str!(concat!(
+                    env!("CARGO_MANIFEST_DIR"),
+                    "/tools/shinkai-tool-coinbase-get-balance/definition.json"
+                )))
+                .unwrap(),
+            )),
+        );
+        m.insert(
+          "shinkai-tool-coinbase-send-tx",
+          &*Box::leak(Box::new(
             serde_json::from_str::<ToolDefinition>(include_str!(concat!(
                 env!("CARGO_MANIFEST_DIR"),
-                "/tools/shinkai-tool-coinbase-call-faucet/definition.json"
+                "/tools/shinkai-tool-coinbase-send-tx/definition.json"
             )))
             .unwrap(),
         )),
-    );
-    m.insert(
-      "shinkai-tool-coinbase-create-wallet",
-      &*Box::leak(Box::new(
-          serde_json::from_str::<ToolDefinition>(include_str!(concat!(
-              env!("CARGO_MANIFEST_DIR"),
-              "/tools/shinkai-tool-coinbase-create-wallet/definition.json"
-          )))
-          .unwrap(),
-      )),
-  );
-  m.insert(
-    "shinkai-tool-coinbase-get-balance",
-    &*Box::leak(Box::new(
-        serde_json::from_str::<ToolDefinition>(include_str!(concat!(
-            env!("CARGO_MANIFEST_DIR"),
-            "/tools/shinkai-tool-coinbase-get-balance/definition.json"
-        )))
-        .unwrap(),
-    )),
-);
-m.insert(
-  "shinkai-tool-coinbase-send-tx",
-  &*Box::leak(Box::new(
-      serde_json::from_str::<ToolDefinition>(include_str!(concat!(
-          env!("CARGO_MANIFEST_DIR"),
-          "/tools/shinkai-tool-coinbase-send-tx/definition.json"
-      )))
-      .unwrap(),
-  )),
-);
-m.insert(
-  "shinkai-tool-coinbase-get-transactions",
-  &*Box::leak(Box::new(
-      serde_json::from_str::<ToolDefinition>(include_str!(concat!(
-          env!("CARGO_MANIFEST_DIR"),
-          "/tools/shinkai-tool-coinbase-get-transactions/definition.json"
-      )))
-      .unwrap(),
-  )),
-);
-m.insert(
-  "shinkai-tool-coinbase-get-my-address",
-  &*Box::leak(Box::new(
-      serde_json::from_str::<ToolDefinition>(include_str!(concat!(
-          env!("CARGO_MANIFEST_DIR"),
-          "/tools/shinkai-tool-coinbase-get-my-address/definition.json"
-      )))
-      .unwrap(),
-  )),
-);
+        );
+        m.insert(
+        "shinkai-tool-coinbase-get-transactions",
+        &*Box::leak(Box::new(
+            serde_json::from_str::<ToolDefinition>(include_str!(concat!(
+                env!("CARGO_MANIFEST_DIR"),
+                "/tools/shinkai-tool-coinbase-get-transactions/definition.json"
+            )))
+            .unwrap(),
+        )),
+        );
+        m.insert(
+        "shinkai-tool-coinbase-get-my-address",
+        &*Box::leak(Box::new(
+            serde_json::from_str::<ToolDefinition>(include_str!(concat!(
+                env!("CARGO_MANIFEST_DIR"),
+                "/tools/shinkai-tool-coinbase-get-my-address/definition.json"
+            )))
+            .unwrap(),
+        )),
+        );
+        m.insert(
+            "shinkai-tool-youtube-transcript",
+            &*Box::leak(Box::new(
+                serde_json::from_str::<ToolDefinition>(include_str!(concat!(
+                    env!("CARGO_MANIFEST_DIR"),
+                    "/tools/shinkai-tool-youtube-transcript/definition.json"
+                )))
+                .unwrap(),
+            )),
+        );
         // ntim: New tools will be inserted here, don't remove this comment
         m
     };

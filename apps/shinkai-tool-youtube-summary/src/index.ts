@@ -1,6 +1,6 @@
 import { BaseTool, RunResult } from '@shinkai_protocol/shinkai-tools-builder';
 import { ToolDefinition } from 'libs/shinkai-tools-builder/src/tool-definition';
-import { TranscriptResponse, YoutubeTranscript } from 'youtube-transcript';
+import { YoutubeTranscript } from 'youtube-transcript';
 import OpenAI from 'openai';
 
 type Config = {
@@ -11,14 +11,14 @@ type Config = {
 type Params = {
   url: string;
 };
-type Result = { transcript: TranscriptResponse[]; message: string };
+type Result = { summary: string };
 
 export class Tool extends BaseTool<Config, Params, Result> {
   definition: ToolDefinition<Config, Params, Result> = {
-    id: 'shinkai-tool-youtube-transcript',
-    name: 'Shinkai: YouTube Transcript and Summary',
+    id: 'shinkai-tool-youtube-summary',
+    name: 'Shinkai: YouTube Video Summary',
     description:
-      'Extracts and summarizes YouTube video content without watching. Provides a transcript and summary with organized sections and clickable timestamp links. Useful for quickly grasping main points, preparing for discussions, or efficient research. Example uses: summarizing tech talks, product reviews, or educational lectures. Parameters: url (string) - The full YouTube video URL to process.',
+      'Summarizes a YouTube video content without watching. Provides a summary with organized sections and clickable timestamp links. Useful for quickly grasping main points, preparing for discussions, or efficient research. Example uses: summarizing tech talks, product reviews, or educational lectures. Parameters: url (string) - The full YouTube video URL to process.',
     author: 'Shinkai',
     keywords: [
       'youtube',
@@ -71,43 +71,13 @@ export class Tool extends BaseTool<Config, Params, Result> {
     result: {
       type: 'object',
       properties: {
-        transcript: {
-          type: 'array',
-          description:
-            'An array of transcript segments from the video, providing a detailed text representation of the audio content.',
-          items: {
-            type: 'object',
-            properties: {
-              text: {
-                type: 'string',
-                description:
-                  'The text content of a specific transcript segment.',
-              },
-              duration: {
-                type: 'number',
-                description: 'The duration of the segment in seconds.',
-              },
-              offset: {
-                type: 'number',
-                description:
-                  'The start time of the segment in seconds from the beginning of the video.',
-              },
-              lang: {
-                type: 'string',
-                nullable: true,
-                description: 'The language code of the segment, if available.',
-              },
-            },
-            required: ['text', 'duration', 'offset'],
-          },
-        },
-        message: {
+        summary: {
           type: 'string',
           description:
             'A markdown-formatted summary of the video content, divided into sections with timestamp links to relevant parts of the video.',
         },
       },
-      required: ['transcript', 'message'],
+      required: ['summary'],
     },
   };
 
@@ -151,8 +121,7 @@ export class Tool extends BaseTool<Config, Params, Result> {
       });
       return Promise.resolve({
         data: {
-          transcript,
-          message: response.choices[0]?.message?.content || '',
+          summary: response.choices[0]?.message?.content || '',
         },
       });
     } catch (error) {

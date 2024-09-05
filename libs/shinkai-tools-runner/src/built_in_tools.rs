@@ -208,11 +208,11 @@ lazy_static! {
         )),
         );
         m.insert(
-            "shinkai-tool-youtube-transcript",
+            "shinkai-tool-youtube-summary",
             &*Box::leak(Box::new(
                 serde_json::from_str::<ToolDefinition>(include_str!(concat!(
                     env!("CARGO_MANIFEST_DIR"),
-                    "/tools/shinkai-tool-youtube-transcript/definition.json"
+                    "/tools/shinkai-tool-youtube-summary/definition.json"
                 )))
                 .unwrap(),
             )),

@@ -1,14 +1,12 @@
-use std::{path::PathBuf, time::Duration};
+use std::time::Duration;
 
 use reqwest::{header, Client};
 use serde_json::Value;
 
 use super::{
-    execution_error::ExecutionError,
-    run_result::RunResult,
-    shinkai_tools_backend::{self, ShinkaiToolsBackend},
-    shinkai_tools_backend_options::ShinkaiToolsBackendOptions,
-    tool_definition::ToolDefinition,
+    execution_error::ExecutionError, run_result::RunResult,
+    shinkai_tools_backend::ShinkaiToolsBackend,
+    shinkai_tools_backend_options::ShinkaiToolsBackendOptions, tool_definition::ToolDefinition,
 };
 
 pub struct Tool {
@@ -96,7 +94,8 @@ impl Tool {
     }
 
     pub async fn get_definition(&mut self) -> Result<ToolDefinition, ExecutionError> {
-        let mut shinkai_tool_backend = ShinkaiToolsBackend::new(self.shinkai_tools_backend_options.clone());
+        let mut shinkai_tool_backend =
+            ShinkaiToolsBackend::new(self.shinkai_tools_backend_options.clone());
         let _ = shinkai_tool_backend.run().await;
         let result = self.internal_get_definition().await;
         let _ = shinkai_tool_backend.kill().await;
@@ -166,8 +165,11 @@ impl Tool {
         parameters: Value,
         max_execution_time_s: Option<u64>,
     ) -> Result<RunResult, ExecutionError> {
-        let mut shinkai_tool_backend = ShinkaiToolsBackend::new(self.shinkai_tools_backend_options.clone());
-        shinkai_tool_backend.run().await.map_err(|e| ExecutionError::new(format!("Failed to run shinkai tool backend: {}", e), None))?;
+        let mut shinkai_tool_backend =
+            ShinkaiToolsBackend::new(self.shinkai_tools_backend_options.clone());
+        shinkai_tool_backend.run().await.map_err(|e| {
+            ExecutionError::new(format!("Failed to run shinkai tool backend: {}", e), None)
+        })?;
         let result = self.internal_run(parameters, max_execution_time_s).await;
         let _ = shinkai_tool_backend.kill().await;
         result

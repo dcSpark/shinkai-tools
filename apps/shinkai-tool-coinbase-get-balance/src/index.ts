@@ -1,6 +1,7 @@
 import { BaseTool, RunResult } from '@shinkai_protocol/shinkai-tools-builder';
 import { ToolDefinition } from 'libs/shinkai-tools-builder/src/tool-definition';
-import { Coinbase, CoinbaseOptions } from '@coinbase/coinbase-sdk';
+import { Coinbase, CoinbaseOptions, Wallet, Balance as BalanceModel } from '@coinbase/coinbase-sdk';
+import { Decimal } from 'decimal.js';
 
 type Config = {
   name: string;
@@ -12,8 +13,11 @@ type Params = {
   walletId?: string;
 };
 type Result = {
-  data: string;
+  message: string;
+  balances: WalletBalances | null;
 };
+
+type WalletBalances = { [key: string]: number };
 
 export class Tool extends BaseTool<Config, Params, Result> {
   definition: ToolDefinition<Config, Params, Result> = {
@@ -43,9 +47,10 @@ export class Tool extends BaseTool<Config, Params, Result> {
     result: {
       type: 'object',
       properties: {
-        data: { type: 'string' },
+        message: { type: 'string' },
+        balances: { type: 'object', nullable: true },
       },
-      required: ['data'],
+      required: ['message'],
     },
   };
 
@@ -54,6 +59,7 @@ export class Tool extends BaseTool<Config, Params, Result> {
       apiKeyName: this.config.name,
       privateKey: this.config.privateKey,
       useServerSigner: this.config.useServerSigner === 'true',
+      debugging: true,
     };
     const coinbase = new Coinbase(coinbaseOptions);
     const user = await coinbase.getDefaultUser();
@@ -73,9 +79,16 @@ export class Tool extends BaseTool<Config, Params, Result> {
     let balances = await wallet.listBalances();
     console.log(`Balances: `, balances);
 
+    // Convert balances to WalletBalances
+    const balanceMap: WalletBalances = {};
+    for (const [currency, amount] of balances) {
+      balanceMap[currency] = amount.toNumber();
+    }
+
     return {
       data: {
-        data: `Balances: ${balances.toString()}`,
+        message: `Balances: ${JSON.stringify(balanceMap)}`,
+        balances: balanceMap,
       },
     };
   }

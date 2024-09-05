@@ -12,7 +12,7 @@ type Params = {
   walletId?: string;
 };
 type Result = {
-  data: string;
+  address: string;
 };
 
 export class Tool extends BaseTool<Config, Params, Result> {
@@ -42,9 +42,9 @@ export class Tool extends BaseTool<Config, Params, Result> {
     result: {
       type: 'object',
       properties: {
-        data: { type: 'string' },
+        address: { type: 'string' },
       },
-      required: ['data'],
+      required: ['address'],
     },
   };
 
@@ -74,7 +74,7 @@ export class Tool extends BaseTool<Config, Params, Result> {
 
     return {
       data: {
-        data: `Default Address: ${address?.getId()}`,
+        address: address?.getId() || '',
       },
     };
   }

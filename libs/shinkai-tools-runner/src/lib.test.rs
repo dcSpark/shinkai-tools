@@ -388,7 +388,7 @@ async fn shinkai_tool_aave_loan_requester() {
 
 #[tokio::test]
 async fn shinkai_tool_youtube_transcript() {
-    let tool_definition = get_tool("shinkai-youtube-transcript").unwrap();
+    let tool_definition = get_tool("shinkai-tool-youtube-transcript").unwrap();
     let tool = Tool::new(
         tool_definition.code.clone().unwrap(),
         serde_json::Value::Null,
@@ -401,5 +401,8 @@ async fn shinkai_tool_youtube_transcript() {
         )
         .await;
     assert!(run_result.is_ok());
-    assert!(!run_result.unwrap().data["transcript"].as_array().unwrap().is_empty());
+    assert!(!run_result.unwrap().data["transcript"]
+        .as_array()
+        .unwrap()
+        .is_empty());
 }

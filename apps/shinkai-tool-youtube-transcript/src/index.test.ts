@@ -9,9 +9,7 @@ test('exists definition', async () => {
 test('transcript video', async () => {
   const tool = new Tool({});
   const result = await tool.run({
-    // Video about Shinkai Sheets
     url: 'https://youtu.be/RxxuM4wbVQc',
-    model: 'llama3.1:8b-instruct-q4_1'
   });
   expect(result.data.transcript).toBeInstanceOf(Array);
   expect(result.data.transcript.length).toBeGreaterThan(0);
@@ -21,13 +19,13 @@ test('transcript video', async () => {
 
 
 // test('transcript video using openai', async () => {
-//   const tool = new Tool({});
-//   const result = await tool.run({
-//     // Video about Shinkai Sheets
-//     url: 'https://youtu.be/RxxuM4wbVQc',
+//   const tool = new Tool({
 //     apiUrl: 'https://api.openai.com/v1',
 //     apiKey: '',
 //     model: 'gpt-4o-mini'
+//   });
+//   const result = await tool.run({
+//     url: 'https://youtu.be/RxxuM4wbVQc',
 //   });
 //   expect(result.data.transcript).toBeInstanceOf(Array);
 //   expect(result.data.transcript.length).toBeGreaterThan(0);

@@ -3,12 +3,13 @@ import { ToolDefinition } from 'libs/shinkai-tools-builder/src/tool-definition';
 import { TranscriptResponse, YoutubeTranscript } from 'youtube-transcript';
 import OpenAI from 'openai';
 
-type Config = {};
-type Params = {
-  url: string;
+type Config = {
   apiUrl?: string;
   apiKey?: string;
-  model: string;
+  model?: string;
+};
+type Params = {
+  url: string;
 };
 type Result = { transcript: TranscriptResponse[]; message: string };
 
@@ -21,16 +22,7 @@ export class Tool extends BaseTool<Config, Params, Result> {
     keywords: ['youtube', 'transcript', 'video', 'captions', 'subtitles'],
     configurations: {
       type: 'object',
-      properties: {},
-      required: [],
-    },
-    parameters: {
-      type: 'object',
       properties: {
-        url: {
-          type: 'string',
-          description: 'The URL of the YouTube video to transcribe',
-        },
         apiUrl: {
           type: 'string',
           description: 'The OpenAI api compatible URL',
@@ -44,6 +36,17 @@ export class Tool extends BaseTool<Config, Params, Result> {
         model: {
           type: 'string',
           description: 'The model to use for generating the summary',
+          nullable: true,
+        },
+      },
+      required: [],
+    },
+    parameters: {
+      type: 'object',
+      properties: {
+        url: {
+          type: 'string',
+          description: 'The URL of the YouTube video to transcribe',
         },
       },
       required: ['url'],
@@ -80,10 +83,10 @@ export class Tool extends BaseTool<Config, Params, Result> {
     const message: OpenAI.ChatCompletionUserMessageParam = {
       role: 'user',
       content: `
-      According to this transcription of a youtube video (which is in csv separated by ';'):
+      According to this transcription of a youtube video (which is in csv separated by ':::'):
 
       offset;text
-      ${transcript.map((v) => `${Math.floor(v.offset)};${v.text}`).join('\n')}
+      ${transcript.map((v) => `${Math.floor(v.offset)}:::${v.text}`).join('\n')}
       ---------------
 
       The video URL is ${params.url}
@@ -96,16 +99,15 @@ export class Tool extends BaseTool<Config, Params, Result> {
     `,
     };
 
-    let url = params.apiUrl || 'http://127.0.0.1:11435';
+    let url = this.config?.apiUrl || 'http://127.0.0.1:11435';
     url = url?.endsWith('/v1') ? url : `${url}/v1`;
-    console.log('url', url);
     const client = new OpenAI({
       baseURL: url,
-      apiKey: params.apiKey || '',
+      apiKey: this.config?.apiKey || '',
     });
     try {
       const response = await client.chat.completions.create({
-        model: params.model,
+        model: this.config?.model || 'llama3.1:8b-instruct-q4_1',
         messages: [message],
         stream: false,
       });

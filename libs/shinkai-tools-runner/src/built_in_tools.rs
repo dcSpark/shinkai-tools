@@ -206,6 +206,7 @@ lazy_static! {
             )))
             .unwrap(),
         )),
+        );
         m.insert(
           "shinkai-tool-perplexity",
           &*Box::leak(Box::new(

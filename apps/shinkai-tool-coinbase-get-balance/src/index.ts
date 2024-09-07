@@ -28,14 +28,16 @@ export class Tool extends BaseTool<Config, Params, Result> {
       properties: {
         name: { type: 'string' },
         privateKey: { type: 'string' },
-        walletId: { type: 'string' },
+        walletId: { type: 'string', nullable: true },
         useServerSigner: { type: 'string', nullable: true },
       },
       required: ['name', 'privateKey'],
     },
     parameters: {
       type: 'object',
-      properties: {},
+      properties: {
+        walletId: { type: 'string', nullable: true },
+      },
       required: [],
     },
     result: {

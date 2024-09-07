@@ -6,7 +6,7 @@ use crate::built_in_tools::{get_tool, get_tools};
 async fn get_tools_all_load() {
     let tools = get_tools();
     for (tool_name, tool_definition) in tools {
-        let mut tool_instance = crate::tools::tool::Tool::new(tool_definition.code.unwrap(), Value::Null);
+        let mut tool_instance = crate::tools::tool::Tool::new(tool_definition.code.unwrap(), Value::Null, None);
         let defintion = tool_instance
             .get_definition()
             .await;

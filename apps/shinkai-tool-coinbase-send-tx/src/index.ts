@@ -1,6 +1,6 @@
 import { BaseTool, RunResult } from '@shinkai_protocol/shinkai-tools-builder';
 import { ToolDefinition } from 'libs/shinkai-tools-builder/src/tool-definition';
-import { Coinbase, CoinbaseOptions } from '@coinbase/coinbase-sdk';
+import { Coinbase, CoinbaseOptions, Transfer } from '@coinbase/coinbase-sdk';
 
 type Config = {
   name: string;
@@ -15,7 +15,9 @@ type Params = {
   amount: string;
 };
 type Result = {
-  data: string;
+  transactionHash: string;
+  transactionLink: string;
+  status: string;
 };
 
 export class Tool extends BaseTool<Config, Params, Result> {
@@ -49,9 +51,11 @@ export class Tool extends BaseTool<Config, Params, Result> {
     result: {
       type: 'object',
       properties: {
-        data: { type: 'string' },
+        transactionHash: { type: 'string' },
+        transactionLink: { type: 'string' },
+        status: { type: 'string' },
       },
-      required: ['data'],
+      required: ['transactionHash', 'transactionLink', 'status'],
     },
   };
 
@@ -137,12 +141,13 @@ export class Tool extends BaseTool<Config, Params, Result> {
     const formattedAssetId = params.assetId.toLowerCase();
 
     // Create and send the transfer
-    let transfer;
+    let transfer: Transfer;
     try {
       transfer = await wallet.createTransfer({
         amount,
         assetId: Coinbase.toAssetId(formattedAssetId),
         destination: params.recipient_address,
+        // gasless: true,
       });
       console.log(`Transfer successfully completed: `, transfer.toString());
     } catch (error) {
@@ -157,7 +162,9 @@ export class Tool extends BaseTool<Config, Params, Result> {
 
     return {
       data: {
-        data: `Transfer completed successfully: ${transfer.toString()}`,
+        transactionHash: transfer.getTransactionHash() || '',
+        transactionLink: transfer.getTransactionLink() || '',
+        status: transfer.getStatus() || '',
       },
     };
   }

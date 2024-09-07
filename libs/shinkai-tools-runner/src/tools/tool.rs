@@ -5,7 +5,8 @@ use serde_json::Value;
 
 use super::{
     execution_error::ExecutionError, run_result::RunResult,
-    shinkai_tools_backend::ShinkaiToolsBackend, tool_definition::ToolDefinition,
+    shinkai_tools_backend::ShinkaiToolsBackend,
+    shinkai_tools_backend_options::ShinkaiToolsBackendOptions, tool_definition::ToolDefinition,
 };
 
 pub struct Tool {
@@ -13,17 +14,24 @@ pub struct Tool {
     code: String,
     configurations: Value,
     http_client: Client,
+    shinkai_tools_backend_options: ShinkaiToolsBackendOptions,
 }
 
 impl Tool {
     pub const MAX_EXECUTION_TIME_MS_INTERNAL_OPS: u64 = 1000;
 
-    pub fn new(code: String, configurations: Value) -> Self {
+    pub fn new(
+        code: String,
+        configurations: Value,
+        shinkai_tools_backend_options: Option<ShinkaiToolsBackendOptions>,
+    ) -> Self {
+        let options = shinkai_tools_backend_options.unwrap_or_default();
         Tool {
-            tool_backend_url: "http://127.0.0.1:3000".to_string(),
+            tool_backend_url: format!("http://127.0.0.1:{}", options.api_port).to_string(),
             code,
             configurations,
             http_client: Self::build_http_client(),
+            shinkai_tools_backend_options: options,
         }
     }
 
@@ -86,7 +94,8 @@ impl Tool {
     }
 
     pub async fn get_definition(&mut self) -> Result<ToolDefinition, ExecutionError> {
-        let mut shinkai_tool_backend = ShinkaiToolsBackend::default();
+        let mut shinkai_tool_backend =
+            ShinkaiToolsBackend::new(self.shinkai_tools_backend_options.clone());
         let _ = shinkai_tool_backend.run().await;
         let result = self.internal_get_definition().await;
         let _ = shinkai_tool_backend.kill().await;
@@ -156,8 +165,11 @@ impl Tool {
         parameters: Value,
         max_execution_time_s: Option<u64>,
     ) -> Result<RunResult, ExecutionError> {
-        let mut shinkai_tool_backend = ShinkaiToolsBackend::default();
-        let _ = shinkai_tool_backend.run().await;
+        let mut shinkai_tool_backend =
+            ShinkaiToolsBackend::new(self.shinkai_tools_backend_options.clone());
+        shinkai_tool_backend.run().await.map_err(|e| {
+            ExecutionError::new(format!("Failed to run shinkai tool backend: {}", e), None)
+        })?;
         let result = self.internal_run(parameters, max_execution_time_s).await;
         let _ = shinkai_tool_backend.kill().await;
         result

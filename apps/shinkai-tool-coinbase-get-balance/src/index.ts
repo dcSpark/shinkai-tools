@@ -5,10 +5,12 @@ import { Coinbase, CoinbaseOptions } from '@coinbase/coinbase-sdk';
 type Config = {
   name: string;
   privateKey: string;
-  walletId: string;
+  walletId?: string;
   useServerSigner?: string;
 };
-type Params = {};
+type Params = {
+  walletId?: string;
+};
 type Result = {
   data: string;
 };

@@ -59,7 +59,7 @@ export class Tool extends BaseTool<Config, Params, Result> {
     const user = await coinbase.getDefaultUser();
 
     // Prioritize walletId from Params over Config
-    const walletId = this.config.walletId;
+    const walletId = params.walletId || this.config.walletId;
 
     // Throw an error if walletId is not defined
     if (!walletId) {

@@ -92,7 +92,7 @@ export class Tool extends BaseTool<Config, Params, Result> {
       replacement: function (content, node) {
         const element = node as Element;
         const href = element.getAttribute('href');
-        return `[${content}](${href})`;
+        return `[${href}](${href})`;
       },
     });
     const markdown = turndownService.turndown(htmlContent);

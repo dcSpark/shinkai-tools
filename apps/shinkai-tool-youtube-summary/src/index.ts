@@ -1,7 +1,8 @@
 import { BaseTool, RunResult } from '@shinkai_protocol/shinkai-tools-builder';
 import { ToolDefinition } from 'libs/shinkai-tools-builder/src/tool-definition';
 import { YoutubeTranscript } from 'youtube-transcript';
-import OpenAI from 'openai';
+import { ClientRegistry } from '@boundaryml/baml';
+import { b, YoutubeVideoSummary } from 'baml_client';
 
 type Config = {
   apiUrl?: string;
@@ -11,7 +12,7 @@ type Config = {
 type Params = {
   url: string;
 };
-type Result = { summary: string };
+type Result = { summary: YoutubeVideoSummary };
 
 export class Tool extends BaseTool<Config, Params, Result> {
   definition: ToolDefinition<Config, Params, Result> = {
@@ -72,56 +73,90 @@ export class Tool extends BaseTool<Config, Params, Result> {
       type: 'object',
       properties: {
         summary: {
-          type: 'string',
+          type: 'object',
+          properties: {
+            url: {
+              type: 'string',
+              description: 'The URL of the YouTube video that was summarized.',
+            },
+            briefSummary: {
+              type: 'string',
+              description: 'A concise overview of the entire video content.',
+            },
+            sections: {
+              type: 'array',
+              description:
+                'An array of sections representing key parts of the video.',
+              items: {
+                type: 'object',
+                properties: {
+                  url: {
+                    type: 'string',
+                    description:
+                      'The URL of the YouTube video for this section.',
+                  },
+                  title: {
+                    type: 'string',
+                    description:
+                      'The title for this section.',
+                  },
+                  offset: {
+                    type: 'integer',
+                    description: 'The starting time of the section in seconds.',
+                  },
+                  keyPoints: {
+                    type: 'array',
+                    description:
+                      'Main points or takeaways from this section of the video.',
+                    items: {
+                      type: 'string',
+                    },
+                  },
+                },
+                required: ['offset', 'keyPoints'],
+              },
+            },
+          },
+          required: ['url', 'briefSummary', 'sections'],
           description:
-            'A markdown-formatted summary of the video content, divided into sections with timestamp links to relevant parts of the video.',
+            'An object containing the detailed summary of the YouTube video.',
         },
       },
       required: ['summary'],
+      description: 'The result object containing the video summary.',
     },
   };
 
   async run(params: Params): Promise<RunResult<Result>> {
     console.log(`transcripting ${params.url}`);
 
+    let url = this.config?.apiUrl || 'http://127.0.0.1:11435';
+    url = url?.endsWith('/v1') ? url : `${url}/v1`;
+
+    const cr = new ClientRegistry();
+    cr.addLlmClient('LlmClient', 'openai', {
+      base_url: url,
+      model: this.config?.model || 'llama3.1:8b-instruct-q4_1',
+      api_key: this.config?.apiKey || '',
+    });
+    cr.setPrimary('LlmClient');
+
     // Get transcription
     const transcript = await YoutubeTranscript.fetchTranscript(params.url);
 
-    // Send to ollama to build a formatted response
-    const message: OpenAI.ChatCompletionUserMessageParam = {
-      role: 'user',
-      content: `
-      According to this transcription of a youtube video (which is in csv separated by ':::'):
-
-      offset;text
+    const summary = await b.SummarizeYoutubeVideo(
+      params.url,
+      `
+      offset:::text
       ${transcript.map((v) => `${Math.floor(v.offset)}:::${v.text}`).join('\n')}
-      ---------------
-
-      The video URL is ${params.url}
-
-      ---------------
-
-      Write a detailed summary divided in sections along the video.
-      Format the answer using markdown.
-      Add markdown links referencing every section using this format https://www.youtube.com/watch?v={video_id}&t={offset} where 'offset' is a number and can be obtained from the transcription in csv format to generate the URL
     `,
-    };
+      { clientRegistry: cr },
+    );
 
-    let url = this.config?.apiUrl || 'http://127.0.0.1:11435';
-    url = url?.endsWith('/v1') ? url : `${url}/v1`;
-    const client = new OpenAI({
-      baseURL: url,
-      apiKey: this.config?.apiKey || '',
-    });
     try {
-      const response = await client.chat.completions.create({
-        model: this.config?.model || 'llama3.1:8b-instruct-q4_1',
-        messages: [message],
-        stream: false,
-      });
       return Promise.resolve({
         data: {
-          summary: response.choices[0]?.message?.content || '',
+          summary,
         },
       });
     } catch (error) {

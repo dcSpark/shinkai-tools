@@ -11,8 +11,10 @@ test('transcript video', async () => {
   const result = await tool.run({
     url: 'https://www.youtube.com/watch?v=SUj34OWkjXU',
   });
-  expect(result.data.summary.length).toBeGreaterThan(0);
-  console.log(result.data.summary);
+
+  expect(result.data.summary.url).toBeDefined();
+  expect(result.data.summary.sections.length).toBeGreaterThan(0);
+  console.log("summmary", JSON.stringify(result.data.summary, null, 2));
 }, 30000);
 
 
@@ -25,6 +27,7 @@ test('transcript video', async () => {
 //   const result = await tool.run({
 //     url: 'https://www.youtube.com/watch?v=CQdaQr3EW8g',
 //   });
-//   expect(result.data.summary.length).toBeGreaterThan(0);
+//   expect(result.data.summary.url).toBeDefined();
+//   expect(result.data.summary.sections.length).toBeGreaterThan(0);
 //   console.log(result.data.summary);
 // }, 30000);

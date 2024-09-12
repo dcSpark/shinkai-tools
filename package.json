@@ -57,6 +57,7 @@
     "npm": "10.x.x"
   },
   "dependencies": {
+    "@boundaryml/baml": "^0.54.2",
     "@coinbase/coinbase-sdk": "^0.0.16",
     "@nestjs/axios": "^3.0.3",
     "ajv": "^7.2.4",

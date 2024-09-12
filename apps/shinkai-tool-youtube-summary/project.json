@@ -9,7 +9,11 @@
       "executor": "nx:run-commands",
       "defaultConfiguration": "production",
       "options": {
-        "command": "npx ts-node scripts/tool-bundler.ts --entry ./apps/shinkai-tool-youtube-summary/src/index.ts --outputFolder ./dist/apps/shinkai-tool-youtube-summary"
+        "parallel": false,
+        "commands": [
+          "npx baml-cli generate --from ./apps/shinkai-tool-youtube-summary/baml_src",
+          "npx ts-node scripts/tool-bundler.ts --entry ./apps/shinkai-tool-youtube-summary/src/index.ts --outputFolder ./dist/apps/shinkai-tool-youtube-summary"
+        ]
       },
       "configurations": {
         "development": {},

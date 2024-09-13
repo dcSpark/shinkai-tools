@@ -6,6 +6,7 @@ const singleAppBinaryName =
   process.platform === 'win32'
     ? 'shinkai-tools-backend.exe'
     : 'shinkai-tools-backend';
+
 async function bundle() {
   try {
     console.log('Starting bundling process...');

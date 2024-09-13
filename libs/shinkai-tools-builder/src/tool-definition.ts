@@ -14,4 +14,9 @@ export interface ToolDefinition<
   configurations: Ajv.JSONSchemaType<TConfig>;
   parameters: Ajv.JSONSchemaType<TParameters>;
   result: Ajv.JSONSchemaType<TResult>;
+
+  embedding_metadata?: {
+    model_name: string;
+    embeddings: number[];
+  };
 }

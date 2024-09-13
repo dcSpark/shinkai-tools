@@ -12,4 +12,11 @@ pub struct ToolDefinition {
     pub parameters: Value,
     pub result: Value,
     pub code: Option<String>,
+    pub embedding_metadata: Option<EmbeddingMetadata>,
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct EmbeddingMetadata {
+    pub model_name: String,
+    pub embeddings: Vec<f32>,
 }

@@ -12,9 +12,11 @@ import { viemScriptContent } from './bundled-resources/shinkai-viem';
 type Config = {
   chromePath?: string;
 };
+
 type Params = {
   inputValue: string;
   assetSymbol: string;
+  secretKey: string;
 };
 type Result = {
   amountProcessed: string;
@@ -47,8 +49,9 @@ export class Tool extends BaseTool<Config, Params, Result> {
       properties: {
         inputValue: { type: 'string' },
         assetSymbol: { type: 'string' },
+        secretKey: { type: 'string' },
       },
-      required: ['inputValue', 'assetSymbol'],
+      required: ['inputValue', 'assetSymbol', 'secretKey'],
     },
     result: {
       type: 'object',
@@ -69,9 +72,7 @@ export class Tool extends BaseTool<Config, Params, Result> {
 
     const page = await context.newPage();
     // await page.goto(params.url);
-    await page.goto(
-      'https://staging.aave.com/?marketName=proto_arbitrum_sepolia_v3',
-    );
+    await page.goto('https://staging.aave.com/?marketName=proto_base_sepolia_v3');
 
     console.log('Viem script loaded');
 
@@ -81,6 +82,11 @@ export class Tool extends BaseTool<Config, Params, Result> {
       document.head.appendChild(script);
       console.log('Viem script injected');
     }, Buffer.from(viemScriptContent, 'base64').toString('utf-8'));
+
+    // Initialize the viem provider
+    await page.evaluate((secretKey) => {
+      (window as any).initViemProvider(secretKey);
+    }, params.secretKey);
 
     // Click the "Opt-out" button
     // Wait for the "Opt-out" button to appear and click it

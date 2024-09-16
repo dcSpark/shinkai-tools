@@ -12,18 +12,14 @@ class ViemProvider {
   client;
   selectedAddress: viem.Address | undefined;
 
-  constructor(chain: any, sk: viem.Hex | null) {
-    const privateKey: viem.Hex =
-      sk ||
-      '0xf4c1c6d9231a5f08aa8d9824a142c4fc5a663ca1a6ecd61126e54a0d7501df82';
+  constructor(chain: any, sk: string) {
+    const privateKey: viem.Hex = sk as viem.Hex
     const account = privateKeyToAccount(privateKey);
 
     this.client = createWalletClient({
       account,
-      chain: chain || chains.arbitrumSepolia,
-      transport: viem.http(
-        'https://arbitrum-sepolia.blockpi.network/v1/rpc/public',
-      ),
+      chain: chain || chains.baseSepolia,
+      transport: viem.http('https://sepolia.base.org'),
     }).extend(viem.publicActions);
 
     // Update to await the promise
@@ -248,8 +244,8 @@ function addEip6963Listener(info: EIP6963ProviderInfo, provider: ViemProvider) {
 }
 
 // Function to initialize and assign the provider to window.ethereum
-function initializeViemProvider(chain: any, providerInfo: EIP6963ProviderInfo) {
-  const provider = new ViemProvider(chain, null); // TODO: remove null
+function initializeViemProvider(chain: any, providerInfo: EIP6963ProviderInfo, sk: string) {
+  const provider = new ViemProvider(chain, sk);
 
   (window as any).ethereum = {
     request: provider.request.bind(provider),
@@ -299,8 +295,10 @@ const viemProviderInfo: EIP6963ProviderInfo = {
   rdns: 'com.shinkai.desktop',
 };
 
-// Initialize the provider for Arbitrum Sepolia by default
-initializeViemProvider(chains.arbitrumSepolia, viemProviderInfo);
+// Initialize the provider for Base Sepolia by default
+(window as any).initViemProvider = function (sk: string) {
+  initializeViemProvider(chains.baseSepolia, viemProviderInfo, sk);
+};
 
 // Optionally export them if you want to access them later
 export { viem, chains, ViemProvider, initializeViemProvider, viemProviderInfo };

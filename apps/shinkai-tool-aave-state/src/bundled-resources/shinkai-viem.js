@@ -44818,14 +44818,12 @@ zurdo`.split("\n");
     client;
     selectedAddress;
     constructor(chain, sk) {
-      const privateKey = sk || "0xf4c1c6d9231a5f08aa8d9824a142c4fc5a663ca1a6ecd61126e54a0d7501df82";
+      const privateKey = sk;
       const account = privateKeyToAccount(privateKey);
       this.client = createWalletClient({
         account,
-        chain: chain || arbitrumSepolia,
-        transport: http(
-          "https://arbitrum-sepolia.blockpi.network/v1/rpc/public"
-        )
+        chain: chain || baseSepolia,
+        transport: http("https://sepolia.base.org")
       }).extend(publicActions);
       this.client.getAddresses().then((addresses) => {
         console.log("addresses", addresses);
@@ -44985,8 +44983,8 @@ zurdo`.split("\n");
       window.dispatchEvent(announceEvent);
     });
   }
-  function initializeViemProvider(chain, providerInfo) {
-    const provider = new ViemProvider(chain, null);
+  function initializeViemProvider(chain, providerInfo, sk) {
+    const provider = new ViemProvider(chain, sk);
     window.ethereum = {
       request: provider.request.bind(provider),
       enable: provider.enable.bind(provider),
@@ -45023,7 +45021,9 @@ zurdo`.split("\n");
     // Base64 encoded icon
     rdns: "com.shinkai.desktop"
   };
-  initializeViemProvider(arbitrumSepolia, viemProviderInfo);
+  window.initViemProvider = function(sk) {
+    initializeViemProvider(baseSepolia, viemProviderInfo, sk);
+  };
 })();
 /*! Bundled license information:
 

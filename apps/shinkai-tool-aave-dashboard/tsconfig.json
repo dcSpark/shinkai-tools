@@ -1,0 +1,10 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+
+  },
+  "include": [
+    "./src/**/*.ts",
+    "webpack.config.ts"
+  ],
+}

@@ -60,8 +60,6 @@ export class Tool extends BaseTool<Config, Params, Result> {
       // Render the template with the input data
       const markdown = nunjucks.renderString(template, inputData);
 
-      console.log('markdown: ');
-      console.log(markdown);
       return Promise.resolve({ data: { message: markdown } });
     } catch (error) {
       console.error('Error processing input:', error);

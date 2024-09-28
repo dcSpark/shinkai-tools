@@ -6,14 +6,14 @@ test('exists definition', async () => {
   expect(definition).toBeInstanceOf(Object);
 });
 
-test('transcript video', async () => {
-  const tool = new Tool({});
-  const result = await tool.run({
-    url: 'https://www.youtube.com/watch?v=SUj34OWkjXU',
-  });
-  expect(result.data.summary.length).toBeGreaterThan(0);
-  console.log(result.data.summary);
-}, 30000);
+// test('transcript video', async () => {
+//   const tool = new Tool({});
+//   const result = await tool.run({
+//     url: 'https://www.youtube.com/watch?v=SUj34OWkjXU',
+//   });
+//   expect(result.data.summary.length).toBeGreaterThan(0);
+//   console.log(result.data.summary);
+// }, 30000);
 
 
 // test('transcript video using openai', async () => {

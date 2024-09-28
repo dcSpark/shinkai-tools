@@ -1,23 +1,22 @@
 import { BaseTool, RunResult } from '@shinkai_protocol/shinkai-tools-builder';
 import { ToolDefinition } from 'libs/shinkai-tools-builder/src/tool-definition';
-import TurndownService from 'turndown';
+import TurndownService = require('turndown');
 import axios from 'axios';
 
 type Config = {};
 type Params = {
-  url: string;
+  urls: string[];
 };
 
-type Result = { markdown: string };
-
+type Result = { markdowns: string[] };
 
 export class Tool extends BaseTool<Config, Params, Result> {
   definition: ToolDefinition<Config, Params, Result> = {
-    id: 'shinkai-tool-download-page',
-    name: 'Shinkai: Download Page',
-    description: 'Downloads a URL and converts its HTML content to Markdown',
+    id: 'shinkai-tool-download-pages',
+    name: 'Shinkai: Download Pages',
+    description: 'Downloads one or more URLs and converts their HTML content to Markdown',
     author: 'Shinkai',
-    keywords: ['download page', 'url to markdown', 'shinkai'],
+    keywords: ['HTML to Markdown', 'web page downloader', 'content conversion', 'URL to Markdown'],
     configurations: {
       type: 'object',
       properties: {},
@@ -26,25 +25,27 @@ export class Tool extends BaseTool<Config, Params, Result> {
     parameters: {
       type: 'object',
       properties: {
-        url: { type: 'string' },
+        urls: { type: 'array', items: { type: 'string' } },
       },
-      required: ['url'],
+      required: ['urls'],
     },
     result: {
       type: 'object',
       properties: {
-        markdown: { type: 'string' },
+        markdowns: { type: 'array', items: { type: 'string' } },
       },
-      required: ['markdown'],
+      required: ['markdowns'],
     },
   };
 
   async run(params: Params): Promise<RunResult<Result>> {
-    await process.nextTick(() => { });
-    const response = await axios.get(params.url);
-    const html = response.data;
-    const turndownService = new TurndownService();
-    const markdown = turndownService.turndown(html);
-    return Promise.resolve({ data: { markdown } });
+    try {
+      const responses = await axios.all(params.urls.map(url => axios.get(url)));
+      const turndownService = new TurndownService();
+      const markdowns = responses.map(response => turndownService.turndown(response.data));
+      return Promise.resolve({ data: { markdowns } });
+    } catch (error) {
+      return Promise.resolve({ data: { markdowns: [] } });
+    }
   }
 }

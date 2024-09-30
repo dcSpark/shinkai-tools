@@ -29,7 +29,9 @@ build({
   platform: 'node',
   target: 'node20.16',
   outfile: outputFile,
-  loader: { '.node': 'file' },
+  loader: {
+    '.node': 'binary',
+  }
 })
   .then(async () => {
     const code = await fs.promises.readFile(outputFile, 'utf-8');

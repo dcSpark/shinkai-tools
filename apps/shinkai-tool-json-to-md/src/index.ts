@@ -1,5 +1,4 @@
-import { BaseTool, RunResult } from '@shinkai_protocol/shinkai-tools-builder';
-import { ToolDefinition } from 'libs/shinkai-tools-builder/src/tool-definition';
+import { BaseTool, RunResult, ToolDefinition } from '@shinkai_protocol/shinkai-tools-builder';
 import * as nunjucks from 'nunjucks';
 
 type Config = {

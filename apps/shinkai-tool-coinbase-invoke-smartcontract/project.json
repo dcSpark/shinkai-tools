@@ -1,0 +1,30 @@
+{
+  "name": "@shinkai_protocol/shinkai-tool-coinbase-invoke-smartcontract",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/shinkai-tool-coinbase-invoke-smartcontract/src",
+  "projectType": "library",
+  "tags": ["tool"],
+  "targets": {
+    "build": {
+      "executor": "nx:run-commands",
+      "defaultConfiguration": "production",
+      "options": {
+        "command": "npx ts-node scripts/tool-bundler.ts --entry ./apps/shinkai-tool-coinbase-invoke-smartcontract/src/index.ts --outputFolder ./dist/apps/shinkai-tool-coinbase-invoke-smartcontract"
+      },
+      "configurations": {
+        "development": {},
+        "production": {}
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "apps/shinkai-tool-coinbase-invoke-smartcontract/**/*.ts",
+          "apps/shinkai-tool-coinbase-invoke-smartcontract/package.json"
+        ]
+      }
+    }
+  }
+}

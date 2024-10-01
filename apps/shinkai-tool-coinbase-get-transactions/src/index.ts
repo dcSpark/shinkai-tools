@@ -1,11 +1,12 @@
 import { BaseTool, RunResult } from '@shinkai_protocol/shinkai-tools-builder';
 import { ToolDefinition } from 'libs/shinkai-tools-builder/src/tool-definition';
-import { Coinbase, CoinbaseOptions } from '@coinbase/coinbase-sdk';
+import { Coinbase, CoinbaseOptions, Wallet } from '@coinbase/coinbase-sdk';
 
 type Config = {
   name: string;
   privateKey: string;
   walletId: string;
+  useServerSigner?: string;
 };
 type Params = {};
 type Result = { tableCsv: string; rowsCount: number; columnsCount: number };
@@ -24,6 +25,7 @@ export class Tool extends BaseTool<Config, Params, Result> {
         name: { type: 'string' },
         privateKey: { type: 'string' },
         walletId: { type: 'string' },
+        useServerSigner: { type: 'string', nullable: true },
       },
       required: ['name', 'privateKey', 'walletId'],
     },
@@ -49,14 +51,14 @@ export class Tool extends BaseTool<Config, Params, Result> {
     const coinbaseOptions: CoinbaseOptions = {
       apiKeyName: this.config.name,
       privateKey: this.config.privateKey,
+      useServerSigner: this.config.useServerSigner === 'true',
     };
     const coinbase = new Coinbase(coinbaseOptions);
-    const user = await coinbase.getDefaultUser();
 
     // Prioritize walletId from Params over Config
     const walletId = this.config.walletId;
 
-    let wallet = await user.getWallet(walletId);
+    let wallet = await Wallet.fetch(walletId);
     console.log(`Wallet retrieved: `, wallet.toString());
 
     // Retrieve the list of balances for the wallet

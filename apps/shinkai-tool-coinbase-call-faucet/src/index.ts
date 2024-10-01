@@ -49,8 +49,6 @@ export class Tool extends BaseTool<Config, Params, Result> {
     };
     const coinbase = new Coinbase(coinbaseOptions);
     console.log(`Coinbase configured: `, coinbase);
-    const user = await coinbase.getDefaultUser();
-    console.log(`User: `, user);
 
     // Use walletId from Config only
     const walletId = this.config.walletId;

@@ -1,6 +1,6 @@
 import { BaseTool, RunResult } from '@shinkai_protocol/shinkai-tools-builder';
 import { ToolDefinition } from 'libs/shinkai-tools-builder/src/tool-definition';
-import { Coinbase, CoinbaseOptions } from '@coinbase/coinbase-sdk';
+import { Coinbase, CoinbaseOptions, Wallet } from '@coinbase/coinbase-sdk';
 
 type Config = {
   name: string;
@@ -54,11 +54,9 @@ export class Tool extends BaseTool<Config, Params, Result> {
     };
     const coinbase = new Coinbase(coinbaseOptions);
     console.log(`Coinbase configured: `, coinbase);
-    const user = await coinbase.getDefaultUser();
-    console.log(`User: `, user);
 
     // Create a new Wallet for the User
-    const wallet = await user.createWallet({
+    const wallet = await Wallet.create({
       networkId: Coinbase.networks.BaseSepolia,
     });
     console.log(`Wallet successfully created: `, wallet.toString());

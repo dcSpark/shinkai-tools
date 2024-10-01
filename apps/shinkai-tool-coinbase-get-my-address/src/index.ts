@@ -1,6 +1,6 @@
 import { BaseTool, RunResult } from '@shinkai_protocol/shinkai-tools-builder';
 import { ToolDefinition } from 'libs/shinkai-tools-builder/src/tool-definition';
-import { Coinbase, CoinbaseOptions } from '@coinbase/coinbase-sdk';
+import { Coinbase, CoinbaseOptions, Wallet } from '@coinbase/coinbase-sdk';
 
 type Config = {
   name: string;
@@ -54,8 +54,13 @@ export class Tool extends BaseTool<Config, Params, Result> {
       privateKey: this.config.privateKey,
       useServerSigner: this.config.useServerSigner === 'true',
     };
-    const coinbase = new Coinbase(coinbaseOptions);
-    const user = await coinbase.getDefaultUser();
+
+    try {
+      new Coinbase(coinbaseOptions);
+    } catch (error) {
+      console.error('Error initializing Coinbase:', error);
+      throw error;
+    }
 
     // Prioritize walletId from Params over Config
     const walletId = params.walletId || this.config.walletId;
@@ -65,12 +70,23 @@ export class Tool extends BaseTool<Config, Params, Result> {
       throw new Error('walletId must be defined in either params or config');
     }
 
-    const wallet = await user.getWallet(walletId);
+    const wallet = await Wallet.fetch(walletId);
     console.log(`Wallet retrieved: `, wallet.toString());
+
+    let addresses = await wallet.listAddresses();
+    console.log(`Addresses: `, addresses);
 
     // Retrieve the list of balances for the wallet
     let address = await wallet.getDefaultAddress();
     console.log(`Default Address: `, address);
+
+    // // Create another address in the wallet.
+    // let address2 = await wallet.createAddress();
+    // console.log(`Address: ${address2}`);
+
+    // Retrieve the list of balances for the wallet
+    let address3 = await wallet.getDefaultAddress();
+    console.log(`Default Address: `, address3);
 
     return {
       data: {

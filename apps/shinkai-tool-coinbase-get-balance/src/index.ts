@@ -62,7 +62,6 @@ export class Tool extends BaseTool<Config, Params, Result> {
       debugging: true,
     };
     const coinbase = new Coinbase(coinbaseOptions);
-    const user = await coinbase.getDefaultUser();
 
     // Prioritize walletId from Params over Config
     const walletId = params.walletId || this.config.walletId;
@@ -72,7 +71,7 @@ export class Tool extends BaseTool<Config, Params, Result> {
       throw new Error('walletId must be defined in either params or config');
     }
 
-    const wallet = await user.getWallet(walletId);
+    const wallet = await Wallet.fetch(walletId);
     console.log(`Wallet retrieved: `, wallet.toString());
 
     // Retrieve the list of balances for the wallet

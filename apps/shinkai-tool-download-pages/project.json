@@ -1,7 +1,7 @@
 {
-  "name": "@shinkai_protocol/shinkai-tool-download-page",
+  "name": "@shinkai_protocol/shinkai-tool-download-pages",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/shinkai-tool-download-page/src",
+  "sourceRoot": "apps/shinkai-tool-download-pages/src",
   "projectType": "library",
   "tags": ["tool"],
   "targets": {
@@ -9,7 +9,7 @@
       "executor": "nx:run-commands",
       "defaultConfiguration": "production",
       "options": {
-        "command": "npx ts-node scripts/tool-bundler.ts --entry ./apps/shinkai-tool-download-page/src/index.ts --outputFolder ./dist/apps/shinkai-tool-download-page"
+        "command": "npx ts-node scripts/tool-bundler.ts --entry ./apps/shinkai-tool-download-pages/src/index.ts --outputFolder ./dist/apps/shinkai-tool-download-pages"
       },
       "configurations": {
         "development": {},
@@ -21,8 +21,8 @@
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": [
-          "apps/shinkai-tool-download-page/**/*.ts",
-          "apps/shinkai-tool-download-page/package.json"
+          "apps/shinkai-tool-download-pages/**/*.ts",
+          "apps/shinkai-tool-download-pages/package.json"
         ]
       }
     }

@@ -111,7 +111,7 @@ async fn shinkai_tool_web3_eth_uniswap() {
 
 #[tokio::test]
 async fn shinkai_tool_download_page() {
-    let tool_definition = get_tool("shinkai-tool-download-page").unwrap();
+    let tool_definition = get_tool("shinkai-tool-download-pages").unwrap();
     let tool = Tool::new(
         tool_definition.code.clone().unwrap(),
         serde_json::Value::Null,
@@ -181,7 +181,7 @@ async fn shinkai_tool_download_page_stack_overflow() {
             let managed_runtime =
                 tokio::runtime::Runtime::new().expect("Failed to create Tokio runtime");
             managed_runtime.block_on(async {
-                let tool_definition = get_tool("shinkai-tool-download-page").unwrap();
+                let tool_definition = get_tool("shinkai-tool-download-pages").unwrap();
                 let tool = Tool::new(
                     tool_definition.code.clone().unwrap(),
                     serde_json::Value::Null,

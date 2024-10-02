@@ -12,4 +12,4 @@ test('run', async () => {
   });
   const run_result = await tool.run({ query: 'What is the meaning of life?' });
   expect(run_result.data.response).toEqual(expect.any(String));
-}, 15000);
+}, 30000);

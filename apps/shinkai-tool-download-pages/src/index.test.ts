@@ -1,4 +1,4 @@
-import { Tool } from '../src/index';
+import { Tool } from './index';
 test('exists definition', () => {
   const tool = new Tool({});
   const definition = tool.getDefinition();

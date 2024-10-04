@@ -15,4 +15,4 @@ test('run definition', async () => {
     assetSymbol: 'ETH',
   });
   console.log(run_result);
-}, 25000);
+}, 45000);

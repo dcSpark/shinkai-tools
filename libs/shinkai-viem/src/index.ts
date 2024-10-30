@@ -1,7 +1,7 @@
-import * as viem from 'viem';
-import * as chains from 'viem/chains';
-import { createWalletClient, parseEther } from 'viem';
-import { privateKeyToAccount } from 'viem/accounts';
+import * as viem from 'npm:viem';
+import * as chains from 'npm:viem/chains';
+import { createWalletClient, parseEther } from 'npm:viem';
+import { privateKeyToAccount } from 'npm:viem/accounts';
 
 // Assign to window object
 (window as any).viem = viem;

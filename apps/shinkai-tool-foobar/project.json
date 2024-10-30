@@ -9,7 +9,7 @@
       "executor": "nx:run-commands",
       "defaultConfiguration": "production",
       "options": {
-        "command": "npx ts-node scripts/tool-bundler.ts --entry ./apps/shinkai-tool-foobar/src/index.ts --outputFolder ./dist/apps/shinkai-tool-foobar"
+        "command": "deno task tool-bundler --entry ./apps/shinkai-tool-foobar/src/index.ts --outputFolder ./dist/apps/shinkai-tool-foobar"
       },
       "configurations": {
         "development": {},
@@ -20,10 +20,7 @@
       "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": [
-          "apps/shinkai-tool-foobar/**/*.ts",
-          "apps/shinkai-tool-foobar/package.json"
-        ]
+        "lintFilePatterns": ["apps/shinkai-tool-foobar/**/*.ts"]
       }
     }
   }

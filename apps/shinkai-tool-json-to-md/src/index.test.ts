@@ -1,4 +1,5 @@
-import { Tool } from '../src/index';
+import { expect } from 'jsr:@std/expect/expect';
+import { definition, run } from './index.ts';
 
 // Sample input JSON
 const inputJson = JSON.stringify({
@@ -175,36 +176,29 @@ Overall, SpaceX's advancements in rocket reusability, successful commercial miss
 [10]: In March 2017, SpaceX launched a returned Falcon 9 for the SES-10 satellite. This was the first time a re-launch of a payload-carrying orbital rocket went back to space.
 [11]: A significant milestone was achieved in May 2020, when SpaceX successfully launched two NASA astronauts (Doug Hurley and Bob Behnken) into orbit on a Crew Dragon spacecraft during Crew Dragon Demo-2, ...`;
 
-test('exists definition', async () => {
-  const tool = new Tool({
-    only_system: false,
-  });
-  const definition = tool.getDefinition();
+Deno.test('exists definition', () => {
   expect(definition).toBeInstanceOf(Object);
 });
 
-test('Tool converts JSON to Markdown correctly', async () => {
-  const tool = new Tool({
-    only_system: false,
-  });
-
+Deno.test('Tool converts JSON to Markdown correctly', async () => {
   const params = {
     message: inputJson,
     template: template.trim(),
   };
 
-  const result = await tool.run(params);
+  const result = await run(
+    {
+      only_system: false,
+    },
+    params,
+  );
   console.log('result: ');
   console.log(result);
-  expect(result).toHaveProperty('data.message');
-  expect(result.data.message.trim()).toBe(expectedMarkdown.trim());
+  expect(result).toHaveProperty('message');
+  expect(result.message.trim()).toBe(expectedMarkdown.trim());
 });
 
-test('Tool converts new JSON to Markdown correctly', async () => {
-  const tool = new Tool({
-    only_system: false,
-  });
-
+Deno.test('Tool converts new JSON to Markdown correctly', async () => {
   const newParams = {
     message: JSON.stringify({
       relevantSentencesFromText: [
@@ -268,7 +262,12 @@ test('Tool converts new JSON to Markdown correctly', async () => {
       '# Introduction{%- for sentence in answer.brief_introduction.sentences %}{{ sentence }}{%- endfor %}\\# Body{%- for section in answer.extensive_body %}## Section {{ loop.index }}{%- for sentence in section.sentences %}{{ sentence }}{%- endfor %}{%- endfor %}\\# Conclusion{%- for section in answer.conclusion %}{{ section.sentences[0] }}{%- endfor %}\\# Citations{%- for citation in relevantSentencesFromText %}[{{ citation.citation_id }}]: {{ citation.relevantSentenceFromDocument }}{%- endfor %}',
   };
 
-  const newResult = await tool.run(newParams);
-  expect(newResult).toHaveProperty('data.message');
-  expect(newResult.data.message.trim()).not.toBe('');
+  const newResult = await run(
+    {
+      only_system: false,
+    },
+    newParams,
+  );
+  expect(newResult).toHaveProperty('message');
+  expect(newResult.message.trim()).not.toBe('');
 });

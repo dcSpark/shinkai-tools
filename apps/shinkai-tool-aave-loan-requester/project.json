@@ -13,8 +13,8 @@
       "defaultConfiguration": "production",
       "options": {
         "commands": [
-          "npx ts-node apps/shinkai-tool-aave-loan-requester/generate-shinkai-viem-export.ts",
-          "npx ts-node scripts/tool-bundler.ts --entry ./apps/shinkai-tool-aave-loan-requester/src/index.ts --outputFolder ./dist/apps/shinkai-tool-aave-loan-requester"
+          "deno task attach-shinkai-viem --targetfile apps/shinkai-tool-aave-loan-requester/src/index.ts",
+          "deno task tool-bundler --entry ./apps/shinkai-tool-aave-loan-requester/src/index.ts --outputFolder ./dist/apps/shinkai-tool-aave-loan-requester"
         ],
         "parallel": false
       },

@@ -1,9 +1,11 @@
-import { Tool } from '../src/index';
+import { expect } from 'jsr:@std/expect/expect';
+import { definition, run } from './index.ts';
 
-test('exists definition', async () => {
-  const tool = new Tool({});
-  const definition = tool.getDefinition();
-  const result = await tool.run({ message: 'hi' });
+Deno.test('exists definition', async () => {
   expect(definition).toBeInstanceOf(Object);
-  expect(result.data.message).toBe('hello world foobar');
+});
+
+Deno.test('return something', async () => {
+  const result = await run({}, { message: 'hi' });
+  expect(result.message).toBe('hello world foobar');
 });

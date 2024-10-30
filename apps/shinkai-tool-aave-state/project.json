@@ -13,8 +13,8 @@
       "defaultConfiguration": "production",
       "options": {
         "commands": [
-          "npx copyfiles --up 3 --verbose dist/libs/shinkai-viem/* apps/shinkai-tool-aave-state/src/bundled-resources/",
-          "npx ts-node scripts/tool-bundler.ts --entry ./apps/shinkai-tool-aave-state/src/index.ts --outputFolder ./dist/apps/shinkai-tool-aave-state"
+          "deno task attach-shinkai-viem --targetfile apps/shinkai-tool-aave-state/src/index.ts",
+          "deno task tool-bundler --entry ./apps/shinkai-tool-aave-state/src/index.ts --outputFolder ./dist/apps/shinkai-tool-aave-state"
         ]
       },
       "configurations": {
@@ -29,10 +29,7 @@
       "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": [
-          "apps/shinkai-tool-aave-state/**/*.ts",
-          "apps/shinkai-tool-aave-state/package.json"
-        ]
+        "lintFilePatterns": ["apps/shinkai-tool-aave-state/**/*.ts"]
       }
     }
   }

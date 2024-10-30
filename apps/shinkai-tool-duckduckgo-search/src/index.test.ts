@@ -1,9 +1,9 @@
-import { Tool } from '../src/index';
+import { expect } from 'jsr:@std/expect/expect';
+import { run } from './index.ts';
 
-test('searches DuckDuckGo and gets a response', async () => {
-  const tool = new Tool({});
-  const result = await tool.run({ message: 'best movie of all time' });
-  const message = result.data.message;
+Deno.test('searches DuckDuckGo and gets a response', async () => {
+  const result = await run({}, { message: 'best movie of all time' });
+  const message = result.message;
   const searchResults = JSON.parse(message.replace(/^searching: /, ''));
 
   expect(Array.isArray(searchResults)).toBe(true);

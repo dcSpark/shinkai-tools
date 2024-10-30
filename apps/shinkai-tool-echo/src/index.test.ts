@@ -1,9 +1,7 @@
-import { Tool } from '../src/index';
+import { run } from './index.ts';
+import { assertEquals } from 'jsr:@std/assert';
 
-test('exists definition', async () => {
-  const tool = new Tool({});
-  const definition = tool.getDefinition();
-  const result = await tool.run({ message: 'hi' });
-  expect(definition).toBeInstanceOf(Object);
-  expect(result.data.message).toBe('echoing: hi');
+Deno.test('echo', async () => {
+  const result = await run({}, { message: 'hi' });
+  assertEquals(result.message, 'echoing: hi');
 });

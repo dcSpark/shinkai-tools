@@ -1,39 +1,40 @@
-import { Tool } from '../src/index';
+import { expect } from 'jsr:@std/expect/expect';
+import { definition, findNetworkName, run } from './index.ts';
+import process from 'node:process';
 
-test('exists definition', async () => {
-  const tool = new Tool({});
-  const definition = tool.getDefinition();
+Deno.test('exists definition', () => {
   expect(definition).toBeInstanceOf(Object);
 });
 
-test('run using top10=false, categoryName=Liquid Staking, networkName=Ethereum', async () => {
-  const tool = new Tool({
-    chromePath: process.env?.CHROME_PATH,
-  });
-  const run_result = await tool.run({
-    top10: false,
-    categoryName: 'Liquid Staking',
-    networkName: 'Ethereum',
-  });
-  console.log('table-csv', run_result.data.tableCsv);
-  expect(run_result.data.columnsCount).toEqual(12);
-  expect(run_result.data.rowsCount).toBeGreaterThan(10);
-}, 10000);
+Deno.test(
+  'run using top10=false, categoryName=Liquid Staking, networkName=Ethereum',
+  async () => {
+    const run_result = await run(
+      {
+        chromePath: process.env?.CHROME_PATH,
+      },
+      {
+        top10: false,
+        categoryName: 'Liquid Staking',
+        networkName: 'Ethereum',
+      },
+    );
+    console.log('table-csv', run_result.tableCsv);
+    expect(run_result.columnsCount).toEqual(12);
+    expect(run_result.rowsCount).toBeGreaterThan(10);
+  },
+);
 
-test('test `findNetworkName` method', async () => {
-  const tool = new Tool({
-    chromePath: process.env?.CHROME_PATH,
-  });
-
-  expect(tool.findNetworkName('base')).toEqual('Base');
-  expect(tool.findNetworkName('near')).toEqual('Near');
-  expect(tool.findNetworkName('sui')).toEqual('Sui');
-  expect(tool.findNetworkName('eThEReum')).toEqual('Ethereum');
-  expect(tool.findNetworkName('sOlANa')).toEqual('Solana');
-  expect(tool.findNetworkName('aRbITrum')).toEqual('Arbitrum');
-  expect(tool.findNetworkName('cArDAno')).toEqual('Cardano');
-  expect(tool.findNetworkName('bsc')).toEqual('BSC');
-  expect(tool.findNetworkName('undefined')).toEqual('undefined');
-  expect(tool.findNetworkName('')).toEqual(undefined);
-  expect(tool.findNetworkName(' ')).toEqual(undefined);
-}, 30000);
+Deno.test('test `findNetworkName` method', () => {
+  expect(findNetworkName('base')).toEqual('Base');
+  expect(findNetworkName('near')).toEqual('Near');
+  expect(findNetworkName('sui')).toEqual('Sui');
+  expect(findNetworkName('eThEReum')).toEqual('Ethereum');
+  expect(findNetworkName('sOlANa')).toEqual('Solana');
+  expect(findNetworkName('aRbITrum')).toEqual('Arbitrum');
+  expect(findNetworkName('cArDAno')).toEqual('Cardano');
+  expect(findNetworkName('bsc')).toEqual('BSC');
+  expect(findNetworkName('undefined')).toEqual('undefined');
+  expect(findNetworkName('')).toEqual(undefined);
+  expect(findNetworkName(' ')).toEqual(undefined);
+});

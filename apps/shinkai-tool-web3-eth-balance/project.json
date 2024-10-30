@@ -3,15 +3,13 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "apps/shinkai-tool-web3-eth-balance/src",
   "projectType": "library",
-  "tags": [
-    "tool"
-  ],
+  "tags": ["tool"],
   "targets": {
     "build": {
       "executor": "nx:run-commands",
       "defaultConfiguration": "production",
       "options": {
-        "command": "npx ts-node scripts/tool-bundler.ts --entry ./apps/shinkai-tool-web3-eth-balance/src/index.ts --outputFolder ./dist/apps/shinkai-tool-web3-eth-balance"
+        "command": "deno task tool-bundler --entry ./apps/shinkai-tool-web3-eth-balance/src/index.ts --outputFolder ./dist/apps/shinkai-tool-web3-eth-balance"
       },
       "configurations": {
         "development": {},
@@ -22,10 +20,7 @@
       "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": [
-          "apps/shinkai-tool-web3-eth-balance/**/*.ts",
-          "apps/shinkai-tool-web3-eth-balance/package.json"
-        ]
+        "lintFilePatterns": ["apps/shinkai-tool-web3-eth-balance/**/*.ts"]
       }
     }
   }

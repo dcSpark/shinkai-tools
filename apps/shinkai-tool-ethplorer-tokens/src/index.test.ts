@@ -1,14 +1,18 @@
-import { Tool } from '../src/index';
+import { expect } from 'jsr:@std/expect/expect';
+import { definition, run } from './index.ts';
 
-test('exists definition', async () => {
-  const tool = new Tool({});
-  const definition = tool.getDefinition();
-  const result = await tool.run({ address: '0xaecd92aec5bfbe2f5a02db2dee90733897360983' });
-
-  // Improved logging
-  console.log(JSON.stringify(result, null, 2));
-
+Deno.test('exists definition', async () => {
   expect(definition).toBeInstanceOf(Object);
+});
+
+Deno.test('return something', async () => {
+  const result = await run(
+    {},
+    {
+      address: '0xaecd92aec5bfbe2f5a02db2dee90733897360983',
+    },
+  );
+  expect(result.ETH).toBeInstanceOf(Object);
 });
 
 // Example Response from a random address from ethscan (maybe update it with something more meaningful)

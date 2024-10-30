@@ -1,15 +1,19 @@
-import { Tool } from '../src/index';
+import { expect } from 'jsr:@std/expect/expect';
+import { definition, run } from './index.ts';
+import process from 'node:process';
 
-test('exists definition', async () => {
-  const tool = new Tool({});
-  const definition = tool.getDefinition();
+Deno.test('exists definition', () => {
   expect(definition).toBeInstanceOf(Object);
 });
 
-test('run', async () => {
-  const tool = new Tool({
-    chromePath: process.env?.CHROME_PATH,
-  });
-  const run_result = await tool.run({ query: 'What is the meaning of life?' });
-  expect(run_result.data.response).toEqual(expect.any(String));
-}, 30000);
+Deno.test('run', async () => {
+  const run_result = await run(
+    {
+      chromePath: process.env?.CHROME_PATH,
+    },
+    {
+      query: 'What is the meaning of life?',
+    },
+  );
+  expect(run_result.response).toEqual(expect.any(String));
+});

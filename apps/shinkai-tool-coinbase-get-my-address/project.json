@@ -9,7 +9,7 @@
       "executor": "nx:run-commands",
       "defaultConfiguration": "production",
       "options": {
-        "command": "npx ts-node scripts/tool-bundler.ts --entry ./apps/shinkai-tool-coinbase-get-my-address/src/index.ts --outputFolder ./dist/apps/shinkai-tool-coinbase-get-my-address"
+        "command": "deno task tool-bundler --entry ./apps/shinkai-tool-coinbase-get-my-address/src/index.ts --outputFolder ./dist/apps/shinkai-tool-coinbase-get-my-address"
       },
       "configurations": {
         "development": {},
@@ -21,8 +21,7 @@
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": [
-          "apps/shinkai-tool-coinbase-get-my-address/**/*.ts",
-          "apps/shinkai-tool-coinbase-get-my-address/package.json"
+          "apps/shinkai-tool-coinbase-get-my-address/**/*.ts"
         ]
       }
     }

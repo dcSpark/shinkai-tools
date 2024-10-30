@@ -1,30 +1,34 @@
-import { Tool } from '../src/index';
+import { expect } from 'jsr:@std/expect/expect';
+import { definition, run } from './index.ts';
 
-test('exists definition', async () => {
-  const tool = new Tool({});
-  const definition = tool.getDefinition();
+Deno.test('exists definition', () => {
   expect(definition).toBeInstanceOf(Object);
 });
 
-// test('transcript video', async () => {
-//   const tool = new Tool({});
-//   const result = await tool.run({
-//     url: 'https://www.youtube.com/watch?v=SUj34OWkjXU',
-//   });
-//   expect(result.data.summary.length).toBeGreaterThan(0);
-//   console.log(result.data.summary);
-// }, 30000);
+// Deno.test('transcript video', async () => {
+//   const result = await run(
+//     {
+//       apiUrl: 'http://127.0.0.1:11434',
+//     },
+//     {
+//       url: 'https://www.youtube.com/watch?v=SUj34OWkjXU',
+//     },
+//   );
+//   expect(result.summary.length).toBeGreaterThan(0);
+//   console.log(result.summary);
+// });
 
-
-// test('transcript video using openai', async () => {
-//   const tool = new Tool({
-//     apiUrl: 'https://api.openai.com/v1',
-//     apiKey: '',
-//     model: 'gpt-4o'
-//   });
-//   const result = await tool.run({
-//     url: 'https://www.youtube.com/watch?v=CQdaQr3EW8g',
-//   });
-//   expect(result.data.summary.length).toBeGreaterThan(0);
-//   console.log(result.data.summary);
-// }, 30000);
+// Deno.test('transcript video using openai', async () => {
+//   const result = await run(
+//     {
+//       apiUrl: 'https://api.openai.com/v1',
+//       apiKey: '',
+//       model: 'gpt-4o',
+//     },
+//     {
+//       url: 'https://www.youtube.com/watch?v=CQdaQr3EW8g',
+//     },
+//   );
+//   expect(result.summary.length).toBeGreaterThan(0);
+//   console.log(result.summary);
+// });

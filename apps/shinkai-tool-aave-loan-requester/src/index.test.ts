@@ -1,18 +1,16 @@
-import { Tool } from '../src/index';
+import process from 'node:process';
+import { run } from './index.ts';
+import { expect } from 'jsr:@std/expect';
 
-test('exists definition', async () => {
-  const tool = new Tool({});
-  const definition = tool.getDefinition();
-  expect(definition).toBeInstanceOf(Object);
+Deno.test('echo', async () => {
+  const result = await run(
+    {
+      chromePath: process.env?.CHROME_PATH,
+    },
+    {
+      inputValue: '0.005',
+      assetSymbol: 'ETH',
+    },
+  );
+  expect(result.amountProcessed).toBeDefined();
 });
-
-test('run definition', async () => {
-  const tool = new Tool({
-    chromePath: process.env?.CHROME_PATH,
-  });
-  const run_result = await tool.run({
-    inputValue: '0.005',
-    assetSymbol: 'ETH',
-  });
-  console.log(run_result);
-}, 45000);

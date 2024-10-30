@@ -9,7 +9,7 @@
       "executor": "nx:run-commands",
       "defaultConfiguration": "production",
       "options": {
-        "command": "npx ts-node scripts/tool-bundler.ts --entry ./apps/shinkai-tool-coinbase-get-transactions/src/index.ts --outputFolder ./dist/apps/shinkai-tool-coinbase-get-transactions"
+        "command": "deno task tool-bundler --entry ./apps/shinkai-tool-coinbase-get-transactions/src/index.ts --outputFolder ./dist/apps/shinkai-tool-coinbase-get-transactions"
       },
       "configurations": {
         "development": {},
@@ -21,8 +21,7 @@
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": [
-          "apps/shinkai-tool-coinbase-get-transactions/**/*.ts",
-          "apps/shinkai-tool-coinbase-get-transactions/package.json"
+          "apps/shinkai-tool-coinbase-get-transactions/**/*.ts"
         ]
       }
     }

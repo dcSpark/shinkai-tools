@@ -1,17 +1,25 @@
-import { Tool } from '../src/index';
+import { expect } from 'jsr:@std/expect/expect';
+import { run } from './index.ts';
+import process from 'node:process';
 
-test('exists definition', async () => {
-  const tool = new Tool({});
-  const definition = tool.getDefinition();
-  expect(definition).toBeInstanceOf(Object);
+Deno.test({
+  name: 'get shinkai page title',
+  permissions: {
+    read: true,
+    env: true,
+    write: true,
+    run: true,
+  },
+  fn: async () => {
+    const result = await run(
+      {
+        chromePath: process.env?.CHROME_PATH,
+      },
+      { url: 'https://shinkai.com' },
+    );
+    console.log('tool result', result);
+    expect(result.title).toBe(
+      'Shinkai | Fully Local AI (Models, Files and Agents)',
+    );
+  },
 });
-
-test('run', async () => {
-  const tool = new Tool({
-    chromePath: process.env?.CHROME_PATH,
-  });
-  const run_result = await tool.run({ url: 'https://shinkai.com' });
-  expect(run_result.data.title).toBe(
-    'Shinkai | Fully Local AI (Models, Files and Agents)',
-  );
-}, 15000);

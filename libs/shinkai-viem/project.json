@@ -9,7 +9,7 @@
       "executor": "nx:run-commands",
       "defaultConfiguration": "production",
       "options": {
-        "command": "esbuild libs/shinkai-viem/src/index.ts --bundle --outfile=dist/libs/shinkai-viem/shinkai-viem.js"
+        "command": "deno task shinkai-viem-bundler --entry=libs/shinkai-viem/src/index.ts --outfile=dist/libs/shinkai-viem/shinkai-viem.js"
       },
       "configurations": {
         "development": {},
@@ -20,10 +20,7 @@
       "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": [
-          "libs/shinkai-viem/**/*.ts",
-          "libs/shinkai-viem/package.json"
-        ]
+        "lintFilePatterns": ["libs/shinkai-viem/**/*.ts"]
       }
     }
   }

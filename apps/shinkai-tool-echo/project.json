@@ -9,7 +9,7 @@
       "executor": "nx:run-commands",
       "defaultConfiguration": "production",
       "options": {
-        "command": "npx ts-node scripts/tool-bundler.ts --entry ./apps/shinkai-tool-echo/src/index.ts --outputFolder ./dist/apps/shinkai-tool-echo"
+        "command": "deno task tool-bundler --entry ./apps/shinkai-tool-echo/src/index.ts --outputFolder ./dist/apps/shinkai-tool-echo"
       },
       "configurations": {
         "development": {},
@@ -21,8 +21,7 @@
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": [
-          "apps/shinkai-tool-echo/**/*.ts",
-          "apps/shinkai-tool-echo/package.json"
+          "apps/shinkai-tool-echo/**/*.ts"
         ]
       }
     }

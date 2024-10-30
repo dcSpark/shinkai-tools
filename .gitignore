@@ -14,3 +14,4 @@ libs/shinkai-tools-runner/tools
 libs/shinkai-tools-runner/shinkai-tools-runner-resources
 apps/shinkai-tool-aave-load-requester/src/bundled-resources
 launch.json
+.DS_Store

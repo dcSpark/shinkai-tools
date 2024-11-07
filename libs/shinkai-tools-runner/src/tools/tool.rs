@@ -1,20 +1,14 @@
-use std::time::Duration;
-
-use reqwest::{header, Client};
 use serde_json::Value;
 
 use super::{
-    execution_error::ExecutionError, run_result::RunResult,
-    shinkai_tools_backend::ShinkaiToolsBackend,
-    shinkai_tools_backend_options::ShinkaiToolsBackendOptions, tool_definition::ToolDefinition,
+    deno_runner::DenoRunner, deno_runner_options::DenoRunnerOptions,
+    execution_error::ExecutionError, run_result::RunResult, tool_definition::ToolDefinition,
 };
 
 pub struct Tool {
-    tool_backend_url: String,
     code: String,
     configurations: Value,
-    http_client: Client,
-    shinkai_tools_backend_options: ShinkaiToolsBackendOptions,
+    deno_runner_options: DenoRunnerOptions,
 }
 
 impl Tool {
@@ -23,140 +17,56 @@ impl Tool {
     pub fn new(
         code: String,
         configurations: Value,
-        shinkai_tools_backend_options: Option<ShinkaiToolsBackendOptions>,
+        deno_runner_options: Option<DenoRunnerOptions>,
     ) -> Self {
-        let options = shinkai_tools_backend_options.unwrap_or_default();
+        let options = deno_runner_options.unwrap_or_default();
         Tool {
-            tool_backend_url: format!("http://127.0.0.1:{}", options.api_port).to_string(),
             code,
             configurations,
-            http_client: Self::build_http_client(),
-            shinkai_tools_backend_options: options,
+            deno_runner_options: options,
         }
     }
 
-    pub fn build_http_client() -> Client {
-        let mut headers = header::HeaderMap::new();
-        headers.insert(
-            "Content-Type",
-            header::HeaderValue::from_static("application/json"),
+    pub async fn definition(&self) -> Result<ToolDefinition, ExecutionError> {
+        log::info!("preparing to get tool definition from code");
+
+        let mut deno_runner = DenoRunner::new(self.deno_runner_options.clone());
+
+        // Empty envs when get definition
+        let envs = std::collections::HashMap::new();
+        let code = format!(
+            r#"
+            {}
+            console.log("<shinkai-tool-definition>");
+            console.log(JSON.stringify(definition));
+            console.log("</shinkai-tool-definition>");
+        "#,
+            &self.code.to_string()
         );
-        Client::builder().default_headers(headers).build().unwrap()
-    }
-
-    async fn internal_get_definition(&self) -> Result<ToolDefinition, ExecutionError> {
-        println!("Preparing to get tool definition for code");
-
-        let body = serde_json::json!({
-            "code": self.code,
-        })
-        .to_string();
-        println!("Request body for tool definition: {}", body);
-
-        let response = self
-            .http_client
-            .post(format!("{}/tool/definition", self.tool_backend_url))
-            .body(body)
-            .timeout(Duration::from_secs(5))
-            .send()
+        let result = deno_runner
+            .run(&code, envs, None)
             .await
-            .map_err(|e| {
-                println!("Failed to get tool definition: {}", e);
-                ExecutionError::new(format!("Failed to get tool definition: {}", e), None)
-            })?;
+            .map_err(|e| ExecutionError::new(format!("failed to run deno: {}", e), None))?;
 
-        println!("Received response with status: {}", response.status());
+        let result_text = result
+            .lines()
+            .skip_while(|line| !line.contains("<shinkai-tool-definition>"))
+            .skip(1)
+            .take_while(|line| !line.contains("</shinkai-tool-definition>"))
+            .collect::<Vec<&str>>()
+            .join("\n");
 
-        if response.status() != reqwest::StatusCode::OK {
-            println!("Unexpected response status: {}", response.status());
-            return Err(ExecutionError::new(
-                format!("Unexpected response status: {}", response.status()),
-                None,
-            ));
-        }
+        log::info!("result text: {}", result_text);
 
-        let response_text = response.text().await.map_err(|e| {
-            println!("Failed to read response text: {}", e);
-            ExecutionError::new(format!("Failed to read response text: {}", e), None)
+        let tool_definition: ToolDefinition = serde_json::from_str(&result_text).map_err(|e| {
+            log::info!("failed to parse tool definition: {}", e);
+            ExecutionError::new(format!("failed to parse tool definition: {}", e), None)
         })?;
-        println!("Response text: {}", response_text);
 
-        let tool_definition: ToolDefinition =
-            serde_json::from_str(&response_text).map_err(|e| {
-                println!("Failed to parse tool definition: {}", e);
-                ExecutionError::new(format!("Failed to parse tool definition: {}", e), None)
-            })?;
-        println!(
-            "Successfully retrieved tool definition: {:?}",
+        log::info!(
+            "successfully retrieved tool definition: {:?}",
             tool_definition
         );
-        Ok(tool_definition)
-    }
-
-    pub async fn get_definition(&mut self) -> Result<ToolDefinition, ExecutionError> {
-        let mut shinkai_tool_backend =
-            ShinkaiToolsBackend::new(self.shinkai_tools_backend_options.clone());
-        let _ = shinkai_tool_backend.run().await;
-        let result = self.internal_get_definition().await;
-        let _ = shinkai_tool_backend.kill().await;
-        result
-    }
-
-    async fn internal_run(
-        &self,
-        parameters: Value,
-        max_execution_time_s: Option<u64>,
-    ) -> Result<RunResult, ExecutionError> {
-        println!("Preparing to run tool");
-        println!("Configurations: {:?}", self.configurations);
-        println!("Parameters: {:?}", parameters);
-
-        let body = serde_json::json!({
-            "code": self.code,
-            "configurations": self.configurations,
-            "parameters": parameters,
-        })
-        .to_string();
-
-        println!(
-            "Sending request to run tool at: {}/tool/run",
-            self.tool_backend_url
-        );
-        let response = self
-            .http_client
-            .post(format!("{}/tool/run", self.tool_backend_url))
-            .header("Content-Type", "application/json")
-            .body(body)
-            .timeout(Duration::from_secs(max_execution_time_s.unwrap_or(60)))
-            .send()
-            .await
-            .map_err(|e| {
-                println!("Failed to run tool: {}", e);
-                ExecutionError::new(format!("Failed to run tool: {}", e), None)
-            })?;
-
-        println!("Received response with status: {}", response.status());
-        if response.status() != reqwest::StatusCode::OK {
-            println!("Unexpected response status: {}", response.status());
-            return Err(ExecutionError::new(
-                format!("Unexpected response status: {}", response.status()),
-                None,
-            ));
-        }
-
-        println!("Parsing response text for /tool/run.");
-        let response_text = response.text().await.map_err(|e| {
-            println!("Failed to read response text: {}", e);
-            ExecutionError::new(format!("Failed to read response text: {}", e), None)
-        })?;
-
-        println!("Response text: {}", response_text);
-        let tool_definition: RunResult = serde_json::from_str(&response_text).map_err(|e| {
-            println!("Failed to parse run result: {}", e);
-            ExecutionError::new(format!("Failed to parse run result: {}", e), None)
-        })?;
-
-        println!("Successfully parsed run result: {:?}", tool_definition);
         Ok(tool_definition)
     }
 
@@ -165,13 +75,52 @@ impl Tool {
         parameters: Value,
         max_execution_time_s: Option<u64>,
     ) -> Result<RunResult, ExecutionError> {
-        let mut shinkai_tool_backend =
-            ShinkaiToolsBackend::new(self.shinkai_tools_backend_options.clone());
-        shinkai_tool_backend.run().await.map_err(|e| {
-            ExecutionError::new(format!("Failed to run shinkai tool backend: {}", e), None)
+        log::info!("preparing to run tool");
+        log::info!("configurations: {}", self.configurations.to_string());
+        log::info!("parameters: {}", parameters.to_string());
+
+        let mut deno_runner = DenoRunner::new(self.deno_runner_options.clone());
+        // Empty envs when get definition
+        let envs = std::collections::HashMap::new();
+        let code = format!(
+            r#"
+            {}
+            const configurations = JSON.parse('{}');
+            const parameters = JSON.parse('{}');
+
+            const result = await run(configurations, parameters);
+            console.log("<shinkai-tool-result>");
+            console.log(JSON.stringify(result));
+            console.log("</shinkai-tool-result>");
+        "#,
+            &self.code.to_string(),
+            serde_json::to_string(&self.configurations).unwrap().replace("\\", "\\\\"),
+            serde_json::to_string(&parameters).unwrap().replace("\\", "\\\\"),
+        );
+        let result = deno_runner
+            .run(&code, envs, max_execution_time_s)
+            .await
+            .map_err(|e| ExecutionError::new(format!("failed to run deno: {}", e), None))?;
+
+        let result_text = result
+            .lines()
+            .skip_while(|line| !line.contains("<shinkai-tool-result>"))
+            .skip(1)
+            .take_while(|line| !line.contains("</shinkai-tool-result>"))
+            .collect::<Vec<&str>>()
+            .join("\n");
+
+        log::info!("result text: {}", result_text);
+
+        let result: Value = serde_json::from_str(&result_text).map_err(|e| {
+            log::info!("failed to parse result: {}", e);
+            ExecutionError::new(format!("failed to parse result: {}", e), None)
         })?;
-        let result = self.internal_run(parameters, max_execution_time_s).await;
-        let _ = shinkai_tool_backend.kill().await;
-        result
+        log::info!("successfully parsed run result: {:?}", result);
+        Ok(RunResult { data: result })
     }
 }
+
+#[cfg(test)]
+#[path = "tool.test.rs"]
+mod tests;

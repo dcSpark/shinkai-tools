@@ -1,54 +1,65 @@
-import { BaseTool, RunResult } from '@shinkai_protocol/shinkai-tools-builder';
-import { ToolDefinition } from 'libs/shinkai-tools-builder/src/tool-definition';
-import * as playwright from 'playwright';
-import * as chromePaths from 'chrome-paths';
+import * as playwright from 'npm:playwright@1.48.2';
+import chromePaths from 'npm:chrome-paths@1.0.1';
 
-type Config = {
+type Configurations = {
   chromePath?: string;
 };
-type Params = {
+type Parameters = {
   url: string;
 };
 type Result = { title: string };
-export class Tool extends BaseTool<Config, Params, Result> {
-  definition: ToolDefinition<Config, Params, Result> = {
-    id: 'shinkai-tool-playwright-example',
-    name: 'Shinkai: playwright-example',
-    description: 'New playwright-example tool from template',
-    author: 'Shinkai',
-    keywords: ['playwright-example', 'shinkai'],
-    configurations: {
-      type: 'object',
-      properties: {
-        chromePath: { type: 'string', nullable: true },
-      },
-      required: [],
-    },
-    parameters: {
-      type: 'object',
-      properties: {
-        url: { type: 'string' },
-      },
-      required: ['url'],
-    },
-    result: {
-      type: 'object',
-      properties: {
-        title: { type: 'string' },
-      },
-      required: ['title'],
-    },
-  };
 
-  async run(params: Params): Promise<RunResult<Result>> {
-    const browser = await playwright['chromium'].launch({
-      executablePath: this.config?.chromePath || chromePaths.chrome,
-    });
+export const run: Run<Configurations, Parameters, Result> = async (
+  configurations,
+  parameters,
+): Promise<Result> => {
+  const chromePath = configurations?.chromePath || chromePaths.chrome;
+  console.log('executing chrome from', chromePath);
+  const browser = await playwright['chromium'].launch({
+    executablePath: chromePath,
+  });
+  try {
     const context = await browser.newContext();
     const page = await context.newPage();
-    await page.goto(params.url);
+    console.log('navigating to', parameters.url);
+    await page.goto(parameters.url);
     const title = await page.title();
+    await page.close();
+    await context.close();
     await browser.close();
-    return Promise.resolve({ data: { title } });
+    return { title };
+  } catch (e) {
+    console.log('error', e);
+    await browser.close();
+    throw e;
   }
-}
+};
+
+export const definition: ToolDefinition<typeof run> = {
+  id: 'shinkai-tool-playwright-example',
+  name: 'Shinkai: playwright-example',
+  description: 'New playwright-example tool from template',
+  author: 'Shinkai',
+  keywords: ['playwright-example', 'shinkai'],
+  configurations: {
+    type: 'object',
+    properties: {
+      chromePath: { type: 'string', nullable: true },
+    },
+    required: [],
+  },
+  parameters: {
+    type: 'object',
+    properties: {
+      url: { type: 'string' },
+    },
+    required: ['url'],
+  },
+  result: {
+    type: 'object',
+    properties: {
+      title: { type: 'string' },
+    },
+    required: ['title'],
+  },
+};

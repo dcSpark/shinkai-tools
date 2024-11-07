@@ -6,13 +6,15 @@
   "tags": [],
   "targets": {
     "lint": {
-      "executor": "@nx/linter:eslint",
-      "outputs": ["{options.outputFile}"],
+      "executor": "nx:run-commands",
       "options": {
-        "lintFilePatterns": [
-          "libs/shinkai-tools-builder/**/*.ts",
-          "libs/shinkai-tools-builder/package.json"
-        ]
+        "command": "deno lint libs/shinkai-tools-builder/src/**/*.ts"
+      }
+    },
+    "test": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "deno test --no-check --allow-all libs/shinkai-tools-builder/src/**/*.test.ts"
       }
     }
   }

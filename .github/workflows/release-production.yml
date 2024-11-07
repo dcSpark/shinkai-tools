@@ -30,68 +30,8 @@ jobs:
           script: |
             core.setFailed('Version mismatch')
 
-  release-shinkai-tools-backend:
-    needs: prebuild
-    name: Release Shinkai Tools Backend
-    environment: production
-    strategy:
-      matrix:
-        include:
-          - arch: x86_64-unknown-linux-gnu
-            os: ubuntu-22.04
-          - arch: aarch64-apple-darwin
-            os: macos-14
-          - arch: x86_64-pc-windows-msvc
-            os: windows-2022
-
-    runs-on: ${{ matrix.os }}
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Setup Node version
-        uses: actions/setup-node@v4
-        with:
-          node-version-file: '.nvmrc'
-          check-latest: false
-          cache: 'npm'
-          cache-dependency-path: package-lock.json
-
-      - name: Install dependencies
-        run: |
-          npm cache verify
-          npm ci --no-audit --prefer-offline
-
-      - name: Run NX build
-        run: npx nx build @shinkai_protocol/shinkai-tools-backend --skip-nx-cache --verbose
-
-      - name: Prepare folder to upload
-        env:
-          BINARY_NAME: shinkai-tools-backend${{ matrix.arch == 'x86_64-pc-windows-msvc' && '.exe' || '' }}
-        run: |
-          mkdir files-to-r2
-          cp ./dist/apps/shinkai-tools-backend/${{ env.BINARY_NAME }} ./files-to-r2/${{ env.BINARY_NAME }}
-
-      - name: Compress files
-        run: |
-          cd ./files-to-r2
-          ls
-          7z a -tzip ${{ needs.prebuild.outputs.version }}.zip . -sdel
-
-      - name: Upload updates.json to R2
-        uses: shallwefootball/s3-upload-action@master
-        with:
-          endpoint: https://54bf1bf573b3e6471e574cc4d318db64.r2.cloudflarestorage.com
-          aws_key_id: ${{ secrets.R2_ACCESS_KEY_ID }}
-          aws_secret_access_key: ${{ secrets.R2_SECRET_ACCESS_KEY }}
-          aws_bucket: shinkai-download
-          source_dir: ./files-to-r2/
-          destination_dir: ./shinkai-tools-backend/binaries/production/${{ matrix.arch }}/
-
   publish-libraries:
-    needs: [prebuild, release-shinkai-tools-backend]
+    needs: [prebuild]
     runs-on: ubuntu-22.04
     environment: production
     steps:
@@ -134,4 +74,4 @@ jobs:
         run: npx nx run-many -t publish --verbose
         env:
           CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
-          EMBEDDING_API_URL : ${{ vars.EMBEDDING_API_URL }}
+          EMBEDDING_API_URL: ${{ vars.EMBEDDING_API_URL }}

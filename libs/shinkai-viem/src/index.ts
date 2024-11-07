@@ -1,7 +1,8 @@
-import * as viem from 'viem';
-import * as chains from 'viem/chains';
-import { createWalletClient, parseEther } from 'viem';
-import { privateKeyToAccount } from 'viem/accounts';
+// deno-lint-ignore-file no-window no-window-prefix
+import * as viem from 'npm:viem';
+import * as chains from 'npm:viem/chains';
+import { createWalletClient } from 'npm:viem';
+import { privateKeyToAccount } from 'npm:viem/accounts';
 
 // Assign to window object
 (window as any).viem = viem;
@@ -33,17 +34,17 @@ class ViemProvider {
     });
   }
 
-  async enable() {
+  enable() {
     return this.requestAccounts();
   }
 
-  async request({ method, params }: { method: string; params: any[] }) {
+  request({ method, params }: { method: string; params: any[] }) {
     console.log('request', method, params);
     switch (method) {
       case 'eth_requestAccounts':
         return this.requestAccounts();
       case 'eth_accounts':
-        return this.getAccounts();
+        return Promise.resolve(this.getAccounts());
       case 'eth_sendTransaction':
         return this.sendTransaction(params[0]);
       case 'eth_sign':
@@ -117,7 +118,7 @@ class ViemProvider {
     return [address];
   }
 
-  async getAccounts() {
+  getAccounts() {
     return this.selectedAddress ? [this.selectedAddress] : [];
   }
 
@@ -172,21 +173,21 @@ class ViemProvider {
     // return hash;
   }
 
-  async sign(address: viem.Hex, message: string) {
+  sign(address: viem.Hex, message: string) {
     if (address !== this.selectedAddress) {
       throw new Error('Address mismatch');
     }
     return this.client.signMessage({ account: address, message });
   }
 
-  async personalSign(message: string, address: viem.Hex) {
+  personalSign(message: string, address: viem.Hex) {
     if (address !== this.selectedAddress) {
       throw new Error('Address mismatch');
     }
     return this.client.signMessage({ account: address, message });
   }
 
-  async signTypedData(address: viem.Hex, typedData: any) {
+  signTypedData(address: viem.Hex, typedData: any) {
     if (address !== this.selectedAddress) {
       throw new Error('Address mismatch');
     }
@@ -254,11 +255,14 @@ function initializeViemProvider(chain: any, providerInfo: EIP6963ProviderInfo) {
   (window as any).ethereum = {
     request: provider.request.bind(provider),
     enable: provider.enable.bind(provider),
-    on: (eventName: string, callback: (...args: any[]) => void) => {
+    on: (eventName: string, _callback: (...args: any[]) => void) => {
       // Implement event listeners if needed
       console.log(`Event listener for ${eventName} added.`);
     },
-    removeListener: (eventName: string, callback: (...args: any[]) => void) => {
+    removeListener: (
+      eventName: string,
+      _callback: (...args: any[]) => void,
+    ) => {
       // Implement event removal if needed
       console.log(`Event listener for ${eventName} removed.`);
     },

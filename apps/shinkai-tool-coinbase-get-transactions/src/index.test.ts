@@ -1,7 +1,6 @@
-import { Tool } from './index';
+import { expect } from 'jsr:@std/expect/expect';
+import { definition } from './index.ts';
 
-test('exists definition', async () => {
-  // const tool = new Tool({ name: 'test', privateKey: 'test' });
-  // const definition = tool.getDefinition();
-  // expect(definition).toBeInstanceOf(Object);
+Deno.test('exists definition', () => {
+  expect(definition).toBeInstanceOf(Object);
 });

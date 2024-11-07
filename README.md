@@ -5,13 +5,13 @@
 Shinkai Tools serves as the ecosystem to execute Shinkai tools, provided by the Shinkai team or third-party developers, in a secure environment. It provides a sandboxed space for executing these tools, 
 ensuring that they run safely and efficiently, while also allowing for seamless integration with Rust code.
 
-This repository is a comprehensive collection of tools and utilities designed to facilitate the integration of JavaScript and Rust code. It provides a framework for executing JavaScript scripts within a Rust environment, allowing for seamless communication and data exchange between the two languages.
+This repository is a comprehensive collection of tools and utilities designed to facilitate the integration of JavaScript and Rust code. It provides a framework for executing Deno scripts within a Rust environment, allowing for seamless communication and data exchange between the two languages.
 
 The primary components of this repository include:
 
-* `apps/shinkai-tool-*` These are small JavaScript tools designed to perform specific tasks. Each tool is a self-contained project with its own configuration and build process, allowing for easy maintenance and updates.
-* `libs/shinkai-tools-builder` is a TypeScript library that provides the necessary classes and types to build new tools, making it easier to create and integrate new tools into the Shinkai ecosystem.
-* `libs/shinkai-tools-runner` is a Rust library used to execute a tool in a secured and performant JavaScript environment, providing a safe and efficient way to run tools within the Shinkai ecosystem.
+* `apps/shinkai-tool-*` These are small Deno tools designed to perform specific tasks. Each tool is a self-contained project with its own configuration and build process, allowing for easy maintenance and updates.
+* `libs/shinkai-tools-builder` type definitions to make tools more readable and easy to code.
+* `libs/shinkai-tools-runner` is a Rust library used to execute a tool in a secured and performant Deno environment, providing a safe and efficient way to run tools within the Shinkai ecosystem.
 
 ## Documentation
 
@@ -47,13 +47,35 @@ use shinkai_tools_runner::tools::tool::Tool;
 #[tokio::main]
 async fn main() {
     let tool_definition = get_tool("shinkai-tool-echo").unwrap();
-    let mut tool = Tool::new();
-    let _ = tool
-        .load_from_code(&tool_definition.code.clone().unwrap(), "")
-        .await;
-    let run_result = tool.run("{ \"message\": \"new york\" }").await.unwrap();
-    assert_eq!(run_result.data["message"], "echoing: new york");
+    let tool = Tool::new(
+        tool_definition.code.clone().unwrap(),
+        serde_json::Value::Null,
+        None,
+    );
+    let run_result = tool
+        .run(serde_json::json!({ "message": "valparaíso" }), None)
+        .await
+        .unwrap();
+    println!("{}", run_result.data["message"]);
+    // > "Hello, world!"
 }
+```
+
+Also you can run inline tools. The only needed structure is a run method (it can be sync or async) with two parameters:
+
+```rust
+    let js_code = r#"
+        function run(configurations, params) {
+            return { message: `Hello, ${params.name}!` };
+        }
+"#;
+    let tool = Tool::new(js_code.to_string(), serde_json::Value::Null, None);
+    let run_result = tool
+        .run(serde_json::json!({ "name": "world" }), None)
+        .await
+        .unwrap();
+    println!("{}", run_result.data["message"]);
+    // > "Hello, world!"
 ```
 
 ## Adding a New Shinkai Tool

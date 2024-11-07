@@ -4,13 +4,7 @@ description = "Rust library to execute shinkai-tools in a safe and performant en
 version = { workspace = true }
 edition = { workspace = true }
 keywords = ["shinkai", "tools", "runner", "safe", "ai"]
-include = [
-    "src/**/*",
-    "tools/**/*",
-    "build.rs",
-    "Cargo.toml",
-    "Cargo.lock",
-]
+include = ["src/**/*", "tools/**/*", "build.rs", "Cargo.toml", "Cargo.lock"]
 license-file = { workspace = true }
 homepage = { workspace = true }
 readme = { workspace = true }
@@ -32,12 +26,17 @@ derive_more = "0.99.18"
 derivative = "2.2.0"
 dispose = "0.5.0"
 zip = "2.2.0"
+tempfile = "3.13.0"
+log = "0.4.22"
+once_cell = { version = "1.20.2" }
+env_logger = "0.11.5"
 
 [build-dependencies]
 copy_to_output = "2.2.0"
 glob = "0.3"
 reqwest = { version = "0.11.26", features = ["blocking"] }
 zip = "2.2.0"
+once_cell = { version = "1.20.2" }
 
 [features]
 built-in-tools = []

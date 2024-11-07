@@ -6,12 +6,18 @@ use crate::built_in_tools::{get_tool, get_tools};
 async fn get_tools_all_load() {
     let tools = get_tools();
     for (tool_name, tool_definition) in tools {
-        let mut tool_instance = crate::tools::tool::Tool::new(tool_definition.code.unwrap(), Value::Null, None);
-        let defintion = tool_instance
-            .get_definition()
-            .await;
+        println!("creating tool instance for {}", tool_name);
+        let tool_instance =
+            crate::tools::tool::Tool::new(tool_definition.code.unwrap(), Value::Null, None);
+        println!("fetching definition for {}", tool_name);
+        let defintion = tool_instance.definition().await;
+        println!(
+            "definition load successfully for {}: {:?}",
+            tool_name,
+            defintion.clone().unwrap().id
+        );
         assert_eq!(defintion.as_ref().unwrap().id, tool_name);
-        assert!(defintion.is_ok(), "Tool {} failed to load", tool_name);
+        assert!(defintion.is_ok(), "tool {} failed to load", tool_name);
     }
 }
 

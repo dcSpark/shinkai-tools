@@ -1,7 +1,6 @@
-import { Tool } from '../src/index';
+import { expect } from 'jsr:@std/expect/expect';
+import { definition } from './index.ts';
 
-test('exists definition', () => {
-  const tool = new Tool({});
-  const definition = tool.getDefinition();
+Deno.test('exists definition', () => {
   expect(definition).toBeInstanceOf(Object);
 });

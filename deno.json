@@ -1,0 +1,17 @@
+{
+  "nodeModulesDir": "auto",
+  "compilerOptions": {
+    "lib": ["deno.window", "document", "dom"]
+  },
+  "tasks": {
+    "shinkai-viem-bundler": "deno run --allow-read --allow-env --allow-write --allow-run scripts/shinkai-viem-bundler.ts",
+    "tool-bundler": "deno run --allow-read --allow-env --allow-write --allow-ffi --allow-sys --allow-net scripts/tool-bundler.ts",
+    "attach-shinkai-viem": "deno run --allow-read --allow-write scripts/attach-shinkai-viem.ts",
+    "copy-deno": "deno run --allow-read --allow-write scripts/copy-deno.ts"
+  },
+  "lint": {
+    "rules": {
+      "exclude": ["ban-types", "no-explicit-any"]
+    }
+  }
+}

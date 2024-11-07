@@ -48,6 +48,10 @@ jobs:
           cache: 'npm'
           cache-dependency-path: package-lock.json
 
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
       - name: Cache cargo assets
         id: cache
         uses: actions/cache@v4

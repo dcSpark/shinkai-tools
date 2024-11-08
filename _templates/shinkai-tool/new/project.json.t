@@ -12,17 +12,6 @@ to: apps/shinkai-tool-<%= name %>/project.json
       "executor": "nx:run-commands",
       "defaultConfiguration": "production",
       "options": {
-        "command": "npx ts-node scripts/tool-bundler.ts --entry ./apps/shinkai-tool-<%= name %>/src/index.ts --outputFolder ./dist/apps/shinkai-tool-<%= name %>"
-      },
-      "configurations": {
-        "development": {},
-        "production": {}
-      }
-    },
-    "build": {
-      "executor": "nx:run-commands",
-      "defaultConfiguration": "production",
-      "options": {
         "command": "deno task tool-bundler --entry ./apps/shinkai-tool-<%= name %>/src/index.ts --outputFolder ./dist/apps/shinkai-tool-<%= name %>"
       },
     },

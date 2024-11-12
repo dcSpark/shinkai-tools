@@ -40,6 +40,18 @@ export const run: Run<Configurations, Parameters, Result> = async (
   console.log('Filling textarea with query:', params.query);
   await page.fill('textarea', params.query);
 
+  try {
+    console.log('trying to click app popup');
+    await page.click('button:has(svg[data-icon="xmark"])', { timeout: 2000 });
+  } catch (_) {
+    console.log('unable to find the x button to close the popup');
+    /*
+      We do nothing, so we have two cases:
+      - the code continue and fails later because we are not able to click the "submit" button
+      - the code continue and it just works because the app was changed and the popup doesn't exists
+    */
+  }
+
   console.log('Clicking the button with the specified SVG...');
   await page.click('button:has(svg[data-icon="arrow-right"])');
 

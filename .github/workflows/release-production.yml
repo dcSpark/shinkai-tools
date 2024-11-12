@@ -75,7 +75,7 @@ jobs:
           cargo set-version ${{ needs.prebuild.outputs.version }}
 
       - name: Run NX publish
-        run: npx nx run-many -t publish --verbose
+        run: npx nx run-many -t publish --verbose --parallel=false
         env:
           CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
           EMBEDDING_API_URL: ${{ vars.EMBEDDING_API_URL }}

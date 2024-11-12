@@ -21,7 +21,7 @@ impl DenoRunner {
     pub async fn run(
         &mut self,
         code: &str,
-        envs: HashMap<String, String>,
+        envs: Option<HashMap<String, String>>,
         max_execution_time_s: Option<u64>,
     ) -> Result<String, std::io::Error> {
         log::info!("using deno binary at path: {:?}", self.options.binary_path);
@@ -41,8 +41,10 @@ impl DenoRunner {
             .arg(temp_file.path().to_str().unwrap())
             .stdout(std::process::Stdio::piped())
             .stderr(std::process::Stdio::piped())
-            .envs(envs)
             .kill_on_drop(true);
+        if let Some(envs) = envs {
+            command.envs(envs);
+        }
         log::info!("prepared command with arguments: {:?}", command);
         let child = command.spawn()?;
 

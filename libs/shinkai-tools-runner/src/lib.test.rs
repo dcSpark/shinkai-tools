@@ -18,7 +18,7 @@ async fn shinkai_tool_echo() {
         None,
     );
     let run_result = tool
-        .run(serde_json::json!({ "message": "valparaíso" }), None)
+        .run(None, serde_json::json!({ "message": "valparaíso" }), None)
         .await
         .unwrap();
     assert_eq!(run_result.data["message"], "echoing: valparaíso");
@@ -37,7 +37,7 @@ async fn shinkai_tool_weather_by_city() {
         None,
     );
     let run_result = tool
-        .run(serde_json::json!({ "city": "valparaíso" }), None)
+        .run(None, serde_json::json!({ "city": "valparaíso" }), None)
         .await;
     assert!(run_result.is_ok());
 }
@@ -55,7 +55,7 @@ async fn shinkai_tool_inline() {
 "#;
     let tool = Tool::new(js_code.to_string(), serde_json::Value::Null, None);
     let run_result = tool
-        .run(serde_json::json!({ "name": "world" }), None)
+        .run(None, serde_json::json!({ "name": "world" }), None)
         .await
         .unwrap();
     assert_eq!(run_result.data["message"], "Hello, world!");
@@ -73,7 +73,7 @@ async fn shinkai_tool_inline_non_json_return() {
         }
 "#;
     let tool = Tool::new(js_code.to_string(), serde_json::Value::Null, None);
-    let run_result = tool.run(serde_json::json!({}), None).await.unwrap();
+    let run_result = tool.run(None, serde_json::json!({}), None).await.unwrap();
     assert_eq!(run_result.data, 5);
 }
 
@@ -91,6 +91,7 @@ async fn shinkai_tool_web3_eth_balance() {
     );
     let run_result = tool
         .run(
+            None,
             serde_json::json!({ "address": "0x388c818ca8b9251b393131c08a736a67ccb19297" }),
             None,
         )
@@ -113,6 +114,7 @@ async fn shinkai_tool_web3_eth_uniswap() {
     );
     let run_result = tool
         .run(
+            None,
             serde_json::json!({
                 "fromToken": "ETH",
                 "toToken": "USDC",
@@ -141,6 +143,7 @@ async fn shinkai_tool_download_page() {
     );
     let run_result = tool
         .run(
+            None,
             serde_json::json!({
                 "urls": "https://shinkai.com"
             }),
@@ -175,7 +178,7 @@ async fn max_execution_time() {
 "#;
     let tool = Tool::new(js_code.to_string(), serde_json::Value::Null, None);
     let run_result = tool
-        .run(serde_json::json!({ "timeoutMs": 3200 }), Some(3000))
+        .run(None, serde_json::json!({ "timeoutMs": 3200 }), Some(3000))
         .await;
     assert!(run_result.is_err());
     assert!(run_result.err().unwrap().message().contains("timed out"));
@@ -200,6 +203,7 @@ async fn shinkai_tool_download_page_stack_overflow() {
                     None,
                 );
                 tool.run(
+                    None,
                     serde_json::json!({
                         "url": "https://en.wikipedia.org/wiki/Prospect_Park_(Brooklyn)"
                     }),
@@ -311,7 +315,7 @@ async fn shinkai_tool_leiden() {
       "edges": edges
     });
     let start_time = std::time::Instant::now(); // Start measuring time
-    let run_result = tool.run(params, None).await.unwrap();
+    let run_result = tool.run(None, params, None).await.unwrap();
     let elapsed_time = start_time.elapsed(); // Measure elapsed time
 
     println!("Execution time: {:?}", elapsed_time); // Print the elapsed time
@@ -337,6 +341,7 @@ async fn shinkai_tool_duckduckgo_search() {
     );
     let run_result = tool
         .run(
+            None,
             serde_json::json!({ "message": "best movie of all time" }),
             None,
         )
@@ -367,6 +372,7 @@ async fn shinkai_tool_playwright_example() {
     );
     let run_result = tool
         .run(
+            None,
             serde_json::json!({
                 "url": "https://shinkai.com"
             }),
@@ -397,6 +403,7 @@ async fn shinkai_tool_defillama_lending_tvl_rankings() {
     );
     let run_result = tool
         .run(
+            None,
             serde_json::json!(      {
               "top10": false,
               "categoryName": "Liquid Staking",
@@ -450,6 +457,7 @@ async fn shinkai_tool_youtube_summary() {
     let tool = Tool::new(tool_definition.code.clone().unwrap(), configurations, None);
     let run_result = tool
         .run(
+            None,
             serde_json::json!({ "url": "https://www.youtube.com/watch?v=GQ9yRPfsDPk" }),
             None,
         )
@@ -536,6 +544,7 @@ async fn shinkai_tool_json_to_md() {
     .to_string();
     let run_result = tool
         .run(
+            None,
             json!({
                 "message": message,
             "template": "# Introduction{%- for sentence in answer.brief_introduction.sentences %}{{ sentence }}{%- endfor %}\\# Body{%- for section in answer.extensive_body %}## Section {{ loop.index }}{%- for sentence in section.sentences %}{{ sentence }}{%- endfor %}{%- endfor %}\\# Conclusion{%- for section in answer.conclusion %}{{ section.sentences[0] }}{%- endfor %}\\# Citations{%- for citation in relevantSentencesFromText %}[{{ citation.citation_id }}]: {{ citation.relevantSentenceFromDocument }}{%- endfor %}"}),

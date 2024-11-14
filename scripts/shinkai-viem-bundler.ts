@@ -25,7 +25,10 @@ console.log('🚀 Starting Shinkai Viem bundler...');
 // Parse command line arguments
 console.log('📝 Parsing command line arguments...');
 const args = minimist(process.argv.slice(2));
-const entryFile: string = join(process.cwd(), args.entry);
+let entryFile: string = join(process.cwd(), args.entry);
+if (process.platform === 'win32') {
+  entryFile = `file://${join(process.cwd(), args.entry)}`;
+}
 const outputFile: string = join(process.cwd(), args.outfile);
 
 // Log file paths for debugging

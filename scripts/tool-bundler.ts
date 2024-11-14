@@ -79,7 +79,7 @@ fs.promises
     // Import tool definition from bundled code
     console.log('📥 Importing tool definition...');
     const { definition }: { definition: ToolDefinition<any> } = await import(
-      outputFile
+      process.platform === 'win32' ? `file://${outputFile}` : outputFile
     );
 
     console.log('✨ Tool definition loaded:', definition.name);

@@ -1,4 +1,5 @@
 use std::env;
+use std::time::Duration;
 
 use serde_json::json;
 
@@ -161,24 +162,28 @@ async fn max_execution_time() {
         .is_test(true)
         .try_init();
     let js_code = r#"
-        async function run(configurations, parameters) {
+        async function run() {
             let startedAt = Date.now();
+            const sleepMs = 100;
             while (true) {
                 const elapse = Date.now() - startedAt;
-                console.log(`while true every ${500}ms, elapse ${elapse} ms`);
+                console.log(`while true sleeping ${sleepMs}ms, elapse ${elapse} ms`);
                 await new Promise(async (resolve) => {
                     setTimeout(() => {
                         resolve();
-                    }, parameters.timeoutMs);
+                    }, sleepMs);
                 });
             }
-
             return { data: true };
         }
 "#;
     let tool = Tool::new(js_code.to_string(), serde_json::Value::Null, None);
     let run_result = tool
-        .run(None, serde_json::json!({ "timeoutMs": 3200 }), Some(3000))
+        .run(
+            None,
+            serde_json::json!({ "timeoutMs": 100 }),
+            Some(Duration::from_secs(2)),
+        )
         .await;
     assert!(run_result.is_err());
     assert!(run_result.err().unwrap().message().contains("timed out"));

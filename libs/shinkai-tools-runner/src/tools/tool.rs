@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use std::{collections::HashMap, time::Duration};
 
 use serde_json::Value;
 
@@ -50,11 +50,12 @@ impl Tool {
             .map_err(|e| ExecutionError::new(format!("failed to run deno: {}", e), None))?;
 
         let result_text = result
-            .lines()
+            .iter()
             .skip_while(|line| !line.contains("<shinkai-tool-definition>"))
             .skip(1)
             .take_while(|line| !line.contains("</shinkai-tool-definition>"))
-            .collect::<Vec<&str>>()
+            .map(|s| s.to_string())
+            .collect::<Vec<String>>()
             .join("\n");
 
         log::info!("result text: {}", result_text);
@@ -75,7 +76,7 @@ impl Tool {
         &self,
         envs: Option<HashMap<String, String>>,
         parameters: Value,
-        max_execution_time_s: Option<u64>,
+        max_execution_timeout: Option<Duration>,
     ) -> Result<RunResult, ExecutionError> {
         log::info!("preparing to run tool");
         log::info!("configurations: {}", self.configurations.to_string());
@@ -102,19 +103,20 @@ impl Tool {
                 .replace("\\", "\\\\"),
         );
         let result = deno_runner
-            .run(&code, envs, max_execution_time_s)
+            .run(&code, envs, max_execution_timeout)
             .await
             .map_err(|e| ExecutionError::new(format!("failed to run deno: {}", e), None))?;
 
         let result_text = result
-            .lines()
+            .iter()
             .skip_while(|line| !line.contains("<shinkai-tool-result>"))
             .skip(1)
             .take_while(|line| !line.contains("</shinkai-tool-result>"))
-            .collect::<Vec<&str>>()
+            .map(|s| s.to_string())
+            .collect::<Vec<String>>()
             .join("\n");
 
-        log::info!("result text: {}", result_text);
+        log::info!("result text: {:?}", result);
 
         let result: Value = serde_json::from_str(&result_text).map_err(|e| {
             log::info!("failed to parse result: {}", e);

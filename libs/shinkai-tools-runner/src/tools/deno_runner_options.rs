@@ -7,6 +7,7 @@ pub struct DenoRunnerOptions {
     pub context: ExecutionContext,
     pub deno_binary_path: PathBuf,
     pub deno_image_name: String,
+    pub force_deno_in_host: bool,
 }
 
 impl Default for DenoRunnerOptions {
@@ -19,6 +20,9 @@ impl Default for DenoRunnerOptions {
             } else {
                 "./shinkai-tools-runner-resources/deno"
             }),
+            force_deno_in_host: std::env::var("CI_FORCE_DENO_IN_HOST")
+                .map(|val| val == "true")
+                .unwrap_or(false),
         }
     }
 }

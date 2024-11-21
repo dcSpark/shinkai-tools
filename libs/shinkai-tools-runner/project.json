@@ -38,7 +38,7 @@
       "defaultConfiguration": "development",
       "options": {
         "cwd": "libs/shinkai-tools-runner",
-        "command": "cargo test --features=built-in-tools -- --test-threads=1"
+        "command": "cargo test --features=built-in-tools"
       },
       "configurations": {
         "development": {},

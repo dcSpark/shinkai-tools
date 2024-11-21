@@ -90,8 +90,9 @@ impl Tool {
             const parameters = JSON.parse('{}');
 
             const result = await run(configurations, parameters);
+            const adaptedResult = result === undefined ? null : result;
             console.log("<shinkai-tool-result>");
-            console.log(JSON.stringify(result));
+            console.log(JSON.stringify(adaptedResult));
             console.log("</shinkai-tool-result>");
         "#,
             &self.code.to_string(),

@@ -1,11 +1,11 @@
 use std::{
     io::Write,
-    path::{self, Path, PathBuf},
+    path::{self, PathBuf},
 };
 
-use nanoid::nanoid;
-
 use super::execution_context::ExecutionContext;
+use super::path_buf_ext::PathBufExt;
+use nanoid::nanoid;
 
 #[derive(Default, Clone)]
 pub struct DenoExecutionStorage {
@@ -19,6 +19,8 @@ pub struct DenoExecutionStorage {
     pub logs: PathBuf,
     pub log_file: PathBuf,
     pub home: PathBuf,
+    pub assets: PathBuf,
+    pub mount: PathBuf,
 }
 
 impl DenoExecutionStorage {
@@ -46,6 +48,8 @@ impl DenoExecutionStorage {
             logs: logs.clone(),
             log_file,
             home: root.join("home"),
+            assets: root.join("assets"),
+            mount: root.join("mount"),
         }
     }
 
@@ -57,6 +61,8 @@ impl DenoExecutionStorage {
             &self.deno_cache,
             &self.logs,
             &self.home,
+            &self.assets,
+            &self.mount,
         ] {
             log::info!("creating directory: {}", dir.display());
             std::fs::create_dir_all(dir).map_err(|e| {
@@ -94,26 +100,6 @@ impl DenoExecutionStorage {
         Ok(())
     }
 
-    pub fn get_relative_code_entrypoint(&self) -> anyhow::Result<String> {
-        self.code_entrypoint
-            .strip_prefix(&self.root)
-            .map(|p| p.to_string_lossy().to_string())
-            .map_err(|e| {
-                log::error!("failed to get relative path: {}", e);
-                anyhow::anyhow!("failed to get relative path: {}", e)
-            })
-    }
-
-    pub fn get_relative_deno_cache(&self) -> anyhow::Result<String> {
-        self.deno_cache
-            .strip_prefix(&self.root)
-            .map(|p| p.to_string_lossy().to_string())
-            .map_err(|e| {
-                log::error!("failed to get relative path: {}", e);
-                anyhow::anyhow!("failed to get relative path: {}", e)
-            })
-    }
-
     pub fn append_log(&self, log: &str) -> anyhow::Result<()> {
         let timestamp = chrono::Local::now().format("%Y%m%d_%H%M%S");
         let log_line = format!(
@@ -130,6 +116,11 @@ impl DenoExecutionStorage {
             })?;
         file.write_all(log_line.as_bytes())?;
         Ok(())
+    }
+
+    pub fn relative_to_root(&self, path: PathBuf) -> String {
+        let path = path.strip_prefix(&self.root).unwrap();
+        path.to_path_buf().as_normalized_string()
     }
 }
 

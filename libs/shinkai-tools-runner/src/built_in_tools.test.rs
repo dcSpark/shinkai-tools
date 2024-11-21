@@ -4,6 +4,10 @@ use crate::built_in_tools::{get_tool, get_tools};
 
 #[tokio::test]
 async fn get_tools_all_load() {
+    let _ = env_logger::builder()
+        .filter_level(log::LevelFilter::Info)
+        .is_test(true)
+        .try_init();
     let tools = get_tools();
     for (tool_name, tool_definition) in tools {
         println!("creating tool instance for {}", tool_name);

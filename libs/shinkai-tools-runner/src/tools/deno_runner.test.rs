@@ -54,9 +54,11 @@ async fn test_write_forbidden_folder() {
         .is_test(true)
         .try_init();
 
-    std::env::set_var("CI_FORCE_DENO_IN_HOST", "true");
+    let mut deno_runner = DenoRunner::new(DenoRunnerOptions {
+        force_deno_in_host: true,
+        ..Default::default()
+    });
 
-    let mut deno_runner = DenoRunner::default();
     let code = r#"
       try {
         await Deno.writeTextFile("/test.txt", "This should fail");
@@ -67,12 +69,10 @@ async fn test_write_forbidden_folder() {
         throw e;
       }
     "#;
-
     let result = deno_runner.run(code, None, None).await.map_err(|e| {
         log::error!("Failed to run deno code: {}", e);
         e
     });
-
     assert!(result.is_err());
 }
 

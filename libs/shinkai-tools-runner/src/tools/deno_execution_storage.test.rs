@@ -9,8 +9,7 @@ async fn test_execution_storage_init() {
         .is_test(true)
         .try_init();
 
-    let test_dir =
-        std::path::PathBuf::from("./shinkai-tools-runner-execution-storage/test-execution-storage");
+    let test_dir = std::path::PathBuf::from("./shinkai-tools-runner-execution-storage");
     let storage = DenoExecutionStorage::new(ExecutionContext {
         storage: test_dir.clone(),
         ..Default::default()
@@ -29,9 +28,6 @@ async fn test_execution_storage_init() {
     // Verify code file was written correctly
     let code_contents = std::fs::read_to_string(storage.code_entrypoint.clone()).unwrap();
     assert_eq!(code_contents, test_code);
-
-    // Clean up test directory
-    std::fs::remove_dir_all(test_dir).unwrap();
 }
 
 #[tokio::test]
@@ -41,8 +37,7 @@ async fn test_execution_storage_clean_cache() {
         .is_test(true)
         .try_init();
 
-    let test_dir =
-        std::path::PathBuf::from("./shinkai-tools-runner-execution-storage/test-clean-cache");
+    let test_dir = std::path::PathBuf::from("./shinkai-tools-runner-execution-storage");
     let storage = DenoExecutionStorage::new(ExecutionContext {
         storage: test_dir.clone(),
         ..Default::default()
@@ -64,7 +59,4 @@ async fn test_execution_storage_clean_cache() {
     assert!(!test_cache_file.exists());
     assert!(storage.deno_cache.exists()); // Directory should still exist but be empty
     assert!(std::fs::read_dir(&storage.deno_cache).unwrap().count() == 0);
-
-    // Clean up test directory
-    std::fs::remove_dir_all(test_dir).unwrap();
 }

@@ -6,6 +6,8 @@ pub struct ExecutionContext {
     pub execution_id: String,
     pub code_id: String,
     pub storage: PathBuf,
+    pub assets: Vec<PathBuf>,
+    pub mount_files: Vec<PathBuf>,
 }
 
 impl Default for ExecutionContext {
@@ -15,6 +17,8 @@ impl Default for ExecutionContext {
             execution_id: nanoid::nanoid!(),
             code_id: nanoid::nanoid!(),
             storage: PathBuf::from("./shinkai-tools-runner-execution-storage"),
+            assets: Vec::new(),
+            mount_files: Vec::new(),
         }
     }
 }

@@ -417,3 +417,43 @@ async fn test_fail_when_try_write_assets() {
     let result = tool.run(Some(envs), Value::Null, None).await;
     assert!(result.is_err());
 }
+
+#[tokio::test]
+async fn shinkai_tool_param_with_quotes() {
+    let _ = env_logger::builder()
+        .filter_level(log::LevelFilter::Info)
+        .is_test(true)
+        .try_init();
+    let js_code = r#"
+        function run(configurations, params) {
+            return { 
+                single: params.single,
+                double: params.double,
+                backtick: params.backtick,
+                mixed: params.mixed,
+                escaped: params.escaped
+            };
+        }
+"#;
+    let tool = Tool::new(js_code.to_string(), serde_json::Value::Null, None);
+    let run_result = tool
+        .run(
+            None,
+            serde_json::json!({
+                "single": "bar's quote",
+                "double": "she said \"hello\"",
+                "backtick": "using `backticks`",
+                "mixed": "single ' and double \" quotes",
+                "escaped": "escaped \' and \" quotes"
+            }),
+            None,
+        )
+        .await;
+    assert!(run_result.is_ok());
+    let result = run_result.unwrap().data;
+    assert_eq!(result["single"], "bar's quote");
+    assert_eq!(result["double"], "she said \"hello\"");
+    assert_eq!(result["backtick"], "using `backticks`");
+    assert_eq!(result["mixed"], "single ' and double \" quotes");
+    assert_eq!(result["escaped"], "escaped \' and \" quotes");
+}

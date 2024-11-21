@@ -98,10 +98,16 @@ impl Tool {
             &self.code.to_string(),
             serde_json::to_string(&self.configurations)
                 .unwrap()
-                .replace("\\", "\\\\"),
+                .replace("\\", "\\\\")
+                .replace("'", "\\'")
+                .replace("\"", "\\\"")
+                .replace("`", "\\`"),
             serde_json::to_string(&parameters)
                 .unwrap()
-                .replace("\\", "\\\\"),
+                .replace("\\", "\\\\")
+                .replace("'", "\\'")
+                .replace("\"", "\\\"")
+                .replace("`", "\\`")
         );
         let result = deno_runner
             .run(&code, envs, max_execution_timeout)

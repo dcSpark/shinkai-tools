@@ -3,8 +3,8 @@ use std::{
     path::{self, PathBuf},
 };
 
-use super::execution_context::ExecutionContext;
 use super::path_buf_ext::PathBufExt;
+use super::{execution_context::ExecutionContext, file_name_utils::sanitize_for_file_name};
 use nanoid::nanoid;
 
 #[derive(Default, Clone)]
@@ -26,14 +26,20 @@ pub struct DenoExecutionStorage {
 impl DenoExecutionStorage {
     pub fn new(context: ExecutionContext) -> Self {
         let code_id = format!("{}-{}", context.code_id, nanoid!());
-        let root =
-            path::absolute(context.storage.join(context.context_id.clone()).clone()).unwrap();
+        let root = path::absolute(
+            context
+                .storage
+                .join(sanitize_for_file_name(context.context_id.clone()))
+                .clone(),
+        )
+        .unwrap();
         let root_code = path::absolute(root.join("code")).unwrap();
         let code = path::absolute(root_code.join(code_id.clone())).unwrap();
         let logs = path::absolute(root.join("logs")).unwrap();
         let log_file = path::absolute(logs.join(format!(
             "log_{}_{}.log",
-            context.context_id, context.execution_id,
+            sanitize_for_file_name(context.context_id.clone()),
+            sanitize_for_file_name(context.execution_id.clone())
         )))
         .unwrap();
         let deno_cache = path::absolute(root.join("deno-cache")).unwrap();

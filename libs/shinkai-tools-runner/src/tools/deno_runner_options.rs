@@ -3,11 +3,25 @@ use std::path::PathBuf;
 use super::execution_context::ExecutionContext;
 
 #[derive(Clone)]
+pub struct ShinkaiNodeLocation {
+    pub protocol: String,
+    pub host: String,
+    pub port: u16,
+}
+
+#[derive(Clone)]
+pub enum RunnerType {
+    Host,
+    Docker,
+}
+
+#[derive(Clone)]
 pub struct DenoRunnerOptions {
     pub context: ExecutionContext,
     pub deno_binary_path: PathBuf,
     pub deno_image_name: String,
-    pub force_deno_in_host: bool,
+    pub force_runner_type: Option<RunnerType>,
+    pub shinkai_node_location: ShinkaiNodeLocation,
 }
 
 impl Default for DenoRunnerOptions {
@@ -20,9 +34,18 @@ impl Default for DenoRunnerOptions {
             } else {
                 "./shinkai-tools-runner-resources/deno"
             }),
-            force_deno_in_host: std::env::var("CI_FORCE_DENO_IN_HOST")
-                .map(|val| val == "true")
-                .unwrap_or(false),
+            force_runner_type: std::env::var("CI_FORCE_RUNNER_TYPE")
+                .map(|val| match val.as_str() {
+                    "host" => Some(RunnerType::Host),
+                    "docker" => Some(RunnerType::Docker),
+                    _ => None,
+                })
+                .unwrap_or(None),
+            shinkai_node_location: ShinkaiNodeLocation {
+                protocol: String::from("http"),
+                host: String::from("127.0.0.1"),
+                port: 9550,
+            },
         }
     }
 }

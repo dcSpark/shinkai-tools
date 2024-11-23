@@ -1,6 +1,8 @@
 use crate::tools::{
-    deno_execution_storage::DenoExecutionStorage, deno_runner::DenoRunner,
-    deno_runner_options::DenoRunnerOptions, execution_context::ExecutionContext,
+    deno_execution_storage::DenoExecutionStorage,
+    deno_runner::DenoRunner,
+    deno_runner_options::{DenoRunnerOptions, RunnerType, ShinkaiNodeLocation},
+    execution_context::ExecutionContext,
 };
 use std::collections::HashMap;
 
@@ -55,7 +57,7 @@ async fn test_write_forbidden_folder() {
         .try_init();
 
     let mut deno_runner = DenoRunner::new(DenoRunnerOptions {
-        force_deno_in_host: true,
+        force_runner_type: Some(RunnerType::Host),
         ..Default::default()
     });
 
@@ -112,4 +114,52 @@ async fn test_execution_storage_cache_contains_files() {
     assert!(storage.deno_cache.exists());
     let cache_files = std::fs::read_dir(&storage.deno_cache).unwrap();
     assert!(cache_files.count() > 0);
+}
+
+#[tokio::test]
+async fn test_run_with_shinkai_node_location_host() {
+    let _ = env_logger::builder()
+        .filter_level(log::LevelFilter::Info)
+        .is_test(true)
+        .try_init();
+
+    let mut deno_runner = DenoRunner::new(DenoRunnerOptions {
+        shinkai_node_location: ShinkaiNodeLocation {
+            protocol: String::from("https"),
+            host: String::from("127.0.0.2"),
+            port: 9554,
+        },
+        force_runner_type: Some(RunnerType::Host),
+        ..Default::default()
+    });
+    let code = r#"
+      console.log(process.env.SHINKAI_NODE_LOCATION);
+    "#;
+
+    let result = deno_runner.run(code, None, None).await.unwrap();
+    assert_eq!(result.first().unwrap(), "https://127.0.0.2:9554");
+}
+
+#[tokio::test]
+async fn test_run_with_shinkai_node_location_docker() {
+    let _ = env_logger::builder()
+        .filter_level(log::LevelFilter::Info)
+        .is_test(true)
+        .try_init();
+
+    let mut deno_runner = DenoRunner::new(DenoRunnerOptions {
+        shinkai_node_location: ShinkaiNodeLocation {
+            protocol: String::from("https"),
+            host: String::from("127.0.0.2"),
+            port: 9554,
+        },
+        force_runner_type: Some(RunnerType::Docker),
+        ..Default::default()
+    });
+    let code = r#"
+      console.log(process.env.SHINKAI_NODE_LOCATION);
+    "#;
+
+    let result = deno_runner.run(code, None, None).await.unwrap();
+    assert_eq!(result.first().unwrap(), "https://host.docker.internal:9554");
 }

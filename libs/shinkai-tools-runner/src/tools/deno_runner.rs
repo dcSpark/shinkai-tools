@@ -5,7 +5,10 @@ use tokio::{
 
 use crate::tools::{deno_execution_storage::DenoExecutionStorage, path_buf_ext::PathBufExt};
 
-use super::{container_utils::DockerStatus, deno_runner_options::DenoRunnerOptions};
+use super::{
+    container_utils::DockerStatus,
+    deno_runner_options::{DenoRunnerOptions, RunnerType},
+};
 use std::{
     collections::HashMap,
     path::{self},
@@ -57,12 +60,16 @@ impl DenoRunner {
         envs: Option<HashMap<String, String>>,
         max_execution_timeout: Option<Duration>,
     ) -> anyhow::Result<Vec<String>> {
-        if !self.options.force_deno_in_host
-            && super::container_utils::is_docker_available() == DockerStatus::Running
-        {
-            self.run_in_docker(code, envs, max_execution_timeout).await
-        } else {
-            self.run_in_host(code, envs, max_execution_timeout).await
+        match self.options.force_runner_type {
+            Some(RunnerType::Host) => self.run_in_host(code, envs, max_execution_timeout).await,
+            Some(RunnerType::Docker) => self.run_in_docker(code, envs, max_execution_timeout).await,
+            _ => {
+                if super::container_utils::is_docker_available() == DockerStatus::Running {
+                    self.run_in_docker(code, envs, max_execution_timeout).await
+                } else {
+                    self.run_in_host(code, envs, max_execution_timeout).await
+                }
+            }
         }
     }
 
@@ -133,6 +140,13 @@ impl DenoRunner {
             "DENO_DIR={}",
             execution_storage.relative_to_root(execution_storage.deno_cache.clone())
         ));
+
+        container_envs.push(String::from("-e"));
+        container_envs.push(format!(
+            "SHINKAI_NODE_LOCATION={}://host.docker.internal:{}",
+            self.options.shinkai_node_location.protocol, self.options.shinkai_node_location.port
+        ));
+
         if let Some(envs) = envs {
             for (key, value) in envs {
                 let env = format!("{}={}", key, value);
@@ -293,6 +307,16 @@ impl DenoRunner {
             .kill_on_drop(true);
 
         command.env("DENO_DIR", execution_storage.deno_cache.clone());
+        command.env(
+            "SHINKAI_NODE_LOCATION",
+            format!(
+                "{}://{}:{}",
+                self.options.shinkai_node_location.protocol,
+                self.options.shinkai_node_location.host,
+                self.options.shinkai_node_location.port
+            ),
+        );
+
         if let Some(envs) = envs {
             command.envs(envs);
         }

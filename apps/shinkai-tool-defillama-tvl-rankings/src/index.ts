@@ -203,7 +203,11 @@ export const run: Run<Config, Params, Result> = (
   configurations: Config,
   params: Params,
 ): Promise<Result> => {
-  const chromePath = configurations?.chromePath || chromePaths.chrome;
+  const chromePath =
+    configurations?.chromePath ||
+    process.env.CHROME_PATH ||
+    chromePaths.chrome ||
+    chromePaths.chromium;
   return withPage(chromePath, async (page) => {
     const categories = await getCategories(page);
 

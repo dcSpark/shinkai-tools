@@ -16,9 +16,10 @@ export const run: Run<Configurations, Parameters, Result> = async (
 ): Promise<Result> => {
   const chromePath =
     configurations?.chromePath ||
-    process.env.CHROME_BIN ||
+    process.env.CHROME_PATH ||
     chromePaths.chrome ||
     chromePaths.chromium;
+
   console.log('executing chrome from', chromePath);
   const browser = await playwright['chromium'].launch({
     executablePath: chromePath,

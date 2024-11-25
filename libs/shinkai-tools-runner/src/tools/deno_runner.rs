@@ -6,6 +6,7 @@ use tokio::{
 use crate::tools::{deno_execution_storage::DenoExecutionStorage, path_buf_ext::PathBufExt};
 
 use super::{
+    code_files::CodeFiles,
     container_utils::DockerStatus,
     deno_runner_options::{DenoRunnerOptions, RunnerType},
 };
@@ -56,18 +57,18 @@ impl DenoRunner {
     /// ```
     pub async fn run(
         &mut self,
-        code: &str,
+        code_files: CodeFiles,
         envs: Option<HashMap<String, String>>,
         max_execution_timeout: Option<Duration>,
     ) -> anyhow::Result<Vec<String>> {
         match self.options.force_runner_type {
-            Some(RunnerType::Host) => self.run_in_host(code, envs, max_execution_timeout).await,
-            Some(RunnerType::Docker) => self.run_in_docker(code, envs, max_execution_timeout).await,
+            Some(RunnerType::Host) => self.run_in_host(code_files, envs, max_execution_timeout).await,
+            Some(RunnerType::Docker) => self.run_in_docker(code_files, envs, max_execution_timeout).await,
             _ => {
                 if super::container_utils::is_docker_available() == DockerStatus::Running {
-                    self.run_in_docker(code, envs, max_execution_timeout).await
+                    self.run_in_docker(code_files, envs, max_execution_timeout).await
                 } else {
-                    self.run_in_host(code, envs, max_execution_timeout).await
+                    self.run_in_host(code_files, envs, max_execution_timeout).await
                 }
             }
         }
@@ -75,7 +76,7 @@ impl DenoRunner {
 
     async fn run_in_docker(
         &mut self,
-        code: &str,
+        code_files: CodeFiles,
         envs: Option<HashMap<String, String>>,
         max_execution_timeout: Option<Duration>,
     ) -> anyhow::Result<Vec<String>> {
@@ -84,23 +85,26 @@ impl DenoRunner {
             self.options.deno_image_name
         );
 
-        let execution_storage = DenoExecutionStorage::new(self.options.context.clone());
-        execution_storage.init(code, None)?;
+        let execution_storage = DenoExecutionStorage::new(code_files, self.options.context.clone());
+        execution_storage.init(None)?;
 
         let mut mount_params = Vec::<String>::new();
 
         let mount_dirs = [
             (
-                execution_storage.code.as_normalized_string(),
-                execution_storage.relative_to_root(execution_storage.code.clone()),
+                execution_storage.code_folder_path.as_normalized_string(),
+                execution_storage.relative_to_root(execution_storage.code_folder_path.clone()),
             ),
             (
-                execution_storage.deno_cache.as_normalized_string(),
-                execution_storage.relative_to_root(execution_storage.deno_cache.clone()),
+                execution_storage
+                    .deno_cache_folder_path
+                    .as_normalized_string(),
+                execution_storage
+                    .relative_to_root(execution_storage.deno_cache_folder_path.clone()),
             ),
             (
-                execution_storage.home.as_normalized_string(),
-                execution_storage.relative_to_root(execution_storage.home.clone()),
+                execution_storage.home_folder_path.as_normalized_string(),
+                execution_storage.relative_to_root(execution_storage.home_folder_path.clone()),
             ),
         ];
 
@@ -116,7 +120,7 @@ impl DenoRunner {
             let mount_param = format!(
                 r#"type=bind,source={},target=/app/{}/{}"#,
                 path::absolute(file).unwrap().as_normalized_string(),
-                execution_storage.relative_to_root(execution_storage.mount.clone()),
+                execution_storage.relative_to_root(execution_storage.mount_folder_path.clone()),
                 file.file_name().unwrap().to_str().unwrap()
             );
             log::info!("mount parameter created: {}", mount_param);
@@ -127,7 +131,7 @@ impl DenoRunner {
             let mount_param = format!(
                 r#"type=bind,readonly=true,source={},target=/app/{}/{}"#,
                 path::absolute(file).unwrap().as_normalized_string(),
-                execution_storage.relative_to_root(execution_storage.assets.clone()),
+                execution_storage.relative_to_root(execution_storage.assets_folder_path.clone()),
                 file.file_name().unwrap().to_str().unwrap()
             );
             log::info!("mount parameter created: {}", mount_param);
@@ -138,7 +142,7 @@ impl DenoRunner {
         container_envs.push(String::from("-e"));
         container_envs.push(format!(
             "DENO_DIR={}",
-            execution_storage.relative_to_root(execution_storage.deno_cache.clone())
+            execution_storage.relative_to_root(execution_storage.deno_cache_folder_path.clone())
         ));
 
         container_envs.push(String::from("-e"));
@@ -155,7 +159,7 @@ impl DenoRunner {
             }
         }
         let code_entrypoint =
-            execution_storage.relative_to_root(execution_storage.code_entrypoint.clone());
+            execution_storage.relative_to_root(execution_storage.code_entrypoint_file_path.clone());
         let mut command = tokio::process::Command::new("docker");
         let mut args = vec!["run", "--rm"];
         args.extend(mount_params.iter().map(|s| s.as_str()));
@@ -253,15 +257,17 @@ impl DenoRunner {
 
     async fn run_in_host(
         &mut self,
-        code: &str,
+        code_files: CodeFiles,
         envs: Option<HashMap<String, String>>,
         max_execution_timeout: Option<Duration>,
     ) -> anyhow::Result<Vec<String>> {
-        let execution_storage = DenoExecutionStorage::new(self.options.context.clone());
-        execution_storage.init(code, None)?;
+        let execution_storage = DenoExecutionStorage::new(code_files, self.options.context.clone());
+        execution_storage.init(None)?;
 
-        let home_permissions =
-            format!("--allow-write={}", execution_storage.home.to_string_lossy());
+        let home_permissions = format!(
+            "--allow-write={}",
+            execution_storage.home_folder_path.to_string_lossy()
+        );
 
         let binary_path = path::absolute(self.options.deno_binary_path.clone())
             .unwrap()
@@ -300,13 +306,13 @@ impl DenoRunner {
         let command = command
             .args(["run", "--ext", "ts"])
             .args(deno_permissions_host)
-            .arg(execution_storage.code_entrypoint.clone())
-            .current_dir(execution_storage.root.clone())
+            .arg(execution_storage.code_entrypoint_file_path.clone())
+            .current_dir(execution_storage.root_folder_path.clone())
             .stdout(std::process::Stdio::piped())
             .stderr(std::process::Stdio::piped())
             .kill_on_drop(true);
 
-        command.env("DENO_DIR", execution_storage.deno_cache.clone());
+        command.env("DENO_DIR", execution_storage.deno_cache_folder_path.clone());
         command.env(
             "SHINKAI_NODE_LOCATION",
             format!(

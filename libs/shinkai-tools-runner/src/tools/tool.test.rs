@@ -3,7 +3,8 @@ use std::{collections::HashMap, path::PathBuf};
 use serde_json::Value;
 
 use crate::tools::{
-    deno_runner_options::DenoRunnerOptions, execution_context::ExecutionContext, tool::Tool,
+    code_files::CodeFiles, deno_runner_options::DenoRunnerOptions,
+    execution_context::ExecutionContext, tool::Tool,
 };
 
 #[tokio::test]
@@ -14,9 +15,15 @@ async fn get_tool_definition() {
         "/../../apps/shinkai-tool-echo/src/index.ts"
     ))
     .to_string();
+
+    let code_files = CodeFiles {
+        files: HashMap::from([("main.ts".to_string(), code.to_string())]),
+        entrypoint: "main.ts".to_string(),
+    };
+
     let configurations = serde_json::json!({});
 
-    let tool = Tool::new(code, configurations, None);
+    let tool = Tool::new(code_files, configurations, None);
 
     let definition = tool.definition().await.unwrap();
 
@@ -31,9 +38,15 @@ async fn run_tool() {
         "/../../apps/shinkai-tool-echo/src/index.ts"
     ))
     .to_string();
+
+    let code_files = CodeFiles {
+        files: HashMap::from([("main.ts".to_string(), code.to_string())]),
+        entrypoint: "main.ts".to_string(),
+    };
+
     let configurations = Value::Null;
 
-    let tool = Tool::new(code, configurations, None);
+    let tool = Tool::new(code_files, configurations, None);
 
     let result = tool
         .run(
@@ -63,7 +76,13 @@ async fn shinkai_tool_with_env() {
             return { foo: process.env.BAR };
         }
 "#;
-    let tool = Tool::new(js_code.to_string(), serde_json::Value::Null, None);
+
+    let code_files = CodeFiles {
+        files: HashMap::from([("main.ts".to_string(), js_code.to_string())]),
+        entrypoint: "main.ts".to_string(),
+    };
+
+    let tool = Tool::new(code_files, serde_json::Value::Null, None);
     let mut envs = HashMap::<String, String>::new();
     envs.insert("BAR".to_string(), "bar".to_string());
     let run_result = tool
@@ -92,6 +111,12 @@ async fn shinkai_tool_run_concurrency() {
             return result;
         }
     "#;
+
+    let code_files1 = CodeFiles {
+        files: HashMap::from([("main.ts".to_string(), js_code1.to_string())]),
+        entrypoint: "main.ts".to_string(),
+    };
+
     let js_code2 = r#"
         import _ from 'npm:lodash';
         function run(configurations, params) {
@@ -100,6 +125,11 @@ async fn shinkai_tool_run_concurrency() {
             };
         }
     "#;
+
+    let code_files2 = CodeFiles {
+        files: HashMap::from([("main.ts".to_string(), js_code2.to_string())]),
+        entrypoint: "main.ts".to_string(),
+    };
 
     let js_code3 = r#"
         import { sum } from 'npm:mathjs';
@@ -110,11 +140,16 @@ async fn shinkai_tool_run_concurrency() {
         }
     "#;
 
+    let code_files3 = CodeFiles {
+        files: HashMap::from([("main.ts".to_string(), js_code3.to_string())]),
+        entrypoint: "main.ts".to_string(),
+    };
+
     let execution_storage = "./shinkai-tools-runner-execution-storage";
     let context_id = String::from("context-patata");
     let execution_id = String::from("2");
     let tool1 = Tool::new(
-        js_code1.to_string(),
+        code_files1,
         serde_json::Value::Null,
         Some(DenoRunnerOptions {
             context: ExecutionContext {
@@ -128,7 +163,7 @@ async fn shinkai_tool_run_concurrency() {
         }),
     );
     let tool2 = Tool::new(
-        js_code2.to_string(),
+        code_files2,
         serde_json::Value::Null,
         Some(DenoRunnerOptions {
             context: ExecutionContext {
@@ -142,7 +177,7 @@ async fn shinkai_tool_run_concurrency() {
         }),
     );
     let tool3 = Tool::new(
-        js_code3.to_string(),
+        code_files3,
         serde_json::Value::Null,
         Some(DenoRunnerOptions {
             context: ExecutionContext {
@@ -186,12 +221,17 @@ async fn test_file_persistence_in_home() {
         }
     "#;
 
+    let code_files = CodeFiles {
+        files: HashMap::from([("main.ts".to_string(), js_code.to_string())]),
+        entrypoint: "main.ts".to_string(),
+    };
+
     let execution_storage = std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR"))
         .join("shinkai-tools-runner-execution-storage");
     let context_id = "test-context-id".to_string();
 
     let tool = Tool::new(
-        js_code.to_string(),
+        code_files,
         serde_json::Value::Null,
         Some(DenoRunnerOptions {
             context: ExecutionContext {
@@ -241,8 +281,13 @@ async fn test_mount_file_in_mount() {
         }
     "#;
 
+    let code_files = CodeFiles {
+        files: HashMap::from([("main.ts".to_string(), js_code.to_string())]),
+        entrypoint: "main.ts".to_string(),
+    };
+
     let tool = Tool::new(
-        js_code.to_string(),
+        code_files,
         serde_json::Value::Null,
         Some(DenoRunnerOptions {
             context: ExecutionContext {
@@ -288,8 +333,13 @@ async fn test_mount_and_edit_file_in_mount() {
         }
     "#;
 
+    let code_files = CodeFiles {
+        files: HashMap::from([("main.ts".to_string(), js_code.to_string())]),
+        entrypoint: "main.ts".to_string(),
+    };
+
     let tool = Tool::new(
-        js_code.to_string(),
+        code_files,
         serde_json::Value::Null,
         Some(DenoRunnerOptions {
             context: ExecutionContext {
@@ -339,8 +389,13 @@ async fn test_mount_file_in_assets() {
         }
     "#;
 
+    let code_files = CodeFiles {
+        files: HashMap::from([("main.ts".to_string(), js_code.to_string())]),
+        entrypoint: "main.ts".to_string(),
+    };
+
     let tool = Tool::new(
-        js_code.to_string(),
+        code_files,
         serde_json::Value::Null,
         Some(DenoRunnerOptions {
             context: ExecutionContext {
@@ -386,9 +441,14 @@ async fn test_fail_when_try_write_assets() {
         }
     "#;
 
+    let code_files = CodeFiles {
+        files: HashMap::from([("main.ts".to_string(), js_code.to_string())]),
+        entrypoint: "main.ts".to_string(),
+    };
+
     let context_id = format!("test-mount-file-in-assets-{}", nanoid::nanoid!());
     let tool = Tool::new(
-        js_code.to_string(),
+        code_files,
         serde_json::Value::Null,
         Some(DenoRunnerOptions {
             context: ExecutionContext {
@@ -431,8 +491,12 @@ async fn shinkai_tool_param_with_quotes() {
                 escaped: params.escaped
             };
         }
-"#;
-    let tool = Tool::new(js_code.to_string(), serde_json::Value::Null, None);
+    "#;
+    let code_files = CodeFiles {
+        files: HashMap::from([("main.ts".to_string(), js_code.to_string())]),
+        entrypoint: "main.ts".to_string(),
+    };
+    let tool = Tool::new(code_files, serde_json::Value::Null, None);
     let run_result = tool
         .run(
             None,
@@ -453,4 +517,46 @@ async fn shinkai_tool_param_with_quotes() {
     assert_eq!(result["backtick"], "using `backticks`");
     assert_eq!(result["mixed"], "single ' and double \" quotes");
     assert_eq!(result["escaped"], "escaped \' and \" quotes");
+}
+
+#[tokio::test]
+async fn test_multiple_file_imports() {
+    let _ = env_logger::builder()
+        .filter_level(log::LevelFilter::Info)
+        .is_test(true)
+        .try_init();
+
+    let main_code = r#"
+        import { helper } from "./helper.ts";
+        import { data } from "./data.ts";
+        
+        function run() {
+            return helper(data);
+        }
+    "#;
+
+    let helper_code = r#"
+        export function helper(input: string) {
+            return `processed ${input}`;
+        }
+    "#;
+
+    let data_code = r#"
+        export const data = "test data";
+    "#;
+
+    let code_files = CodeFiles {
+        files: HashMap::from([
+            ("main.ts".to_string(), main_code.to_string()),
+            ("helper.ts".to_string(), helper_code.to_string()),
+            ("data.ts".to_string(), data_code.to_string()),
+        ]),
+        entrypoint: "main.ts".to_string(),
+    };
+
+    let tool = Tool::new(code_files, Value::Null, None);
+    let result = tool.run(None, Value::Null, None).await;
+    
+    assert!(result.is_ok());
+    assert_eq!(result.unwrap().data, "processed test data");
 }

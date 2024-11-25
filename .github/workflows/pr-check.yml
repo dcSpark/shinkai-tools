@@ -67,6 +67,6 @@ jobs:
         env:
           CHROME_PATH: ${{ steps.setup-chrome.outputs.chrome-path }}
           EMBEDDING_API_URL : ${{ vars.EMBEDDING_API_URL }}
-          CI_FORCE_DENO_IN_HOST: true
+          CI_FORCE_RUNNER_TYPE: host
         run: |
           npx nx run-many -t test --parallel=false --skip-nx-cache

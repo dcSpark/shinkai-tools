@@ -1,9 +1,11 @@
+use std::collections::HashMap;
 use std::env;
 use std::time::Duration;
 
 use serde_json::json;
 
 use crate::built_in_tools::get_tool;
+use crate::tools::code_files::CodeFiles;
 use crate::tools::tool::Tool;
 
 #[tokio::test]
@@ -13,11 +15,11 @@ async fn shinkai_tool_echo() {
         .is_test(true)
         .try_init();
     let tool_definition = get_tool("shinkai-tool-echo").unwrap();
-    let tool = Tool::new(
-        tool_definition.code.clone().unwrap(),
-        serde_json::Value::Null,
-        None,
-    );
+    let code_files = CodeFiles {
+        files: HashMap::from([("main.ts".to_string(), tool_definition.code.clone().unwrap())]),
+        entrypoint: "main.ts".to_string(),
+    };
+    let tool = Tool::new(code_files, serde_json::Value::Null, None);
     let run_result = tool
         .run(None, serde_json::json!({ "message": "valparaíso" }), None)
         .await
@@ -32,8 +34,12 @@ async fn shinkai_tool_weather_by_city() {
         .is_test(true)
         .try_init();
     let tool_definition = get_tool("shinkai-tool-weather-by-city").unwrap();
+    let code_files = CodeFiles {
+        files: HashMap::from([("main.ts".to_string(), tool_definition.code.clone().unwrap())]),
+        entrypoint: "main.ts".to_string(),
+    };
     let tool = Tool::new(
-        tool_definition.code.clone().unwrap(),
+        code_files,
         serde_json::json!({ "apiKey": "63d35ff6068c3103ccd1227526935675" }),
         None,
     );
@@ -54,7 +60,11 @@ async fn shinkai_tool_inline() {
             return { message: `Hello, ${params.name}!` };
         }
 "#;
-    let tool = Tool::new(js_code.to_string(), serde_json::Value::Null, None);
+    let code_files = CodeFiles {
+        files: HashMap::from([("main.ts".to_string(), js_code.to_string())]),
+        entrypoint: "main.ts".to_string(),
+    };
+    let tool = Tool::new(code_files, serde_json::Value::Null, None);
     let run_result = tool
         .run(None, serde_json::json!({ "name": "world" }), None)
         .await
@@ -73,7 +83,11 @@ async fn shinkai_tool_inline_non_json_return() {
             return 5;
         }
 "#;
-    let tool = Tool::new(js_code.to_string(), serde_json::Value::Null, None);
+    let code_files = CodeFiles {
+        files: HashMap::from([("main.ts".to_string(), js_code.to_string())]),
+        entrypoint: "main.ts".to_string(),
+    };
+    let tool = Tool::new(code_files, serde_json::Value::Null, None);
     let run_result = tool.run(None, serde_json::json!({}), None).await.unwrap();
     assert_eq!(run_result.data, 5);
 }
@@ -85,11 +99,11 @@ async fn shinkai_tool_web3_eth_balance() {
         .is_test(true)
         .try_init();
     let tool_definition = get_tool("shinkai-tool-web3-eth-balance").unwrap();
-    let tool = Tool::new(
-        tool_definition.code.clone().unwrap(),
-        serde_json::Value::Null,
-        None,
-    );
+    let code_files = CodeFiles {
+        files: HashMap::from([("main.ts".to_string(), tool_definition.code.clone().unwrap())]),
+        entrypoint: "main.ts".to_string(),
+    };
+    let tool = Tool::new(code_files, serde_json::Value::Null, None);
     let run_result = tool
         .run(
             None,
@@ -108,11 +122,11 @@ async fn shinkai_tool_web3_eth_uniswap() {
         .is_test(true)
         .try_init();
     let tool_definition = get_tool("shinkai-tool-web3-eth-uniswap").unwrap();
-    let tool = Tool::new(
-        tool_definition.code.clone().unwrap(),
-        serde_json::Value::Null,
-        None,
-    );
+    let code_files = CodeFiles {
+        files: HashMap::from([("main.ts".to_string(), tool_definition.code.clone().unwrap())]),
+        entrypoint: "main.ts".to_string(),
+    };
+    let tool = Tool::new(code_files, serde_json::Value::Null, None);
     let run_result = tool
         .run(
             None,
@@ -137,11 +151,11 @@ async fn shinkai_tool_download_page() {
         .is_test(true)
         .try_init();
     let tool_definition = get_tool("shinkai-tool-download-pages").unwrap();
-    let tool = Tool::new(
-        tool_definition.code.clone().unwrap(),
-        serde_json::Value::Null,
-        None,
-    );
+    let code_files = CodeFiles {
+        files: HashMap::from([("main.ts".to_string(), tool_definition.code.clone().unwrap())]),
+        entrypoint: "main.ts".to_string(),
+    };
+    let tool = Tool::new(code_files, serde_json::Value::Null, None);
     let run_result = tool
         .run(
             None,
@@ -177,7 +191,11 @@ async fn max_execution_time() {
             return { data: true };
         }
 "#;
-    let tool = Tool::new(js_code.to_string(), serde_json::Value::Null, None);
+    let code_files = CodeFiles {
+        files: HashMap::from([("main.ts".to_string(), js_code.to_string())]),
+        entrypoint: "main.ts".to_string(),
+    };
+    let tool = Tool::new(code_files, serde_json::Value::Null, None);
     let run_result = tool
         .run(
             None,
@@ -202,11 +220,14 @@ async fn shinkai_tool_download_page_stack_overflow() {
                 tokio::runtime::Runtime::new().expect("Failed to create Tokio runtime");
             managed_runtime.block_on(async {
                 let tool_definition = get_tool("shinkai-tool-download-pages").unwrap();
-                let tool = Tool::new(
-                    tool_definition.code.clone().unwrap(),
-                    serde_json::Value::Null,
-                    None,
-                );
+                let code_files = CodeFiles {
+                    files: HashMap::from([(
+                        "main.ts".to_string(),
+                        tool_definition.code.clone().unwrap(),
+                    )]),
+                    entrypoint: "main.ts".to_string(),
+                };
+                let tool = Tool::new(code_files, serde_json::Value::Null, None);
                 tool.run(
                     None,
                     serde_json::json!({
@@ -231,11 +252,11 @@ async fn shinkai_tool_leiden() {
         .is_test(true)
         .try_init();
     let tool_definition = get_tool("shinkai-tool-leiden").unwrap();
-    let tool = Tool::new(
-        tool_definition.code.clone().unwrap(),
-        serde_json::Value::Null,
-        None,
-    );
+    let code_files = CodeFiles {
+        files: HashMap::from([("main.ts".to_string(), tool_definition.code.clone().unwrap())]),
+        entrypoint: "main.ts".to_string(),
+    };
+    let tool = Tool::new(code_files, serde_json::Value::Null, None);
     let edges = vec![
         (2, 1, 1),
         (3, 1, 1),
@@ -339,11 +360,11 @@ async fn shinkai_tool_duckduckgo_search() {
         .is_test(true)
         .try_init();
     let tool_definition = get_tool("shinkai-tool-duckduckgo-search").unwrap();
-    let tool = Tool::new(
-        tool_definition.code.clone().unwrap(),
-        serde_json::Value::Null,
-        None,
-    );
+    let code_files = CodeFiles {
+        files: HashMap::from([("main.ts".to_string(), tool_definition.code.clone().unwrap())]),
+        entrypoint: "main.ts".to_string(),
+    };
+    let tool = Tool::new(code_files, serde_json::Value::Null, None);
     let run_result = tool
         .run(
             None,
@@ -370,8 +391,12 @@ async fn shinkai_tool_playwright_example() {
         .is_test(true)
         .try_init();
     let tool_definition = get_tool("shinkai-tool-playwright-example").unwrap();
+    let code_files = CodeFiles {
+        files: HashMap::from([("main.ts".to_string(), tool_definition.code.clone().unwrap())]),
+        entrypoint: "main.ts".to_string(),
+    };
     let tool = Tool::new(
-        tool_definition.code.clone().unwrap(),
+        code_files,
         serde_json::json!({ "chromePath": std::env::var("CHROME_PATH").ok().unwrap_or("".to_string()) }),
         None,
     );
@@ -401,8 +426,12 @@ async fn shinkai_tool_defillama_lending_tvl_rankings() {
         .is_test(true)
         .try_init();
     let tool_definition = get_tool("shinkai-tool-defillama-tvl-rankings").unwrap();
+    let code_files = CodeFiles {
+        files: HashMap::from([("main.ts".to_string(), tool_definition.code.clone().unwrap())]),
+        entrypoint: "main.ts".to_string(),
+    };
     let tool = Tool::new(
-        tool_definition.code.clone().unwrap(),
+        code_files,
         serde_json::json!({ "chromePath": std::env::var("CHROME_PATH").ok().unwrap_or("".to_string()) }),
         None,
     );
@@ -421,7 +450,7 @@ async fn shinkai_tool_defillama_lending_tvl_rankings() {
     assert_eq!(run_result.unwrap().data["rowsCount"], 43);
 }
 
-// TODO: enable this test again when fix the tool
+// // TODO: enable this test again when fix the tool
 // #[tokio::test]
 // async fn shinkai_tool_aave_loan_requester() {
 //     let _ = env_logger::builder()
@@ -429,13 +458,18 @@ async fn shinkai_tool_defillama_lending_tvl_rankings() {
 //         .is_test(true)
 //         .try_init();
 //     let tool_definition = get_tool("shinkai-tool-aave-loan-requester").unwrap();
+//     let code_files = CodeFiles {
+//         files: HashMap::from([("main.ts".to_string(), tool_definition.code.clone().unwrap())]),
+//         entrypoint: "main.ts".to_string(),
+//     };
 //     let tool = Tool::new(
-//         tool_definition.code.clone().unwrap(),
+//         code_files,
 //         serde_json::json!({ "chromePath": std::env::var("CHROME_PATH").ok().unwrap_or("".to_string()) }),
 //         None,
 //     );
 //     let run_result = tool
 //         .run(
+//             None,
 //             serde_json::json!({ "inputValue": "0.005", "assetSymbol": "ETH" }),
 //             None,
 //         )
@@ -459,7 +493,11 @@ async fn shinkai_tool_youtube_summary() {
         serde_json::json!({ "apiUrl": "http://127.0.0.1:11434", "lang": "en" })
     };
 
-    let tool = Tool::new(tool_definition.code.clone().unwrap(), configurations, None);
+    let code_files = CodeFiles {
+        files: HashMap::from([("main.ts".to_string(), tool_definition.code.clone().unwrap())]),
+        entrypoint: "main.ts".to_string(),
+    };
+    let tool = Tool::new(code_files, configurations, None);
     let run_result = tool
         .run(
             None,
@@ -481,14 +519,18 @@ async fn shinkai_tool_json_to_md() {
         .is_test(true)
         .try_init();
     let tool_definition = get_tool("shinkai-tool-json-to-md").unwrap();
+    let code_files = CodeFiles {
+        files: HashMap::from([("main.ts".to_string(), tool_definition.code.clone().unwrap())]),
+        entrypoint: "main.ts".to_string(),
+    };
     let tool = Tool::new(
-        tool_definition.code.clone().unwrap(),
-        json!({
+        code_files,
+        serde_json::json!({
             "only_system": false
         }),
         None,
     );
-    let message = json!({
+    let message = serde_json::json!({
         "relevantSentencesFromText": [
             {
                 "citation_id": 5,

@@ -1,6 +1,11 @@
+use std::collections::HashMap;
+
 use serde_json::Value;
 
-use crate::built_in_tools::{get_tool, get_tools};
+use crate::{
+    built_in_tools::{get_tool, get_tools},
+    tools::code_files::CodeFiles,
+};
 
 #[tokio::test]
 async fn get_tools_all_load() {
@@ -11,8 +16,11 @@ async fn get_tools_all_load() {
     let tools = get_tools();
     for (tool_name, tool_definition) in tools {
         println!("creating tool instance for {}", tool_name);
-        let tool_instance =
-            crate::tools::tool::Tool::new(tool_definition.code.unwrap(), Value::Null, None);
+        let code_files = CodeFiles {
+            files: HashMap::from([("main.ts".to_string(), tool_definition.code.unwrap())]),
+            entrypoint: "main.ts".to_string(),
+        };
+        let tool_instance = crate::tools::tool::Tool::new(code_files, Value::Null, None);
         println!("fetching definition for {}", tool_name);
         let defintion = tool_instance.definition().await;
         println!(

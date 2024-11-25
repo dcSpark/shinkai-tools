@@ -7,5 +7,6 @@ pub mod execution_error;
 pub mod run_result;
 pub mod tool;
 pub mod tool_definition;
+pub mod code_files;
 mod path_buf_ext;
 mod file_name_utils;

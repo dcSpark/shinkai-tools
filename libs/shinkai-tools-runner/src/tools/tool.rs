@@ -3,12 +3,12 @@ use std::{collections::HashMap, time::Duration};
 use serde_json::Value;
 
 use super::{
-    deno_runner::DenoRunner, deno_runner_options::DenoRunnerOptions,
+    code_files::CodeFiles, deno_runner::DenoRunner, deno_runner_options::DenoRunnerOptions,
     execution_error::ExecutionError, run_result::RunResult, tool_definition::ToolDefinition,
 };
 
 pub struct Tool {
-    code: String,
+    code: CodeFiles,
     configurations: Value,
     deno_runner_options: DenoRunnerOptions,
 }
@@ -17,13 +17,13 @@ impl Tool {
     pub const MAX_EXECUTION_TIME_MS_INTERNAL_OPS: u64 = 1000;
 
     pub fn new(
-        code: String,
+        code_files: CodeFiles,
         configurations: Value,
         deno_runner_options: Option<DenoRunnerOptions>,
     ) -> Self {
         let options = deno_runner_options.unwrap_or_default();
         Tool {
-            code,
+            code: code_files,
             configurations,
             deno_runner_options: options,
         }
@@ -34,18 +34,26 @@ impl Tool {
 
         let mut deno_runner = DenoRunner::new(self.deno_runner_options.clone());
 
-        // Empty envs when get definition
-        let code = format!(
-            r#"
-            {}
-            console.log("<shinkai-tool-definition>");
-            console.log(JSON.stringify(definition));
-            console.log("</shinkai-tool-definition>");
-        "#,
-            &self.code.to_string()
-        );
+        let mut code = self.code.clone();
+        let entrypoint_code = code.files.get(&self.code.entrypoint.clone());
+        if let Some(entrypoint_code) = entrypoint_code {
+            let adapted_entrypoint_code = format!(
+                r#"
+                {}
+                console.log("<shinkai-tool-definition>");
+                console.log(JSON.stringify(definition));
+                console.log("</shinkai-tool-definition>");
+            "#,
+                entrypoint_code
+            );
+            code.files.insert(
+                self.code.entrypoint.clone(),
+                adapted_entrypoint_code.clone(),
+            );
+        }
+
         let result = deno_runner
-            .run(&code, None, None)
+            .run(code, None, None)
             .await
             .map_err(|e| ExecutionError::new(format!("failed to run deno: {}", e), None))?;
 
@@ -83,8 +91,11 @@ impl Tool {
         log::info!("parameters: {}", parameters.to_string());
 
         let mut deno_runner = DenoRunner::new(self.deno_runner_options.clone());
-        let code = format!(
-            r#"
+        let mut code = self.code.clone();
+        let entrypoint_code = code.files.get(&self.code.entrypoint.clone());
+        if let Some(entrypoint_code) = entrypoint_code {
+            let adapted_entrypoint_code = format!(
+                r#"
             {}
             const configurations = JSON.parse('{}');
             const parameters = JSON.parse('{}');
@@ -95,22 +106,26 @@ impl Tool {
             console.log(JSON.stringify(adaptedResult));
             console.log("</shinkai-tool-result>");
         "#,
-            &self.code.to_string(),
-            serde_json::to_string(&self.configurations)
-                .unwrap()
-                .replace("\\", "\\\\")
-                .replace("'", "\\'")
-                .replace("\"", "\\\"")
-                .replace("`", "\\`"),
-            serde_json::to_string(&parameters)
-                .unwrap()
-                .replace("\\", "\\\\")
-                .replace("'", "\\'")
-                .replace("\"", "\\\"")
-                .replace("`", "\\`")
-        );
+                &entrypoint_code,
+                serde_json::to_string(&self.configurations)
+                    .unwrap()
+                    .replace("\\", "\\\\")
+                    .replace("'", "\\'")
+                    .replace("\"", "\\\"")
+                    .replace("`", "\\`"),
+                serde_json::to_string(&parameters)
+                    .unwrap()
+                    .replace("\\", "\\\\")
+                    .replace("'", "\\'")
+                    .replace("\"", "\\\"")
+                    .replace("`", "\\`")
+            );
+            code.files
+                .insert(self.code.entrypoint.clone(), adapted_entrypoint_code);
+        }
+
         let result = deno_runner
-            .run(&code, envs, max_execution_timeout)
+            .run(code.clone(), envs, max_execution_timeout)
             .await
             .map_err(|e| ExecutionError::new(format!("failed to run deno: {}", e), None))?;
 

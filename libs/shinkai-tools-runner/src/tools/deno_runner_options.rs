@@ -28,7 +28,7 @@ impl Default for DenoRunnerOptions {
     fn default() -> Self {
         Self {
             context: ExecutionContext::default(),
-            deno_image_name: String::from("dcspark/shinkai-code-runner:0.8.0"),
+            deno_image_name: String::from("dcspark/shinkai-code-runner:0.8.1"),
             deno_binary_path: PathBuf::from(if cfg!(windows) {
                 "./shinkai-tools-runner-resources/deno.exe"
             } else {

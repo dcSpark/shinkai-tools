@@ -265,3 +265,134 @@ async fn test_run_with_imports() {
     let result = deno_runner.run(code_files, None, None).await.unwrap();
     assert_eq!(result.first().unwrap(), "hello world");
 }
+
+#[tokio::test]
+async fn test_check_code_success() {
+    let _ = env_logger::builder()
+        .filter_level(log::LevelFilter::Info)
+        .is_test(true)
+        .try_init();
+
+    let code_files = CodeFiles {
+        files: HashMap::from([(
+            "main.ts".to_string(),
+            String::from(
+                r#"
+                import { assertEquals } from "https://deno.land/std@0.201.0/assert/mod.ts";
+                console.log('test');
+            "#,
+            ),
+        )]),
+        entrypoint: "main.ts".to_string(),
+    };
+
+    // Run the code to ensure dependencies are downloaded
+    let mut deno_runner = DenoRunner::new(DenoRunnerOptions {
+        context: ExecutionContext {
+            ..Default::default()
+        },
+        ..Default::default()
+    });
+
+    let check_result = deno_runner.check(code_files).await.unwrap();
+    assert_eq!(check_result.len(), 0);
+}
+
+#[tokio::test]
+async fn test_check_code_with_errors() {
+    let _ = env_logger::builder()
+        .filter_level(log::LevelFilter::Info)
+        .is_test(true)
+        .try_init();
+
+    let code_files = CodeFiles {
+        files: HashMap::from([(
+            "main.ts".to_string(),
+            String::from(
+                r#"
+                console.log('test's);
+            "#,
+            ),
+        )]),
+        entrypoint: "main.ts".to_string(),
+    };
+
+    // Run the code to ensure dependencies are downloaded
+    let mut deno_runner = DenoRunner::new(DenoRunnerOptions {
+        context: ExecutionContext {
+            ..Default::default()
+        },
+        ..Default::default()
+    });
+
+    let check_result = deno_runner.check(code_files).await.unwrap();
+    assert!(!check_result.is_empty());
+    assert!(check_result.contains(&String::from("Expected ',', got 's'")));
+}
+
+#[tokio::test]
+async fn test_check_with_wrong_import_path() {
+    let _ = env_logger::builder()
+        .filter_level(log::LevelFilter::Info)
+        .is_test(true)
+        .try_init();
+
+    let code_files = CodeFiles {
+        files: HashMap::from([(
+            "main.ts".to_string(),
+            String::from(
+                r#"
+                import { a } from './potato/a.ts';
+                console.log('test');
+            "#,
+            ),
+        )]),
+        entrypoint: "main.ts".to_string(),
+    };
+
+    // Run the code to ensure dependencies are downloaded
+    let mut deno_runner = DenoRunner::new(DenoRunnerOptions {
+        context: ExecutionContext {
+            ..Default::default()
+        },
+        ..Default::default()
+    });
+
+    let check_result = deno_runner.check(code_files).await.unwrap();
+    assert!(!check_result.is_empty());
+}
+
+#[tokio::test]
+async fn test_check_with_wrong_lib_version() {
+    let _ = env_logger::builder()
+        .filter_level(log::LevelFilter::Info)
+        .is_test(true)
+        .try_init();
+
+    let code_files = CodeFiles {
+        files: HashMap::from([(
+            "main.ts".to_string(),
+            String::from(
+                r#"
+                import axios from 'npm:axios@3.4.2';
+                console.log('test');
+            "#,
+            ),
+        )]),
+        entrypoint: "main.ts".to_string(),
+    };
+
+    // Run the code to ensure dependencies are downloaded
+    let mut deno_runner = DenoRunner::new(DenoRunnerOptions {
+        context: ExecutionContext {
+            ..Default::default()
+        },
+        ..Default::default()
+    });
+
+    let check_result = deno_runner.check(code_files).await.unwrap();
+    assert!(!check_result.is_empty());
+    assert!(check_result.contains(&String::from(
+        "Could not find npm package 'axios' matching '3.4.2'"
+    )));
+}

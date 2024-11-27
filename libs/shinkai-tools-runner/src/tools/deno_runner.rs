@@ -27,6 +27,48 @@ impl DenoRunner {
         DenoRunner { options }
     }
 
+    /// Checks the code for errors without running it
+    ///
+    /// # Returns
+    ///
+    /// Returns a Result containing:
+    /// - Ok(Vec<String>): The list of errors found in the code
+    /// - Err(anyhow::Error): Any errors that occurred during setup or execution
+    pub async fn check(&mut self, code_files: CodeFiles) -> anyhow::Result<Vec<String>> {
+        let execution_storage = DenoExecutionStorage::new(code_files, self.options.context.clone());
+        execution_storage.init(None)?;
+
+        let binary_path = path::absolute(self.options.deno_binary_path.clone())
+            .unwrap()
+            .to_string_lossy()
+            .to_string();
+        let mut command = tokio::process::Command::new(binary_path);
+        command
+            .args([
+                "check",
+                execution_storage
+                    .code_entrypoint_file_path
+                    .to_str()
+                    .unwrap(),
+            ])
+            .stdout(std::process::Stdio::piped())
+            .stderr(std::process::Stdio::piped())
+            .kill_on_drop(true);
+        let output = command.spawn()?.wait_with_output().await?;
+        match output.status.success() {
+            true => Ok(Vec::new()),
+            false => {
+                let error_message = String::from_utf8(output.stderr)?;
+                let error_lines: Vec<String> =
+                    error_message.lines().map(|s| s.to_string()).collect();
+                for error in &error_lines {
+                    log::error!("deno check error: {}", error);
+                }
+                Ok(error_lines)
+            }
+        }
+    }
+
     /// Runs Deno code either in a Docker container or directly on the host system.
     ///
     /// The execution environment is determined automatically based on whether Docker is available.

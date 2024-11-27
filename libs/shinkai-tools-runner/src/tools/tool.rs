@@ -80,6 +80,12 @@ impl Tool {
         Ok(tool_definition)
     }
 
+    pub async fn check(&self) -> anyhow::Result<Vec<String>> {
+        let mut deno_runner = DenoRunner::new(self.deno_runner_options.clone());
+        let code = self.code.clone();
+        deno_runner.check(code).await
+    }
+
     pub async fn run(
         &self,
         envs: Option<HashMap<String, String>>,

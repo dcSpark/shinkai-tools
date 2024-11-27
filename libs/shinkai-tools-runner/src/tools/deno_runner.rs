@@ -12,7 +12,7 @@ use super::{
 };
 use std::{
     collections::HashMap,
-    path::{self},
+    path::{self, PathBuf},
     sync::Arc,
     time::Duration,
 };
@@ -62,13 +62,21 @@ impl DenoRunner {
         max_execution_timeout: Option<Duration>,
     ) -> anyhow::Result<Vec<String>> {
         match self.options.force_runner_type {
-            Some(RunnerType::Host) => self.run_in_host(code_files, envs, max_execution_timeout).await,
-            Some(RunnerType::Docker) => self.run_in_docker(code_files, envs, max_execution_timeout).await,
+            Some(RunnerType::Host) => {
+                self.run_in_host(code_files, envs, max_execution_timeout)
+                    .await
+            }
+            Some(RunnerType::Docker) => {
+                self.run_in_docker(code_files, envs, max_execution_timeout)
+                    .await
+            }
             _ => {
                 if super::container_utils::is_docker_available() == DockerStatus::Running {
-                    self.run_in_docker(code_files, envs, max_execution_timeout).await
+                    self.run_in_docker(code_files, envs, max_execution_timeout)
+                        .await
                 } else {
-                    self.run_in_host(code_files, envs, max_execution_timeout).await
+                    self.run_in_host(code_files, envs, max_execution_timeout)
+                        .await
                 }
             }
         }
@@ -107,36 +115,51 @@ impl DenoRunner {
                 execution_storage.relative_to_root(execution_storage.home_folder_path.clone()),
             ),
         ];
-
         for (dir, relative_path) in mount_dirs {
             let mount_param = format!(r#"type=bind,source={},target=/app/{}"#, dir, relative_path);
             log::info!("mount parameter created: {}", mount_param);
             mount_params.extend([String::from("--mount"), mount_param]);
         }
 
+        let mut mount_env = String::from("");
+        log::info!("mount files: {:?}", self.options.context.mount_files);
         // Mount each writable file to /app/mount
         for file in &self.options.context.mount_files {
-            // TODO: This hardcoded app could be buggy if later we make some changes to the execution storage
-            let mount_param = format!(
-                r#"type=bind,source={},target=/app/{}/{}"#,
-                path::absolute(file).unwrap().as_normalized_string(),
+            let target_path = format!(
+                "/app/{}/{}",
                 execution_storage.relative_to_root(execution_storage.mount_folder_path.clone()),
                 file.file_name().unwrap().to_str().unwrap()
             );
+
+            // TODO: This hardcoded app could be buggy if later we make some changes to the execution storage
+            let mount_param = format!(
+                r#"type=bind,source={},target={}"#,
+                path::absolute(file).unwrap().as_normalized_string(),
+                target_path.clone()
+            );
             log::info!("mount parameter created: {}", mount_param);
+            mount_env += &format!("{},", target_path);
             mount_params.extend([String::from("--mount"), mount_param]);
         }
+
+        let mut mount_assets_env = String::from("");
         // Mount each asset file to /app/assets
-        for file in &self.options.context.assets {
-            let mount_param = format!(
-                r#"type=bind,readonly=true,source={},target=/app/{}/{}"#,
-                path::absolute(file).unwrap().as_normalized_string(),
+        for file in &self.options.context.assets_files {
+            let target_path = format!(
+                "/app/{}/{}",
                 execution_storage.relative_to_root(execution_storage.assets_folder_path.clone()),
                 file.file_name().unwrap().to_str().unwrap()
             );
-            log::info!("mount parameter created: {}", mount_param);
+            let mount_param = format!(
+                r#"type=bind,readonly=true,source={},target={}"#,
+                path::absolute(file).unwrap().as_normalized_string(),
+                target_path,
+            );
+            log::debug!("mount parameter created: {}", mount_param);
+            mount_assets_env += &format!("{},", target_path);
             mount_params.extend([String::from("--mount"), mount_param]);
         }
+
         let mut container_envs = Vec::<String>::new();
 
         container_envs.push(String::from("-e"));
@@ -151,6 +174,13 @@ impl DenoRunner {
             self.options.shinkai_node_location.protocol, self.options.shinkai_node_location.port
         ));
 
+        container_envs.push(String::from("-e"));
+        container_envs.push(String::from("HOME=/app/home"));
+        container_envs.push(String::from("-e"));
+        container_envs.push(format!("ASSETS={}", mount_assets_env));
+        container_envs.push(String::from("-e"));
+        container_envs.push(format!("MOUNT={}", mount_env));
+
         if let Some(envs) = envs {
             for (key, value) in envs {
                 let env = format!("{}={}", key, value);
@@ -158,6 +188,42 @@ impl DenoRunner {
                 container_envs.push(env);
             }
         }
+
+        let deno_permissions = self.get_deno_permissions(
+            "/usr/bin/deno",
+            "/app/home",
+            &self
+                .options
+                .context
+                .mount_files
+                .iter()
+                .map(|p| {
+                    let path_in_docker = format!(
+                        "/app/{}/{}",
+                        execution_storage
+                            .relative_to_root(execution_storage.mount_folder_path.clone()),
+                        p.file_name().unwrap().to_str().unwrap()
+                    );
+                    PathBuf::from(path_in_docker)
+                })
+                .collect::<Vec<_>>(),
+            &self
+                .options
+                .context
+                .assets_files
+                .iter()
+                .map(|p| {
+                    let path_in_docker = format!(
+                        "/app/{}/{}",
+                        execution_storage
+                            .relative_to_root(execution_storage.assets_folder_path.clone()),
+                        p.file_name().unwrap().to_str().unwrap()
+                    );
+                    PathBuf::from(path_in_docker)
+                })
+                .collect::<Vec<_>>(),
+        );
+
         let code_entrypoint =
             execution_storage.relative_to_root(execution_storage.code_entrypoint_file_path.clone());
         let mut command = tokio::process::Command::new("docker");
@@ -171,9 +237,9 @@ impl DenoRunner {
             "run",
             "--ext",
             "ts",
-            "--allow-all",
-            code_entrypoint.as_str(),
         ]);
+        args.extend(deno_permissions.iter().map(|s| s.as_str()));
+        args.extend([code_entrypoint.as_str()]);
         let command = command
             .args(args)
             .stdout(std::process::Stdio::piped())
@@ -264,48 +330,39 @@ impl DenoRunner {
         let execution_storage = DenoExecutionStorage::new(code_files, self.options.context.clone());
         execution_storage.init(None)?;
 
-        let home_permissions = format!(
-            "--allow-write={}",
-            execution_storage.home_folder_path.to_string_lossy()
-        );
-
         let binary_path = path::absolute(self.options.deno_binary_path.clone())
             .unwrap()
             .to_string_lossy()
             .to_string();
         log::info!("using deno from host at path: {:?}", binary_path.clone());
-        let exec_path = format!("--allow-read={}", binary_path.clone());
-        let deno_permissions_host: Vec<&str> = vec![
-            // Basically all non-file related permissions
-            "--allow-env",
-            "--allow-run",
-            "--allow-net",
-            "--allow-sys",
-            "--allow-scripts",
-            "--allow-ffi",
-            "--allow-import",
 
-            // Engine folders
-            "--allow-read=.",
-            "--allow-write=./home",
-
-            // Playwright/Chrome folders
-            &exec_path,
-            "--allow-write=/var/folders",
-            "--allow-read=/var/folders",
-            "--allow-read=/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
-            "--allow-read=/Applications/Google Chrome Canary.app/Contents/MacOS/Google Chrome Canary",
-            "--allow-read=/Applications/Chromium.app/Contents/MacOS/Chromium",
-            "--allow-read=C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe",
-            "--allow-read=C:\\Program Files (x86)\\Google\\Chrome SxS\\Application\\chrome.exe",
-            "--allow-read=C:\\Program Files (x86)\\Chromium\\Application\\chrome.exe",
-            home_permissions.as_str(),
-        ];
+        let deno_permissions: Vec<String> = self.get_deno_permissions(
+            binary_path.clone().as_str(),
+            execution_storage
+                .home_folder_path
+                .to_string_lossy()
+                .to_string()
+                .as_str(),
+            &self
+                .options
+                .context
+                .mount_files
+                .iter()
+                .map(|p| path::absolute(p).unwrap())
+                .collect::<Vec<_>>(),
+            &self
+                .options
+                .context
+                .assets_files
+                .iter()
+                .map(|p| path::absolute(p).unwrap())
+                .collect::<Vec<_>>(),
+        );
 
         let mut command = tokio::process::Command::new(binary_path);
         let command = command
             .args(["run", "--ext", "ts"])
-            .args(deno_permissions_host)
+            .args(deno_permissions)
             .arg(execution_storage.code_entrypoint_file_path.clone())
             .current_dir(execution_storage.root_folder_path.clone())
             .stdout(std::process::Stdio::piped())
@@ -321,6 +378,28 @@ impl DenoRunner {
                 self.options.shinkai_node_location.host,
                 self.options.shinkai_node_location.port
             ),
+        );
+
+        command.env("HOME", execution_storage.home_folder_path.clone());
+        command.env(
+            "ASSETS",
+            self.options
+                .context
+                .assets_files
+                .iter()
+                .map(|p| path::absolute(p).unwrap().to_string_lossy().to_string())
+                .collect::<Vec<_>>()
+                .join(","),
+        );
+        command.env(
+            "MOUNT",
+            self.options
+                .context
+                .mount_files
+                .iter()
+                .map(|p| path::absolute(p).unwrap().to_string_lossy().to_string())
+                .collect::<Vec<_>>()
+                .join(","),
         );
 
         if let Some(envs) = envs {
@@ -398,6 +477,66 @@ impl DenoRunner {
         let stdout: Vec<String> = stdout_lines.lock().await.to_vec();
         log::info!("command completed successfully with output: {:?}", stdout);
         Ok(stdout)
+    }
+
+    fn get_deno_permissions(
+        &self,
+        exec_path: &str,
+        home_path: &str,
+        mount_files: &[PathBuf],
+        assets_files: &[PathBuf],
+    ) -> Vec<String> {
+        log::info!("mount files: {:?}", mount_files);
+        log::info!("assets files: {:?}", assets_files);
+        let mut deno_permissions: Vec<String> = vec![
+            // Basically all non-file related permissions
+            "--allow-env".to_string(),
+            "--allow-run".to_string(),
+            "--allow-net".to_string(),
+            "--allow-sys".to_string(),
+            "--allow-scripts".to_string(),
+            "--allow-ffi".to_string(),
+            "--allow-import".to_string(),
+
+            // Engine folders
+            "--allow-read=.".to_string(),
+            format!("--allow-write={}", home_path.to_string()),
+
+            // Playwright/Chrome folders
+            format!("--allow-read={}", exec_path.to_string()),
+            "--allow-write=/var/folders".to_string(),
+            "--allow-read=/var/folders".to_string(),
+            "--allow-read=/tmp".to_string(),
+            "--allow-write=/tmp".to_string(),
+            format!("--allow-read={}", std::env::temp_dir().to_string_lossy()),
+            format!("--allow-write={}", std::env::temp_dir().to_string_lossy()),
+            "--allow-read=/Applications/Google Chrome.app/Contents/MacOS/Google Chrome".to_string(),
+            "--allow-read=/Applications/Google Chrome Canary.app/Contents/MacOS/Google Chrome Canary".to_string(),
+            "--allow-read=/Applications/Chromium.app/Contents/MacOS/Chromium".to_string(),
+            "--allow-read=C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe".to_string(),
+            "--allow-read=C:\\Program Files (x86)\\Google\\Chrome SxS\\Application\\chrome.exe".to_string(),
+            "--allow-read=C:\\Program Files (x86)\\Chromium\\Application\\chrome.exe".to_string(),
+            "--allow-read=C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe".to_string(),
+            "--allow-read=C:\\Program Files\\Google\\Chrome SxS\\Application\\chrome.exe".to_string(),
+            "--allow-read=C:\\Program Files\\Chromium\\Application\\chrome.exe".to_string(),
+            "--allow-read=/usr/bin/chromium".to_string(),
+        ];
+
+        for file in mount_files {
+            let mount_param = format!(
+                r#"--allow-read={},--allow-write={}"#,
+                file.to_string_lossy(),
+                file.to_string_lossy()
+            );
+            deno_permissions.extend(mount_param.split(',').map(String::from));
+        }
+
+        for file in assets_files {
+            let asset_param = format!(r#"--allow-read={}"#, file.to_string_lossy());
+            deno_permissions.push(asset_param);
+        }
+        log::info!("deno permissions: {}", deno_permissions.join(" "));
+        deno_permissions
     }
 }
 

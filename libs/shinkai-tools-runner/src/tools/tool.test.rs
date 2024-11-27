@@ -1,4 +1,4 @@
-use std::{collections::HashMap, path::PathBuf};
+use std::collections::HashMap;
 
 use serde_json::Value;
 
@@ -215,7 +215,7 @@ async fn test_file_persistence_in_home() {
             for await (const entry of Deno.readDir("./")) {
                 console.log(entry.name);
             }
-            await Deno.writeTextFile("./home/test.txt", content);
+            await Deno.writeTextFile(`${process.env.HOME}/test.txt`, content);
             const data = { success: true };
             return data;
         }
@@ -258,24 +258,18 @@ async fn test_mount_file_in_mount() {
         .is_test(true)
         .try_init();
 
-    let test_file_path = PathBuf::from(format!(
-        "././shinkai-tools-runner-execution-storage/temp-test-files/{}",
-        nanoid::nanoid!()
-    ));
+    let test_file_path = tempfile::NamedTempFile::new().unwrap().into_temp_path();
     std::fs::create_dir_all(test_file_path.parent().unwrap()).unwrap();
     println!("test file path: {:?}", test_file_path);
     std::fs::write(&test_file_path, "1").unwrap();
 
-    let execution_storage = std::path::PathBuf::from("./shinkai-tools-runner-execution-storage");
-
     let js_code = r#"
         async function run (c, p) {
-            const files = [];
-            for await (const dirEntry of Deno.readDir("./mount")) {
-                files.push(dirEntry.name);
+            const mount = Deno.env.get("MOUNT").split(',');
+            for await (const file of mount) {
+                console.log("file in mount: ", file);
             }
-            console.log("files in mount:", files);
-            const content = await Deno.readTextFile(`./mount/${process.env.FILE_NAME}`);
+            const content = await Deno.readTextFile(mount[0]);
             console.log(content);
             return content;
         }
@@ -291,7 +285,6 @@ async fn test_mount_file_in_mount() {
         serde_json::Value::Null,
         Some(DenoRunnerOptions {
             context: ExecutionContext {
-                storage: execution_storage.clone(),
                 mount_files: vec![test_file_path.to_path_buf().clone()],
                 ..Default::default()
             },
@@ -328,7 +321,8 @@ async fn test_mount_and_edit_file_in_mount() {
 
     let js_code = r#"
         async function run (c, p) {
-            await Deno.writeTextFile(`./mount/${process.env.FILE_NAME}`, "2");
+            const mount = Deno.env.get("MOUNT").split(',');
+            await Deno.writeTextFile(mount[0], "2");
             return;
         }
     "#;
@@ -379,18 +373,19 @@ async fn test_mount_file_in_assets() {
     println!("test file path: {:?}", test_file_path);
     std::fs::write(&test_file_path, "1").unwrap();
 
-    let execution_storage = std::path::PathBuf::from("./shinkai-tools-runner-execution-storage");
-
-    let js_code = r#"
-        async function run (c, p) {
-            const content = await Deno.readTextFile(`./assets/${process.env.FILE_NAME}`);
-            console.log(content);
-            return content;
-        }
-    "#;
-
     let code_files = CodeFiles {
-        files: HashMap::from([("main.ts".to_string(), js_code.to_string())]),
+        files: HashMap::from([(
+            "main.ts".to_string(),
+            r#"
+                async function run (c, p) {
+                    const assets = Deno.env.get("ASSETS").split(',');
+                    const content = await Deno.readTextFile(assets[0]);
+                    console.log(content);
+                    return content;
+                }
+            "#
+            .to_string(),
+        )]),
         entrypoint: "main.ts".to_string(),
     };
 
@@ -399,8 +394,7 @@ async fn test_mount_file_in_assets() {
         serde_json::Value::Null,
         Some(DenoRunnerOptions {
             context: ExecutionContext {
-                storage: execution_storage.clone(),
-                assets: vec![test_file_path.to_path_buf().clone()],
+                assets_files: vec![test_file_path.to_path_buf().clone()],
                 ..Default::default()
             },
             ..Default::default()
@@ -410,7 +404,8 @@ async fn test_mount_file_in_assets() {
     envs.insert(
         "FILE_NAME".to_string(),
         test_file_path
-            .file_name()
+            .to_path_buf()
+            .canonicalize()
             .unwrap()
             .to_str()
             .unwrap()
@@ -428,34 +423,36 @@ async fn test_fail_when_try_write_assets() {
         .is_test(true)
         .try_init();
 
-    let test_file_path = tempfile::NamedTempFile::new().unwrap().into_temp_path();
+    let test_file_path = tempfile::NamedTempFile::new_in("./shinkai-tools-runner-execution-storage").unwrap().into_temp_path();
     println!("test file path: {:?}", test_file_path);
     std::fs::write(&test_file_path, "1").unwrap();
 
     let execution_storage = std::path::PathBuf::from("./shinkai-tools-runner-execution-storage");
 
-    let js_code = r#"
-        async function run (c, p) {
-            await Deno.writeTextFile(`./assets/${process.env.FILE_NAME}`);
-            return;
-        }
-    "#;
-
     let code_files = CodeFiles {
-        files: HashMap::from([("main.ts".to_string(), js_code.to_string())]),
+        files: HashMap::from([(
+            "main.ts".to_string(),
+            r#"
+                async function run (c, p) {
+                    const assets = Deno.env.get("ASSETS").split(',');
+                    console.log('writing', assets[0]);
+                    await Deno.writeTextFile(assets[0], "2");
+                    return;
+                }
+            "#
+            .to_string(),
+        )]),
         entrypoint: "main.ts".to_string(),
     };
 
-    let context_id = format!("test-mount-file-in-assets-{}", nanoid::nanoid!());
     let tool = Tool::new(
         code_files,
         serde_json::Value::Null,
         Some(DenoRunnerOptions {
             context: ExecutionContext {
                 storage: execution_storage.clone(),
-                context_id: context_id.clone(),
                 code_id: "js_code".into(),
-                assets: vec![test_file_path.to_path_buf().clone()],
+                assets_files: vec![test_file_path.to_path_buf().clone()],
                 ..Default::default()
             },
             ..Default::default()
@@ -465,7 +462,8 @@ async fn test_fail_when_try_write_assets() {
     envs.insert(
         "FILE_NAME".to_string(),
         test_file_path
-            .file_name()
+            .to_path_buf()
+            .canonicalize()
             .unwrap()
             .to_str()
             .unwrap()
@@ -473,6 +471,11 @@ async fn test_fail_when_try_write_assets() {
     );
     let result = tool.run(Some(envs), Value::Null, None).await;
     assert!(result.is_err());
+    assert!(result
+        .clone()
+        .unwrap_err()
+        .to_string()
+        .contains("NotCapable"));
 }
 
 #[tokio::test]
@@ -556,7 +559,7 @@ async fn test_multiple_file_imports() {
 
     let tool = Tool::new(code_files, Value::Null, None);
     let result = tool.run(None, Value::Null, None).await;
-    
+
     assert!(result.is_ok());
     assert_eq!(result.unwrap().data, "processed test data");
 }

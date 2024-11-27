@@ -212,7 +212,6 @@ async fn test_run_with_file_sub_path() {
             host: String::from("127.0.0.2"),
             port: 9554,
         },
-        force_runner_type: Some(RunnerType::Docker),
         ..Default::default()
     });
     let code = r#"
@@ -240,7 +239,6 @@ async fn test_run_with_imports() {
             host: String::from("127.0.0.2"),
             port: 9554,
         },
-        force_runner_type: Some(RunnerType::Docker),
         ..Default::default()
     });
 

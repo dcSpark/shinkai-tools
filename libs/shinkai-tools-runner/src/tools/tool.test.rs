@@ -610,3 +610,49 @@ async fn multiple_file_imports(#[case] runner_type: RunnerType) {
     assert!(result.is_ok());
     assert_eq!(result.unwrap().data, "processed test data");
 }
+
+#[rstest]
+#[case::host(RunnerType::Host)]
+#[case::docker(RunnerType::Docker)]
+#[tokio::test]
+async fn context_and_execution_id(#[case] runner_type: RunnerType) {
+    let _ = env_logger::builder()
+        .filter_level(log::LevelFilter::Info)
+        .is_test(true)
+        .try_init();
+
+    let context_id = nanoid::nanoid!();
+    let execution_id = nanoid::nanoid!();
+
+    let code = r#"
+        function run() {
+            return {
+                contextId: Deno.env.get("CONTEXT_ID"),
+                executionId: Deno.env.get("EXECUTION_ID")
+            };
+        }
+    "#;
+
+    let code_files = CodeFiles {
+        files: HashMap::from([("main.ts".to_string(), code.to_string())]),
+        entrypoint: "main.ts".to_string(),
+    };
+
+    let tool = Tool::new(
+        code_files,
+        Value::Null,
+        Some(DenoRunnerOptions {
+            force_runner_type: Some(runner_type),
+            context: ExecutionContext {
+                context_id: context_id.clone(),
+                execution_id: execution_id.clone(),
+                ..Default::default()
+            },
+            ..Default::default()
+        }),
+    );
+    let result = tool.run(None, Value::Null, None).await.unwrap();
+
+    assert_eq!(result.data["contextId"], context_id);
+    assert_eq!(result.data["executionId"], execution_id);
+}

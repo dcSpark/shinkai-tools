@@ -1,14 +1,14 @@
 /**
  * Script to bundle and process Shinkai tools
- * 
+ *
  * This script takes an entry file and output folder as arguments, bundles the tool code,
  * generates embeddings for the tool definition, and creates an extended tool definition
  * that includes the code and embedding metadata.
- * 
+ *
  * Usage:
  * Run with --entry and --outputFolder parameters:
  * deno run tool-bundler.ts --entry=<entry-file> --outputFolder=<output-folder>
- * 
+ *
  * The script will:
  * 1. Read and bundle the tool code from the entry file
  * 2. Write the bundled code to index.ts in the output folder
@@ -21,7 +21,6 @@
 import { join } from 'node:path';
 import minimist from 'npm:minimist';
 import fs from 'node:fs';
-import process from 'node:process';
 import axios from 'npm:axios';
 
 console.log('🚀 Starting Shinkai Tool bundler...');
@@ -37,9 +36,9 @@ type ExtendedToolDefinition = ToolDefinition<any> & {
 
 // Parse command line arguments
 console.log('📝 Parsing command line arguments...');
-const args = minimist(process.argv.slice(2));
-const entryFile: string = join(process.cwd(), args.entry);
-const outputFolder: string = join(process.cwd(), args.outputFolder);
+const args = minimist(Deno.args);
+const entryFile: string = join(Deno.cwd(), args.entry);
+const outputFolder: string = join(Deno.cwd(), args.outputFolder);
 const outputFile: string = join(outputFolder, 'index.ts');
 
 console.log('📂 Entry file:', entryFile);
@@ -79,7 +78,7 @@ fs.promises
     // Import tool definition from bundled code
     console.log('📥 Importing tool definition...');
     const { definition }: { definition: ToolDefinition<any> } = await import(
-      process.platform === 'win32' ? `file://${outputFile}` : outputFile
+      Deno.build.os == 'windows' ? `file://${outputFile}` : outputFile
     );
 
     console.log('✨ Tool definition loaded:', definition.name);
@@ -88,7 +87,7 @@ fs.promises
     console.log('🧮 Generating embeddings for tool metadata...');
     const prompt = `${definition.id} ${definition.name} ${definition.description} ${definition.author} ${definition.keywords.join(' ')}`;
     const embeddings = await getEmbeddings(prompt);
-    
+
     // Create extended tool definition with code and embeddings
     console.log('🔨 Creating extended tool definition...');
     const toolDefinition: ExtendedToolDefinition = {

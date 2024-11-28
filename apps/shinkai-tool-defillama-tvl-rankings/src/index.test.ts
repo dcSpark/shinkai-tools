@@ -12,7 +12,7 @@ Deno.test({
   fn: async () => {
     const run_result = await run(
       {
-        chromePath: process.env?.CHROME_PATH,
+        chromePath: Deno.env.get('CHROME_PATH'),
       },
       {
         top10: false,

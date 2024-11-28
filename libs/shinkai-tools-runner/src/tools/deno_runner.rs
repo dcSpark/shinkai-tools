@@ -223,6 +223,10 @@ impl DenoRunner {
         container_envs.push(format!("ASSETS={}", mount_assets_env));
         container_envs.push(String::from("-e"));
         container_envs.push(format!("MOUNT={}", mount_env));
+        container_envs.push(String::from("-e"));
+        container_envs.push(format!("CONTEXT_ID={}", self.options.context.context_id));
+        container_envs.push(String::from("-e"));
+        container_envs.push(format!("EXECUTION_ID={}", self.options.context.execution_id));
 
         if let Some(envs) = envs {
             for (key, value) in envs {
@@ -445,6 +449,9 @@ impl DenoRunner {
                 .collect::<Vec<_>>()
                 .join(","),
         );
+
+        command.env("CONTEXT_ID", self.options.context.context_id.clone());
+        command.env("EXECUTION_ID", self.options.context.execution_id.clone());
 
         if let Some(envs) = envs {
             command.envs(envs);

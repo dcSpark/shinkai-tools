@@ -205,7 +205,7 @@ export const run: Run<Config, Params, Result> = (
 ): Promise<Result> => {
   const chromePath =
     configurations?.chromePath ||
-    process.env.CHROME_PATH ||
+    Deno.env.get('CHROME_PATH') ||
     chromePaths.chrome ||
     chromePaths.chromium;
   return withPage(chromePath, async (page) => {

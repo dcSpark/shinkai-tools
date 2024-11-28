@@ -4,7 +4,7 @@ use serde_json::Value;
 
 use super::{
     code_files::CodeFiles, deno_runner::DenoRunner, deno_runner_options::DenoRunnerOptions,
-    execution_error::ExecutionError, run_result::RunResult, tool_definition::ToolDefinition,
+    execution_error::ExecutionError, run_result::RunResult,
 };
 
 pub struct Tool {
@@ -27,57 +27,6 @@ impl Tool {
             configurations,
             deno_runner_options: options,
         }
-    }
-
-    pub async fn definition(&self) -> Result<ToolDefinition, ExecutionError> {
-        log::info!("preparing to get tool definition from code");
-
-        let mut deno_runner = DenoRunner::new(self.deno_runner_options.clone());
-
-        let mut code = self.code.clone();
-        let entrypoint_code = code.files.get(&self.code.entrypoint.clone());
-        if let Some(entrypoint_code) = entrypoint_code {
-            let adapted_entrypoint_code = format!(
-                r#"
-                {}
-                console.log("<shinkai-tool-definition>");
-                console.log(JSON.stringify(definition));
-                console.log("</shinkai-tool-definition>");
-            "#,
-                entrypoint_code
-            );
-            code.files.insert(
-                self.code.entrypoint.clone(),
-                adapted_entrypoint_code.clone(),
-            );
-        }
-
-        let result = deno_runner
-            .run(code, None, None)
-            .await
-            .map_err(|e| ExecutionError::new(format!("failed to run deno: {}", e), None))?;
-
-        let result_text = result
-            .iter()
-            .skip_while(|line| !line.contains("<shinkai-tool-definition>"))
-            .skip(1)
-            .take_while(|line| !line.contains("</shinkai-tool-definition>"))
-            .map(|s| s.to_string())
-            .collect::<Vec<String>>()
-            .join("\n");
-
-        log::info!("result text: {}", result_text);
-
-        let tool_definition: ToolDefinition = serde_json::from_str(&result_text).map_err(|e| {
-            log::info!("failed to parse tool definition: {}", e);
-            ExecutionError::new(format!("failed to parse tool definition: {}", e), None)
-        })?;
-
-        log::info!(
-            "successfully retrieved tool definition: {:?}",
-            tool_definition
-        );
-        Ok(tool_definition)
     }
 
     pub async fn check(&self) -> anyhow::Result<Vec<String>> {

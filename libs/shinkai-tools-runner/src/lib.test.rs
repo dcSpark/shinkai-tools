@@ -2,14 +2,20 @@ use std::collections::HashMap;
 use std::env;
 use std::time::Duration;
 
+use rstest::rstest;
 use serde_json::json;
 
 use crate::built_in_tools::get_tool;
 use crate::tools::code_files::CodeFiles;
+use crate::tools::deno_runner_options::DenoRunnerOptions;
+use crate::tools::deno_runner_options::RunnerType;
 use crate::tools::tool::Tool;
 
+#[rstest]
+#[case::host(RunnerType::Host)]
+#[case::docker(RunnerType::Docker)]
 #[tokio::test]
-async fn shinkai_tool_echo() {
+async fn shinkai_tool_echo(#[case] runner_type: RunnerType) {
     let _ = env_logger::builder()
         .filter_level(log::LevelFilter::Info)
         .is_test(true)
@@ -19,7 +25,14 @@ async fn shinkai_tool_echo() {
         files: HashMap::from([("main.ts".to_string(), tool_definition.code.clone().unwrap())]),
         entrypoint: "main.ts".to_string(),
     };
-    let tool = Tool::new(code_files, serde_json::Value::Null, None);
+    let tool = Tool::new(
+        code_files,
+        serde_json::Value::Null,
+        Some(DenoRunnerOptions {
+            force_runner_type: Some(runner_type),
+            ..Default::default()
+        }),
+    );
     let run_result = tool
         .run(None, serde_json::json!({ "message": "valparaíso" }), None)
         .await
@@ -27,8 +40,11 @@ async fn shinkai_tool_echo() {
     assert_eq!(run_result.data["message"], "echoing: valparaíso");
 }
 
+#[rstest]
+#[case::host(RunnerType::Host)]
+#[case::docker(RunnerType::Docker)]
 #[tokio::test]
-async fn shinkai_tool_weather_by_city() {
+async fn shinkai_tool_weather_by_city(#[case] runner_type: RunnerType) {
     let _ = env_logger::builder()
         .filter_level(log::LevelFilter::Info)
         .is_test(true)
@@ -41,7 +57,10 @@ async fn shinkai_tool_weather_by_city() {
     let tool = Tool::new(
         code_files,
         serde_json::json!({ "apiKey": "63d35ff6068c3103ccd1227526935675" }),
-        None,
+        Some(DenoRunnerOptions {
+            force_runner_type: Some(runner_type),
+            ..Default::default()
+        }),
     );
     let run_result = tool
         .run(None, serde_json::json!({ "city": "valparaíso" }), None)
@@ -49,8 +68,11 @@ async fn shinkai_tool_weather_by_city() {
     assert!(run_result.is_ok());
 }
 
+#[rstest]
+#[case::host(RunnerType::Host)]
+#[case::docker(RunnerType::Docker)]
 #[tokio::test]
-async fn shinkai_tool_inline() {
+async fn shinkai_tool_inline(#[case] runner_type: RunnerType) {
     let _ = env_logger::builder()
         .filter_level(log::LevelFilter::Info)
         .is_test(true)
@@ -64,7 +86,14 @@ async fn shinkai_tool_inline() {
         files: HashMap::from([("main.ts".to_string(), js_code.to_string())]),
         entrypoint: "main.ts".to_string(),
     };
-    let tool = Tool::new(code_files, serde_json::Value::Null, None);
+    let tool = Tool::new(
+        code_files,
+        serde_json::Value::Null,
+        Some(DenoRunnerOptions {
+            force_runner_type: Some(runner_type),
+            ..Default::default()
+        }),
+    );
     let run_result = tool
         .run(None, serde_json::json!({ "name": "world" }), None)
         .await
@@ -72,8 +101,11 @@ async fn shinkai_tool_inline() {
     assert_eq!(run_result.data["message"], "Hello, world!");
 }
 
+#[rstest]
+#[case::host(RunnerType::Host)]
+#[case::docker(RunnerType::Docker)]
 #[tokio::test]
-async fn shinkai_tool_inline_non_json_return() {
+async fn shinkai_tool_inline_non_json_return(#[case] runner_type: RunnerType) {
     let _ = env_logger::builder()
         .filter_level(log::LevelFilter::Info)
         .is_test(true)
@@ -87,13 +119,23 @@ async fn shinkai_tool_inline_non_json_return() {
         files: HashMap::from([("main.ts".to_string(), js_code.to_string())]),
         entrypoint: "main.ts".to_string(),
     };
-    let tool = Tool::new(code_files, serde_json::Value::Null, None);
+    let tool = Tool::new(
+        code_files,
+        serde_json::Value::Null,
+        Some(DenoRunnerOptions {
+            force_runner_type: Some(runner_type),
+            ..Default::default()
+        }),
+    );
     let run_result = tool.run(None, serde_json::json!({}), None).await.unwrap();
     assert_eq!(run_result.data, 5);
 }
 
+#[rstest]
+#[case::host(RunnerType::Host)]
+#[case::docker(RunnerType::Docker)]
 #[tokio::test]
-async fn shinkai_tool_web3_eth_balance() {
+async fn shinkai_tool_web3_eth_balance(#[case] runner_type: RunnerType) {
     let _ = env_logger::builder()
         .filter_level(log::LevelFilter::Info)
         .is_test(true)
@@ -103,7 +145,14 @@ async fn shinkai_tool_web3_eth_balance() {
         files: HashMap::from([("main.ts".to_string(), tool_definition.code.clone().unwrap())]),
         entrypoint: "main.ts".to_string(),
     };
-    let tool = Tool::new(code_files, serde_json::Value::Null, None);
+    let tool = Tool::new(
+        code_files,
+        serde_json::Value::Null,
+        Some(DenoRunnerOptions {
+            force_runner_type: Some(runner_type),
+            ..Default::default()
+        }),
+    );
     let run_result = tool
         .run(
             None,
@@ -115,8 +164,11 @@ async fn shinkai_tool_web3_eth_balance() {
     assert!(run_result.is_ok());
 }
 
+#[rstest]
+#[case::host(RunnerType::Host)]
+#[case::docker(RunnerType::Docker)]
 #[tokio::test]
-async fn shinkai_tool_web3_eth_uniswap() {
+async fn shinkai_tool_web3_eth_uniswap(#[case] runner_type: RunnerType) {
     let _ = env_logger::builder()
         .filter_level(log::LevelFilter::Info)
         .is_test(true)
@@ -126,7 +178,14 @@ async fn shinkai_tool_web3_eth_uniswap() {
         files: HashMap::from([("main.ts".to_string(), tool_definition.code.clone().unwrap())]),
         entrypoint: "main.ts".to_string(),
     };
-    let tool = Tool::new(code_files, serde_json::Value::Null, None);
+    let tool = Tool::new(
+        code_files,
+        serde_json::Value::Null,
+        Some(DenoRunnerOptions {
+            force_runner_type: Some(runner_type),
+            ..Default::default()
+        }),
+    );
     let run_result = tool
         .run(
             None,
@@ -144,8 +203,11 @@ async fn shinkai_tool_web3_eth_uniswap() {
     assert!(run_result.is_ok());
 }
 
+#[rstest]
+#[case::host(RunnerType::Host)]
+#[case::docker(RunnerType::Docker)]
 #[tokio::test]
-async fn shinkai_tool_download_page() {
+async fn shinkai_tool_download_page(#[case] runner_type: RunnerType) {
     let _ = env_logger::builder()
         .filter_level(log::LevelFilter::Info)
         .is_test(true)
@@ -155,7 +217,14 @@ async fn shinkai_tool_download_page() {
         files: HashMap::from([("main.ts".to_string(), tool_definition.code.clone().unwrap())]),
         entrypoint: "main.ts".to_string(),
     };
-    let tool = Tool::new(code_files, serde_json::Value::Null, None);
+    let tool = Tool::new(
+        code_files,
+        serde_json::Value::Null,
+        Some(DenoRunnerOptions {
+            force_runner_type: Some(runner_type),
+            ..Default::default()
+        }),
+    );
     let run_result = tool
         .run(
             None,
@@ -169,8 +238,11 @@ async fn shinkai_tool_download_page() {
     assert!(run_result.is_ok());
 }
 
+#[rstest]
+#[case::host(RunnerType::Host)]
+#[case::docker(RunnerType::Docker)]
 #[tokio::test]
-async fn max_execution_time() {
+async fn max_execution_time(#[case] runner_type: RunnerType) {
     let _ = env_logger::builder()
         .filter_level(log::LevelFilter::Info)
         .is_test(true)
@@ -195,7 +267,14 @@ async fn max_execution_time() {
         files: HashMap::from([("main.ts".to_string(), js_code.to_string())]),
         entrypoint: "main.ts".to_string(),
     };
-    let tool = Tool::new(code_files, serde_json::Value::Null, None);
+    let tool = Tool::new(
+        code_files,
+        serde_json::Value::Null,
+        Some(DenoRunnerOptions {
+            force_runner_type: Some(runner_type),
+            ..Default::default()
+        }),
+    );
     let run_result = tool
         .run(
             None,
@@ -207,8 +286,11 @@ async fn max_execution_time() {
     assert!(run_result.err().unwrap().message().contains("timed out"));
 }
 
+#[rstest]
+#[case::host(RunnerType::Host)]
+#[case::docker(RunnerType::Docker)]
 #[tokio::test]
-async fn shinkai_tool_download_page_stack_overflow() {
+async fn shinkai_tool_download_page_stack_overflow(#[case] runner_type: RunnerType) {
     let _ = env_logger::builder()
         .filter_level(log::LevelFilter::Info)
         .is_test(true)
@@ -227,7 +309,14 @@ async fn shinkai_tool_download_page_stack_overflow() {
                     )]),
                     entrypoint: "main.ts".to_string(),
                 };
-                let tool = Tool::new(code_files, serde_json::Value::Null, None);
+                let tool = Tool::new(
+                    code_files,
+                    serde_json::Value::Null,
+                    Some(DenoRunnerOptions {
+                        force_runner_type: Some(runner_type),
+                        ..Default::default()
+                    }),
+                );
                 tool.run(
                     None,
                     serde_json::json!({
@@ -245,8 +334,11 @@ async fn shinkai_tool_download_page_stack_overflow() {
     assert!(run_result.is_ok());
 }
 
+#[rstest]
+#[case::host(RunnerType::Host)]
+#[case::docker(RunnerType::Docker)]
 #[tokio::test]
-async fn shinkai_tool_leiden() {
+async fn shinkai_tool_leiden(#[case] runner_type: RunnerType) {
     let _ = env_logger::builder()
         .filter_level(log::LevelFilter::Info)
         .is_test(true)
@@ -256,7 +348,14 @@ async fn shinkai_tool_leiden() {
         files: HashMap::from([("main.ts".to_string(), tool_definition.code.clone().unwrap())]),
         entrypoint: "main.ts".to_string(),
     };
-    let tool = Tool::new(code_files, serde_json::Value::Null, None);
+    let tool = Tool::new(
+        code_files,
+        serde_json::Value::Null,
+        Some(DenoRunnerOptions {
+            force_runner_type: Some(runner_type),
+            ..Default::default()
+        }),
+    );
     let edges = vec![
         (2, 1, 1),
         (3, 1, 1),
@@ -353,8 +452,11 @@ async fn shinkai_tool_leiden() {
     );
 }
 
+#[rstest]
+#[case::host(RunnerType::Host)]
+#[case::docker(RunnerType::Docker)]
 #[tokio::test]
-async fn shinkai_tool_duckduckgo_search() {
+async fn shinkai_tool_duckduckgo_search(#[case] runner_type: RunnerType) {
     let _ = env_logger::builder()
         .filter_level(log::LevelFilter::Info)
         .is_test(true)
@@ -364,7 +466,14 @@ async fn shinkai_tool_duckduckgo_search() {
         files: HashMap::from([("main.ts".to_string(), tool_definition.code.clone().unwrap())]),
         entrypoint: "main.ts".to_string(),
     };
-    let tool = Tool::new(code_files, serde_json::Value::Null, None);
+    let tool = Tool::new(
+        code_files,
+        serde_json::Value::Null,
+        Some(DenoRunnerOptions {
+            force_runner_type: Some(runner_type),
+            ..Default::default()
+        }),
+    );
     let run_result = tool
         .run(
             None,
@@ -384,8 +493,15 @@ async fn shinkai_tool_duckduckgo_search() {
     assert!(search_results[0].get("description").is_some());
 }
 
+#[rstest]
+#[case::host(RunnerType::Host)]
+#[case::docker(RunnerType::Docker)]
 #[tokio::test]
-async fn shinkai_tool_playwright_example() {
+async fn shinkai_tool_playwright_example(#[case] runner_type: RunnerType) {
+    if cfg!(windows) {
+        eprintln!("Skipping test on Windows - Playwright not supported in Deno on Windows");
+        return;
+    }
     let _ = env_logger::builder()
         .filter_level(log::LevelFilter::Info)
         .is_test(true)
@@ -395,10 +511,18 @@ async fn shinkai_tool_playwright_example() {
         files: HashMap::from([("main.ts".to_string(), tool_definition.code.clone().unwrap())]),
         entrypoint: "main.ts".to_string(),
     };
+
     let tool = Tool::new(
         code_files,
-        serde_json::json!({ "chromePath": std::env::var("CHROME_PATH").ok().unwrap_or("".to_string()) }),
-        None,
+        if matches!(runner_type, RunnerType::Docker) && std::env::var("CI").is_ok() {
+            serde_json::json!({})
+        } else {
+            serde_json::json!({ "chromePath": std::env::var("CHROME_PATH").ok().unwrap_or("".to_string()) })
+        },
+        Some(DenoRunnerOptions {
+            force_runner_type: Some(runner_type),
+            ..Default::default()
+        }),
     );
     let run_result = tool
         .run(
@@ -419,8 +543,15 @@ async fn shinkai_tool_playwright_example() {
     );
 }
 
+#[rstest]
+#[case::host(RunnerType::Host)]
+#[case::docker(RunnerType::Docker)]
 #[tokio::test]
-async fn shinkai_tool_defillama_lending_tvl_rankings() {
+async fn shinkai_tool_defillama_lending_tvl_rankings(#[case] runner_type: RunnerType) {
+    if matches!(runner_type, RunnerType::Docker) || cfg!(windows) {
+        eprintln!("Skipping test in Docker environment or on Windows");
+        return;
+    }
     let _ = env_logger::builder()
         .filter_level(log::LevelFilter::Info)
         .is_test(true)
@@ -432,8 +563,15 @@ async fn shinkai_tool_defillama_lending_tvl_rankings() {
     };
     let tool = Tool::new(
         code_files,
-        serde_json::json!({ "chromePath": std::env::var("CHROME_PATH").ok().unwrap_or("".to_string()) }),
-        None,
+        if matches!(runner_type, RunnerType::Docker) && std::env::var("CI").is_ok() {
+            serde_json::json!({})
+        } else {
+            serde_json::json!({ "chromePath": std::env::var("CHROME_PATH").ok().unwrap_or("".to_string()) })
+        },
+        Some(DenoRunnerOptions {
+            force_runner_type: Some(runner_type),
+            ..Default::default()
+        }),
     );
     let run_result = tool
         .run(
@@ -450,35 +588,11 @@ async fn shinkai_tool_defillama_lending_tvl_rankings() {
     assert_eq!(run_result.unwrap().data["rowsCount"], 43);
 }
 
-// // TODO: enable this test again when fix the tool
-// #[tokio::test]
-// async fn shinkai_tool_aave_loan_requester() {
-//     let _ = env_logger::builder()
-//         .filter_level(log::LevelFilter::Info)
-//         .is_test(true)
-//         .try_init();
-//     let tool_definition = get_tool("shinkai-tool-aave-loan-requester").unwrap();
-//     let code_files = CodeFiles {
-//         files: HashMap::from([("main.ts".to_string(), tool_definition.code.clone().unwrap())]),
-//         entrypoint: "main.ts".to_string(),
-//     };
-//     let tool = Tool::new(
-//         code_files,
-//         serde_json::json!({ "chromePath": std::env::var("CHROME_PATH").ok().unwrap_or("".to_string()) }),
-//         None,
-//     );
-//     let run_result = tool
-//         .run(
-//             None,
-//             serde_json::json!({ "inputValue": "0.005", "assetSymbol": "ETH" }),
-//             None,
-//         )
-//         .await;
-//     assert!(run_result.is_ok());
-// }
-
+#[rstest]
+#[case::host(RunnerType::Host)]
+#[case::docker(RunnerType::Docker)]
 #[tokio::test]
-async fn shinkai_tool_youtube_summary() {
+async fn shinkai_tool_youtube_summary(#[case] runner_type: RunnerType) {
     if env::var("CI").unwrap_or(String::from("false")) == "true" {
         return;
     }
@@ -490,14 +604,26 @@ async fn shinkai_tool_youtube_summary() {
     let configurations = if env::var("CI").unwrap_or(String::from("false")) == "true" {
         serde_json::json!({ "apiUrl": "https://api.openai.com/v1", "apiKey": env::var("OPEN_AI_API_KEY").unwrap(), "model": "gpt-4o-mini" })
     } else {
-        serde_json::json!({ "apiUrl": "http://127.0.0.1:11434", "lang": "en" })
+        let host = if matches!(runner_type, RunnerType::Docker) {
+            "host.docker.internal"
+        } else {
+            "127.0.0.1"
+        };
+        serde_json::json!({ "apiUrl": format!("http://{}:11434", host), "lang": "en" })
     };
 
     let code_files = CodeFiles {
         files: HashMap::from([("main.ts".to_string(), tool_definition.code.clone().unwrap())]),
         entrypoint: "main.ts".to_string(),
     };
-    let tool = Tool::new(code_files, configurations, None);
+    let tool = Tool::new(
+        code_files,
+        configurations,
+        Some(DenoRunnerOptions {
+            force_runner_type: Some(runner_type),
+            ..Default::default()
+        }),
+    );
     let run_result = tool
         .run(
             None,
@@ -512,8 +638,11 @@ async fn shinkai_tool_youtube_summary() {
         .is_empty());
 }
 
+#[rstest]
+#[case::host(RunnerType::Host)]
+#[case::docker(RunnerType::Docker)]
 #[tokio::test]
-async fn shinkai_tool_json_to_md() {
+async fn shinkai_tool_json_to_md(#[case] runner_type: RunnerType) {
     let _ = env_logger::builder()
         .filter_level(log::LevelFilter::Info)
         .is_test(true)
@@ -528,7 +657,10 @@ async fn shinkai_tool_json_to_md() {
         serde_json::json!({
             "only_system": false
         }),
-        None,
+        Some(DenoRunnerOptions {
+            force_runner_type: Some(runner_type),
+            ..Default::default()
+        }),
     );
     let message = serde_json::json!({
         "relevantSentencesFromText": [

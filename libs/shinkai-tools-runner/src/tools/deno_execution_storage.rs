@@ -105,7 +105,7 @@ impl DenoExecutionStorage {
         }
         log::info!("creating deno.json file");
         let deno_json_path = self.code_folder_path.join("deno.json");
-        std::fs::write(&deno_json_path, "{}").map_err(|e| {
+        std::fs::write(&deno_json_path, "").map_err(|e| {
             log::error!("failed to write deno.json file: {}", e);
             e
         })?;

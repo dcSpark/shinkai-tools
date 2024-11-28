@@ -23,7 +23,7 @@ export const run: Run<Configurations, Parameters, Result> = async (
   });
   const chromePath =
     configurations?.chromePath ||
-    process.env.CHROME_PATH ||
+    Deno.env.get('CHROME_PATH') ||
     chromePaths.chrome ||
     chromePaths.chromium;
   const browser = await playwright['chromium'].launch({

@@ -5,7 +5,7 @@ use std::io::Write;
 use std::path::Path;
 use std::path::PathBuf;
 
-pub static DENO_VERSION: &str = "v2.0.4";
+pub static DENO_VERSION: &str = "v2.1.1";
 static PROFILE: Lazy<String> =
     Lazy::new(|| std::env::var("PROFILE").unwrap_or_else(|_| "debug".to_string()));
 

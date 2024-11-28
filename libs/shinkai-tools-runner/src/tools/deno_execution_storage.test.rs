@@ -6,7 +6,7 @@ use crate::tools::{
 };
 
 #[tokio::test]
-async fn test_execution_storage_init() {
+async fn execution_storage_init() {
     let _ = env_logger::builder()
         .filter_level(log::LevelFilter::Info)
         .is_test(true)
@@ -47,7 +47,7 @@ async fn test_execution_storage_init() {
 }
 
 #[tokio::test]
-async fn test_execution_storage_clean_cache() {
+async fn execution_storage_clean_cache() {
     let _ = env_logger::builder()
         .filter_level(log::LevelFilter::Info)
         .is_test(true)

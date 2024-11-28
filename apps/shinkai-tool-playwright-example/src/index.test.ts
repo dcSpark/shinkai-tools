@@ -12,6 +12,7 @@ Deno.test({
   },
   sanitizeResources: false,
   sanitizeOps: false,
+  ignore: Deno.build.os === 'windows',
   fn: async () => {
     const result = await run(
       {

@@ -34,13 +34,7 @@ impl Default for DenoRunnerOptions {
             } else {
                 "./shinkai-tools-runner-resources/deno"
             }),
-            force_runner_type: std::env::var("CI_FORCE_RUNNER_TYPE")
-                .map(|val| match val.as_str() {
-                    "host" => Some(RunnerType::Host),
-                    "docker" => Some(RunnerType::Docker),
-                    _ => None,
-                })
-                .unwrap_or(None),
+            force_runner_type: None,
             shinkai_node_location: ShinkaiNodeLocation {
                 protocol: String::from("http"),
                 host: String::from("127.0.0.1"),

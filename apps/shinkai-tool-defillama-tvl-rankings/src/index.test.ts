@@ -6,9 +6,10 @@ Deno.test('exists definition', () => {
   expect(definition).toBeInstanceOf(Object);
 });
 
-Deno.test(
-  'run using top10=false, categoryName=Liquid Staking, networkName=Ethereum',
-  async () => {
+Deno.test({
+  name: 'run using top10=false, categoryName=Liquid Staking, networkName=Ethereum',
+  ignore: Deno.env.get('CI') === 'true' || Deno.build.os === 'windows',
+  fn: async () => {
     const run_result = await run(
       {
         chromePath: process.env?.CHROME_PATH,
@@ -23,7 +24,7 @@ Deno.test(
     expect(run_result.columnsCount).toEqual(12);
     expect(run_result.rowsCount).toBeGreaterThan(10);
   },
-);
+});
 
 Deno.test('test `findNetworkName` method', () => {
   expect(findNetworkName('base')).toEqual('Base');

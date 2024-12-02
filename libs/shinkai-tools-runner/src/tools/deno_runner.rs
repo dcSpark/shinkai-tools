@@ -87,17 +87,6 @@ impl DenoRunner {
     /// Returns a Result containing:
     /// - Ok(String): The combined stdout/stderr output from the code execution
     /// - Err(anyhow::Error): Any errors that occurred during setup or execution
-    ///
-    /// # Example
-    ///
-    /// ```no_run
-    /// let mut runner = DenoRunner::new(DenoRunnerOptions::default());
-    /// let result = runner.run(
-    ///     "console.log('Hello from Deno!')",
-    ///     None,
-    ///     Some(30)
-    /// ).await?;
-    /// ```
     pub async fn run(
         &mut self,
         code_files: CodeFiles,
@@ -206,6 +195,9 @@ impl DenoRunner {
         let mut container_envs = Vec::<String>::new();
 
         container_envs.push(String::from("-e"));
+        container_envs.push("NO_COLOR=true".to_string());
+
+        container_envs.push(String::from("-e"));
         container_envs.push(format!(
             "DENO_DIR={}",
             execution_storage.relative_to_root(execution_storage.deno_cache_folder_path.clone())
@@ -226,7 +218,10 @@ impl DenoRunner {
         container_envs.push(String::from("-e"));
         container_envs.push(format!("CONTEXT_ID={}", self.options.context.context_id));
         container_envs.push(String::from("-e"));
-        container_envs.push(format!("EXECUTION_ID={}", self.options.context.execution_id));
+        container_envs.push(format!(
+            "EXECUTION_ID={}",
+            self.options.context.execution_id
+        ));
 
         if let Some(envs) = envs {
             for (key, value) in envs {
@@ -417,6 +412,7 @@ impl DenoRunner {
             .stderr(std::process::Stdio::piped())
             .kill_on_drop(true);
 
+        command.env("NO_COLOR", "true");
         command.env("DENO_DIR", execution_storage.deno_cache_folder_path.clone());
         command.env(
             "SHINKAI_NODE_LOCATION",

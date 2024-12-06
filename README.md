@@ -42,9 +42,9 @@ async fn main() {
     // Define the inline tool's Deno code
     let js_code = r#"
         function run(configurations, params) {
-            console.log("Environment variable:", Deno.env.get('MOUNT')); // rw files /path/to/mount1,/path/to/mount2
-            console.log("Environment variable:", Deno.env.get('ASSETS')); // ro files /path/to/asset1,/path/to/asset2
-            console.log("Environment variable:", Deno.env.get('HOME')); // rw files /path/to/home
+            console.log("Environment variable:", Deno.env.get('SHINKAI_MOUNT')); // rw files /path/to/mount1,/path/to/mount2
+            console.log("Environment variable:", Deno.env.get('SHINKAI_ASSETS')); // ro files /path/to/asset1,/path/to/asset2
+            console.log("Environment variable:", Deno.env.get('SHINKAI_HOME')); // rw files /path/to/home
             console.log("Environment variable:", Deno.env.get('SHINKAI_NODE_LOCATION')); // https://host.docker.internal:9554 (if it's running in docker) or 127.0.0.2:9554 (if it's running in host)
             return { message: `Echoing: ${params.message}` };
         }

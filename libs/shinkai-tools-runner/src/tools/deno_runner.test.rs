@@ -707,7 +707,7 @@ async fn file_persistence_in_home(#[case] runner_type: RunnerType) {
             for await (const entry of Deno.readDir("./")) {
                 console.log(entry.name);
             }
-            await Deno.writeTextFile(`${process.env.HOME}/test.txt`, content);
+            await Deno.writeTextFile(`${process.env.SHINKAI_HOME}/test.txt`, content);
             const data = { success: true };
             return data;
         }
@@ -761,7 +761,7 @@ async fn mount_file_in_mount(#[case] runner_type: RunnerType) {
 
     let js_code = r#"
         async function run (c, p) {
-            const mount = Deno.env.get("MOUNT").split(',');
+            const mount = Deno.env.get("SHINKAI_MOUNT").split(',');
             for await (const file of mount) {
                 console.log("file in mount: ", file);
             }
@@ -821,7 +821,7 @@ async fn mount_and_edit_file_in_mount(#[case] runner_type: RunnerType) {
 
     let js_code = r#"
         async function run (c, p) {
-            const mount = Deno.env.get("MOUNT").split(',');
+            const mount = Deno.env.get("SHINKAI_MOUNT").split(',');
             await Deno.writeTextFile(mount[0], "2");
             return;
         }
@@ -882,7 +882,7 @@ async fn mount_file_in_assets(#[case] runner_type: RunnerType) {
             "main.ts".to_string(),
             r#"
                 async function run (c, p) {
-                    const assets = Deno.env.get("ASSETS").split(',');
+                    const assets = Deno.env.get("SHINKAI_ASSETS").split(',');
                     const content = await Deno.readTextFile(assets[0]);
                     console.log(content);
                     return content;
@@ -945,7 +945,7 @@ async fn fail_when_try_write_assets(#[case] runner_type: RunnerType) {
             "main.ts".to_string(),
             r#"
                 async function run (c, p) {
-                    const assets = Deno.env.get("ASSETS").split(',');
+                    const assets = Deno.env.get("SHINKAI_ASSETS").split(',');
                     console.log('writing', assets[0]);
                     await Deno.writeTextFile(assets[0], "2");
                     return;
@@ -1112,8 +1112,8 @@ async fn context_and_execution_id(#[case] runner_type: RunnerType) {
     let code = r#"
         function run() {
             return {
-                contextId: Deno.env.get("CONTEXT_ID"),
-                executionId: Deno.env.get("EXECUTION_ID")
+                contextId: Deno.env.get("SHINKAI_CONTEXT_ID"),
+                executionId: Deno.env.get("SHINKAI_EXECUTION_ID")
             };
         }
     "#;

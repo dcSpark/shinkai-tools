@@ -36,8 +36,6 @@ async fn execution_storage_init() {
     assert!(storage.cache_folder_path.exists());
     assert!(storage.logs_folder_path.exists());
     assert!(storage.home_folder_path.exists());
-    assert!(storage.mount_folder_path.exists());
-    assert!(storage.assets_folder_path.exists());
     assert!(storage.code_entrypoint_file_path.exists());
     assert!(storage.code_entrypoint_file_path.file_name().unwrap() == "main.ts");
 

@@ -115,8 +115,8 @@ def run(configurations, parameters):
             "#;
 
     let code_files = CodeFiles {
-        files: HashMap::from([("main.ts".to_string(), code.to_string())]),
-        entrypoint: "main.ts".to_string(),
+        files: HashMap::from([("main.py".to_string(), code.to_string())]),
+        entrypoint: "main.py".to_string(),
     };
 
     let python_runner = PythonRunner::new(
@@ -235,7 +235,7 @@ async fn check_code_success() {
 
     let code_files = CodeFiles {
         files: HashMap::from([(
-            "main.ts".to_string(),
+            "main.py".to_string(),
             String::from(
                 r#"
 def run(configurations, parameters):
@@ -243,7 +243,7 @@ def run(configurations, parameters):
                 "#,
             ),
         )]),
-        entrypoint: "main.ts".to_string(),
+        entrypoint: "main.py".to_string(),
     };
 
     let python_runner = PythonRunner::new(
@@ -361,8 +361,8 @@ def run(configurations, params):
     "#;
 
     let code_files1 = CodeFiles {
-        files: HashMap::from([("main.ts".to_string(), js_code1.to_string())]),
-        entrypoint: "main.ts".to_string(),
+        files: HashMap::from([("main.py".to_string(), js_code1.to_string())]),
+        entrypoint: "main.py".to_string(),
     };
 
     let js_code2 = r#"
@@ -373,8 +373,8 @@ def run(configurations, params):
     "#;
 
     let code_files2 = CodeFiles {
-        files: HashMap::from([("main.ts".to_string(), js_code2.to_string())]),
-        entrypoint: "main.ts".to_string(),
+        files: HashMap::from([("main.py".to_string(), js_code2.to_string())]),
+        entrypoint: "main.py".to_string(),
     };
 
     let js_code3 = r#"
@@ -385,8 +385,8 @@ def run(configurations, params):
     "#;
 
     let code_files3 = CodeFiles {
-        files: HashMap::from([("main.ts".to_string(), js_code3.to_string())]),
-        entrypoint: "main.ts".to_string(),
+        files: HashMap::from([("main.py".to_string(), js_code3.to_string())]),
+        entrypoint: "main.py".to_string(),
     };
 
     let execution_storage = "./shinkai-tools-runner-execution-storage";
@@ -457,7 +457,9 @@ def run(configurations, params):
 #[tokio::test]
 async fn file_persistence_in_home(#[case] runner_type: RunnerType) {
     let code_files = CodeFiles {
-        files: HashMap::from([("main.ts".to_string(), r#"
+        files: HashMap::from([(
+            "main.py".to_string(),
+            r#"
 import os
 import pathlib
 
@@ -467,19 +469,21 @@ async def run(c, p):
     for entry in os.listdir("./"):
         print(entry)
     
-    home_path = pathlib.Path(os.environ["HOME"]) / "test.txt"
+    home_path = pathlib.Path(os.environ["SHINKAI_HOME"]) / "test.txt"
     with open(home_path, "w") as f:
         f.write(content)
     
     data = {"success": True}
     return data
-    "#.to_string())]),
-        entrypoint: "main.ts".to_string(),
+    "#
+            .to_string(),
+        )]),
+        entrypoint: "main.py".to_string(),
     };
 
     let execution_storage = std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR"))
         .join("shinkai-tools-runner-execution-storage");
-    let context_id = "test-context-id".to_string();
+    let context_id = nanoid::nanoid!();
 
     let tool = PythonRunner::new(
         code_files,
@@ -519,18 +523,22 @@ async fn mount_file_in_mount(#[case] runner_type: RunnerType) {
     std::fs::write(&test_file_path, "1").unwrap();
 
     let code_files = CodeFiles {
-        files: HashMap::from([("main.py".to_string(), r#"
+        files: HashMap::from([(
+            "main.py".to_string(),
+            r#"
 import os
 
 def run(c, p):
-    mount = os.environ["MOUNT"].split(',')
+    mount = os.environ["SHINKAI_MOUNT"].split(',')
     for file in mount:
         print("file in mount: ", file)
     with open(mount[0]) as f:
         content = f.read()
     print(content)
     return content
-"#.to_string())]),
+"#
+            .to_string(),
+        )]),
         entrypoint: "main.py".to_string(),
     };
 
@@ -578,15 +586,19 @@ async fn mount_and_edit_file_in_mount(#[case] runner_type: RunnerType) {
     let execution_storage = std::path::PathBuf::from("./shinkai-tools-runner-execution-storage");
 
     let code_files = CodeFiles {
-        files: HashMap::from([("main.py".to_string(), r#"
+        files: HashMap::from([(
+            "main.py".to_string(),
+            r#"
 import os
 
 def run(c, p):
-    mount = os.environ["MOUNT"].split(',')
+    mount = os.environ["SHINKAI_MOUNT"].split(',')
     with open(mount[0], 'w') as f:
         f.write("2")
     return None
-"#.to_string())]),
+"#
+            .to_string(),
+        )]),
         entrypoint: "main.py".to_string(),
     };
 
@@ -636,16 +648,20 @@ async fn mount_file_in_assets(#[case] runner_type: RunnerType) {
     std::fs::write(&test_file_path, "1").unwrap();
 
     let code_files = CodeFiles {
-        files: HashMap::from([("main.py".to_string(), r#"
+        files: HashMap::from([(
+            "main.py".to_string(),
+            r#"
 import os
 
 def run(c, p):
-    assets = os.environ["ASSETS"].split(',')
+    assets = os.environ["SHINKAI_ASSETS"].split(',')
     with open(assets[0]) as f:
         content = f.read()
     print(content)
     return content
-"#.to_string())]),
+"#
+            .to_string(),
+        )]),
         entrypoint: "main.py".to_string(),
     };
 
@@ -688,7 +704,9 @@ async fn shinkai_tool_param_with_quotes(#[case] runner_type: RunnerType) {
         .try_init();
 
     let code_files = CodeFiles {
-        files: HashMap::from([("main.py".to_string(), r#"
+        files: HashMap::from([(
+            "main.py".to_string(),
+            r#"
 def run(configurations, params):
     return {
         'single': params['single'],
@@ -697,7 +715,9 @@ def run(configurations, params):
         'mixed': params['mixed'],
         'escaped': params['escaped']
     }
-"#.to_string())]),
+"#
+            .to_string(),
+        )]),
         entrypoint: "main.py".to_string(),
     };
 
@@ -743,20 +763,32 @@ async fn multiple_file_imports(#[case] runner_type: RunnerType) {
 
     let code_files = CodeFiles {
         files: HashMap::from([
-            ("main.py".to_string(), r#"
+            (
+                "main.py".to_string(),
+                r#"
 from helper import helper
 from data import data
 
 def run(configurations, params):
     return helper(data)
-"#.to_string()),
-            ("helper.py".to_string(), r#"
+"#
+                .to_string(),
+            ),
+            (
+                "helper.py".to_string(),
+                r#"
 def helper(input):
     return f"processed {input}"
-"#.to_string()),
-            ("data.py".to_string(), r#"
+"#
+                .to_string(),
+            ),
+            (
+                "data.py".to_string(),
+                r#"
 data = "test data"
-"#.to_string()),
+"#
+                .to_string(),
+            ),
         ]),
         entrypoint: "main.py".to_string(),
     };
@@ -789,15 +821,19 @@ async fn context_and_execution_id(#[case] runner_type: RunnerType) {
     let execution_id = nanoid::nanoid!();
 
     let code_files = CodeFiles {
-        files: HashMap::from([("main.py".to_string(), r#"
+        files: HashMap::from([(
+            "main.py".to_string(),
+            r#"
 import os
 
 def run(configurations, params):
     return {
-        'contextId': os.environ['CONTEXT_ID'],
-        'executionId': os.environ['EXECUTION_ID']
+        'contextId': os.environ['SHINKAI_CONTEXT_ID'],
+        'executionId': os.environ['SHINKAI_EXECUTION_ID']
     }
-"#.to_string())]),
+"#
+            .to_string(),
+        )]),
         entrypoint: "main.py".to_string(),
     };
 
@@ -818,4 +854,54 @@ def run(configurations, params):
 
     assert_eq!(result.data["contextId"], context_id);
     assert_eq!(result.data["executionId"], execution_id);
+}
+
+#[rstest]
+#[case::host(RunnerType::Host)]
+#[case::docker(RunnerType::Docker)]
+#[tokio::test]
+async fn run_output_class_object(#[case] runner_type: RunnerType) {
+    let _ = env_logger::builder()
+        .filter_level(log::LevelFilter::Info)
+        .is_test(true)
+        .try_init();
+
+    let code_files = CodeFiles {
+        files: HashMap::from([(
+            "main.py".to_string(),
+            r#"
+import json
+
+class Potato:
+    def __init__(self):
+        self.kind = 'vegetable'
+
+def run(configurations, parameters):
+    potato = Potato()
+    return potato
+    "#
+            .to_string(),
+        )]),
+        entrypoint: "main.py".to_string(),
+    };
+
+    let python_runner = PythonRunner::new(
+        code_files,
+        Value::Null,
+        Some(PythonRunnerOptions {
+            force_runner_type: Some(runner_type),
+            ..Default::default()
+        }),
+    );
+
+    let result = python_runner
+        .run(None, serde_json::Value::Null, None)
+        .await
+        .map_err(|e| {
+            log::error!("Failed to run python code: {}", e);
+            e
+        })
+        .unwrap();
+
+    assert_eq!(result.data.get("kind").unwrap(), "vegetable");
 }

@@ -1,6 +1,6 @@
 {
   "name": "@shinkai_protocol/source",
-  "version": "0.9.1",
+  "version": "0.9.2",
   "description": "This repository serves as the ecosystem to execute Shinkai tools, provided by the Shinkai team or third-party developers, in a secure environment. It provides a sandboxed space for executing these tools, ensuring that they run safely and efficiently, while also allowing for seamless integration with Rust code.",
   "main": "index.js",
   "author": "",

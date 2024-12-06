@@ -257,16 +257,16 @@ impl DenoRunner {
         ));
 
         container_envs.push(String::from("-e"));
-        container_envs.push(String::from("HOME=/app/home"));
+        container_envs.push(String::from("SHINKAI_HOME=/app/home"));
         container_envs.push(String::from("-e"));
-        container_envs.push(format!("ASSETS={}", mount_assets_env));
+        container_envs.push(format!("SHINKAI_ASSETS={}", mount_assets_env));
         container_envs.push(String::from("-e"));
-        container_envs.push(format!("MOUNT={}", mount_env));
+        container_envs.push(format!("SHINKAI_MOUNT={}", mount_env));
         container_envs.push(String::from("-e"));
-        container_envs.push(format!("CONTEXT_ID={}", self.options.context.context_id));
+        container_envs.push(format!("SHINKAI_CONTEXT_ID={}", self.options.context.context_id));
         container_envs.push(String::from("-e"));
         container_envs.push(format!(
-            "EXECUTION_ID={}",
+            "SHINKAI_EXECUTION_ID={}",
             self.options.context.execution_id
         ));
 
@@ -472,9 +472,9 @@ impl DenoRunner {
             ),
         );
 
-        command.env("HOME", execution_storage.home_folder_path.clone());
+        command.env("SHINKAI_HOME", execution_storage.home_folder_path.clone());
         command.env(
-            "ASSETS",
+            "SHINKAI_ASSETS",
             self.options
                 .context
                 .assets_files
@@ -484,7 +484,7 @@ impl DenoRunner {
                 .join(","),
         );
         command.env(
-            "MOUNT",
+            "SHINKAI_MOUNT",
             self.options
                 .context
                 .mount_files
@@ -494,8 +494,8 @@ impl DenoRunner {
                 .join(","),
         );
 
-        command.env("CONTEXT_ID", self.options.context.context_id.clone());
-        command.env("EXECUTION_ID", self.options.context.execution_id.clone());
+        command.env("SHINKAI_CONTEXT_ID", self.options.context.context_id.clone());
+        command.env("SHINKAI_EXECUTION_ID", self.options.context.execution_id.clone());
 
         if let Some(envs) = envs {
             command.envs(envs);

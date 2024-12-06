@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 
 use crate::tools::{
-    code_files::CodeFiles, deno_execution_storage::DenoExecutionStorage,
+    code_files::CodeFiles, execution_storage::ExecutionStorage,
     execution_context::ExecutionContext,
 };
 
@@ -20,7 +20,7 @@ async fn execution_storage_init() {
         entrypoint: "main.ts".to_string(),
     };
 
-    let storage = DenoExecutionStorage::new(
+    let storage = ExecutionStorage::new(
         code_files,
         ExecutionContext {
             storage: test_dir.clone(),
@@ -33,7 +33,7 @@ async fn execution_storage_init() {
     // Verify directories were created
     assert!(storage.root_folder_path.exists());
     assert!(storage.code_folder_path.exists());
-    assert!(storage.deno_cache_folder_path.exists());
+    assert!(storage.cache_folder_path.exists());
     assert!(storage.logs_folder_path.exists());
     assert!(storage.home_folder_path.exists());
     assert!(storage.mount_folder_path.exists());
@@ -58,7 +58,7 @@ async fn execution_storage_clean_cache() {
     // Initialize with some test code
     let test_code = "console.log('test');";
 
-    let storage = DenoExecutionStorage::new(
+    let storage = ExecutionStorage::new(
         CodeFiles {
             files: HashMap::from([("main.ts".to_string(), test_code.to_string())]),
             entrypoint: "main.ts".to_string(),
@@ -71,7 +71,7 @@ async fn execution_storage_clean_cache() {
     storage.init(None).unwrap();
 
     // Create a test file in the cache directory
-    let test_cache_file = storage.deno_cache_folder_path.join("test_cache.txt");
+    let test_cache_file = storage.cache_folder_path.join("test_cache.txt");
     std::fs::write(&test_cache_file, "test cache content").unwrap();
     assert!(test_cache_file.exists());
 
@@ -80,9 +80,9 @@ async fn execution_storage_clean_cache() {
 
     // Verify cache directory was cleared
     assert!(!test_cache_file.exists());
-    assert!(storage.deno_cache_folder_path.exists()); // Directory should still exist but be empty
+    assert!(storage.cache_folder_path.exists()); // Directory should still exist but be empty
     assert!(
-        std::fs::read_dir(&storage.deno_cache_folder_path)
+        std::fs::read_dir(&storage.cache_folder_path)
             .unwrap()
             .count()
             == 0

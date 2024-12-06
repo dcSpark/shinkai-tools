@@ -2,14 +2,14 @@ use std::collections::HashMap;
 use std::env;
 use std::time::Duration;
 
-use rstest::rstest;
-use serde_json::json;
-
 use crate::built_in_tools::get_tool;
 use crate::tools::code_files::CodeFiles;
+use crate::tools::deno_runner::DenoRunner;
 use crate::tools::deno_runner_options::DenoRunnerOptions;
-use crate::tools::deno_runner_options::RunnerType;
-use crate::tools::tool::Tool;
+use crate::tools::runner_type::RunnerType;
+
+use rstest::rstest;
+use serde_json::json;
 
 #[rstest]
 #[case::host(RunnerType::Host)]
@@ -25,7 +25,7 @@ async fn shinkai_tool_echo(#[case] runner_type: RunnerType) {
         files: HashMap::from([("main.ts".to_string(), tool_definition.code.clone().unwrap())]),
         entrypoint: "main.ts".to_string(),
     };
-    let tool = Tool::new(
+    let tool = DenoRunner::new(
         code_files,
         serde_json::Value::Null,
         Some(DenoRunnerOptions {
@@ -54,7 +54,7 @@ async fn shinkai_tool_weather_by_city(#[case] runner_type: RunnerType) {
         files: HashMap::from([("main.ts".to_string(), tool_definition.code.clone().unwrap())]),
         entrypoint: "main.ts".to_string(),
     };
-    let tool = Tool::new(
+    let tool = DenoRunner::new(
         code_files,
         serde_json::json!({ "apiKey": "63d35ff6068c3103ccd1227526935675" }),
         Some(DenoRunnerOptions {
@@ -86,7 +86,7 @@ async fn shinkai_tool_inline(#[case] runner_type: RunnerType) {
         files: HashMap::from([("main.ts".to_string(), js_code.to_string())]),
         entrypoint: "main.ts".to_string(),
     };
-    let tool = Tool::new(
+    let tool = DenoRunner::new(
         code_files,
         serde_json::Value::Null,
         Some(DenoRunnerOptions {
@@ -119,7 +119,7 @@ async fn shinkai_tool_inline_non_json_return(#[case] runner_type: RunnerType) {
         files: HashMap::from([("main.ts".to_string(), js_code.to_string())]),
         entrypoint: "main.ts".to_string(),
     };
-    let tool = Tool::new(
+    let tool = DenoRunner::new(
         code_files,
         serde_json::Value::Null,
         Some(DenoRunnerOptions {
@@ -145,7 +145,7 @@ async fn shinkai_tool_web3_eth_balance(#[case] runner_type: RunnerType) {
         files: HashMap::from([("main.ts".to_string(), tool_definition.code.clone().unwrap())]),
         entrypoint: "main.ts".to_string(),
     };
-    let tool = Tool::new(
+    let tool = DenoRunner::new(
         code_files,
         serde_json::Value::Null,
         Some(DenoRunnerOptions {
@@ -178,7 +178,7 @@ async fn shinkai_tool_web3_eth_uniswap(#[case] runner_type: RunnerType) {
         files: HashMap::from([("main.ts".to_string(), tool_definition.code.clone().unwrap())]),
         entrypoint: "main.ts".to_string(),
     };
-    let tool = Tool::new(
+    let tool = DenoRunner::new(
         code_files,
         serde_json::Value::Null,
         Some(DenoRunnerOptions {
@@ -217,7 +217,7 @@ async fn shinkai_tool_download_page(#[case] runner_type: RunnerType) {
         files: HashMap::from([("main.ts".to_string(), tool_definition.code.clone().unwrap())]),
         entrypoint: "main.ts".to_string(),
     };
-    let tool = Tool::new(
+    let tool = DenoRunner::new(
         code_files,
         serde_json::Value::Null,
         Some(DenoRunnerOptions {
@@ -267,7 +267,7 @@ async fn max_execution_time(#[case] runner_type: RunnerType) {
         files: HashMap::from([("main.ts".to_string(), js_code.to_string())]),
         entrypoint: "main.ts".to_string(),
     };
-    let tool = Tool::new(
+    let tool = DenoRunner::new(
         code_files,
         serde_json::Value::Null,
         Some(DenoRunnerOptions {
@@ -309,7 +309,7 @@ async fn shinkai_tool_download_page_stack_overflow(#[case] runner_type: RunnerTy
                     )]),
                     entrypoint: "main.ts".to_string(),
                 };
-                let tool = Tool::new(
+                let tool = DenoRunner::new(
                     code_files,
                     serde_json::Value::Null,
                     Some(DenoRunnerOptions {
@@ -348,7 +348,7 @@ async fn shinkai_tool_leiden(#[case] runner_type: RunnerType) {
         files: HashMap::from([("main.ts".to_string(), tool_definition.code.clone().unwrap())]),
         entrypoint: "main.ts".to_string(),
     };
-    let tool = Tool::new(
+    let tool = DenoRunner::new(
         code_files,
         serde_json::Value::Null,
         Some(DenoRunnerOptions {
@@ -466,7 +466,7 @@ async fn shinkai_tool_duckduckgo_search(#[case] runner_type: RunnerType) {
         files: HashMap::from([("main.ts".to_string(), tool_definition.code.clone().unwrap())]),
         entrypoint: "main.ts".to_string(),
     };
-    let tool = Tool::new(
+    let tool = DenoRunner::new(
         code_files,
         serde_json::Value::Null,
         Some(DenoRunnerOptions {
@@ -512,7 +512,7 @@ async fn shinkai_tool_playwright_example(#[case] runner_type: RunnerType) {
         entrypoint: "main.ts".to_string(),
     };
 
-    let tool = Tool::new(
+    let tool = DenoRunner::new(
         code_files,
         if matches!(runner_type, RunnerType::Docker) && std::env::var("CI").is_ok() {
             serde_json::json!({})
@@ -561,7 +561,7 @@ async fn shinkai_tool_defillama_lending_tvl_rankings(#[case] runner_type: Runner
         files: HashMap::from([("main.ts".to_string(), tool_definition.code.clone().unwrap())]),
         entrypoint: "main.ts".to_string(),
     };
-    let tool = Tool::new(
+    let tool = DenoRunner::new(
         code_files,
         if matches!(runner_type, RunnerType::Docker) && std::env::var("CI").is_ok() {
             serde_json::json!({})
@@ -616,7 +616,7 @@ async fn shinkai_tool_youtube_summary(#[case] runner_type: RunnerType) {
         files: HashMap::from([("main.ts".to_string(), tool_definition.code.clone().unwrap())]),
         entrypoint: "main.ts".to_string(),
     };
-    let tool = Tool::new(
+    let tool = DenoRunner::new(
         code_files,
         configurations,
         Some(DenoRunnerOptions {
@@ -652,7 +652,7 @@ async fn shinkai_tool_json_to_md(#[case] runner_type: RunnerType) {
         files: HashMap::from([("main.ts".to_string(), tool_definition.code.clone().unwrap())]),
         entrypoint: "main.ts".to_string(),
     };
-    let tool = Tool::new(
+    let tool = DenoRunner::new(
         code_files,
         serde_json::json!({
             "only_system": false

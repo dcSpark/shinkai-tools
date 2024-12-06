@@ -1,67 +1,60 @@
 use serde_json::Value;
+use std::{
+    collections::HashMap,
+    path::{self, Path},
+    sync::Arc,
+    time::Duration,
+};
 use tokio::{
     io::{AsyncBufReadExt, BufReader},
     sync::Mutex,
 };
 
 use crate::tools::{
-    execution_storage::ExecutionStorage, path_buf_ext::PathBufExt, runner_type::RunnerType,
+    execution_error::ExecutionError, path_buf_ext::PathBufExt, run_result::RunResult,
 };
 
 use super::{
-    code_files::CodeFiles, container_utils::DockerStatus, deno_runner_options::DenoRunnerOptions,
-    execution_error::ExecutionError, run_result::RunResult,
-};
-use std::{
-    collections::HashMap,
-    path::{self, PathBuf},
-    sync::Arc,
-    time::Duration,
+    code_files::CodeFiles, container_utils::DockerStatus, execution_storage::ExecutionStorage,
+    python_runner_options::PythonRunnerOptions, runner_type::RunnerType,
 };
 
-#[derive(Default)]
-pub struct DenoRunner {
+pub struct PythonRunner {
     code: CodeFiles,
     configurations: Value,
-    options: DenoRunnerOptions,
+    options: PythonRunnerOptions,
 }
 
-impl DenoRunner {
+impl PythonRunner {
     pub const MAX_EXECUTION_TIME_MS_INTERNAL_OPS: u64 = 1000;
 
     pub fn new(
         code_files: CodeFiles,
         configurations: Value,
-        options: Option<DenoRunnerOptions>,
+        options: Option<PythonRunnerOptions>,
     ) -> Self {
         let options = options.unwrap_or_default();
-        DenoRunner {
+        PythonRunner {
             code: code_files,
             configurations,
             options,
         }
     }
 
-    /// Checks the code for errors without running it
-    ///
-    /// # Returns
-    ///
-    /// Returns a Result containing:
-    /// - Ok(Vec<String>): The list of errors found in the code
-    /// - Err(anyhow::Error): Any errors that occurred during setup or execution
-    pub async fn check(&mut self) -> anyhow::Result<Vec<String>> {
+    pub async fn check(&self) -> anyhow::Result<Vec<String>> {
         let execution_storage =
             ExecutionStorage::new(self.code.clone(), self.options.context.clone());
-        execution_storage.init_for_deno(None)?;
+        execution_storage.init_for_python(None)?;
 
-        let binary_path = path::absolute(self.options.deno_binary_path.clone())
+        let binary_path = path::absolute(self.options.python_binary_path.clone())
             .unwrap()
             .to_string_lossy()
             .to_string();
         let mut command = tokio::process::Command::new(binary_path);
         command
             .args([
-                "check",
+                "-m",
+                "py_compile",
                 execution_storage
                     .code_entrypoint_file_path
                     .to_str()
@@ -79,7 +72,7 @@ impl DenoRunner {
                 let error_lines: Vec<String> =
                     error_message.lines().map(|s| s.to_string()).collect();
                 for error in &error_lines {
-                    log::error!("deno check error: {}", error);
+                    log::error!("python check error: {}", error);
                 }
                 Ok(error_lines)
             }
@@ -101,29 +94,30 @@ impl DenoRunner {
         if let Some(entrypoint_code) = entrypoint_code {
             let adapted_entrypoint_code = format!(
                 r#"
-            {}
-            const configurations = JSON.parse('{}');
-            const parameters = JSON.parse('{}');
+{}
+import json
+import asyncio
+configurations = json.loads('{}')
+parameters = json.loads('{}')
 
-            const result = await run(configurations, parameters);
-            const adaptedResult = result === undefined ? null : result;
-            console.log("<shinkai-code-result>");
-            console.log(JSON.stringify(adaptedResult));
-            console.log("</shinkai-code-result>");
+result = run(configurations, parameters)
+if asyncio.iscoroutine(result):
+    result = asyncio.run(result)
+print("<shinkai-code-result>")
+print(json.dumps(result))
+print("</shinkai-code-result>")
         "#,
                 &entrypoint_code,
                 serde_json::to_string(&self.configurations)
                     .unwrap()
                     .replace("\\", "\\\\")
                     .replace("'", "\\'")
-                    .replace("\"", "\\\"")
-                    .replace("`", "\\`"),
+                    .replace("\"", "\\\""),
                 serde_json::to_string(&parameters)
                     .unwrap()
                     .replace("\\", "\\\\")
                     .replace("'", "\\'")
                     .replace("\"", "\\\"")
-                    .replace("`", "\\`")
             );
             code.files
                 .insert(self.code.entrypoint.clone(), adapted_entrypoint_code);
@@ -151,7 +145,8 @@ impl DenoRunner {
             .collect::<Vec<String>>()
             .join("\n");
 
-        log::info!("result text: {:?}", result);
+        log::info!("result : {:?}", result);
+        log::info!("result text: {:?}", result_text);
 
         let result: Value = serde_json::from_str(&result_text).map_err(|e| {
             log::info!("failed to parse result: {}", e);
@@ -168,12 +163,13 @@ impl DenoRunner {
         max_execution_timeout: Option<Duration>,
     ) -> anyhow::Result<Vec<String>> {
         log::info!(
-            "using deno from container image:{:?}",
+            "using python from container image:{:?}",
             self.options.code_runner_docker_image_name
         );
 
+        log::info!("code files: {:?}", code_files.files.get("main.py"));
         let execution_storage = ExecutionStorage::new(code_files, self.options.context.clone());
-        execution_storage.init_for_deno(None)?;
+        execution_storage.init_for_python(None)?;
 
         let mut mount_params = Vec::<String>::new();
 
@@ -181,13 +177,6 @@ impl DenoRunner {
             (
                 execution_storage.code_folder_path.as_normalized_string(),
                 execution_storage.relative_to_root(execution_storage.code_folder_path.clone()),
-            ),
-            (
-                execution_storage
-                    .deno_cache_folder_path()
-                    .as_normalized_string(),
-                execution_storage
-                    .relative_to_root(execution_storage.deno_cache_folder_path().clone()),
             ),
             (
                 execution_storage.home_folder_path.as_normalized_string(),
@@ -242,15 +231,6 @@ impl DenoRunner {
         let mut container_envs = Vec::<String>::new();
 
         container_envs.push(String::from("-e"));
-        container_envs.push("NO_COLOR=true".to_string());
-
-        container_envs.push(String::from("-e"));
-        container_envs.push(format!(
-            "DENO_DIR={}",
-            execution_storage.relative_to_root(execution_storage.deno_cache_folder_path().clone())
-        ));
-
-        container_envs.push(String::from("-e"));
         container_envs.push(format!(
             "SHINKAI_NODE_LOCATION={}://host.docker.internal:{}",
             self.options.shinkai_node_location.protocol, self.options.shinkai_node_location.port
@@ -278,58 +258,34 @@ impl DenoRunner {
             }
         }
 
-        let deno_permissions = self.get_deno_permissions(
-            "/usr/bin/deno",
-            "/app/home",
-            &self
-                .options
-                .context
-                .mount_files
-                .iter()
-                .map(|p| {
-                    let path_in_docker = format!(
-                        "/app/{}/{}",
-                        execution_storage
-                            .relative_to_root(execution_storage.mount_folder_path.clone()),
-                        p.file_name().unwrap().to_str().unwrap()
-                    );
-                    PathBuf::from(path_in_docker)
-                })
-                .collect::<Vec<_>>(),
-            &self
-                .options
-                .context
-                .assets_files
-                .iter()
-                .map(|p| {
-                    let path_in_docker = format!(
-                        "/app/{}/{}",
-                        execution_storage
-                            .relative_to_root(execution_storage.assets_folder_path.clone()),
-                        p.file_name().unwrap().to_str().unwrap()
-                    );
-                    PathBuf::from(path_in_docker)
-                })
-                .collect::<Vec<_>>(),
-        );
-
         let code_entrypoint =
             execution_storage.relative_to_root(execution_storage.code_entrypoint_file_path.clone());
         let mut command = tokio::process::Command::new("docker");
         let mut args = vec!["run", "--rm"];
         args.extend(mount_params.iter().map(|s| s.as_str()));
         args.extend(container_envs.iter().map(|s| s.as_str()));
+
+        let code_folder = Path::new(code_entrypoint.as_str())
+            .parent()
+            .unwrap()
+            .to_string_lossy()
+            .to_string();
+        let python_start_script = format!(
+            "source /app/cache/python-venv/bin/activate && python -m pipreqs.pipreqs --encoding utf-8 --force {} && pip install -r {}/requirements.txt && python {}",
+            code_folder.clone().as_str(),
+            code_folder.clone().as_str(),
+            code_entrypoint.clone().as_str(),
+        );
+
         args.extend([
             "--workdir",
             "/app",
             self.options.code_runner_docker_image_name.as_str(),
-            "deno",
-            "run",
-            "--ext",
-            "ts",
+            "/bin/bash",
+            "-c",
+            python_start_script.as_str(),
         ]);
-        args.extend(deno_permissions.iter().map(|s| s.as_str()));
-        args.extend([code_entrypoint.as_str()]);
+        // args.extend([code_entrypoint.as_str()]);
         let command = command
             .args(args)
             .stdout(std::process::Stdio::piped())
@@ -359,7 +315,7 @@ impl DenoRunner {
         let stdout_task = tokio::task::spawn_blocking(move || {
             tokio::runtime::Runtime::new().unwrap().block_on(async {
                 while let Ok(Some(line)) = stdout_stream.next_line().await {
-                    log::info!("from deno: {}", line);
+                    log::info!("from python: {}", line);
                     stdout_lines_clone.lock().await.push(line.clone());
                     let _ = execution_storage_clone.append_log(line.as_str());
                 }
@@ -369,7 +325,7 @@ impl DenoRunner {
         let stderr_task = tokio::task::spawn_blocking(move || {
             tokio::runtime::Runtime::new().unwrap().block_on(async {
                 while let Ok(Some(line)) = stderr_stream.next_line().await {
-                    log::info!("from deno: {}", line);
+                    log::info!("from python: {}", line);
                     stderr_lines_clone.lock().await.push(line.clone());
                     let _ = execution_storage_clone2.append_log(line.as_str());
                 }
@@ -419,49 +375,103 @@ impl DenoRunner {
         max_execution_timeout: Option<Duration>,
     ) -> anyhow::Result<Vec<String>> {
         let execution_storage = ExecutionStorage::new(code_files, self.options.context.clone());
-        execution_storage.init_for_deno(None)?;
+        execution_storage.init_for_python(None)?;
 
-        let binary_path = path::absolute(self.options.deno_binary_path.clone())
+        let python_binary_path_at_host = path::absolute(self.options.python_binary_path.clone())
             .unwrap()
             .to_string_lossy()
             .to_string();
-        log::info!("using deno from host at path: {:?}", binary_path.clone());
-
-        let deno_permissions: Vec<String> = self.get_deno_permissions(
-            binary_path.clone().as_str(),
-            execution_storage
-                .home_folder_path
-                .to_string_lossy()
-                .to_string()
-                .as_str(),
-            &self
-                .options
-                .context
-                .mount_files
-                .iter()
-                .map(|p| path::absolute(p).unwrap())
-                .collect::<Vec<_>>(),
-            &self
-                .options
-                .context
-                .assets_files
-                .iter()
-                .map(|p| path::absolute(p).unwrap())
-                .collect::<Vec<_>>(),
+        log::info!(
+            "using python from host at path: {:?}",
+            python_binary_path_at_host.clone()
         );
 
-        let mut command = tokio::process::Command::new(binary_path);
+        // Ensure venv exists at python cache location
+        let venv_path = execution_storage.python_cache_folder_path();
+        log::info!("Creating new venv at {:?}", venv_path);
+        let mut venv_command = tokio::process::Command::new(&python_binary_path_at_host);
+        venv_command
+            .args(["-m", "venv", venv_path.to_str().unwrap()])
+            .stdout(std::process::Stdio::piped())
+            .stderr(std::process::Stdio::piped())
+            .kill_on_drop(true);
+        let venv_output = venv_command.spawn()?.wait_with_output().await?;
+        if !venv_output.status.success() {
+            return Err(anyhow::Error::new(std::io::Error::new(
+                std::io::ErrorKind::Other,
+                String::from_utf8(venv_output.stderr)?,
+            )));
+        }
+
+        // Get pip and python paths from venv
+        let python_path_at_venv = venv_path
+            .join(if cfg!(windows) { "Scripts" } else { "bin" })
+            .join(if cfg!(windows) {
+                "python.exe"
+            } else {
+                "python"
+            });
+
+        let python_binary_path = python_path_at_venv.to_string_lossy().to_string();
+        let mut ensure_pip_command = tokio::process::Command::new(&python_binary_path);
+        ensure_pip_command
+            .args(["-m", "pip", "install", "pipreqs"])
+            .stdout(std::process::Stdio::piped())
+            .stderr(std::process::Stdio::piped())
+            .kill_on_drop(true);
+
+        let pip_output = ensure_pip_command.spawn()?.wait_with_output().await?;
+        if !pip_output.status.success() {
+            return Err(anyhow::Error::new(std::io::Error::new(
+                std::io::ErrorKind::Other,
+                String::from_utf8(pip_output.stderr)?,
+            )));
+        }
+
+        let mut pipreqs_command = tokio::process::Command::new(&python_binary_path);
+        pipreqs_command
+            .args([
+                "-m",
+                "pipreqs.pipreqs",
+                "--encoding",
+                "utf-8",
+                "--force",
+                execution_storage.code_folder_path.to_str().unwrap(),
+            ])
+            .stdout(std::process::Stdio::piped())
+            .stderr(std::process::Stdio::piped())
+            .kill_on_drop(true);
+        let pipreqs_output = pipreqs_command.spawn()?.wait_with_output().await?;
+        if !pipreqs_output.status.success() {
+            return Err(anyhow::Error::new(std::io::Error::new(
+                std::io::ErrorKind::Other,
+                String::from_utf8(pipreqs_output.stderr)?,
+            )));
+        }
+
+        let mut pip_install_command = tokio::process::Command::new(&python_binary_path);
+        pip_install_command
+            .args(["-m", "pip", "install", "-r", "requirements.txt"])
+            .current_dir(execution_storage.code_folder_path.clone())
+            .stdout(std::process::Stdio::piped())
+            .stderr(std::process::Stdio::piped())
+            .kill_on_drop(true);
+        let pip_install_output = pip_install_command.spawn()?.wait_with_output().await?;
+        if !pip_install_output.status.success() {
+            return Err(anyhow::Error::new(std::io::Error::new(
+                std::io::ErrorKind::Other,
+                String::from_utf8(pip_install_output.stderr)?,
+            )));
+        }
+
+        let mut command = tokio::process::Command::new(python_binary_path);
         let command = command
-            .args(["run", "--ext", "ts"])
-            .args(deno_permissions)
             .arg(execution_storage.code_entrypoint_file_path.clone())
             .current_dir(execution_storage.root_folder_path.clone())
             .stdout(std::process::Stdio::piped())
             .stderr(std::process::Stdio::piped())
             .kill_on_drop(true);
 
-        command.env("NO_COLOR", "true");
-        command.env("DENO_DIR", execution_storage.deno_cache_folder_path().clone());
         command.env(
             "SHINKAI_NODE_LOCATION",
             format!(
@@ -493,7 +503,6 @@ impl DenoRunner {
                 .collect::<Vec<_>>()
                 .join(","),
         );
-
         command.env("CONTEXT_ID", self.options.context.context_id.clone());
         command.env("EXECUTION_ID", self.options.context.execution_id.clone());
 
@@ -523,7 +532,7 @@ impl DenoRunner {
         let stdout_task = tokio::task::spawn_blocking(move || {
             tokio::runtime::Runtime::new().unwrap().block_on(async {
                 while let Ok(Some(line)) = stdout_stream.next_line().await {
-                    log::info!("from deno: {}", line);
+                    log::info!("from python: {}", line);
                     stdout_lines_clone.lock().await.push(line.clone());
                     let _ = execution_storage_clone.append_log(line.as_str());
                 }
@@ -533,7 +542,7 @@ impl DenoRunner {
         let stderr_task = tokio::task::spawn_blocking(move || {
             tokio::runtime::Runtime::new().unwrap().block_on(async {
                 while let Ok(Some(line)) = stderr_stream.next_line().await {
-                    log::info!("from deno: {}", line);
+                    log::info!("from python: {}", line);
                     stderr_lines_clone.lock().await.push(line.clone());
                     let _ = execution_storage_clone2.append_log(line.as_str());
                 }
@@ -574,68 +583,8 @@ impl DenoRunner {
         log::info!("command completed successfully with output: {:?}", stdout);
         Ok(stdout)
     }
-
-    fn get_deno_permissions(
-        &self,
-        exec_path: &str,
-        home_path: &str,
-        mount_files: &[PathBuf],
-        assets_files: &[PathBuf],
-    ) -> Vec<String> {
-        log::info!("mount files: {:?}", mount_files);
-        log::info!("assets files: {:?}", assets_files);
-        let mut deno_permissions: Vec<String> = vec![
-            // Basically all non-file related permissions
-            "--allow-env".to_string(),
-            "--allow-run".to_string(),
-            "--allow-net".to_string(),
-            "--allow-sys".to_string(),
-            "--allow-scripts".to_string(),
-            "--allow-ffi".to_string(),
-            "--allow-import".to_string(),
-
-            // Engine folders
-            "--allow-read=.".to_string(),
-            format!("--allow-write={}", home_path.to_string()),
-
-            // Playwright/Chrome folders
-            format!("--allow-read={}", exec_path.to_string()),
-            "--allow-write=/var/folders".to_string(),
-            "--allow-read=/var/folders".to_string(),
-            "--allow-read=/tmp".to_string(),
-            "--allow-write=/tmp".to_string(),
-            format!("--allow-read={}", std::env::temp_dir().to_string_lossy()),
-            format!("--allow-write={}", std::env::temp_dir().to_string_lossy()),
-            "--allow-read=/Applications/Google Chrome.app/Contents/MacOS/Google Chrome".to_string(),
-            "--allow-read=/Applications/Google Chrome Canary.app/Contents/MacOS/Google Chrome Canary".to_string(),
-            "--allow-read=/Applications/Chromium.app/Contents/MacOS/Chromium".to_string(),
-            "--allow-read=C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe".to_string(),
-            "--allow-read=C:\\Program Files (x86)\\Google\\Chrome SxS\\Application\\chrome.exe".to_string(),
-            "--allow-read=C:\\Program Files (x86)\\Chromium\\Application\\chrome.exe".to_string(),
-            "--allow-read=C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe".to_string(),
-            "--allow-read=C:\\Program Files\\Google\\Chrome SxS\\Application\\chrome.exe".to_string(),
-            "--allow-read=C:\\Program Files\\Chromium\\Application\\chrome.exe".to_string(),
-            "--allow-read=/usr/bin/chromium".to_string(),
-        ];
-
-        for file in mount_files {
-            let mount_param = format!(
-                r#"--allow-read={},--allow-write={}"#,
-                file.to_string_lossy(),
-                file.to_string_lossy()
-            );
-            deno_permissions.extend(mount_param.split(',').map(String::from));
-        }
-
-        for file in assets_files {
-            let asset_param = format!(r#"--allow-read={}"#, file.to_string_lossy());
-            deno_permissions.push(asset_param);
-        }
-        log::info!("deno permissions: {}", deno_permissions.join(" "));
-        deno_permissions
-    }
 }
 
 #[cfg(test)]
-#[path = "deno_runner.test.rs"]
+#[path = "python_runner.test.rs"]
 mod tests;

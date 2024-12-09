@@ -67,6 +67,7 @@ impl DenoRunner {
                     .to_str()
                     .unwrap(),
             ])
+            .env("NO_COLOR", "true")
             .current_dir(execution_storage.code_folder_path.clone())
             .stdout(std::process::Stdio::piped())
             .stderr(std::process::Stdio::piped())

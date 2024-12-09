@@ -6,8 +6,11 @@ use std::path::Path;
 use std::path::PathBuf;
 
 pub static DENO_VERSION: &str = "v2.1.1";
+pub static UV_VERSION: &str = "v0.5.7";
 static PROFILE: Lazy<String> =
     Lazy::new(|| std::env::var("PROFILE").unwrap_or_else(|_| "debug".to_string()));
+
+static RESOURCES_FOLDER_NAME: &str = "shinkai-tools-runner-resources";
 
 pub fn add_exec_permissions(binary_path: &PathBuf) -> Result<(), std::io::Error> {
     if !cfg!(target_os = "windows") {
@@ -87,7 +90,9 @@ pub fn copy_assets(
     source_path: Option<PathBuf>,
     target_path: Option<PathBuf>,
 ) -> Result<(), std::io::Error> {
-    copy_deno(DENO_VERSION, source_path, target_path)
+    copy_deno(DENO_VERSION, source_path.clone(), target_path.clone())?;
+    copy_uv(UV_VERSION, source_path.clone(), target_path.clone())?;
+    Ok(())
 }
 
 pub fn copy_deno(
@@ -95,15 +100,14 @@ pub fn copy_deno(
     source_path: Option<PathBuf>,
     target_path: Option<PathBuf>,
 ) -> Result<(), std::io::Error> {
-    let resources_folder_name = "shinkai-tools-runner-resources";
-    println!("using resources folder name: {}", resources_folder_name);
+    println!("using resources folder name: {}", RESOURCES_FOLDER_NAME);
 
     let source_path = source_path
         .unwrap_or_else(get_source_path)
-        .join(resources_folder_name);
+        .join(RESOURCES_FOLDER_NAME);
     let target_path = target_path
         .unwrap_or_else(get_target_path)
-        .join(resources_folder_name);
+        .join(RESOURCES_FOLDER_NAME);
 
     println!("resources path: {}", source_path.display());
     println!("target path: {}", target_path.display());
@@ -170,16 +174,151 @@ pub fn copy_deno(
     Ok(())
 }
 
-#[tokio::test]
-async fn test_copy_assets() {
-    tokio::task::spawn_blocking(|| {
-        println!("profile: {:?}", PROFILE);
-        let source = PathBuf::from("./");
-        println!("source path: {}", source.display());
-        let destination = PathBuf::from("../../target").join(PROFILE.as_str());
-        println!("destination path: {}", destination.display());
-        copy_assets(Some(source), Some(destination)).unwrap()
-    })
-    .await
-    .unwrap();
+pub fn copy_uv(
+    version: &str,
+    source_path: Option<PathBuf>,
+    target_path: Option<PathBuf>,
+) -> Result<(), std::io::Error> {
+    let version = version.strip_prefix('v').unwrap_or(version);
+    let source_path = source_path
+        .unwrap_or_else(get_source_path)
+        .join(RESOURCES_FOLDER_NAME);
+    let target_path = target_path
+        .unwrap_or_else(get_target_path)
+        .join(RESOURCES_FOLDER_NAME);
+
+    println!("resources path: {}", source_path.display());
+    println!("target path: {}", target_path.display());
+
+    println!("creating target directory at: {}", target_path.display());
+    fs::create_dir_all(&target_path).unwrap_or_else(|err| {
+        panic!("failed to create target directory: {}", err);
+    });
+
+    let uv_binary_source_path = if cfg!(windows) {
+        source_path.join("uv.exe")
+    } else {
+        source_path.join("uv")
+    };
+
+    let uv_binary_target_path = if cfg!(windows) {
+        target_path.join("uv.exe")
+    } else {
+        target_path.join("uv")
+    };
+
+    // Download UV binary if it doesn't exist
+    if !uv_binary_source_path.exists() {
+        println!("UV binary does not exist, downloading...");
+        let url = if cfg!(windows) {
+            format!(
+                "https://github.com/astral-sh/uv/releases/download/{}/uv-x86_64-pc-windows-msvc.zip",
+                version
+            )
+        } else if cfg!(target_os = "macos") {
+            format!(
+                "https://github.com/astral-sh/uv/releases/download/{}/uv-aarch64-apple-darwin.tar.gz",
+                version
+            )
+        } else {
+            format!(
+                "https://github.com/astral-sh/uv/releases/download/{}/uv-x86_64-unknown-linux-gnu.tar.gz",
+                version
+            )
+        };
+
+        let zipped_file = source_path.join("uv.zip");
+        println!("downloading UV archive to: {}", zipped_file.display());
+
+        let mut response = reqwest::blocking::Client::new()
+            .get(&url)
+            .send()
+            .unwrap_or_else(|err| panic!("failed to download UV archive: {}", err));
+
+        let mut file = std::fs::File::create(&zipped_file)
+            .unwrap_or_else(|err| panic!("failed to create UV archive file: {}", err));
+
+        std::io::copy(&mut response, &mut file)
+            .unwrap_or_else(|err| panic!("failed to write UV archive to file: {}", err));
+
+        println!("successfully downloaded UV archive");
+
+        // Unzip the downloaded file
+        println!("opening zip file for extraction");
+        let zip_file = std::fs::File::open(&zipped_file).expect("failed to read zipped binary");
+        if cfg!(windows) {
+            let mut archive = zip::ZipArchive::new(zip_file).expect("failed to open zip archive");
+            println!("extracting zip archive to: {}", source_path.display());
+            archive
+                .extract(&source_path)
+                .expect("failed to extract zip archive");
+        } else {
+            let mut archive = tar::Archive::new(flate2::read::GzDecoder::new(zip_file));
+            println!("extracting tar.gz archive to: {}", source_path.display());
+            archive
+                .unpack(&source_path)
+                .expect("failed to extract tar.gz archive");
+            // Move binary from extracted folder to source path
+            if !cfg!(windows) {
+                let extracted_folder = if cfg!(target_os = "macos") {
+                    source_path.join("uv-aarch64-apple-darwin")
+                } else {
+                    source_path.join("uv-x86_64-unknown-linux-gnu") 
+                };
+                
+                let extracted_binary = extracted_folder.join("uv");
+                println!("moving UV binary from {} to {}", extracted_binary.display(), uv_binary_source_path.display());
+                fs::rename(extracted_binary, &uv_binary_source_path)
+                    .expect("failed to move UV binary from extracted folder");
+                
+                // Clean up extracted folder
+                fs::remove_dir_all(extracted_folder)
+                    .expect("failed to remove extracted folder");
+            }
+        }
+        println!("successfully extracted zip archive");
+    } else {
+        println!("UV binary already exists, skipping download");
+    }
+
+    println!(
+        "copying UV binary from {} to {}",
+        uv_binary_source_path.display(),
+        uv_binary_target_path.display()
+    );
+    fs::copy(&uv_binary_source_path, &uv_binary_target_path).unwrap_or_else(|err| {
+        panic!(
+            "failed to copy downloaded UV binary to target path: {}",
+            err
+        );
+    });
+    println!(
+        "successfully copied UV binary to target path: {}",
+        uv_binary_target_path.display()
+    );
+
+    if !cfg!(windows) {
+        println!("adding executable permissions to UV binary");
+        add_exec_permissions(&uv_binary_target_path)?;
+        println!("successfully added executable permissions");
+    }
+    Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[tokio::test]
+    async fn test_copy_assets() {
+        tokio::task::spawn_blocking(|| {
+            println!("profile: {:?}", PROFILE);
+            let source = PathBuf::from("./");
+            println!("source path: {}", source.display());
+            let destination = PathBuf::from("../../target").join(PROFILE.as_str());
+            println!("destination path: {}", destination.display());
+            copy_assets(Some(source), Some(destination)).unwrap()
+        })
+        .await
+        .unwrap();
+    }
 }

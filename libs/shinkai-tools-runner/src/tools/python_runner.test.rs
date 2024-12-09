@@ -312,8 +312,8 @@ async fn run_with_import_library(#[case] runner_type: RunnerType) {
             r#"
 import requests
 def run(configurations, parameters):
-    response = requests.get('https://httpbin.org/get')
-    return response.json()['url']
+    response = requests.get('https://jsonplaceholder.typicode.com/todos/1')
+    return response.json()['id']
                 "#
             .to_string(),
         )]),
@@ -338,7 +338,7 @@ def run(configurations, parameters):
         })
         .unwrap();
 
-    assert_eq!(result.data.as_str().unwrap(), "https://httpbin.org/get");
+    assert_eq!(result.data.as_number().unwrap().as_i64().unwrap(), 1);
 }
 
 #[rstest]

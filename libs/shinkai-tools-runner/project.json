@@ -19,7 +19,6 @@
         "cwd": "libs/shinkai-tools-runner",
         "commands": [
           "npx copyfiles --up 4 --verbose ./../../dist/apps/shinkai-tool-*/definition.json ./tools/",
-          "deno task copy-deno ./libs/shinkai-tools-runner/shinkai-tools-runner-resources/",
           "cargo build"
         ],
         "parallel": false

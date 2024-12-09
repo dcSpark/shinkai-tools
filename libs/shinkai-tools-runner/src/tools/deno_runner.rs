@@ -264,7 +264,10 @@ impl DenoRunner {
         container_envs.push(String::from("-e"));
         container_envs.push(format!("SHINKAI_MOUNT={}", mount_env));
         container_envs.push(String::from("-e"));
-        container_envs.push(format!("SHINKAI_CONTEXT_ID={}", self.options.context.context_id));
+        container_envs.push(format!(
+            "SHINKAI_CONTEXT_ID={}",
+            self.options.context.context_id
+        ));
         container_envs.push(String::from("-e"));
         container_envs.push(format!(
             "SHINKAI_EXECUTION_ID={}",
@@ -462,7 +465,10 @@ impl DenoRunner {
             .kill_on_drop(true);
 
         command.env("NO_COLOR", "true");
-        command.env("DENO_DIR", execution_storage.deno_cache_folder_path().clone());
+        command.env(
+            "DENO_DIR",
+            execution_storage.deno_cache_folder_path().clone(),
+        );
         command.env(
             "SHINKAI_NODE_LOCATION",
             format!(
@@ -495,8 +501,14 @@ impl DenoRunner {
                 .join(","),
         );
 
-        command.env("SHINKAI_CONTEXT_ID", self.options.context.context_id.clone());
-        command.env("SHINKAI_EXECUTION_ID", self.options.context.execution_id.clone());
+        command.env(
+            "SHINKAI_CONTEXT_ID",
+            self.options.context.context_id.clone(),
+        );
+        command.env(
+            "SHINKAI_EXECUTION_ID",
+            self.options.context.execution_id.clone(),
+        );
 
         if let Some(envs) = envs {
             command.envs(envs);

@@ -20,9 +20,9 @@ impl Default for PythonRunnerOptions {
             context: ExecutionContext::default(),
             code_runner_docker_image_name: String::from("dcspark/shinkai-code-runner:0.9.1"),
             uv_binary_path: PathBuf::from(if cfg!(windows) {
-                format!("C:\\Users\\{}\\.local\\bin\\uv.exe", whoami::username())
+                "./shinkai-tools-runner-resources/uv.exe"
             } else {
-                format!("/Users/{}/.local/bin/uv", whoami::username())
+                "./shinkai-tools-runner-resources/uv"
             }),
             force_runner_type: None,
             shinkai_node_location: ShinkaiNodeLocation {

@@ -736,3 +736,47 @@ async fn shinkai_tool_json_to_md(#[case] runner_type: RunnerType) {
         .unwrap()
         .is_empty());
 }
+
+#[rstest]
+#[case::host(RunnerType::Host)]
+#[case::docker(RunnerType::Docker)]
+#[tokio::test]
+async fn shinkai_tool_perplexity(#[case] runner_type: RunnerType) {
+    let _ = env_logger::builder()
+        .filter_level(log::LevelFilter::Info)
+        .is_test(true)
+        .try_init();
+    let tool_definition = get_tool("shinkai-tool-perplexity").unwrap();
+    let code_files = CodeFiles {
+        files: HashMap::from([("main.ts".to_string(), tool_definition.code.clone().unwrap())]),
+        entrypoint: "main.ts".to_string(),
+    };
+
+    let tool = DenoRunner::new(
+        code_files,
+        if matches!(runner_type, RunnerType::Docker) && std::env::var("CI").is_ok() {
+            serde_json::json!({})
+        } else {
+            serde_json::json!({ "chromePath": std::env::var("CHROME_PATH").ok().unwrap_or("".to_string()) })
+        },
+        Some(DenoRunnerOptions {
+            force_runner_type: Some(runner_type),
+            ..Default::default()
+        }),
+    );
+    let run_result = tool
+        .run(
+            None,
+            serde_json::json!({
+                "query": "what's the roman empire?"
+            }),
+            None,
+        )
+        .await;
+    assert!(run_result.is_ok());
+    assert!(!run_result.unwrap().data["response"]
+        .as_str()
+        .unwrap()
+        .to_string()
+        .is_empty());
+}

@@ -14,6 +14,30 @@ impl ExecutionStorage {
             e
         })?;
 
+        // Workaround for puppeteer. Cosmiconfig try to read a forbidden folder
+        log::info!("creating .config directory");
+        let config_dir = self.root_folder_path.join(".config");
+        std::fs::create_dir_all(&config_dir).map_err(|e| {
+            log::error!("failed to create .config directory: {}", e);
+            e
+        })?;
+        log::info!("creating config.json file");
+        let config_json_path = config_dir.join("config.json");
+        std::fs::write(
+            &config_json_path,
+            r#"
+        {
+            "puppeteer": {
+                "option":  "value"
+            }
+        }
+        "#,
+        )
+        .map_err(|e| {
+            log::error!("failed to write config.json file: {}", e);
+            e
+        })?;
+
         log::info!("creating deno.json file");
         let deno_json_path = self.code_folder_path.join("deno.json");
         std::fs::write(&deno_json_path, "").map_err(|e| {

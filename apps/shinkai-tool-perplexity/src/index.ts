@@ -1,7 +1,9 @@
-import * as playwright from 'npm:playwright@1.48.2';
 import chromePaths from 'npm:chrome-paths@1.0.1';
 import TurndownService from 'npm:turndown@7.2.0';
-import { defineConfig } from 'npm:playwright@1.48.2/test';
+// import puppeteer from 'npm:rebrowser-puppeteer@23.10.1';
+import { addExtra } from 'npm:puppeteer-extra@3.3.6';
+import rebrowserPuppeteer from 'npm:rebrowser-puppeteer@23.10.1';
+import StealthPlugin from 'npm:puppeteer-extra-plugin-stealth@2.11.2';
 
 type Configurations = {
   chromePath?: string;
@@ -11,50 +13,43 @@ type Parameters = {
 };
 type Result = { response: string };
 
+const puppeteer = addExtra(rebrowserPuppeteer);
+const pluginStealth = StealthPlugin();
+
+pluginStealth.enabledEvasions.delete('chrome.loadTimes');
+pluginStealth.enabledEvasions.delete('chrome.runtime');
+
+puppeteer.use(pluginStealth);
+
 export const run: Run<Configurations, Parameters, Result> = async (
   configurations,
   params,
 ): Promise<Result> => {
-  defineConfig({
-    use: {
-      actionTimeout: 60 * 1000,
-      navigationTimeout: 60 * 1000,
-    },
-  });
   const chromePath =
     configurations?.chromePath ||
     Deno.env.get('CHROME_PATH') ||
     chromePaths.chrome ||
     chromePaths.chromium;
-  const browser = await playwright['chromium'].launch({
+  const browser = await puppeteer.launch({
     executablePath: chromePath,
+    args: ['--disable-blink-features=AutomationControlled'],
   });
-  const context = await browser.newContext({
-    viewport: { width: 1280, height: 800 }, // Set viewport size
-    userAgent:
-      'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36', // Set Mac user agent
-  });
-  const page = await context.newPage();
+  const page = await browser.newPage();
 
   console.log("Navigating to Perplexity's website...");
   await page.goto('https://www.perplexity.ai/');
 
   console.log('Waiting for the page to load...');
-  await page.waitForTimeout(2500);
+  await page.waitForNetworkIdle({ timeout: 2500 });
 
   console.log('Filling textarea with query:', params.query);
-  await page.fill('textarea', params.query);
+  await page.type('textarea', params.query);
 
   try {
     console.log('trying to click app popup');
-    await page.click('button:has(svg[data-icon="xmark"])', { timeout: 2000 });
+    await page.click('button:has(svg[data-icon="xmark"])');
   } catch (_) {
     console.log('unable to find the x button to close the popup');
-    /*
-      We do nothing, so we have two cases:
-      - the code continue and fails later because we are not able to click the "submit" button
-      - the code continue and it just works because the app was changed and the popup doesn't exists
-    */
   }
 
   console.log('Clicking the button with the specified SVG...');
@@ -64,7 +59,7 @@ export const run: Run<Configurations, Parameters, Result> = async (
   await page.waitForSelector('button:has(svg[data-icon="arrow-right"])');
 
   console.log('Waiting for results to load...');
-  await page.waitForSelector('div:has-text("Related")');
+  await page.waitForSelector('text=Related');
 
   console.log('Extracting HTML content...');
   const htmlContent = await page.evaluate(() => {

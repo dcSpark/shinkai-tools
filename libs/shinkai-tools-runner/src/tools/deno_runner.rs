@@ -49,7 +49,7 @@ impl DenoRunner {
     /// Returns a Result containing:
     /// - Ok(Vec<String>): The list of errors found in the code
     /// - Err(anyhow::Error): Any errors that occurred during setup or execution
-    pub async fn check(&mut self) -> anyhow::Result<Vec<String>> {
+    pub async fn check(&self) -> anyhow::Result<Vec<String>> {
         let execution_storage =
             ExecutionStorage::new(self.code.clone(), self.options.context.clone());
         execution_storage.init_for_deno(None)?;

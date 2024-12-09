@@ -1,7 +1,7 @@
 use serde_json::Value;
 use std::{
     collections::HashMap,
-    path::{self, Path},
+    path::{self, Path, PathBuf},
     sync::Arc,
     time::Duration,
 };
@@ -41,16 +41,67 @@ impl PythonRunner {
         }
     }
 
+    async fn ensure_python_venv(&self, venv_path: PathBuf) -> anyhow::Result<String> {
+        let uv_binary_path_at_host = path::absolute(self.options.uv_binary_path.clone())
+            .unwrap()
+            .to_string_lossy()
+            .to_string();
+
+        log::info!("Creating new venv with uv {:?}", venv_path);
+        let mut venv_command = tokio::process::Command::new(&uv_binary_path_at_host);
+        venv_command
+            .args([
+                "venv",
+                "--seed",
+                venv_path.to_str().unwrap(),
+                "--python",
+                "3.13",
+            ])
+            .stdout(std::process::Stdio::piped())
+            .stderr(std::process::Stdio::piped())
+            .kill_on_drop(true);
+        let venv_output = venv_command.spawn()?.wait_with_output().await?;
+        if !venv_output.status.success() {
+            return Err(anyhow::Error::new(std::io::Error::new(
+                std::io::ErrorKind::Other,
+                String::from_utf8(venv_output.stderr)?,
+            )));
+        }
+
+        log::info!("successfully created Python venv at {:?}", venv_path);
+
+        let python_path_at_venv = venv_path
+            .join(if cfg!(windows) { "Scripts" } else { "bin" })
+            .join(if cfg!(windows) {
+                "python.exe"
+            } else {
+                "python"
+            });
+
+        let python_binary_path = python_path_at_venv.to_string_lossy().to_string();
+        log::info!("python binary path: {}", python_binary_path);
+        Ok(python_binary_path)
+    }
+
     pub async fn check(&self) -> anyhow::Result<Vec<String>> {
         let execution_storage =
             ExecutionStorage::new(self.code.clone(), self.options.context.clone());
         execution_storage.init_for_python(None)?;
 
-        let binary_path = path::absolute(self.options.python_binary_path.clone())
-            .unwrap()
-            .to_string_lossy()
-            .to_string();
-        let mut command = tokio::process::Command::new(binary_path);
+        let python_binary_path: String = self
+            .ensure_python_venv(execution_storage.python_cache_folder_path())
+            .await?;
+
+        log::info!(
+            "using python from host at path: {:?}",
+            python_binary_path.clone()
+        );
+
+        let mut command = tokio::process::Command::new(python_binary_path);
+        println!(
+            "compiling code in folder: {}",
+            execution_storage.code_folder_path.to_str().unwrap()
+        );
         command
             .args([
                 "-m",
@@ -250,7 +301,10 @@ print("</shinkai-code-result>")
         container_envs.push(String::from("-e"));
         container_envs.push(format!("SHINKAI_MOUNT={}", mount_env));
         container_envs.push(String::from("-e"));
-        container_envs.push(format!("SHINKAI_CONTEXT_ID={}", self.options.context.context_id));
+        container_envs.push(format!(
+            "SHINKAI_CONTEXT_ID={}",
+            self.options.context.context_id
+        ));
         container_envs.push(String::from("-e"));
         container_envs.push(format!(
             "SHINKAI_EXECUTION_ID={}",
@@ -278,7 +332,7 @@ print("</shinkai-code-result>")
             .to_string_lossy()
             .to_string();
         let python_start_script = format!(
-            "source /app/cache/python-venv/bin/activate && python -m pipreqs.pipreqs --encoding utf-8 --force {} && pip install -r {}/requirements.txt && python {}",
+            "source /app/cache/python-venv/bin/activate && python -m pipreqs.pipreqs --encoding utf-8 --force {} && uv pip install -r {}/requirements.txt && python {}",
             code_folder.clone().as_str(),
             code_folder.clone().as_str(),
             code_entrypoint.clone().as_str(),
@@ -384,45 +438,31 @@ print("</shinkai-code-result>")
         let execution_storage = ExecutionStorage::new(code_files, self.options.context.clone());
         execution_storage.init_for_python(None)?;
 
-        let python_binary_path_at_host = path::absolute(self.options.python_binary_path.clone())
-            .unwrap()
-            .to_string_lossy()
-            .to_string();
+        let python_binary_path: String = self
+            .ensure_python_venv(execution_storage.python_cache_folder_path())
+            .await?;
+
         log::info!(
             "using python from host at path: {:?}",
-            python_binary_path_at_host.clone()
+            python_binary_path.clone()
         );
 
-        // Ensure venv exists at python cache location
-        let venv_path = execution_storage.python_cache_folder_path();
-        log::info!("Creating new venv at {:?}", venv_path);
-        let mut venv_command = tokio::process::Command::new(&python_binary_path_at_host);
-        venv_command
-            .args(["-m", "venv", venv_path.to_str().unwrap()])
-            .stdout(std::process::Stdio::piped())
-            .stderr(std::process::Stdio::piped())
-            .kill_on_drop(true);
-        let venv_output = venv_command.spawn()?.wait_with_output().await?;
-        if !venv_output.status.success() {
-            return Err(anyhow::Error::new(std::io::Error::new(
-                std::io::ErrorKind::Other,
-                String::from_utf8(venv_output.stderr)?,
-            )));
-        }
+        let uv_binary_path = path::absolute(self.options.uv_binary_path.clone())
+            .unwrap()
+            .to_str()
+            .unwrap()
+            .to_string();
 
-        // Get pip and python paths from venv
-        let python_path_at_venv = venv_path
-            .join(if cfg!(windows) { "Scripts" } else { "bin" })
-            .join(if cfg!(windows) {
-                "python.exe"
-            } else {
-                "python"
-            });
-
-        let python_binary_path = python_path_at_venv.to_string_lossy().to_string();
-        let mut ensure_pip_command = tokio::process::Command::new(&python_binary_path);
+        let mut ensure_pip_command = tokio::process::Command::new(&uv_binary_path);
         ensure_pip_command
-            .args(["-m", "pip", "install", "pipreqs"])
+            .args(["pip", "install", "pipreqs"])
+            .env(
+                "VIRTUAL_ENV",
+                execution_storage
+                    .python_cache_folder_path()
+                    .to_str()
+                    .unwrap(),
+            )
             .stdout(std::process::Stdio::piped())
             .stderr(std::process::Stdio::piped())
             .kill_on_drop(true);
@@ -456,9 +496,16 @@ print("</shinkai-code-result>")
             )));
         }
 
-        let mut pip_install_command = tokio::process::Command::new(&python_binary_path);
+        let mut pip_install_command = tokio::process::Command::new(&uv_binary_path);
         pip_install_command
-            .args(["-m", "pip", "install", "-r", "requirements.txt"])
+            .args(["pip", "install", "-r", "requirements.txt"])
+            .env(
+                "VIRTUAL_ENV",
+                execution_storage
+                    .python_cache_folder_path()
+                    .to_str()
+                    .unwrap(),
+            )
             .current_dir(execution_storage.code_folder_path.clone())
             .stdout(std::process::Stdio::piped())
             .stderr(std::process::Stdio::piped())
@@ -510,8 +557,14 @@ print("</shinkai-code-result>")
                 .collect::<Vec<_>>()
                 .join(","),
         );
-        command.env("SHINKAI_CONTEXT_ID", self.options.context.context_id.clone());
-        command.env("SHINKAI_EXECUTION_ID", self.options.context.execution_id.clone());
+        command.env(
+            "SHINKAI_CONTEXT_ID",
+            self.options.context.context_id.clone(),
+        );
+        command.env(
+            "SHINKAI_EXECUTION_ID",
+            self.options.context.execution_id.clone(),
+        );
 
         if let Some(envs) = envs {
             command.envs(envs);

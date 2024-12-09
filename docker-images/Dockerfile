@@ -7,10 +7,12 @@ SHELL ["/bin/bash", "-c"]
 RUN apt-get update && apt-get install -y chromium
 ENV CHROME_PATH=/usr/bin/chromium
 
-# Add python 3
-RUN apt-get install -y python3 python3-pip python3-venv
+RUN apt-get install -y curl
 
 WORKDIR /app
-RUN python3 -m venv cache/python-venv && source cache/python-venv/bin/activate && pip install pipreqs
+RUN curl -LsSf https://astral.sh/uv/install.sh | sh
+ENV PATH="/root/.local/bin:${PATH}"
+
+RUN source $HOME/.local/bin/env && uv venv --seed cache/python-venv --python 3.13 && source cache/python-venv/bin/activate && uv pip install pipreqs
 
 ENTRYPOINT ["/tini", "--"]

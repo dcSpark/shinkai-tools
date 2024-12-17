@@ -3,6 +3,7 @@ import { googleSearch, shinkaiLlmPromptProcessor, shinkaiDownloadPages } from '.
 type CONFIG = {
   searchEngineApiKey?: string;
   searchEngine?: SearchEngine;
+  maxSources?: number;
 }
 type INPUTS = {
   question: string;
@@ -379,7 +380,8 @@ export async function run(
           const searchEngine = config.searchEngine || 'GOOGLE';
           const sourcesSearchResults: SearchResult[] = await extractSourcesFromSearchEngine(searchEngineQuery, searchEngine, config.searchEngineApiKey);
           try {
-            sources.push(...(sourcesSearchResults as SearchResult[]));
+            const maxSources = config.maxSources ?? 3;
+            sources.push(...(sourcesSearchResults.slice(0, maxSources) as SearchResult[]));
           } catch (error) {
             console.error('Failed to process search results', error);
             throw new Error('Failed to process search results');

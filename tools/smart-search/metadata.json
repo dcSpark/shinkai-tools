@@ -16,6 +16,14 @@
         "key_value": null,
         "required": false
       }
+    },
+    {
+      "BasicConfig": {
+        "description": "Maximum number of sources to process (default: 3)",
+        "key_name": "maxSources",
+        "key_value": 3,
+        "required": false
+      }
     }
   ],
   "description": "This function takes a question as input and returns a comprehensive answer, along with the sources and statements used to generate the answer.",

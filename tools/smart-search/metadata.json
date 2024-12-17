@@ -49,14 +49,33 @@
       "sources": {
         "description": "The sources used to generate the answer",
         "items": {
-          "$ref": "#/$defs/SmartSearchSourcePage"
+          "type": "object",
+          "properties": {
+            "id": {"type": "number"},
+            "url": {"type": "string"},
+            "title": {"type": "string"}
+          }
         },
         "type": "array"
       },
       "statements": {
         "description": "The statements extracted from the sources",
         "items": {
-          "$ref": "#/$defs/SmartSearchStatement"
+          "type": "object",
+          "properties": {
+            "sourceId": {"type": "number"},
+            "sourceTitle": {"type": "string"},
+            "extractedFacts": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "statement": {"type": "string"},
+                  "relevance": {"type": "string"}
+                }
+              }
+            }
+          }
         },
         "type": "array"
       }

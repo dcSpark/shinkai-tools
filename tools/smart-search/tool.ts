@@ -1,4 +1,3 @@
-import { getAccessToken } from './shinkai-local-support.ts';
 import { googleSearch, shinkaiLlmPromptProcessor, shinkaiDownloadPages } from './shinkai-local-tools.ts';
 
 type CONFIG = {

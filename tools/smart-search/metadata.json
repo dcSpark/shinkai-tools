@@ -1,0 +1,74 @@
+{
+  "author": "@@my_local_ai.arb-sep-shinkai",
+  "configurations": [
+    {
+      "BasicConfig": {
+        "description": "string",
+        "key_name": "searchEngine",
+        "key_value": null,
+        "required": false
+      }
+    },
+    {
+      "BasicConfig": {
+        "description": "string",
+        "key_name": "searchEngineApiKey",
+        "key_value": null,
+        "required": false
+      }
+    }
+  ],
+  "description": "This function takes a question as input and returns a comprehensive answer, along with the sources and statements used to generate the answer.",
+  "keywords": [
+    "search",
+    "answer generation",
+    "fact extraction",
+    "wikipedia",
+    "google"
+  ],
+  "name": "Smart Search Engine",
+  "oauth": null,
+  "parameters": {
+    "properties": {
+      "question": {
+        "description": "The question to answer",
+        "type": "string"
+      }
+    },
+    "required": [
+      "question"
+    ],
+    "type": "object"
+  },
+  "result": {
+    "properties": {
+      "response": {
+        "description": "The generated answer",
+        "type": "string"
+      },
+      "sources": {
+        "description": "The sources used to generate the answer",
+        "items": {
+          "$ref": "#/$defs/SmartSearchSourcePage"
+        },
+        "type": "array"
+      },
+      "statements": {
+        "description": "The statements extracted from the sources",
+        "items": {
+          "$ref": "#/$defs/SmartSearchStatement"
+        },
+        "type": "array"
+      }
+    },
+    "required": [
+      "response",
+      "sources",
+      "statements"
+    ],
+    "type": "object"
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": null
+}

@@ -19,9 +19,9 @@
     },
     {
       "BasicConfig": {
-        "description": "Maximum number of sources to process (default: 3)",
+        "description": "number",
         "key_name": "maxSources",
-        "key_value": 3,
+        "key_value": null,
         "required": false
       }
     }

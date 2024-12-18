@@ -27,6 +27,7 @@ jobs:
         run: |
           ./.github/run_node.sh &
           timeout 60 bash -c 'until curl -s --location "http://127.0.0.1:9550/v2/health_check" | jq -e ".status == \"ok\"" > /dev/null; do sleep 1; done'
+          ./.github/build_tool.sh
         env:
           INITIAL_AGENT_NAMES: ${{ secrets.INITIAL_AGENT_NAMES }}
           INITIAL_AGENT_URLS: ${{ secrets.INITIAL_AGENT_URLS }}
@@ -34,18 +35,12 @@ jobs:
           INITIAL_AGENT_API_KEYS: ${{ secrets.INITIAL_AGENT_API_KEYS }}
           API_V2_KEY: ${{ secrets.API_V2_KEY }}
           EMBEDDINGS_SERVER_URL: ${{ secrets.EMBEDDINGS_SERVER_URL }}
-
-      - name: Run build script
-        id: build_script
-        if: steps.run_node.outcome == 'success'
-        run: ./.github/build_tool.sh
-        env:
           SHINKAI_NODE_ADDR: "http://localhost:9550"
           GITHUB_LOCATION: "https://raw.githubusercontent.com/dcSpark/shinkai-tools/"
-          BEARER_TOKEN: ${{ secrets.API_V2_KEY }}
+          BEARER_TOKEN: ${{ secrets.API_V2_KEY }}          
 
       - name: Commit and push if changed
-        if: steps.build_script.outcome == 'success'
+        if: steps.run_node.outcome == 'success'
         run: |
           git config --global user.name 'GitHub Action'
           git config --global user.email 'action@github.com'

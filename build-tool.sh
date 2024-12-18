@@ -1,6 +1,8 @@
 #!/bin/bash
 
 export SHINKAI_NODE_ADDR="http://localhost:9550"
+export GITHUB_LOCATION="https://raw.githubusercontent.com/dcSpark/shinkai-tools/refs/heads/"
+export GITHUB_BRANCH="feature/hello-world"
 
 # Function to get tool type based on file extension
 get_tool_type() {
@@ -11,6 +13,13 @@ get_tool_type() {
         echo "Python"
     fi
 }
+
+# Create packages directory if it doesn't exist
+mkdir -p packages
+
+# Create empty directory.json
+rm -f packages/directory.json
+echo '[]' > packages/directory.json
 
 # Process each tool directory
 for tool_dir in tools/*/; do
@@ -96,11 +105,21 @@ for tool_dir in tools/*/; do
             --data "$request_data")
 
         tool_router_key=$(echo "$uploaded_tool" | jq -r '.metadata.tool_router_key')
-        echo $uploaded_tool
+        tool_description=$(echo "$uploaded_tool" | jq -r '.metadata.metadata.description')
 
         # Request zip file from the node.
         curl -s --location "${SHINKAI_NODE_ADDR}/v2/export_tool?tool_key_path=${tool_router_key}" \
             --header 'Authorization: Bearer debug' \
             --header 'Content-Type: application/json; charset=utf-8' > packages/${tool_name}.zip
+
+        # Generate a md5 hash of the .zip file
+        md5_hash=$(md5sum packages/${tool_name}.zip | cut -d ' ' -f 1)
+
+        # Add tool to directory.json
+        # Create temporary file with updated content
+        jq --arg tool_name "$tool_name" --arg tool_router_key "$tool_router_key" --arg description "$tool_description" --arg md5_hash "$md5_hash" --arg file "$GITHUB_LOCATION$GITHUB_BRANCH/packages/$tool_name.zip" \
+            '. += [{name: $tool_name, description: $description, router_key: $tool_router_key, md5: $md5_hash, file: $file}]' packages/directory.json > packages/directory.json.tmp
+        # Replace original file with temporary file
+        mv packages/directory.json.tmp packages/directory.json
     fi
 done

@@ -1,0 +1,23 @@
+[
+  {
+    "name": "hello-world-python",
+    "description": "A function that returns a greeting message.",
+    "router_key": "local:::hello_world_printer_shinkai:::hello_world_printer",
+    "md5": "4cb07addc6d76b97190677056a46dd85",
+    "file": "https://raw.githubusercontent.com/dcSpark/shinkai-tools/refs/heads/feature/hello-world/packages/hello-world-python.zip"
+  },
+  {
+    "name": "hello-world",
+    "description": "A function that returns 'Hello world' as a response.",
+    "router_key": "local:::hello_world_function_shinkai:::hello_world_function",
+    "md5": "cc077c544d79e15c66a67b3f815003b3",
+    "file": "https://raw.githubusercontent.com/dcSpark/shinkai-tools/refs/heads/feature/hello-world/packages/hello-world.zip"
+  },
+  {
+    "name": "smart-search",
+    "description": "This function takes a question as input and returns a comprehensive answer, along with the sources and statements used to generate the answer.",
+    "router_key": "local:::smart_search_engine_shinkai:::smart_search_engine",
+    "md5": "ded1920b1fdb46ef130d0d06e9aaad87",
+    "file": "https://raw.githubusercontent.com/dcSpark/shinkai-tools/refs/heads/feature/hello-world/packages/smart-search.zip"
+  }
+]

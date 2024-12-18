@@ -1,5 +1,14 @@
 {
+  "name": "Smart Search Engine",
+  "description": "This function takes a question as input and returns a comprehensive answer, along with the sources and statements used to generate the answer.",  
   "author": "Shinkai",
+  "keywords": [
+    "search",
+    "answer generation",
+    "fact extraction",
+    "wikipedia",
+    "google"
+  ],  
   "configurations": [
     {
       "BasicConfig": {
@@ -21,21 +30,11 @@
       "BasicConfig": {
         "description": "Maximum number of sources to process (default: 3)",
         "key_name": "maxSources",
-        "key_value": 3,
+        "key_value": null,
         "required": false
       }
     }
   ],
-  "description": "This function takes a question as input and returns a comprehensive answer, along with the sources and statements used to generate the answer.",
-  "keywords": [
-    "search",
-    "answer generation",
-    "fact extraction",
-    "wikipedia",
-    "google"
-  ],
-  "name": "Smart Search Engine",
-  "oauth": null,
   "parameters": {
     "properties": {
       "question": {
@@ -95,7 +94,7 @@
     ],
     "type": "object"
   },
+  "sqlTables": [],  
   "sqlQueries": [],
-  "sqlTables": [],
-  "tools": null
+  "tools": []
 }

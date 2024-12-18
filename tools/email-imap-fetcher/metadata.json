@@ -1,0 +1,91 @@
+{
+    "name": "Email Fetcher",
+    "description": "Fetches emails from an IMAP server and returns their subject, date, sender, and text content.",
+    "author": "@@my_local_ai.arb-sep-shinkai",
+    "keywords": [
+      "email",
+      "imap",
+      "fetch",
+      "parser"
+    ],
+    "configurations": {
+      "type": "object",
+      "properties": {
+        "imap_server": {
+          "type": "string",
+          "description": "The IMAP server address"
+        },
+        "username": {
+          "type": "string",
+          "description": "The username for the IMAP account"
+        },
+        "password": {
+          "type": "string",
+          "description": "The password for the IMAP account"
+        },
+        "port": {
+          "type": "integer",
+          "description": "The port number for the IMAP server (defaults to 993 for IMAPS)",
+          "default": 993
+        }
+      },
+      "required": [
+        "imap_server",
+        "username",
+        "password"
+      ]
+    },
+    "parameters": {
+      "type": "object",
+      "properties": {},
+      "required": []
+    },
+    "result": {
+      "type": "object",
+      "properties": {
+        "emails": {
+          "type": "array",
+          "description": "A list of email objects",
+          "items": {
+            "type": "object",
+            "properties": {
+              "subject": {
+                "type": "string",
+                "description": "The subject of the email"
+              },
+              "date": {
+                "type": "string",
+                "format": "date-time",
+                "description": "The date and time the email was sent"
+              },
+              "sender": {
+                "type": "string",
+                "description": "The sender of the email"
+              },
+              "text": {
+                "type": "string",
+                "description": "The text content of the email"
+              }
+            },
+            "required": [
+              "subject",
+              "date",
+              "sender",
+              "text"
+            ]
+          }
+        },
+        "login_status": {
+          "type": "string",
+          "description": "Indicates if login was successful or not"
+        }
+      },
+      "required": [
+        "emails",
+        "login_status"
+      ]
+    },
+    "sqlTables": [],
+    "sqlQueries": [],
+    "tools": []
+  }

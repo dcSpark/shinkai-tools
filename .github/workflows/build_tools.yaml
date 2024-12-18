@@ -32,10 +32,14 @@ jobs:
           API_V2_KEY: ${{ secrets.API_V2_KEY }}
           EMBEDDINGS_SERVER_URL: ${{ secrets.EMBEDDINGS_SERVER_URL }}
           SHINKAI_NODE_ADDR: "http://localhost:9550"
-          BEARER_TOKEN: ${{ secrets.API_V2_KEY }}        
+          BEARER_TOKEN: ${{ secrets.API_V2_KEY }}
+          INITIALIZATION_DATA: ${{ secrets.INITIALIZATION_DATA }}
         run: |
           ./.github/run_node.sh &
           timeout 60 bash -c 'until curl -s --location "http://127.0.0.1:9550/v2/health_check" | jq -e ".status == \"ok\"" > /dev/null; do sleep 1; done'
+          curl --location 'http://127.0.0.1:9550/v2/initial_registration' \
+          --header 'Content-Type: application/json; charset=utf-8' \
+          --data $INITIALIZATION_DATA
           ./.github/build_tool.sh
           if jq -e '.[] | select(.description == "")' packages/directory.json > /dev/null; then
             echo "Error: Empty descriptions found in packages/directory.json"

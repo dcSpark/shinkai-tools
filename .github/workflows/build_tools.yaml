@@ -35,35 +35,7 @@ jobs:
           BEARER_TOKEN: ${{ secrets.API_V2_KEY }}
           INITIALIZATION_DATA: ${{ secrets.INITIALIZATION_DATA }}
         run: |
-          docker run -d -p 9550:9550 -p 9551:9551 -p 9552:9552 -p 9553:9553 \
-          -e NODE_API_IP="0.0.0.0" \
-          -e NODE_IP="0.0.0.0" \
-          -e NODE_API_PORT="9550" \
-          -e NODE_WS_PORT="9551" \
-          -e NODE_PORT="9552" \
-          -e NODE_HTTPS_PORT="9553" \
-          -e IDENTITY_SECRET_KEY="df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119" \
-          -e ENCRYPTION_SECRET_KEY="d83f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81159" \
-          -e PING_INTERVAL_SECS="0" \
-          -e GLOBAL_IDENTITY_NAME="@@localhost.arb-sep-shinkai" \
-          -e RUST_LOG=debug,error,info \
-          -e STARTING_NUM_QR_PROFILES="1" \
-          -e STARTING_NUM_QR_DEVICES="1" \
-          -e FIRST_DEVICE_NEEDS_REGISTRATION_CODE="false" \
-          -e LOG_SIMPLE="true" \
-          -e NO_SECRET_FILE="true" \
-          -e PROXY_IDENTITY="@@relayer_pub_01.arb-sep-shinkai" \
-          -e SHINKAI_TOOLS_RUNNER_DENO_BINARY_PATH="./shinkai-tools-runner-resources/deno" \
-          -e SHINKAI_TOOLS_RUNNER_UV_BINARY_PATH="./shinkai-tools-runner-resources/uv" \
-          -e SHINKAI_VERSION="0.9.3" \
-          -e LOG_ALL=1 \
-          -e INITIAL_AGENT_NAMES="$INITIAL_AGENT_NAMES" \
-          -e INITIAL_AGENT_URLS="$INITIAL_AGENT_URLS" \
-          -e INITIAL_AGENT_MODELS="$INITIAL_AGENT_MODELS" \
-          -e INITIAL_AGENT_API_KEYS="$INITIAL_AGENT_API_KEYS" \
-          -e API_V2_KEY="$API_V2_KEY" \
-          -e EMBEDDINGS_SERVER_URL="$EMBEDDINGS_SERVER_URL" \
-          guillevalin/shinkai-node:latest
+          ./.github/run_node.sh &
           timeout 60 bash -c 'until curl -s --location "$SHINKAI_NODE_ADDR/v2/health_check" | jq -e ".status == \"ok\"" > /dev/null; do sleep 1; done'
             curl --location "$SHINKAI_NODE_ADDR/v2/initial_registration" \
           --header 'Content-Type: application/json; charset=utf-8' \

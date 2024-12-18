@@ -96,5 +96,9 @@
   },
   "sqlTables": [],  
   "sqlQueries": [],
-  "tools": []
+  "tools": [
+    "local:::google_search_shinkai:::google_search",
+    "local:::rust_toolkit:::shinkai_llm_prompt_processor",
+    "local:::shinkai_tool_download_pages:::shinkai__download_pages"
+  ]
 }

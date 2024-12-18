@@ -1,9 +1,9 @@
 [
   {
     "name": "smart-search",
-    "description": "",
-    "router_key": "",
-    "md5": "d41d8cd98f00b204e9800998ecf8427e",
+    "description": "null",
+    "router_key": "null",
+    "md5": "1c30154306299559e87dac33b74e5437",
     "file": "https://raw.githubusercontent.com/dcSpark/shinkai-tools/refs/heads/main/packages/smart-search.zip"
   }
 ]

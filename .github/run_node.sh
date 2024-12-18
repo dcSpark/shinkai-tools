@@ -25,7 +25,7 @@ export LOG_ALL=1
 
 if [[ "$(uname -s)" == "Darwin" && "$(uname -m)" == "arm64" ]]; then
     curl --location https://github.com/dcSpark/shinkai-node/releases/download/v0.9.2/shinkai-node-aarch64-apple-darwin.zip -o shinkai-node.zip
-elif [[ "$(uname -s)" == "Linux" && "$(uname -m)" == "amd64" ]]; then
+elif [[ "$(uname -s)" == "Linux" && "$(uname -m)" == "x86_64" ]]; then
     curl --location https://github.com/dcSpark/shinkai-node/releases/download/v0.9.2/shinkai-node-x86_64-unknown-linux-gnu.zip -o shinkai-node.zip
 else
     echo "Unsupported platform"

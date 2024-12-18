@@ -1,10 +1,6 @@
 #!/bin/bash
 
-# Function to convert directory name to toolkit name
-convert_to_toolkit_name() {
-    local dir_name=$1
-    echo "${dir_name}" | tr '-' '_' | tr '.' '_'
-}
+export SHINKAI_NODE_ADDR="http://localhost:9550"
 
 # Function to get tool type based on file extension
 get_tool_type() {
@@ -17,13 +13,12 @@ get_tool_type() {
 }
 
 # Process each tool directory
-echo "Processing tools..."
 for tool_dir in tools/*/; do
     if [ -d "$tool_dir" ]; then
         # Get the tool name from directory
         tool_name=$(basename "$tool_dir")
         
-        echo "Processing ${tool_name}"
+        echo "Processing ${tool_name}..."
         
         # Check for either tool.ts or tool.py
         tool_file=""
@@ -40,9 +35,6 @@ for tool_dir in tools/*/; do
             continue
         fi
 
-        # Create packages directory if it doesn't exist
-        mkdir -p "packages/${tool_name}"
-
         # Read metadata.json
         metadata_content=$(cat "${tool_dir}metadata.json")
         
@@ -52,61 +44,8 @@ for tool_dir in tools/*/; do
         # Get tool type based on file extension
         tool_type=$(get_tool_type "$tool_file")
 
-        # Convert directory name to toolkit name
-        toolkit_name=$(convert_to_toolkit_name "$tool_name")
-
-        # Create tool.json content
-        # Set the code key based on tool type
-        code_key="js_code"
-        if [ "$tool_type" = "Python" ]; then
-            code_key="py_code"
-        fi
-
-        jq -n \
-            --arg type "$tool_type" \
-            --arg toolkit_name "${toolkit_name}" \
-            --arg tool_content "$tool_content" \
-            --arg code_key "$code_key" \
-            --argjson metadata "$metadata_content" \
-            '{
-            type: $type,
-            content: [
-                {
-                toolkit_name: $toolkit_name,
-                name: $metadata.name,
-                author: $metadata.author,
-                ($code_key): $tool_content,
-                tools: $metadata.tools,
-                config: $metadata.configurations,
-                description: $metadata.description,
-                keywords: $metadata.keywords,
-                input_args: $metadata.parameters,
-                output_arg: {json: ""},
-                activated: false,
-                embedding: null,
-                result: $metadata.result,
-                sql_tables: $metadata.sqlTables,
-                sql_queries: $metadata.sqlQueries,
-                file_inbox: null,
-                oauth: $metadata.oauth
-                },
-                false
-            ]
-            }' > "packages/${tool_name}/tool.json"
-
-        echo "Generated tool.json for ${tool_name}"
-
-        # Create zip file
-        cd "packages/${tool_name}"
-        zip "${toolkit_name}.zip" tool.json
-        cd ../..
-        echo "Created ${toolkit_name}.zip"
-
-        # Upload to Shinkai node
-        echo Uploading to Shinkai node...
-
         # Create a job
-        job_response=$(curl --location 'http://127.0.0.1:9550/v2/create_job' \
+        job_response=$(curl -s --location "${SHINKAI_NODE_ADDR}/v2/create_job" \
         --header 'Content-Type: application/json' \
         --header 'Authorization: Bearer debug' \
         --data '{
@@ -124,7 +63,6 @@ for tool_dir in tools/*/; do
             }
         }')
 
-        echo Getting job_id...
         job_id=$(echo "$job_response" | jq -r '.job_id')
 
         if [ "$tool_type" = "Python" ]; then
@@ -152,9 +90,17 @@ for tool_dir in tools/*/; do
         fi
 
         # Upload the tool to the node.
-        curl --location 'http://127.0.0.1:9550/v2/set_playground_tool' \
+        uploaded_tool=$(curl -s --location "${SHINKAI_NODE_ADDR}/v2/set_playground_tool" \
             --header 'Authorization: Bearer debug' \
             --header 'Content-Type: application/json; charset=utf-8' \
-            --data "$request_data"
+            --data "$request_data")
+
+        tool_router_key=$(echo "$uploaded_tool" | jq -r '.metadata.tool_router_key')
+        echo $uploaded_tool
+
+        # Request zip file from the node.
+        curl -s --location "${SHINKAI_NODE_ADDR}/v2/export_tool?tool_key_path=${tool_router_key}" \
+            --header 'Authorization: Bearer debug' \
+            --header 'Content-Type: application/json; charset=utf-8' > packages/${tool_name}.zip
     fi
 done

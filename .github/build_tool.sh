@@ -70,6 +70,8 @@ for tool_dir in tools/*/; do
             }
         }')
 
+        echo $job_response
+
         job_id=$(echo "$job_response" | jq -r '.job_id')
 
         if [ "$tool_type" = "Python" ]; then
@@ -107,6 +109,8 @@ for tool_dir in tools/*/; do
 
         tool_router_key=$(echo "$uploaded_tool" | jq -r '.metadata.tool_router_key')
         tool_description=$(echo "$uploaded_tool" | jq -r '.metadata.metadata.description')
+
+        echo $uploaded_tool
 
         # Request zip file from the node.
         curl -s --location "${SHINKAI_NODE_ADDR}/v2/export_tool?tool_key_path=${tool_router_key}" \

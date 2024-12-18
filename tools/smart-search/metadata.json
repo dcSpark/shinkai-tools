@@ -1,0 +1,101 @@
+{
+  "author": "Shinkai",
+  "configurations": [
+    {
+      "BasicConfig": {
+        "description": "string",
+        "key_name": "searchEngine",
+        "key_value": null,
+        "required": false
+      }
+    },
+    {
+      "BasicConfig": {
+        "description": "string",
+        "key_name": "searchEngineApiKey",
+        "key_value": null,
+        "required": false
+      }
+    },
+    {
+      "BasicConfig": {
+        "description": "Maximum number of sources to process (default: 3)",
+        "key_name": "maxSources",
+        "key_value": 3,
+        "required": false
+      }
+    }
+  ],
+  "description": "This function takes a question as input and returns a comprehensive answer, along with the sources and statements used to generate the answer.",
+  "keywords": [
+    "search",
+    "answer generation",
+    "fact extraction",
+    "wikipedia",
+    "google"
+  ],
+  "name": "Smart Search Engine",
+  "oauth": null,
+  "parameters": {
+    "properties": {
+      "question": {
+        "description": "The question to answer",
+        "type": "string"
+      }
+    },
+    "required": [
+      "question"
+    ],
+    "type": "object"
+  },
+  "result": {
+    "properties": {
+      "response": {
+        "description": "The generated answer",
+        "type": "string"
+      },
+      "sources": {
+        "description": "The sources used to generate the answer",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {"type": "number"},
+            "url": {"type": "string"},
+            "title": {"type": "string"}
+          }
+        },
+        "type": "array"
+      },
+      "statements": {
+        "description": "The statements extracted from the sources",
+        "items": {
+          "type": "object",
+          "properties": {
+            "sourceId": {"type": "number"},
+            "sourceTitle": {"type": "string"},
+            "extractedFacts": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "statement": {"type": "string"},
+                  "relevance": {"type": "string"}
+                }
+              }
+            }
+          }
+        },
+        "type": "array"
+      }
+    },
+    "required": [
+      "response",
+      "sources",
+      "statements"
+    ],
+    "type": "object"
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": null
+}

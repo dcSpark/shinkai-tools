@@ -1,0 +1,4 @@
+tools/**/shinkai-local-support.ts
+tools/**/shinkai-local-tools.ts
+.DS_Store
+packages/**/tool.json

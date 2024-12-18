@@ -1,0 +1,32 @@
+{
+    "author": "@@localhost.arb-sep-shinkai",
+    "configurations": [],
+    "description": "A function that returns 'Hello world' as a response.",
+    "keywords": [
+      "hello",
+      "world",
+      "shinkai"
+    ],
+    "name": "Hello World Function",
+    "oauth": null,
+    "parameters": {
+      "properties": {},
+      "required": [],
+      "type": "object"
+    },
+    "result": {
+      "properties": {
+        "response": {
+          "description": "The response from the function",
+          "type": "string"
+        }
+      },
+      "required": [
+        "response"
+      ],
+      "type": "object"
+    },
+    "sqlQueries": [],
+    "sqlTables": [],
+    "tools": null
+  }

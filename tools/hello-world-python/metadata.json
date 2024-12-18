@@ -1,0 +1,32 @@
+{
+    "name": "Hello World Printer",
+    "description": "A function that returns a greeting message.",
+    "author": "@@localhost.arb-sep-shinkai",
+    "keywords": [
+      "greeting",
+      "hello",
+      "world",
+      "asynchronous"
+    ],
+    "configurations": [],
+    "parameters": {
+      "type": "object",
+      "properties": {},
+      "required": []
+    },
+    "result": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "description": "The greeting message"
+        }
+      },
+      "required": [
+        "message"
+      ]
+    },
+    "sqlTables": [],
+    "sqlQueries": [],
+    "tools": []
+  }

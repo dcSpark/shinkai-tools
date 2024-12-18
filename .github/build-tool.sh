@@ -3,6 +3,7 @@
 export SHINKAI_NODE_ADDR="http://localhost:9550"
 export GITHUB_LOCATION="https://raw.githubusercontent.com/dcSpark/shinkai-tools/refs/heads/"
 export GITHUB_BRANCH="feature/hello-world"
+export BEARER_TOKEN="debug"
 
 # Function to get tool type based on file extension
 get_tool_type() {
@@ -56,7 +57,7 @@ for tool_dir in tools/*/; do
         # Create a job
         job_response=$(curl -s --location "${SHINKAI_NODE_ADDR}/v2/create_job" \
         --header 'Content-Type: application/json' \
-        --header 'Authorization: Bearer debug' \
+        --header "Authorization: Bearer ${BEARER_TOKEN}" \
         --data '{
             "llm_provider": "",
             "job_creation_info": {
@@ -99,9 +100,12 @@ for tool_dir in tools/*/; do
         fi
 
         # Upload the tool to the node.
+        random_id=$(date +%s)
         uploaded_tool=$(curl -s --location "${SHINKAI_NODE_ADDR}/v2/set_playground_tool" \
-            --header 'Authorization: Bearer debug' \
+            --header "Authorization: Bearer ${BEARER_TOKEN}" \
             --header 'Content-Type: application/json; charset=utf-8' \
+            --header "x-shinkai-app-id: app-id-${random_id}" \
+            --header "x-shinkai-tool-id: task-id-${random_id}" \
             --data "$request_data")
 
         tool_router_key=$(echo "$uploaded_tool" | jq -r '.metadata.tool_router_key')
@@ -109,7 +113,7 @@ for tool_dir in tools/*/; do
 
         # Request zip file from the node.
         curl -s --location "${SHINKAI_NODE_ADDR}/v2/export_tool?tool_key_path=${tool_router_key}" \
-            --header 'Authorization: Bearer debug' \
+            --header "Authorization: Bearer ${BEARER_TOKEN}" \
             --header 'Content-Type: application/json; charset=utf-8' > packages/${tool_name}.zip
 
         # Generate a md5 hash of the .zip file

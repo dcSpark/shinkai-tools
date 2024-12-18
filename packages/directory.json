@@ -1,9 +1,9 @@
 [
   {
     "name": "smart-search",
-    "description": "This function takes a question as input and returns a comprehensive answer, along with the sources and statements used to generate the answer.",
-    "router_key": "local:::smart_search_engine_shinkai:::smart_search_engine",
-    "md5": "8399e69e380994fe69acf3ea9188066d",
-    "file": "https://raw.githubusercontent.com/dcSpark/shinkai-tools/refs/heads/feature/hello-world/packages/smart-search.zip"
+    "description": "",
+    "router_key": "",
+    "md5": "d41d8cd98f00b204e9800998ecf8427e",
+    "file": "https://raw.githubusercontent.com/dcSpark/shinkai-tools/refs/heads/main/packages/smart-search.zip"
   }
 ]

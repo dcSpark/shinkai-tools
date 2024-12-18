@@ -19,7 +19,7 @@ jobs:
 
       - name: Make script executable
         run: |
-          chmod +x ./.github/build-tool.sh
+          chmod +x ./.github/build_tool.sh
           chmod +x ./.github/run_node.sh
 
       - name: Run node in background
@@ -33,7 +33,7 @@ jobs:
           EMBEDDINGS_SERVER_URL: ${{ secrets.EMBEDDINGS_SERVER_URL }}
 
       - name: Run build script
-        run: ./.github/build-tool.sh
+        run: ./.github/build_tool.sh
         env:
           SHINKAI_NODE_ADDR: "http://localhost:9550"
           GITHUB_LOCATION: "https://raw.githubusercontent.com/dcSpark/shinkai-tools/"

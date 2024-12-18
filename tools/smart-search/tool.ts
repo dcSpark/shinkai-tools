@@ -381,7 +381,7 @@ export async function run(
           const sourcesSearchResults: SearchResult[] = await extractSourcesFromSearchEngine(searchEngineQuery, searchEngine, config.searchEngineApiKey);
           try {
             const maxSources = config.maxSources ?? 3;
-            sources.push(...(sourcesSearchResults.slice(0, maxSources) as SearchResult[]));
+            sources.push(...(sourcesSearchResults.slice(0, Number(maxSources)) as SearchResult[]));
           } catch (error) {
             console.error('Failed to process search results', error);
             throw new Error('Failed to process search results');
@@ -417,8 +417,6 @@ export async function run(
       } catch (error) {
         console.error('Failed to process statement', smartSearchSource.url, error);
         console.error(cleanStatementString)
-        console.error(smartSearchSource)
-        throw new Error('Failed to process statement');
       }
     }
     // clean markdown from sources for lighter input
@@ -431,8 +429,6 @@ export async function run(
     // Step 4: Generate answer
     const answerPrompt = answerGenerator(generationContext);
 		const response = await shinkaiLlmPromptProcessor({ format: 'text', prompt: answerPrompt });
-    response.message = tryToExtractJSON(response.message);
-    
     return {
       statements,
       sources: smartSearchSouces,

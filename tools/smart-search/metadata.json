@@ -1,5 +1,14 @@
 {
+  "name": "Smart Search Engine",
+  "description": "This function takes a question as input and returns a comprehensive answer, along with the sources and statements used to generate the answer.",  
   "author": "Shinkai",
+  "keywords": [
+    "search",
+    "answer generation",
+    "fact extraction",
+    "wikipedia",
+    "google"
+  ],  
   "configurations": [
     {
       "BasicConfig": {
@@ -26,16 +35,6 @@
       }
     }
   ],
-  "description": "This function takes a question as input and returns a comprehensive answer, along with the sources and statements used to generate the answer.",
-  "keywords": [
-    "search",
-    "answer generation",
-    "fact extraction",
-    "wikipedia",
-    "google"
-  ],
-  "name": "Smart Search Engine",
-  "oauth": null,
   "parameters": {
     "properties": {
       "question": {
@@ -95,7 +94,11 @@
     ],
     "type": "object"
   },
+  "sqlTables": [],  
   "sqlQueries": [],
-  "sqlTables": [],
-  "tools": null
+  "tools": [
+    "local:::google_search_shinkai:::google_search",
+    "local:::rust_toolkit:::shinkai_llm_prompt_processor",
+    "local:::shinkai_tool_download_pages:::shinkai__download_pages"
+  ]
 }

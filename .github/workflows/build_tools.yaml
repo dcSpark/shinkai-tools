@@ -1,0 +1,47 @@
+name: Build Shinkai Tools
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y curl jq
+
+      - name: Make script executable
+        run: |
+          chmod +x ./.github/build-tool.sh
+          chmod +x ./.github/run_node.sh
+
+      - name: Run node in background
+        run: ./.github/run_node.sh &
+        env:
+          INITIAL_AGENT_NAMES: ${{ secrets.INITIAL_AGENT_NAMES }}
+          INITIAL_AGENT_URLS: ${{ secrets.INITIAL_AGENT_URLS }}
+          INITIAL_AGENT_MODELS: ${{ secrets.INITIAL_AGENT_MODELS }}
+          INITIAL_AGENT_API_KEYS: ${{ secrets.INITIAL_AGENT_API_KEYS }}
+          API_V2_KEY: ${{ secrets.API_V2_KEY }}
+          EMBEDDINGS_SERVER_URL: ${{ secrets.EMBEDDINGS_SERVER_URL }}
+
+      - name: Run build script
+        run: ./.github/build-tool.sh
+        env:
+          SHINKAI_NODE_ADDR: "http://localhost:9550"
+          GITHUB_LOCATION: "https://raw.githubusercontent.com/dcSpark/shinkai-tools/"
+          BEARER_TOKEN: ${{ secrets.API_V2_KEY }}
+
+      - name: Commit and push if changed
+        run: |
+          git config --global user.name 'GitHub Action'
+          git config --global user.email 'action@github.com'
+          git add packages/
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-build tools" && git push)

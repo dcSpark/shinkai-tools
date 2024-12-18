@@ -24,10 +24,6 @@ jobs:
 
       - name: Run node in background
         id: run_node
-        run: |
-          ./.github/run_node.sh &
-          timeout 60 bash -c 'until curl -s --location "http://127.0.0.1:9550/v2/health_check" | jq -e ".status == \"ok\"" > /dev/null; do sleep 1; done'
-          ./.github/build_tool.sh
         env:
           INITIAL_AGENT_NAMES: ${{ secrets.INITIAL_AGENT_NAMES }}
           INITIAL_AGENT_URLS: ${{ secrets.INITIAL_AGENT_URLS }}
@@ -36,8 +32,15 @@ jobs:
           API_V2_KEY: ${{ secrets.API_V2_KEY }}
           EMBEDDINGS_SERVER_URL: ${{ secrets.EMBEDDINGS_SERVER_URL }}
           SHINKAI_NODE_ADDR: "http://localhost:9550"
-          GITHUB_LOCATION: "https://raw.githubusercontent.com/dcSpark/shinkai-tools/"
-          BEARER_TOKEN: ${{ secrets.API_V2_KEY }}          
+          BEARER_TOKEN: ${{ secrets.API_V2_KEY }}        
+        run: |
+          ./.github/run_node.sh &
+          timeout 60 bash -c 'until curl -s --location "http://127.0.0.1:9550/v2/health_check" | jq -e ".status == \"ok\"" > /dev/null; do sleep 1; done'
+          ./.github/build_tool.sh
+          if jq -e '.[] | select(.description == "")' packages/directory.json > /dev/null; then
+            echo "Error: Empty descriptions found in packages/directory.json"
+            exit 1
+          fi
 
       - name: Commit and push if changed
         if: steps.run_node.outcome == 'success'

@@ -19,14 +19,15 @@ export NO_SECRET_FILE="true"
 export PROXY_IDENTITY="@@relayer_pub_01.arb-sep-shinkai"
 export SHINKAI_TOOLS_RUNNER_DENO_BINARY_PATH="./shinkai-tools-runner-resources/deno"
 export SHINKAI_TOOLS_RUNNER_UV_BINARY_PATH="./shinkai-tools-runner-resources/uv"
+export SHINKAI_VERSION="0.9.3"
 
 # Add these lines to enable all log options
 export LOG_ALL=1
 
 if [[ "$(uname -s)" == "Darwin" && "$(uname -m)" == "arm64" ]]; then
-    curl --location https://github.com/dcSpark/shinkai-node/releases/download/v0.9.2/shinkai-node-aarch64-apple-darwin.zip -o shinkai-node.zip
+    curl --location https://github.com/dcSpark/shinkai-node/releases/download/v$SHINKAI_VERSION/shinkai-node-aarch64-apple-darwin.zip -o shinkai-node.zip
 elif [[ "$(uname -s)" == "Linux" && "$(uname -m)" == "x86_64" ]]; then
-    curl --location https://github.com/dcSpark/shinkai-node/releases/download/v0.9.2/shinkai-node-x86_64-unknown-linux-gnu.zip -o shinkai-node.zip
+    curl --location https://github.com/dcSpark/shinkai-node/releases/download/v$SHINKAI_VERSION/shinkai-node-x86_64-unknown-linux-gnu.zip -o shinkai-node.zip
 else
     echo "Unsupported platform"
     exit 1

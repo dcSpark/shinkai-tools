@@ -1,0 +1,80 @@
+{
+    "name": "Send Email",
+    "description": "Sends an email using SMTP.",
+    "author": "@@my_local_ai.arb-sep-shinkai",
+    "keywords": [
+      "email",
+      "smtp",
+      "send",
+      "notification"
+    ],
+    "configurations": {
+      "type": "object",
+      "properties": {
+        "smtp_server": {
+          "type": "string",
+          "description": "The SMTP server address"
+        },
+        "port": {
+          "type": "integer",
+          "description": "The SMTP server port",
+          "default": 465
+        },
+        "sender_email": {
+          "type": "string",
+          "description": "The sender's email address"
+        },
+        "sender_password": {
+          "type": "string",
+          "description": "The sender's email password"
+        }
+      },
+      "required": [
+        "smtp_server",
+        "sender_email",
+        "sender_password"
+      ]
+    },
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "recipient_email": {
+          "type": "string",
+          "description": "The recipient's email address"
+        },
+        "subject": {
+          "type": "string",
+          "description": "The email subject"
+        },
+        "body": {
+          "type": "string",
+          "description": "The email body"
+        }
+      },
+      "required": [
+        "recipient_email",
+        "subject",
+        "body"
+      ]
+    },
+    "result": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "description": "The status of the email sending operation ('success' or 'failed')"
+        },
+        "message": {
+          "type": "string",
+          "description": "A message indicating the result of the operation"
+        }
+      },
+      "required": [
+        "status",
+        "message"
+      ]
+    },
+    "sqlTables": [],
+    "sqlQueries": [],
+    "tools": []
+  }

@@ -1,7 +1,5 @@
 #!/bin/bash
 
-export GITHUB_LOCATION="https://raw.githubusercontent.com/dcSpark/shinkai-tools/"
-
 # Function to get tool type based on file extension
 get_tool_type() {
     local file=$1
@@ -118,7 +116,7 @@ for tool_dir in tools/*/; do
 
         # Add tool to directory.json
         # Create temporary file with updated content
-        jq --arg tool_name "$tool_name" --arg tool_router_key "$tool_router_key" --arg description "$tool_description" --arg md5_hash "$md5_hash" --arg file "$GITHUB_LOCATION$GITHUB_REF/packages/$tool_name.zip" \
+        jq --arg tool_name "$tool_name" --arg tool_router_key "$tool_router_key" --arg description "$tool_description" --arg md5_hash "$md5_hash" --arg file "$DOWNLOAD_PREFIX/$tool_name.zip" \
             '. += [{name: $tool_name, description: $description, router_key: $tool_router_key, md5: $md5_hash, file: $file}]' packages/directory.json > packages/directory.json.tmp
         # Replace original file with temporary file
         mv packages/directory.json.tmp packages/directory.json

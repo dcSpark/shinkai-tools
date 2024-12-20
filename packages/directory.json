@@ -3,14 +3,21 @@
     "name": "email-imap-fetcher",
     "description": "Fetches emails from an IMAP server and returns their subject, date, sender, and text content.",
     "router_key": "local:::email_fetcher_my_local_aiarb_sep_shinkai:::email_fetcher",
-    "md5": "87a3a5b6112a288934a6ff9239e2e9ea",
+    "md5": "8c980691515bbcb09b06c0ed85f40366",
     "file": "https://raw.githubusercontent.com/dcSpark/shinkai-tools/refs/heads/main/packages/email-imap-fetcher.zip"
+  },
+  {
+    "name": "email-sender",
+    "description": "Sends an email using SMTP.",
+    "router_key": "local:::send_email_my_local_aiarb_sep_shinkai:::send_email",
+    "md5": "9a3c7bd28c33430ebad13c7ca4352860",
+    "file": "https://raw.githubusercontent.com/dcSpark/shinkai-tools/refs/heads/main/packages/email-sender.zip"
   },
   {
     "name": "smart-search",
     "description": "This function takes a question as input and returns a comprehensive answer, along with the sources and statements used to generate the answer.",
     "router_key": "local:::smart_search_engine_shinkai:::smart_search_engine",
-    "md5": "cd8ab355be0156ca4647cf0ac007052e",
+    "md5": "87d0e42c5c19c6f0f6aa282c9895866b",
     "file": "https://raw.githubusercontent.com/dcSpark/shinkai-tools/refs/heads/main/packages/smart-search.zip"
   }
 ]

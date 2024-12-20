@@ -15,6 +15,15 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Install Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          profile: minimal
+
+      - name: Install b3sum
+        run: cargo install b3sum
+
       - name: Install dependencies
         run: |
           sudo apt-get update

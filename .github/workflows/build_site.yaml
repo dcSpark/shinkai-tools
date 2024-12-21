@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build_tools:
+  build_site:
     runs-on: ubuntu-latest
     permissions:
       contents: write

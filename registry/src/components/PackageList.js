@@ -73,7 +73,7 @@ function PackageList({ searchQuery }) {
                           borderRadius: 1,
                         }}
                       >
-                        {pkg.version != 'null' ? pkg.version : '0.0.0' }
+                        {pkg.version !== 'null' ? pkg.version : '0.0.0' }
                       </Typography>
                     </Box>
                     <Typography variant="body1" color="text.secondary" paragraph>

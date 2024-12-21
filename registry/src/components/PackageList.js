@@ -6,11 +6,11 @@ import {
   Grid,
   Box,
   Chip,
-  Alert
+  Alert,
+  Stack
 } from '@mui/material';
 
 function PackageList({ searchQuery }) {
-  // const packageData = [];
   const [packageData, setPackageData] = useState([]);
 
   useEffect(() => {
@@ -52,21 +52,34 @@ function PackageList({ searchQuery }) {
               <CardContent>
                 <Box display="flex" justifyContent="space-between" alignItems="flex-start">
                   <Box>
-                    <Typography 
-                      variant="h5" 
-                      component="h2" 
-                      gutterBottom
-                      sx={{ 
-                        fontWeight: 600,
-                        color: 'rgba(255, 255, 255, 0.9)',
-                      }}
-                    >
-                      {pkg.name}
-                    </Typography>
+                    <Box display="flex" alignItems="center" gap={2} mb={1}>
+                      <Typography 
+                        variant="h5" 
+                        component="h2" 
+                        sx={{ 
+                          fontWeight: 600,
+                          color: 'rgba(255, 255, 255, 0.9)',
+                        }}
+                      >
+                        {pkg.name}
+                      </Typography>
+                      <Typography 
+                        variant="body2"
+                        sx={{
+                          color: 'text.secondary',
+                          backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                          px: 1,
+                          py: 0.5,
+                          borderRadius: 1,
+                        }}
+                      >
+                        v{pkg.version}
+                      </Typography>
+                    </Box>
                     <Typography variant="body1" color="text.secondary" paragraph>
                       {pkg.description}
                     </Typography>
-                    <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+                    <Stack direction="row" spacing={2} alignItems="center">
                       <Typography 
                         variant="caption" 
                         sx={{ 
@@ -78,23 +91,24 @@ function PackageList({ searchQuery }) {
                           borderRadius: 1,
                         }}
                       >
-                        Hash: {pkg.hash.substring(0, 8)}...
+                        Hash: {pkg.hash.substring(0, 16)}...
                       </Typography>
-                      <Typography 
-                        variant="caption" 
-                        sx={{ 
-                          color: 'rgba(255, 255, 255, 0.6)',
-                          fontFamily: 'monospace',
-                        }}
-                      >
-                        {pkg.router_key}
-                      </Typography>
-                    </Box>
+                      {pkg.author && (
+                        <Typography 
+                          variant="caption" 
+                          sx={{ 
+                            color: 'text.secondary',
+                          }}
+                        >
+                          By {pkg.author}
+                        </Typography>
+                      )}
+                    </Stack>
                   </Box>
                   <Chip 
                     label="Install"
                     component="a"
-                    href={pkg.file}
+                    href={`shinkai://tools/install?file=${pkg.file}`}
                     clickable
                     color="primary"
                     sx={{ 

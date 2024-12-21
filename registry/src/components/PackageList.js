@@ -73,7 +73,7 @@ function PackageList({ searchQuery }) {
                           borderRadius: 1,
                         }}
                       >
-                        v{pkg.version}
+                        {pkg.version != 'null' ? pkg.version : '0.0.0' }
                       </Typography>
                     </Box>
                     <Typography variant="body1" color="text.secondary" paragraph>
@@ -98,9 +98,14 @@ function PackageList({ searchQuery }) {
                           variant="caption" 
                           sx={{ 
                             color: 'text.secondary',
+                            display: 'inline-block',
+                            backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                            px: 1,
+                            py: 0.5,
+                            borderRadius: 1,
                           }}
                         >
-                          By {pkg.author}
+                          <b>Author</b>: {pkg.author}
                         </Typography>
                       )}
                     </Stack>

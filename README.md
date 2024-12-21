@@ -4,23 +4,41 @@ A collection of official tools for Shinkai, providing various functionalities fr
 
 ## Overview
 
-This repository hosts a suite of tools designed to work with Shinkai's infrastructure, offering capabilities such as:
-- Smart search and answer generation
-- Example implementations
-- Utility functions
+This repository hosts:
+1. A suite of tools designed to work with Shinkai's infrastructure
+2. A modern web-based package registry interface to browse and install tools
+
+## Package Registry
+
+The package registry provides a user-friendly interface to:
+- Browse available Shinkai tools
+- Search tools by name or description
+- View tool details including version, author, and hash
+- Install tools directly through the Shinkai desktop app
+
+### Features
+- Dark mode interface matching Shinkai's design
+- Real-time search functionality
+- Direct installation via `shinkai://` protocol
+- Responsive design for all devices
 
 ## Available Tools
 
-### 1. Smart Search
-An advanced search and answer generation tool that:
-- Performs intelligent query optimization
-- Retrieves information from authoritative sources
-- Extracts relevant facts
-- Generates comprehensive, well-cited answers
+Currently available tools include:
 
-### 2. Hello World Examples
-- **TypeScript Version**: Basic example returning "Hello world"
-- **Python Version**: Simple asynchronous implementation of a greeting function
+### 1. Email IMAP Fetcher
+- Fetches emails from an IMAP server
+- Returns subject, date, sender, and text content
+- Secure email handling
+
+### 2. Email Sender
+- Sends emails using SMTP
+- Simple and reliable email dispatch
+
+### 3. Smart Search
+- Performs intelligent query optimization
+- Returns comprehensive answers with sources
+- Advanced search capabilities
 
 ## Project Structure
 ```

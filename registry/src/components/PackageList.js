@@ -11,8 +11,7 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
-  DialogActions,
-  Button
+  DialogActions
 } from '@mui/material';
 
 function PackageList({ searchQuery }) {

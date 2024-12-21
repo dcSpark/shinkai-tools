@@ -82,6 +82,7 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}      
         run: |
           cd registry
+          npm ci
           npm run build
           aws s3 sync ./build/ s3://${R2_BUCKET}/ \
             --endpoint-url https://${CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com \

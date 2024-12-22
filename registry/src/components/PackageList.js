@@ -17,16 +17,21 @@ import {
 
 function PackageList({ searchQuery }) {
   const [packageData, setPackageData] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   useEffect(() => {
     fetch('https://packages.shinkai.com/tools/directory.json')
       .then(response => response.json())
-      .then(data => setPackageData(data))
+      .then(data => {
+        setPackageData(data);
+        setLoading(false);
+      })
       .catch(error => {
         console.error('Error fetching package data:', error);
         setPackageData([]);
+        setLoading(false);
       });
   }, []);
 
@@ -88,7 +93,11 @@ function PackageList({ searchQuery }) {
     <>
       <Container maxWidth="lg">
         <Stack spacing={3}>
-          {filteredPackages.length === 0 ? (
+          {loading ? (
+            <Typography variant="h6" color="text.secondary">
+              Loading packages...
+            </Typography>
+          ) : filteredPackages.length === 0 ? (
             <Alert 
               severity="info"
               sx={{

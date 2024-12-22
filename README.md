@@ -1,5 +1,7 @@
 # Shinkai Tools 🛠️
 
+[![Deployed Site](https://img.shields.io/badge/Deployed-Site-brightgreen)](https://packages.shinkai.com)
+
 A collection of official tools for Shinkai, providing various functionalities from basic examples to advanced search capabilities.
 
 ## Overview

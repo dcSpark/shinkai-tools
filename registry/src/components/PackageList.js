@@ -8,6 +8,7 @@ import {
   Box,
   Chip,
   Alert,
+  Snackbar,
   Dialog,
   DialogTitle,
   DialogContent,
@@ -17,6 +18,7 @@ import {
 function PackageList({ searchQuery }) {
   const [packageData, setPackageData] = useState([]);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   useEffect(() => {
     fetch('https://packages.shinkai.com/tools/directory.json')
@@ -62,6 +64,21 @@ function PackageList({ searchQuery }) {
     setDialogOpen(false);
   };
 
+  const handleCopyLink = (fileUrl) => {
+    navigator.clipboard.writeText(fileUrl)
+      .then(() => {
+        console.log('Link copied to clipboard');
+        setSnackbarOpen(true);
+      })
+      .catch(err => {
+        console.error('Failed to copy link: ', err);
+      });
+  };
+
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
+  };
+
   const filteredPackages = packageData.filter(pkg => 
     pkg.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     pkg.description.toLowerCase().includes(searchQuery.toLowerCase())
@@ -86,7 +103,7 @@ function PackageList({ searchQuery }) {
             </Alert>
           ) : (
             filteredPackages.map((pkg) => (
-              <Card>
+              <Card key={pkg.name}>
                 <CardContent>
                   <Box display="flex" justifyContent="space-between" alignItems="flex-start">
                     <Box>
@@ -148,19 +165,35 @@ function PackageList({ searchQuery }) {
                         )}
                       </Stack>
                     </Box>
-                    <Chip 
-                      label="Install"
-                      onClick={(e) => handleInstallClick(e, pkg.file)}
-                      clickable
-                      color="primary"
-                      sx={{ 
-                        mt: 1,
-                        fontWeight: 500,
-                        '&:hover': {
-                          backgroundColor: 'primary.dark',
-                        },
-                      }}
-                    />
+                    <Stack direction="row" spacing={1}>
+                      <Chip 
+                        label="Install"
+                        onClick={(e) => handleInstallClick(e, pkg.file)}
+                        clickable
+                        color="primary"
+                        sx={{ 
+                          mt: 1,
+                          fontWeight: 500,
+                          '&:hover': {
+                            backgroundColor: 'primary.dark',
+                          },
+                        }}
+                      />
+                      <Chip 
+                        label="Copy Link"
+                        onClick={() => handleCopyLink(pkg.file)}
+                        clickable
+                        sx={{ 
+                          mt: 1,
+                          fontWeight: 500,
+                          backgroundColor: 'rgb(45, 44, 50)',
+                          borderBottom: '2px solid rgb(61, 63, 67)',
+                          '&:hover': {
+                            backgroundColor: 'rgb(61, 63, 67)',
+                          },
+                        }}
+                      />
+                    </Stack>
                   </Box>
                 </CardContent>
               </Card>
@@ -168,6 +201,21 @@ function PackageList({ searchQuery }) {
           )}
         </Stack>
       </Container>
+
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={3000}
+        onClose={handleSnackbarClose}
+        message="Link copied to clipboard"
+        action={
+          <Chip 
+            label="Close"
+            onClick={handleSnackbarClose}
+            color="inherit"
+            sx={{ fontWeight: 500 }}
+          />
+        }
+      />
 
       <Dialog 
         open={dialogOpen} 

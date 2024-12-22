@@ -1,0 +1,30 @@
+{
+    "name": "Hello World 2",
+    "description": "A function that takes a number as input and returns that number plus one.",
+    "author": "Devin",
+    "parameters": {
+        "type": "object",
+        "properties": {
+            "number": {
+                "type": "number",
+                "description": "The input number to be incremented"
+            }
+        },
+        "required": ["number"]
+    },
+    "result": {
+        "type": "object",
+        "properties": {
+            "result": {
+                "type": "number",
+                "description": "The input number plus one"
+            }
+        },
+        "required": ["result"]
+    },
+    "configurations": [],
+    "oauth": null,
+    "sqlQueries": [],
+    "sqlTables": [],
+    "tools": null
+}

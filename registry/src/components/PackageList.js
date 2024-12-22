@@ -22,7 +22,7 @@ function PackageList({ searchQuery }) {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   useEffect(() => {
-    fetch('https://packages.shinkai.com/tools/directory.json')
+    fetch('https://download.shinkai.com/tools/directory.json')
       .then(response => response.json())
       .then(data => {
         setPackageData(data);

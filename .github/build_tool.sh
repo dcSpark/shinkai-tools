@@ -107,6 +107,7 @@ for tool_dir in tools/*/; do
         tool_description=$(echo "$uploaded_tool" | jq -r '.metadata.metadata.description')
         author=$(echo "$uploaded_tool" | jq -r '.metadata.metadata.author')
         version=$(echo "$uploaded_tool" | jq -r '.metadata.metadata.version')
+        keywords=$(echo "$uploaded_tool" | jq -r '.metadata.metadata.keywords')
 
         # Request zip file from the node.
         curl -s --location "${SHINKAI_NODE_ADDR}/v2/export_tool?tool_key_path=${tool_router_key}" \
@@ -118,8 +119,8 @@ for tool_dir in tools/*/; do
 
         # Add tool to directory.json
         # Create temporary file with updated content
-        jq --arg tool_name "$tool_name" --arg author "$author" --arg version "$version" --arg tool_router_key "$tool_router_key" --arg description "$tool_description" --arg blake3_hash "$blake3_hash" --arg file "$DOWNLOAD_PREFIX/$tool_name.zip" \
-            '. += [{name: $tool_name, author: $author, version: $version, description: $description, router_key: $tool_router_key, hash: $blake3_hash, file: $file}]' packages/directory.json > packages/directory.json.tmp
+        jq --arg tool_name "$tool_name" --arg author "$author" --arg keywords "$keywords" --arg tool_type "$tool_type" --arg version "$version" --arg tool_router_key "$tool_router_key" --arg description "$tool_description" --arg blake3_hash "$blake3_hash" --arg file "$DOWNLOAD_PREFIX/$tool_name.zip" \
+            '. += [{name: $tool_name, author: $author, keywords: $keywords, tool_type: $tool_type, version: $version, description: $description, router_key: $tool_router_key, hash: $blake3_hash, file: $file}]' packages/directory.json > packages/directory.json.tmp
         # Replace original file with temporary file
         mv packages/directory.json.tmp packages/directory.json
     fi

@@ -24,7 +24,7 @@ function Header({ searchQuery, onSearchChange }) {
               color: 'white',
             }}
           >
-            Package Registry
+            AI Store
           </Typography>
         </Box>
         <Box sx={{ width: { xs: '100%', sm: '300px' } }}>

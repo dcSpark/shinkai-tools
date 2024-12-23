@@ -84,10 +84,17 @@ function PackageList({ searchQuery }) {
     setSnackbarOpen(false);
   };
 
-  const filteredPackages = packageData.filter(pkg => 
-    pkg.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    pkg.description.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredPackages = packageData.filter(pkg => {
+    const searchLower = searchQuery.toLowerCase();
+    const nameMatch = pkg.name.toLowerCase().includes(searchLower);
+    const descMatch = pkg.description.toLowerCase().includes(searchLower);
+    const keywordMatch = pkg.keywords ? 
+      JSON.parse(pkg.keywords).some(keyword => 
+        keyword.toLowerCase().trim().includes(searchLower)
+      ) : false;
+    
+    return nameMatch || descMatch || keywordMatch;
+  });
 
   return (
     <>
@@ -143,6 +150,22 @@ function PackageList({ searchQuery }) {
                       <Typography variant="body1" color="text.secondary" paragraph>
                         {pkg.description}
                       </Typography>
+                      {pkg.keywords && (
+                        <Stack direction="row" spacing={1} sx={{ mb: 2 }}>
+                          {JSON.parse(pkg.keywords).map((keyword, index) => (
+                            <Chip
+                              key={index}
+                              label={keyword.trim()}
+                              size="small"
+                              sx={{
+                                backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                                color: 'text.secondary',
+                                fontSize: '0.75rem'
+                              }}
+                            />
+                          ))}
+                        </Stack>
+                      )}
                       <Stack direction="row" spacing={2} alignItems="center">
                         <Typography 
                           variant="caption" 
@@ -172,6 +195,21 @@ function PackageList({ searchQuery }) {
                             <b>Author</b>: {pkg.author}
                           </Typography>
                         )}
+                        {pkg.tool_type && (
+                          <Typography 
+                            variant="caption" 
+                            sx={{ 
+                              color: 'text.secondary',
+                              display: 'inline-block',
+                              backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                              px: 1,
+                              py: 0.5,
+                              borderRadius: 1,
+                            }}
+                          >
+                            <b>Type</b>: {pkg.tool_type}
+                          </Typography>
+                        )}                        
                       </Stack>
                     </Box>
                     <Stack direction="row" spacing={1}>

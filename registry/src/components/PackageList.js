@@ -180,21 +180,6 @@ function PackageList({ searchQuery }) {
                         >
                           Hash: {pkg.hash.substring(0, 16)}...
                         </Typography>
-                        {pkg.author && (
-                          <Typography 
-                            variant="caption" 
-                            sx={{ 
-                              color: 'text.secondary',
-                              display: 'inline-block',
-                              backgroundColor: 'rgba(255, 255, 255, 0.05)',
-                              px: 1,
-                              py: 0.5,
-                              borderRadius: 1,
-                            }}
-                          >
-                            <b>Author</b>: {pkg.author}
-                          </Typography>
-                        )}
                         {pkg.tool_type && (
                           <Typography 
                             variant="caption" 
@@ -209,7 +194,22 @@ function PackageList({ searchQuery }) {
                           >
                             <b>Type</b>: {pkg.tool_type}
                           </Typography>
-                        )}                        
+                        )}                          
+                        {pkg.author && (
+                          <Typography 
+                            variant="caption" 
+                            sx={{ 
+                              color: 'text.secondary',
+                              display: 'inline-block',
+                              backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                              px: 1,
+                              py: 0.5,
+                              borderRadius: 1,
+                            }}
+                          >
+                            <b>Author</b>: <a href={`https://shinkai-contracts.pages.dev/identity/${pkg.author.replace(/^@@/, '')}`} target="_blank" rel="noopener noreferrer">{pkg.author}</a>
+                          </Typography>
+                        )}                      
                       </Stack>
                     </Box>
                     <Stack direction="row" spacing={1}>

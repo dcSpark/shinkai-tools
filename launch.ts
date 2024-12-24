@@ -196,6 +196,7 @@ async function main() {
 
     const result = await executeCode(toolName, parameters, configurations, metadata.tools || []);
     clearInterval(t);
+    await new Promise(resolve => setTimeout(resolve, 100));
     console.log("\n--------------------------------");
     console.log("Execution result:");
     console.log(JSON.stringify(result, null, 2));

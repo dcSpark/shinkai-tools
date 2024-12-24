@@ -6,14 +6,18 @@ const SHINKAI_API_URL = Deno.env.get("SHINKAI_API_URL") || "http://localhost:995
 const BEARER_TOKEN = Deno.env.get("BEARER_TOKEN") || "debug";
 const TOOL_ID = Deno.env.get("TOOL_ID") || "no-name";
 const APP_ID = Deno.env.get("APP_ID") || "no-app";
-
 /** 
 This script runs tools in a Shinkai Environment
 Usage: 
-deno run --allow-all launch.ts <tool-name> --input=<JSON> --config=<JSON>
+deno run --allow-all launch.ts <tool-name> [--input=<JSON>] [--config=<JSON>] [--create-file=<file-name>] [--create-file-content=<text>] [--mount=<file-name>]    
 
-* --input and --config are optional, if provided, they must be a JSON string with key-value pairs.
-*  Required parameters and configurations will be prompted for if not provided.
+* <tool-name> - The name of the tool to run, must match the folder name in the ./tools/ directory.
+* --input=<JSON> and --config=<JSON> (optional) - if provided with key-value pairs.
+* --create-file=<file-name> (optional) - Creates a file in the Shinkai App.
+* --create-file-content=<text> (optional) - Adds initial content to the file created.
+* --mount=<file-name> (optional) - Adds a file to the mounts array. Can be specified multiple times.
+
+NOTE Required parameters and configurations will be prompted for if not provided.
 
 **************************************************
 Example for doing an Smart Search:
@@ -24,8 +28,31 @@ deno --allow-all launch.ts smart-search --config='{"maxSources": 1}'
 Example for sending an email:
 
 deno --allow-all launch.ts email-sender \
-    --input='{"recipient_email":"you@some-email.com", "subject":"test email", "body":"hi! this is a test email."}' \
-    --config='{ "smtp_server": "server.some-email.com", "sender_email": "me@some-email.com", "sender_password": "password" }'    
+     --input='{"recipient_email":"you@some-email.com", "subject":"test email", "body":"hi! this is a test email."}' \
+     --config='{ "smtp_server": "server.some-email.com", "sender_email": "me@some-email.com", "sender_password": "password" }'    
+
+**************************************************
+Example for creating areading a file:
+
+deno --allow-all launch.ts read-file \
+     --input='{"path":"/home/user/test.txt"}' \
+     --create-file="/home/user/test.txt" \
+     --create-file-content="This is a test file."
+
+
+**************************************************
+Example for writing to a file:
+
+deno --allow-all launch.ts file-write \ 
+     --input='{"path":"/home/user/test.txt, "content":"Hi!" }' \
+     --mount=/home/user/test.txt 
+
+**************************************************
+Example for updating a file with a prompt:  
+
+deno --allow-all launch.ts file-update \
+     --input='{"path":"/home/user/test.txt", "prompt":"write a cat poem"}' \
+     --mount=/home/user/test.txt
 
 */
 
@@ -85,7 +112,7 @@ async function readToolCode(toolName: string): Promise<{ code: string; toolType:
   }
 }
 
-async function executeCode(toolName: string, parameters: Record<string, any>, configurations: Record<string, any>, tools: string[]) {
+async function executeCode(toolName: string, parameters: Record<string, any>, configurations: Record<string, any>, tools: string[], mounts: string[]) {
   const { code, toolType } = await readToolCode(toolName);
   
   const response = await fetch(`${SHINKAI_API_URL}/v2/code_execution`, {
@@ -103,7 +130,8 @@ async function executeCode(toolName: string, parameters: Record<string, any>, co
       llm_provider: LLM_PROVIDER,
       tools,
       parameters,
-      extra_config: configurations
+      extra_config: configurations,
+      mounts,
     })
   });
 
@@ -123,20 +151,47 @@ function parseJsonArg(arg: string | undefined): Record<string, any> {
   }
 }
 
+// TODO: 
+//
+// This is a temporary function to create a file in the Shinkai App.
+// This should be replaced with a proper file creation API call.
+// This cannot be done yet, as we don't have access to the absolute path of the file created.
+//
+async function createFile(fileName: string, content?: string) {
+//   const formData = new FormData();
+//   formData.append("file_name", fileName);
+//   if (content) {
+//     const blob = new Blob([content], { type: 'text/plain' });
+//     formData.append("file", blob, fileName);
+//   }
+//   Post to the API to create the file. 
+//   POST /v2/app_files
+  await Deno.writeTextFile(fileName, content || "");
+}
+
 async function main() {
   const args = parseArgs(Deno.args, {
-    string: ["config", "input"],
+    string: ["config", "input", "create-file", "create-file-content", "mount"],
     default: { config: "{}", input: "{}" },
+    collect: ["mount"], // Allows multiple --mount flags
   });
 
   const toolName = args._[0] as string;
 
   if (!toolName) {
-    console.error("Usage: deno run --allow-all launch.ts <tool-name> --config=<JSON> --input=<JSON>");
+    console.error("Usage: deno run --allow-all launch.ts <tool-name> [--config=<JSON>] [--input=<JSON>] [--create-file=<file-name>] [--create-file-content=<text>] [--mount=<file-name>]");
     Deno.exit(1);
   }
 
   try {
+    // Create file if flag is set
+    if (args["create-file"]) {
+      console.log("Creating file:", args["create-file"]);
+      await createFile(args["create-file"], args["create-file-content"]);
+      console.log("File created successfully");
+      console.log("--------------------------------");
+    }
+
     const metadata = await readToolMetadata(toolName);
     const providedConfig = parseJsonArg(args.config);
     const providedInput = parseJsonArg(args.input);
@@ -194,7 +249,25 @@ async function main() {
         printProgress(Date.now() - startTime);
     }, 100);
 
-    const result = await executeCode(toolName, parameters, configurations, metadata.tools || []);
+    const mounts: string[] = [];
+    
+    // Add created file to mounts if it exists
+    if (args["create-file"]) {
+      mounts.push(await Deno.realPath(args["create-file"]));
+    }
+    
+    // Add any additional mounted files
+    if (Array.isArray(args.mount)) {
+      for (const mountPath of args.mount) {
+        try {
+          mounts.push(await Deno.realPath(mountPath));
+        } catch (error) {
+          console.warn(`Warning: Could not resolve mount path ${mountPath}: ${error.message}`);
+        }
+      }
+    }
+
+    const result = await executeCode(toolName, parameters, configurations, metadata.tools || [], mounts);
     clearInterval(t);
     await new Promise(resolve => setTimeout(resolve, 100));
     console.log("\n--------------------------------");

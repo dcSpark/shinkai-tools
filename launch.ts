@@ -34,7 +34,10 @@ interface ToolMetadata {
   description: string;
   parameters: {
     type: string;
-    properties: Record<string, any>;
+    properties: {
+        type: string,
+        description: string,
+    }
     required: string[];
   };
   configurations: {
@@ -44,7 +47,14 @@ interface ToolMetadata {
         key_value: string | null,
         required: boolean
     }
-  }[];
+  }[] | {
+    type: string,
+    properties: {
+        type: string,
+        description: string,
+    }
+    required: string[]
+  },
   tools: string[];
 }
 
@@ -132,7 +142,10 @@ async function main() {
     const providedInput = parseJsonArg(args.input);
     // Extract metadata information
     const allParams = Object.keys(metadata.parameters.properties) || [];
-    const allConfigs = metadata.configurations.map((config) => config.BasicConfig.key_name) || [];
+    const allConfigs = Array.isArray(metadata.configurations) ? 
+        metadata.configurations.map((config) => config.BasicConfig.key_name) : 
+        Object.keys(metadata.configurations.properties);
+
     console.log("Available parameters:", allParams.join(", "));
     console.log("Available configurations:", allConfigs.join(", "));
     console.log("--------------------------------");
@@ -150,7 +163,10 @@ async function main() {
     }
 
     // Prompt only for missing required configurations
-    const requiredConfigs = metadata.configurations.filter((config) => config.BasicConfig.required).map((config) => config.BasicConfig.key_name);
+    const requiredConfigs = Array.isArray(metadata.configurations) ? 
+        metadata.configurations.filter((config) => config.BasicConfig.required).map((config) => config.BasicConfig.key_name) : 
+        metadata.configurations.required;
+
     for (const config of requiredConfigs) {
       if (!(config in configurations)) {
             const value = prompt(`Enter value for configuration "${config}":`);
@@ -160,11 +176,29 @@ async function main() {
       }
     }
 
+    function printProgress(progress){
+        process.stdout.clearLine(0);
+        process.stdout.cursorTo(0);
+        process.stdout.write(`Execution time: ${progress}ms`);
+    }
+
     console.log("Using parameters:", parameters);
     console.log("Using configurations:", configurations);
 
+
+    console.log("--------------------------------");
+    console.log("Executing tool:", toolName);
+    const startTime = Date.now();
+    process.stdout.write(`Execution time: 0ms`);
+    let t = setInterval(() => {
+        printProgress(Date.now() - startTime);
+    }, 100);
+
     const result = await executeCode(toolName, parameters, configurations, metadata.tools || []);
-    console.log("Execution result:", result);
+    clearInterval(t);
+    console.log("\n--------------------------------");
+    console.log("Execution result:");
+    console.log(JSON.stringify(result, null, 2));
   } catch (error) {
     console.error("Error:", error.message);
     Deno.exit(1);

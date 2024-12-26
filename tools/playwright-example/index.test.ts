@@ -1,5 +1,5 @@
 import { expect } from 'jsr:@std/expect/expect';
-import { run } from './index.ts';
+import { run } from './tool.ts';
 import process from 'node:process';
 
 Deno.test({
@@ -15,7 +15,7 @@ Deno.test({
   fn: async () => {
     const result = await run(
       {
-        chromePath: process.env?.CHROME_PATH,
+        chromePath: Deno.env.get('CHROME_PATH'),
       },
       { url: 'https://shinkai.com' },
     );

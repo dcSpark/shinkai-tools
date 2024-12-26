@@ -1,5 +1,5 @@
 import { expect } from 'jsr:@std/expect/expect';
-import { run } from './index.ts';
+import { run } from './tool.ts';
 
 Deno.test('searches DuckDuckGo and gets a response', async () => {
   const result = await run({}, { message: 'best movie of all time' });

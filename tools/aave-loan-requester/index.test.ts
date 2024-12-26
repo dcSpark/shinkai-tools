@@ -1,4 +1,3 @@
-import process from 'node:process';
 import { run } from './tool.ts';
 import { expect } from 'jsr:@std/expect';
 

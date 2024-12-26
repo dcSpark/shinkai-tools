@@ -1,0 +1,47 @@
+{
+    "id": "shinkai-tool-coinbase-call-faucet",
+    "version": "1.0.0",
+    "name": "Shinkai: Coinbase Faucet Caller",
+    "description": "Tool for calling a faucet on Coinbase",
+    "author": "Shinkai",
+    "keywords": [
+      "coinbase",
+      "faucet",
+      "shinkai"
+    ],
+    "configurations": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "privateKey": {
+          "type": "string"
+        },
+        "walletId": {
+          "type": "string",
+          "nullable": true
+        }
+      },
+      "required": [
+        "name",
+        "privateKey"
+      ]
+    },
+    "parameters": {
+      "type": "object",
+      "properties": {},
+      "required": []
+    },
+    "result": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "data"
+      ]
+    }
+  }

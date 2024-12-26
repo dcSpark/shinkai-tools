@@ -1,0 +1,43 @@
+{
+    "id": "shinkai-tool-token-price",
+    "name": "Shinkai: Token Price using Chainlink (Limited)",
+    "description": "Fetches the price of a coin or token using Chainlink. It doesn't have many tokens.",
+    "author": "Shinkai",
+    "keywords": [
+      "chainlink",
+      "price",
+      "symbol",
+      "shinkai"
+    ],
+    "configurations": {
+      "type": "object",
+      "properties": {},
+      "required": []
+    },
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "symbol": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "symbol"
+      ]
+    },
+    "result": {
+      "type": "object",
+      "properties": {
+        "symbol": {
+          "type": "string"
+        },
+        "price": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "symbol",
+        "price"
+      ]
+    }
+  }

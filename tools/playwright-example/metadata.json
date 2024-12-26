@@ -1,0 +1,42 @@
+{
+    "id": "shinkai-tool-playwright-example",
+    "name": "Shinkai: playwright-example",
+    "description": "New playwright-example tool from template",
+    "author": "Shinkai",
+    "keywords": [
+      "playwright-example",
+      "shinkai"
+    ],
+    "configurations": {
+      "type": "object",
+      "properties": {
+        "chromePath": {
+          "type": "string",
+          "nullable": true
+        }
+      },
+      "required": []
+    },
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "url"
+      ]
+    },
+    "result": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "title"
+      ]
+    }
+  }

@@ -1,0 +1,57 @@
+{
+    "id": "shinkai-tool-defillama-tvl-rankings",
+    "version": "1.0.0",
+    "name": "Shinkai: defillama-tvl-rankings",
+    "description": "Fetches data on DeFi protocols by category (e.g., 'Liquid Staking', 'Lending', 'Bridge', 'Dexes', 'Restaking', 'Liquid Restaking', 'CDP', 'RWA', 'Yield', 'Derivatives', 'Farm', 'Yield Aggregator') and optionally filters by blockchain (e.g., 'Ethereum', 'Solana', 'Arbitrum', 'Base', 'Cardano', 'Near', 'BSC', 'Sui'). Returns protocol details including rank, name, TVL, TVL percentage changes, market cap to TVL ratio, and fees/revenue for the past 24 hours, 7 days, and 30 days.",
+    "author": "Shinkai",
+    "keywords": [
+      "defillama-tvl-rankings",
+      "shinkai"
+    ],
+    "configurations": {
+      "type": "object",
+      "properties": {
+        "chromePath": {
+          "type": "string",
+          "nullable": true
+        }
+      },
+      "required": []
+    },
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "top10": {
+          "type": "boolean",
+          "nullable": true
+        },
+        "categoryName": {
+          "type": "string"
+        },
+        "networkName": {
+          "type": "string",
+          "nullable": true
+        }
+      },
+      "required": []
+    },
+    "result": {
+      "type": "object",
+      "properties": {
+        "tableCsv": {
+          "type": "string"
+        },
+        "rowsCount": {
+          "type": "number"
+        },
+        "columnsCount": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "tableCsv",
+        "rowsCount",
+        "columnsCount"
+      ]
+    }
+  }

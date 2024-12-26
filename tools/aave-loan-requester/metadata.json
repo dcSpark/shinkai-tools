@@ -1,0 +1,30 @@
+{
+  "id": "shinkai-tool-aave-loan-requester",
+  "version": "1.0.0",
+  "name": "Shinkai: Aave Loan Requester",
+  "description": "Tool for requesting a loan on Aave, including selecting assets to supply and borrow with their APYs",
+  "author": "Shinkai",
+  "keywords": ["aave", "market", "extractor", "shinkai"],
+  "configurations": {
+    "type": "object",
+    "properties": {
+      "chromePath": { "type": "string", "nullable": true }
+    },
+    "required": []
+  },
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "inputValue": { "type": "string" },
+      "assetSymbol": { "type": "string" }
+    },
+    "required": ["inputValue", "assetSymbol"]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "amountProcessed": { "type": "string" }
+    },
+    "required": ["amountProcessed"]
+  }
+}

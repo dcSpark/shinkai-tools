@@ -1,0 +1,73 @@
+{
+    "id": "shinkai-tool-get-loan-state",
+    "version": "1.0.0",
+    "name": "Shinkai: Current Aave Loan State",
+    "description": "Tool for requesting a loan on Aave, including selecting assets to supply and borrow with their APYs",
+    "author": "Shinkai",
+    "keywords": [
+      "aave",
+      "market",
+      "extractor",
+      "shinkai"
+    ],
+    "configurations": {
+      "type": "object",
+      "properties": {
+        "chromePath": {
+          "type": "string",
+          "nullable": true
+        }
+      },
+      "required": []
+    },
+    "parameters": {
+      "type": "object",
+      "properties": {},
+      "required": []
+    },
+    "result": {
+      "type": "object",
+      "properties": {
+        "assetsToSupply": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "asset": {
+                "type": "string"
+              },
+              "apy": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "asset",
+              "apy"
+            ]
+          }
+        },
+        "assetsToBorrow": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "asset": {
+                "type": "string"
+              },
+              "apy": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "asset",
+              "apy"
+            ]
+          }
+        }
+      },
+      "required": [
+        "assetsToSupply",
+        "assetsToBorrow"
+      ]
+    }
+  }

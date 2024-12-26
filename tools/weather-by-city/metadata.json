@@ -1,0 +1,40 @@
+{
+    "id": "shinkai-tool-weather-by-city",
+    "name": "Shinkai: Weather By City",
+    "description": "Get weather information for a city name",
+    "configurations": {
+      "type": "object",
+      "properties": {
+        "apiKey": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "apiKey"
+      ]
+    },
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "city": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "city"
+      ]
+    },
+    "result": {
+      "type": "object",
+      "properties": {
+        "weather": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "weather"
+      ]
+    },
+    "author": "",
+    "keywords": []
+  }

@@ -1,0 +1,38 @@
+{
+    "id": "shinkai-tool-echo",
+    "version": "1.0.0",
+    "name": "Shinkai: Echo",
+    "description": "Echoes the input message",
+    "author": "Shinkai",
+    "keywords": [
+      "echo",
+      "shinkai"
+    ],
+    "configurations": {
+      "type": "object",
+      "properties": {},
+      "required": []
+    },
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "message"
+      ]
+    },
+    "result": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "message"
+      ]
+    }
+  }

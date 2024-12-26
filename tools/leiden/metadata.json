@@ -1,0 +1,111 @@
+{
+    "id": "shinkai-tool-leiden",
+    "name": "Shinkai: Leiden Algorithm",
+    "description": "Runs the Leiden algorithm on the input edges",
+    "author": "Shinkai",
+    "keywords": [
+      "leiden",
+      "clustering",
+      "network analysis"
+    ],
+    "configurations": {
+      "type": "object",
+      "properties": {},
+      "required": []
+    },
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "edges": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              }
+            ],
+            "minItems": 3,
+            "maxItems": 3
+          }
+        },
+        "resolution": {
+          "type": "number",
+          "nullable": true
+        },
+        "nIterations": {
+          "type": "number",
+          "nullable": true
+        },
+        "nRandomStarts": {
+          "type": "number",
+          "nullable": true
+        },
+        "convergenceThreshold": {
+          "type": "number",
+          "nullable": true
+        }
+      },
+      "required": [
+        "edges"
+      ]
+    },
+    "result": {
+      "type": "object",
+      "properties": {
+        "bestClustering": {
+          "type": "object",
+          "properties": {
+            "nNodes": {
+              "type": "number"
+            },
+            "clusters": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              }
+            },
+            "nClusters": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "nNodes",
+            "clusters",
+            "nClusters"
+          ]
+        },
+        "bestLayout": {
+          "type": "object",
+          "properties": {
+            "nNodes": {
+              "type": "number"
+            },
+            "coordinates": {
+              "type": "array",
+              "items": {
+                "type": "array",
+                "items": {
+                  "type": "number"
+                }
+              }
+            }
+          },
+          "required": [
+            "nNodes",
+            "coordinates"
+          ]
+        }
+      },
+      "required": [
+        "bestClustering",
+        "bestLayout"
+      ]
+    }
+  }

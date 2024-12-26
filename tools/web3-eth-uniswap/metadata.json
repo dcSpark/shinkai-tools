@@ -1,0 +1,39 @@
+{
+    "id": "shinkai-tool-web3-eth-uniswap",
+    "name": "Shinkai: Web3 ETH Uniswap",
+    "description": "Fetches the balance of an Ethereum address in ETH using Uniswap.",
+    "author": "Shinkai",
+    "keywords": [
+      "ethereum",
+      "balance",
+      "web3",
+      "shinkai"
+    ],
+    "configurations": {
+      "type": "object",
+      "properties": {},
+      "required": []
+    },
+    "parameters": {
+      "type": "object",
+      "required": [
+        "address"
+      ],
+      "properties": {
+        "address": {
+          "type": "string"
+        }
+      }
+    },
+    "result": {
+      "type": "object",
+      "properties": {
+        "balance": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "balance"
+      ]
+    }
+  }

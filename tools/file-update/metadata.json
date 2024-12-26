@@ -1,5 +1,6 @@
 {
     "name": "Update File with Prompt",
+    "version": "1.0.0",
     "description": "Applies a prompt to the file contents.",
     "author": "@@shinkai.arb-sep-shinkai",
     "keywords": [

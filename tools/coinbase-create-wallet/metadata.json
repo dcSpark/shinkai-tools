@@ -1,0 +1,56 @@
+{
+    "id": "shinkai-tool-coinbase-create-wallet",
+    "version": "1.0.0",
+    "name": "Shinkai: Coinbase Wallet Creator",
+    "description": "Tool for creating a Coinbase wallet",
+    "author": "Shinkai",
+    "keywords": [
+      "coinbase",
+      "wallet",
+      "creator",
+      "shinkai"
+    ],
+    "configurations": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "privateKey": {
+          "type": "string"
+        },
+        "useServerSigner": {
+          "type": "string",
+          "default": "false",
+          "nullable": true
+        }
+      },
+      "required": [
+        "name",
+        "privateKey"
+      ]
+    },
+    "parameters": {
+      "type": "object",
+      "properties": {},
+      "required": []
+    },
+    "result": {
+      "type": "object",
+      "properties": {
+        "walletId": {
+          "type": "string",
+          "nullable": true
+        },
+        "seed": {
+          "type": "string",
+          "nullable": true
+        },
+        "address": {
+          "type": "string",
+          "nullable": true
+        }
+      },
+      "required": []
+    }
+  }

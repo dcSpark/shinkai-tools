@@ -1,0 +1,39 @@
+{
+    "id": "shinkai-tool-web3-eth-balance",
+    "name": "Shinkai: Web3 ETH Balance",
+    "description": "Fetches the balance of an Ethereum address in ETH.",
+    "author": "Shinkai",
+    "keywords": [
+      "ethereum",
+      "balance",
+      "web3",
+      "shinkai"
+    ],
+    "configurations": {
+      "type": "object",
+      "properties": {},
+      "required": []
+    },
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "address": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "address"
+      ]
+    },
+    "result": {
+      "type": "object",
+      "properties": {
+        "balance": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "balance"
+      ]
+    }
+  }

@@ -1,0 +1,75 @@
+{
+    "id": "shinkai-tool-ethplorer-tokens",
+    "version": "1.0.0",
+    "name": "Token Balance for EVM Ethereum Address - based on ETHPLORER",
+    "description": "Fetches the balance for an Ethereum EVM address like 0x123... and returns detailed token information. Example output: { \"address\": \"0x123...\", \"ETH\": { \"balance\": 1.23, \"rawBalance\": \"12300000000000000000\" }, \"tokens\": [ { \"balance\": 100, \"rawBalance\": \"100000000000000000000\", \"tokenInfo\": { \"name\": \"TokenName\", \"symbol\": \"TKN\", \"decimals\": \"18\" } } ] }",
+    "author": "Shinkai",
+    "keywords": [
+      "ethplorer",
+      "address",
+      "tokens",
+      "shinkai"
+    ],
+    "configurations": {
+      "type": "object",
+      "properties": {},
+      "required": []
+    },
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "address": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "address"
+      ]
+    },
+    "result": {
+      "type": "object",
+      "properties": {
+        "address": {
+          "type": "string"
+        },
+        "ETH": {
+          "type": "object",
+          "nullable": true,
+          "properties": {
+            "balance": {
+              "type": "number"
+            },
+            "rawBalance": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "balance",
+            "rawBalance"
+          ]
+        },
+        "tokens": {
+          "type": "array",
+          "nullable": true,
+          "items": {
+            "type": "object",
+            "properties": {
+              "balance": {
+                "type": "number"
+              },
+              "rawBalance": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "balance",
+              "rawBalance"
+            ]
+          }
+        }
+      },
+      "required": [
+        "address"
+      ]
+    }
+  }

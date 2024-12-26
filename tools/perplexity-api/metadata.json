@@ -1,0 +1,44 @@
+{
+    "id": "shinkai-tool-perplexity-api",
+    "name": "Shinkai: Perplexity API",
+    "description": "Searches the web using Perplexity API (limited)",
+    "author": "Shinkai",
+    "keywords": [
+      "perplexity",
+      "api",
+      "shinkai"
+    ],
+    "configurations": {
+      "type": "object",
+      "properties": {
+        "apiKey": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "apiKey"
+      ]
+    },
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "query": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "query"
+      ]
+    },
+    "result": {
+      "type": "object",
+      "properties": {
+        "response": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "response"
+      ]
+    }
+  }

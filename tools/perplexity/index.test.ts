@@ -1,6 +1,5 @@
 import { expect } from 'jsr:@std/expect/expect';
 import { definition, run } from './index.ts';
-import process from 'node:process';
 
 Deno.test('exists definition', () => {
   expect(definition).toBeInstanceOf(Object);
@@ -13,7 +12,7 @@ Deno.test({
   fn: async () => {
     const run_result = await run(
       {
-        chromePath: process.env?.CHROME_PATH,
+        chromePath: Deno.env.get('CHROME_PATH'),
       },
       {
         query: 'What is the meaning of life?',

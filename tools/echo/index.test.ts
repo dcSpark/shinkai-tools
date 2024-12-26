@@ -1,4 +1,4 @@
-import { run } from './index.ts';
+import { run } from './tool.ts';
 import { assertEquals } from 'jsr:@std/assert';
 
 Deno.test('echo', async () => {

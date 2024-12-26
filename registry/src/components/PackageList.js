@@ -89,7 +89,7 @@ function PackageList({ searchQuery }) {
     const nameMatch = pkg.name.toLowerCase().includes(searchLower);
     const descMatch = pkg.description.toLowerCase().includes(searchLower);
     const keywordMatch = pkg.keywords ? 
-      JSON.parse(pkg.keywords).some(keyword => 
+      pkg.keywords.some(keyword => 
         keyword.toLowerCase().trim().includes(searchLower)
       ) : false;
     
@@ -152,7 +152,7 @@ function PackageList({ searchQuery }) {
                       </Typography>
                       {pkg.keywords && (
                         <Stack direction="row" spacing={1} sx={{ mb: 2 }}>
-                          {JSON.parse(pkg.keywords).map((keyword, index) => (
+                          {pkg.keywords.map((keyword, index) => (
                             <Chip
                               key={index}
                               label={keyword.trim()}
@@ -180,7 +180,20 @@ function PackageList({ searchQuery }) {
                         >
                           Hash: {pkg.hash.substring(0, 16)}...
                         </Typography>
-                        {pkg.tool_type && (
+                        <Typography 
+                          variant="caption" 
+                          sx={{ 
+                            color: 'text.secondary',
+                            display: 'inline-block',
+                            backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                            px: 1,
+                            py: 0.5,
+                            borderRadius: 1,
+                          }}
+                        >
+                          Type: {pkg.type || 'Unspecified'}
+                        </Typography>
+                        {pkg.tool_language && (
                           <Typography 
                             variant="caption" 
                             sx={{ 
@@ -192,9 +205,9 @@ function PackageList({ searchQuery }) {
                               borderRadius: 1,
                             }}
                           >
-                            <b>Type</b>: {pkg.tool_type}
+                            {pkg.tool_language === 'Python' ? <img src="/python.svg" alt="Python" style={{ width: '16px', height: '16px' }} /> : <img src="/deno.svg" alt="TypeScript" style={{ width: '16px', height: '16px' }} />}
                           </Typography>
-                        )}                          
+                        )}
                         {pkg.author && (
                           <Typography 
                             variant="caption" 

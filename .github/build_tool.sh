@@ -17,7 +17,7 @@ mkdir -p packages
 rm -f packages/directory.json
 echo '[]' > packages/directory.json
 
-# Process each tool directory
+# Process tools directory
 for tool_dir in tools/*/; do
     if [ -d "$tool_dir" ]; then
         # Get the tool name from directory
@@ -105,9 +105,9 @@ for tool_dir in tools/*/; do
 
         tool_router_key=$(echo "$uploaded_tool" | jq -r '.metadata.tool_router_key')
         tool_description=$(echo "$uploaded_tool" | jq -r '.metadata.metadata.description')
-        author=$(echo "$uploaded_tool" | jq -r '.metadata.metadata.author')
-        version=$(echo "$uploaded_tool" | jq -r '.metadata.metadata.version')
-        keywords=$(echo "$uploaded_tool" | jq -r '.metadata.metadata.keywords')
+        author=$(echo "$uploaded_tool" | jq -r '.metadata.metadata.author // "Unknown"')
+        version=$(echo "$uploaded_tool" | jq -r '.metadata.metadata.version // "0.0.0"')
+        keywords=$(echo "$uploaded_tool" | jq -r '.metadata.metadata.keywords // ["tool"]')
 
         # Request zip file from the node.
         curl -s --location "${SHINKAI_NODE_ADDR}/v2/export_tool?tool_key_path=${tool_router_key}" \
@@ -119,9 +119,110 @@ for tool_dir in tools/*/; do
 
         # Add tool to directory.json
         # Create temporary file with updated content
-        jq --arg tool_name "$tool_name" --arg author "$author" --arg keywords "$keywords" --arg tool_type "$tool_type" --arg version "$version" --arg tool_router_key "$tool_router_key" --arg description "$tool_description" --arg blake3_hash "$blake3_hash" --arg file "$DOWNLOAD_PREFIX/$tool_name.zip" \
-            '. += [{name: $tool_name, author: $author, keywords: $keywords, tool_type: $tool_type, version: $version, description: $description, router_key: $tool_router_key, hash: $blake3_hash, file: $file}]' packages/directory.json > packages/directory.json.tmp
+        jq --arg tool_name "$tool_name" \
+           --arg author "$author" \
+           --argjson keywords "$keywords" \
+           --arg tool_language "$tool_type" \
+           --arg version "$version" \
+           --arg tool_router_key "$tool_router_key" \
+           --arg description "$tool_description" \
+           --arg blake3_hash "$blake3_hash" \
+           --arg file "$DOWNLOAD_PREFIX/$tool_name.zip" \
+            '. += [{name: $tool_name, author: $author, keywords: $keywords, type: "Tool", tool_language: $tool_language, version: $version, description: $description, router_key: $tool_router_key, hash: $blake3_hash, file: $file}]' packages/directory.json > packages/directory.json.tmp
         # Replace original file with temporary file
         mv packages/directory.json.tmp packages/directory.json
     fi
+
+
 done
+
+# Process agents directory
+for agent_file in agents/*.json; do
+    if [ -f "$agent_file" ]; then
+        echo "Processing agent ${agent_file}..."
+        
+        # Read agent JSON
+        agent_content=$(cat "$agent_file")
+        
+        # Extract values from agent JSON
+        agent_id=$(echo "$agent_content" | jq -r '.agent_id')
+        agent_name=$(echo "$agent_content" | jq -r '.name')
+        agent_description=$(echo "$agent_content" | jq -r '.ui_description')
+        agent_author=$(echo "$agent_content" | jq -r '.author // "Unknown"')
+        agent_version=$(echo "$agent_content" | jq -r '.version // "0.0.0"')
+        agent_keywords=$(echo "$agent_content" | jq '.keywords // ["agent"]')
+
+        # Create zip file
+        zip -j "packages/${agent_id}.zip" "$agent_file"
+
+        # Generate blake3 hash of the zip file
+        blake3_hash=$(b3sum "packages/${agent_id}.zip" | cut -d ' ' -f 1)
+
+        # Add agent to directory.json
+        jq --arg name "$agent_name" \
+           --arg author "$agent_author" \
+           --argjson keywords "$agent_keywords" \
+           --arg version "$agent_version" \
+           --arg description "$agent_description" \
+           --arg hash "$blake3_hash" \
+           --arg file "$DOWNLOAD_PREFIX/${agent_id}.zip" \
+           --arg agent_id "$agent_id" \
+           '. += [{
+                name: $name,
+                author: $author,
+                keywords: $keywords,
+                type: "Agent",
+                version: $version,
+                description: $description,
+                hash: $hash,
+                file: $file,
+                agent_id: $agent_id
+            }]' packages/directory.json > packages/directory.json.tmp
+        mv packages/directory.json.tmp packages/directory.json
+    fi
+done
+
+# Process crons directory
+for cron_file in crons/*.json; do
+    if [ -f "$cron_file" ]; then
+        echo "Processing cron ${cron_file}..."
+        
+        # Read cron JSON
+        cron_content=$(cat "$cron_file")
+        
+        # Extract values from cron JSON
+        cron_id=$(basename "$cron_file" .json)
+        cron_name=$(echo "$cron_content" | jq -r '.name')
+        cron_description=$(echo "$cron_content" | jq -r '.description')
+        cron_author=$(echo "$cron_content" | jq -r '.author // "Unknown"')
+        cron_version=$(echo "$cron_content" | jq -r '.version // "0.0.0"')
+        cron_keywords=$(echo "$cron_content" | jq '.keywords // ["cron"]')
+
+        # Create zip file
+        zip -j "packages/${cron_id}.zip" "$cron_file"
+
+        # Generate blake3 hash of the zip file
+        blake3_hash=$(b3sum "packages/${cron_id}.zip" | cut -d ' ' -f 1)
+
+        # Add cron to directory.json
+        jq --arg name "$cron_name" \
+           --arg author "$cron_author" \
+           --argjson keywords "$cron_keywords" \
+           --arg version "$cron_version" \
+           --arg description "$cron_description" \
+           --arg hash "$blake3_hash" \
+           --arg file "$DOWNLOAD_PREFIX/${cron_id}.zip" \
+           '. += [{
+                name: $name,
+                author: $author,
+                keywords: $keywords,
+                type: "Scheduled Task",
+                version: $version,
+                description: $description,
+                hash: $hash,
+                file: $file,
+            }]' packages/directory.json > packages/directory.json.tmp
+        mv packages/directory.json.tmp packages/directory.json
+    fi
+done
+

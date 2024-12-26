@@ -2,7 +2,7 @@ from typing import Any, Optional, List, Dict
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-
+from datetime import datetime
 class CONFIG:
     smtp_server: str
     port: int = 465  # Default port for SMTP
@@ -28,6 +28,7 @@ async def run(config: CONFIG, inputs: INPUTS) -> OUTPUT:
     msg['From'] = config.sender_email
     msg['To'] = inputs.recipient_email
     msg['Subject'] = inputs.subject
+    msg['Date'] = datetime.now().strftime('%a, %d %b %Y %H:%M:%S %z')
 
     msg.attach(MIMEText(inputs.body, 'plain'))
 

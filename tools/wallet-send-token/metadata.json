@@ -1,0 +1,104 @@
+{
+  "name": "WalletManager",
+  "description": "Manages operations related to a cryptocurrency wallet including sending tokens and checking balances.",
+  "author": "@@eduardosotomontaner.arb-sep-shinkai",
+  "keywords": [
+    "wallet",
+    "cryptocurrency",
+    "tokens",
+    "ethereum"
+  ],
+  "configurations": {
+    "type": "object",
+    "properties": {
+      "rpcUrl": {
+        "type": "string",
+        "description": "The RPC URL to connect to the blockchain"
+      },
+      "chain": {
+        "type": "string",
+        "description": "The blockchain chain to interact with"
+      },
+      "privateKey": {
+        "type": "string",
+        "description": "The private key associated with the wallet"
+      }
+    },
+    "required": [
+      "rpcUrl",
+      "chain",
+      "privateKey"
+    ]
+  },
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "to_address": {
+        "type": "string",
+        "description": "The address to which tokens are sent"
+      },
+      "tokenAddress": {
+        "type": "string",
+        "description": "The address of the token contract"
+      },
+      "amount": {
+        "type": "string",
+        "description": "The amount of tokens to send"
+      }
+    },
+    "required": [
+      "to_address",
+      "tokenAddress",
+      "amount"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "receipt": {
+        "type": "object",
+        "properties": {
+          "transactionHash": {
+            "type": "string",
+            "description": "The hash of the transaction"
+          },
+          "status": {
+            "type": "string",
+            "description": "The status of the transaction"
+          },
+          "gasUsed": {
+            "type": "integer",
+            "description": "The amount of gas used for the transaction"
+          },
+          "gasPrice": {
+            "type": "integer",
+            "description": "The gas price at which the transaction was executed"
+          },
+          "from": {
+            "type": "string",
+            "description": "The address of the sender"
+          },
+          "to": {
+            "type": "string",
+            "description": "The address of the receiver"
+          }
+        },
+        "required": [
+          "transactionHash",
+          "status",
+          "gasUsed",
+          "gasPrice",
+          "from",
+          "to"
+        ]
+      }
+    },
+    "required": [
+      "receipt"
+    ]
+  },
+  "sqlTables": [],
+  "sqlQueries": [],
+  "tools": [],
+  "oauth": []
+}

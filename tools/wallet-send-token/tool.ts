@@ -47,9 +47,9 @@ type OUTPUT = {
     status: string;
     gasUsed: bigint;
     gasPrice: bigint;
-    value: bigint;
+    value?: bigint;
     from: `0x${string}`;
-    to: `0x${string}`;
+    to: string;
   };
 }
 
@@ -181,9 +181,8 @@ export async function run(
       status: receipt.status,
       gasUsed: receipt.gasUsed,
       gasPrice: receipt.effectiveGasPrice,
-      value: receipt.value,
       from: receipt.from,
-      to: receipt.to,
+      to: receipt.to ?? '',
     } };
   } catch (error) {
       throw new Error(TOKENSEND_ERROR, { cause: error });

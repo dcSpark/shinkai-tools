@@ -1,0 +1,55 @@
+{
+    "name": "Google Search",
+    "description": "This function takes a question as input and returns a comprehensive answer, along with the sources and statements used to generate the answer.",  
+    "author": "Shinkai",
+    "keywords": [
+      "search",
+      "answer generation",
+      "fact extraction",
+      "wikipedia",
+      "google"
+    ],  
+    "configurations": [],
+    "parameters": {
+      "properties": {
+        "quert": {
+          "description": "The search query to look up",
+          "type": "string"
+        }
+      },
+      "num_results": {
+        "description": "The number of results to return",
+        "type": "number"
+      },
+      "required": [
+        "query"
+      ],
+      "type": "object"
+    },
+    "result": {
+      "properties": {
+        "query": {"type": "string"},
+        "results": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "title": {"type": "string"},
+                    "url": {"type": "string"},
+                    "description": {"type": "string"}
+                },
+                "required": ["title", "url", "description"]
+            }
+        }
+    },
+      "required": [
+        "query",
+        "results"
+      ],
+      "type": "object"
+    },
+    "sqlTables": [],  
+    "sqlQueries": [],
+    "tools": [
+    ]
+  }

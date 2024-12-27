@@ -18,7 +18,8 @@
       "type": "object",
       "properties": {
         "address": {
-          "type": "string"
+          "type": "string",
+          "description": "The Ethereum address to check the balance for (e.g., '0x1234...')"
         }
       },
       "required": [
@@ -29,7 +30,8 @@
       "type": "object",
       "properties": {
         "balance": {
-          "type": "string"
+          "type": "string",
+          "description": "The ETH balance of the address in wei (as a string to handle large numbers)"
         }
       },
       "required": [

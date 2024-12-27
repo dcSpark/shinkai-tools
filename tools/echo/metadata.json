@@ -17,7 +17,8 @@
       "type": "object",
       "properties": {
         "message": {
-          "type": "string"
+          "type": "string",
+          "description": "The message to be echoed back"
         }
       },
       "required": [
@@ -28,7 +29,8 @@
       "type": "object",
       "properties": {
         "message": {
-          "type": "string"
+          "type": "string",
+          "description": "The echoed message"
         }
       },
       "required": [

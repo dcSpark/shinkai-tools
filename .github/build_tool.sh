@@ -42,72 +42,86 @@ for tool_dir in tools/*/; do
 
         # Read metadata.json
         metadata_content=$(cat "${tool_dir}metadata.json")
-        
+
         # Read tool content
         tool_content=$(cat "$tool_file")
 
         # Get tool type based on file extension
         tool_type=$(get_tool_type "$tool_file")
-
-        # Create a job
-        job_response=$(curl -s --location "${SHINKAI_NODE_ADDR}/v2/create_job" \
-        --header 'Content-Type: application/json' \
-        --header "Authorization: Bearer ${BEARER_TOKEN}" \
-        --data '{
-            "llm_provider": "",
-            "job_creation_info": {
-            "scope": {
-                "vector_fs_items": [],
-                "vector_fs_folders": [],
-                "local_vrpack": [],
-                "local_vrkai": [],
-                "network_folders": []
-            },
-            "associated_ui": "Playground",
-            "is_hidden": true
-            }
-        }')
-
-        job_id=$(echo "$job_response" | jq -r '.job_id')
-
+        
+        # Build and send tool JSON to node
         if [ "$tool_type" = "Python" ]; then
-            request_data=$(jq -n \
-                --argjson metadata "$metadata_content" \
-                --arg code "$tool_content" \
-                --arg job_id "$job_id" \
-                '{
-                    metadata: $metadata,
-                    code: $code,
-                    language: "PYTHON",
-                    job_id: $job_id
-                }')
+            json_data=$(jq -n \
+            --arg code "$tool_content" \
+            --argjson metadata "$metadata_content" \
+            --arg tool_type "$tool_type" \
+            '{
+                content: [{
+                    activated: false,
+                    assets: null,
+                    author: ($metadata.author // "Unknown"),
+                    config: [],
+                    description: ($metadata.description // "No description provided."),
+                    file_inbox: null,
+                    input_args: ($metadata.parameters // []),
+                    keywords: ($metadata.keywords // []),
+                    name: ($metadata.name // "Unknown"),
+                    oauth: null,
+                    output_arg: {
+                        json: ""
+                    },
+                    result: ($metadata.result // {}),
+                    sql_queries: [],
+                    sql_tables: [],
+                    toolkit_name: ($metadata.id // "Unknown"),
+                    tools: [],
+                    py_code: $code
+                }, false],
+                type: $tool_type
+            }')
         else
-            request_data=$(jq -n \
-                --argjson metadata "$metadata_content" \
-                --arg code "$tool_content" \
-                --arg job_id "$job_id" \
-                '{
-                    metadata: $metadata,
-                    code: $code,
-                    language: "TYPESCRIPT",
-                    job_id: $job_id
-                }')
+            json_data=$(jq -n \
+            --arg code "$tool_content" \
+            --argjson metadata "$metadata_content" \
+            --arg tool_type "$tool_type" \
+            '{
+                content: [{
+                    activated: false,
+                    assets: null,
+                    author: ($metadata.author // "Unknown"),
+                    config: [],
+                    description: ($metadata.description // "No description provided."),
+                    file_inbox: null,
+                    input_args: ($metadata.parameters // []),
+                    keywords: ($metadata.keywords // []),
+                    name: ($metadata.name // "Unknown"),
+                    oauth: null,
+                    output_arg: {
+                        json: ""
+                    },
+                    result: ($metadata.result // {}),
+                    sql_queries: [],
+                    sql_tables: [],
+                    toolkit_name: ($metadata.id // "Unknown"),
+                    tools: [],
+                    js_code: $code
+                }, false],
+                type: $tool_type
+            }')
         fi
-
-        # Upload the tool to the node.
-        random_id=$(date +%s)
-        uploaded_tool=$(curl -s --location "${SHINKAI_NODE_ADDR}/v2/set_playground_tool" \
+       
+        
+        # Send to Shinkai node and capture response
+        uploaded_tool=$(curl -s --location "${SHINKAI_NODE_ADDR}/v2/add_shinkai_tool" \
             --header "Authorization: Bearer ${BEARER_TOKEN}" \
-            --header 'Content-Type: application/json; charset=utf-8' \
-            --header "x-shinkai-app-id: app-id-${random_id}" \
-            --header "x-shinkai-tool-id: task-id-${random_id}" \
-            --data "$request_data")
+            --header 'Content-Type: application/json' \
+            --data "$json_data")
 
-        tool_router_key=$(echo "$uploaded_tool" | jq -r '.metadata.tool_router_key')
-        tool_description=$(echo "$uploaded_tool" | jq -r '.metadata.metadata.description')
-        author=$(echo "$uploaded_tool" | jq -r '.metadata.metadata.author // "Unknown"')
-        version=$(echo "$uploaded_tool" | jq -r '.metadata.metadata.version // "0.0.0"')
-        keywords=$(echo "$uploaded_tool" | jq -r '.metadata.metadata.keywords // ["tool"]')
+        tool_router_key=$(echo "$uploaded_tool" | jq -r '.message' | sed 's/.*key: //')
+        tool_description=$(echo "$metadata_content" | jq -r '.description // "No description provided."')
+        author=$(echo "$metadata_content" | jq -r '.author // "Unknown"')
+        version=$(echo "$metadata_content" | jq -r '.version // "0.0.0"')
+        keywords=$(echo "$metadata_content" | jq -r '.keywords // ["tool"]')
 
         # Request zip file from the node.
         curl -s --location "${SHINKAI_NODE_ADDR}/v2/export_tool?tool_key_path=${tool_router_key}" \

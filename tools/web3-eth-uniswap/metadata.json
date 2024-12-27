@@ -21,7 +21,8 @@
       ],
       "properties": {
         "address": {
-          "type": "string"
+          "type": "string",
+          "description": "The Ethereum address to check the Uniswap balance for (e.g., '0x1234...')"
         }
       }
     },
@@ -29,7 +30,8 @@
       "type": "object",
       "properties": {
         "balance": {
-          "type": "string"
+          "type": "string",
+          "description": "The ETH balance from Uniswap in wei (as a string to handle large numbers)"
         }
       },
       "required": [

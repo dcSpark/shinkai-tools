@@ -18,7 +18,8 @@
       "type": "object",
       "properties": {
         "symbol": {
-          "type": "string"
+          "type": "string",
+          "description": "The token symbol to fetch the price for (e.g., 'ETH', 'BTC')"
         }
       },
       "required": [
@@ -29,10 +30,12 @@
       "type": "object",
       "properties": {
         "symbol": {
-          "type": "string"
+          "type": "string",
+          "description": "The token symbol that was queried"
         },
         "price": {
-          "type": "number"
+          "type": "number",
+          "description": "The current price of the token in USD"
         }
       },
       "required": [

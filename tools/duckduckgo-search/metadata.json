@@ -18,7 +18,8 @@
       "type": "object",
       "properties": {
         "message": {
-          "type": "string"
+          "type": "string",
+          "description": "The search query to send to DuckDuckGo"
         }
       },
       "required": [
@@ -29,7 +30,8 @@
       "type": "object",
       "properties": {
         "message": {
-          "type": "string"
+          "type": "string",
+          "description": "The search results from DuckDuckGo in JSON format, containing title, description, and URL for each result"
         }
       },
       "required": [

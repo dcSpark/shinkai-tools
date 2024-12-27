@@ -12,7 +12,8 @@
       "type": "object",
       "properties": {
         "apiKey": {
-          "type": "string"
+          "type": "string",
+          "description": "API key for accessing the Perplexity API"
         }
       },
       "required": [
@@ -23,7 +24,8 @@
       "type": "object",
       "properties": {
         "query": {
-          "type": "string"
+          "type": "string",
+          "description": "The search query to send to Perplexity API"
         }
       },
       "required": [
@@ -34,7 +36,8 @@
       "type": "object",
       "properties": {
         "response": {
-          "type": "string"
+          "type": "string",
+          "description": "The search results and analysis from Perplexity API"
         }
       },
       "required": [

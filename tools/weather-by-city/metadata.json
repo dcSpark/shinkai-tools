@@ -6,7 +6,8 @@
       "type": "object",
       "properties": {
         "apiKey": {
-          "type": "string"
+          "type": "string",
+          "description": "OpenWeatherMap API key for accessing weather data"
         }
       },
       "required": [
@@ -17,7 +18,8 @@
       "type": "object",
       "properties": {
         "city": {
-          "type": "string"
+          "type": "string",
+          "description": "Name of the city to get weather information for"
         }
       },
       "required": [
@@ -28,7 +30,8 @@
       "type": "object",
       "properties": {
         "weather": {
-          "type": "string"
+          "type": "string",
+          "description": "Current weather information for the specified city"
         }
       },
       "required": [

@@ -18,17 +18,22 @@
       "properties": {
         "edges": {
           "type": "array",
+          "description": "List of edges in the network, each edge is [source, target, weight]",
           "items": {
             "type": "array",
+            "description": "Edge represented as [source node ID, target node ID, edge weight]",
             "items": [
               {
-                "type": "number"
+                "type": "number",
+                "description": "Source node ID"
               },
               {
-                "type": "number"
+                "type": "number",
+                "description": "Target node ID"
               },
               {
-                "type": "number"
+                "type": "number",
+                "description": "Edge weight"
               }
             ],
             "minItems": 3,
@@ -37,19 +42,23 @@
         },
         "resolution": {
           "type": "number",
-          "nullable": true
+          "nullable": true,
+          "description": "Resolution parameter controlling the size of communities (higher values = smaller communities)"
         },
         "nIterations": {
           "type": "number",
-          "nullable": true
+          "nullable": true,
+          "description": "Number of iterations to run the algorithm"
         },
         "nRandomStarts": {
           "type": "number",
-          "nullable": true
+          "nullable": true,
+          "description": "Number of random starts to find the best clustering"
         },
         "convergenceThreshold": {
           "type": "number",
-          "nullable": true
+          "nullable": true,
+          "description": "Threshold for determining convergence"
         }
       },
       "required": [
@@ -61,18 +70,23 @@
       "properties": {
         "bestClustering": {
           "type": "object",
+          "description": "Best clustering result found",
           "properties": {
             "nNodes": {
-              "type": "number"
+              "type": "number",
+              "description": "Total number of nodes in the network"
             },
             "clusters": {
               "type": "array",
+              "description": "Array of cluster assignments for each node",
               "items": {
-                "type": "number"
+                "type": "number",
+                "description": "Cluster ID assigned to a node"
               }
             },
             "nClusters": {
-              "type": "number"
+              "type": "number",
+              "description": "Total number of clusters found"
             }
           },
           "required": [
@@ -83,16 +97,21 @@
         },
         "bestLayout": {
           "type": "object",
+          "description": "Best layout configuration for visualization",
           "properties": {
             "nNodes": {
-              "type": "number"
+              "type": "number",
+              "description": "Total number of nodes in the layout"
             },
             "coordinates": {
               "type": "array",
+              "description": "2D coordinates for each node",
               "items": {
                 "type": "array",
+                "description": "[x, y] coordinates for a node",
                 "items": {
-                  "type": "number"
+                  "type": "number",
+                  "description": "Coordinate value"
                 }
               }
             }

@@ -8,22 +8,35 @@
   "configurations": {
     "type": "object",
     "properties": {
-      "chromePath": { "type": "string", "nullable": true }
+      "chromePath": { 
+        "type": "string", 
+        "nullable": true,
+        "description": "Optional path to Chrome executable for browser automation"
+      }
     },
     "required": []
   },
   "parameters": {
     "type": "object",
     "properties": {
-      "inputValue": { "type": "string" },
-      "assetSymbol": { "type": "string" }
+      "inputValue": { 
+        "type": "string",
+        "description": "The amount of tokens to supply or borrow"
+      },
+      "assetSymbol": { 
+        "type": "string",
+        "description": "The symbol of the asset to supply or borrow (e.g., 'ETH', 'USDC')"
+      }
     },
     "required": ["inputValue", "assetSymbol"]
   },
   "result": {
     "type": "object",
     "properties": {
-      "amountProcessed": { "type": "string" }
+      "amountProcessed": { 
+        "type": "string",
+        "description": "The actual amount of tokens that were processed in the loan request"
+      }
     },
     "required": ["amountProcessed"]
   }

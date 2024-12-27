@@ -19,7 +19,8 @@
       "type": "object",
       "properties": {
         "address": {
-          "type": "string"
+          "type": "string",
+          "description": "The Ethereum address to check token balances for (e.g., '0x1234...')"
         }
       },
       "required": [
@@ -30,17 +31,21 @@
       "type": "object",
       "properties": {
         "address": {
-          "type": "string"
+          "type": "string",
+          "description": "The Ethereum address that was queried"
         },
         "ETH": {
           "type": "object",
           "nullable": true,
+          "description": "ETH balance information",
           "properties": {
             "balance": {
-              "type": "number"
+              "type": "number",
+              "description": "The ETH balance in decimal format"
             },
             "rawBalance": {
-              "type": "string"
+              "type": "string",
+              "description": "The raw ETH balance in wei (as a string to handle large numbers)"
             }
           },
           "required": [
@@ -51,14 +56,17 @@
         "tokens": {
           "type": "array",
           "nullable": true,
+          "description": "List of ERC20 token balances",
           "items": {
             "type": "object",
             "properties": {
               "balance": {
-                "type": "number"
+                "type": "number",
+                "description": "The token balance in decimal format"
               },
               "rawBalance": {
-                "type": "string"
+                "type": "string",
+                "description": "The raw token balance (as a string to handle large numbers)"
               }
             },
             "required": [

@@ -12,7 +12,8 @@
       "properties": {
         "chromePath": {
           "type": "string",
-          "nullable": true
+          "nullable": true,
+          "description": "Optional path to Chrome executable for browser automation"
         }
       },
       "required": []
@@ -21,7 +22,8 @@
       "type": "object",
       "properties": {
         "url": {
-          "type": "string"
+          "type": "string",
+          "description": "The URL of the web page to visit with Playwright"
         }
       },
       "required": [
@@ -32,7 +34,8 @@
       "type": "object",
       "properties": {
         "title": {
-          "type": "string"
+          "type": "string",
+          "description": "The title of the visited web page"
         }
       },
       "required": [

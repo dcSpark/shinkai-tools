@@ -20,8 +20,10 @@
       "properties": {
         "urls": {
           "type": "array",
+          "description": "List of URLs to download and convert",
           "items": {
-            "type": "string"
+            "type": "string",
+            "description": "A URL of a web page to download"
           }
         }
       },
@@ -34,8 +36,10 @@
       "properties": {
         "markdowns": {
           "type": "array",
+          "description": "List of converted Markdown content, one for each URL",
           "items": {
-            "type": "string"
+            "type": "string",
+            "description": "The Markdown content converted from a web page"
           }
         }
       },

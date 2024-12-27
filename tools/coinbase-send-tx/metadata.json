@@ -13,23 +13,28 @@
       "type": "object",
       "properties": {
         "name": {
-          "type": "string"
+          "type": "string",
+          "description": "The name of the Coinbase wallet"
         },
         "privateKey": {
-          "type": "string"
+          "type": "string",
+          "description": "The private key of the Coinbase wallet"
         },
         "walletId": {
           "type": "string",
-          "nullable": true
+          "nullable": true,
+          "description": "Optional wallet ID for specific wallet selection"
         },
         "seed": {
           "type": "string",
-          "nullable": true
+          "nullable": true,
+          "description": "Optional seed phrase for wallet recovery"
         },
         "useServerSigner": {
           "type": "string",
           "default": "false",
-          "nullable": true
+          "nullable": true,
+          "description": "Optional flag to use server-side signing"
         }
       },
       "required": [
@@ -41,13 +46,16 @@
       "type": "object",
       "properties": {
         "recipient_address": {
-          "type": "string"
+          "type": "string",
+          "description": "The destination address for the transaction"
         },
         "assetId": {
-          "type": "string"
+          "type": "string",
+          "description": "The ID of the asset/token to send"
         },
         "amount": {
-          "type": "string"
+          "type": "string",
+          "description": "The amount of tokens to send"
         }
       },
       "required": [
@@ -60,13 +68,16 @@
       "type": "object",
       "properties": {
         "transactionHash": {
-          "type": "string"
+          "type": "string",
+          "description": "The hash of the completed transaction"
         },
         "transactionLink": {
-          "type": "string"
+          "type": "string",
+          "description": "A link to view the transaction on a block explorer"
         },
         "status": {
-          "type": "string"
+          "type": "string",
+          "description": "The status of the transaction (e.g., 'success', 'pending', 'failed')"
         }
       },
       "required": [

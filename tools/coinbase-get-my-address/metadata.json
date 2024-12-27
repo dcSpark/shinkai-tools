@@ -13,18 +13,22 @@
       "type": "object",
       "properties": {
         "name": {
-          "type": "string"
+          "type": "string",
+          "description": "The name of the Coinbase wallet"
         },
         "privateKey": {
-          "type": "string"
+          "type": "string",
+          "description": "The private key of the Coinbase wallet"
         },
         "walletId": {
           "type": "string",
-          "nullable": true
+          "nullable": true,
+          "description": "Optional wallet ID for specific wallet selection"
         },
         "useServerSigner": {
           "type": "string",
-          "nullable": true
+          "nullable": true,
+          "description": "Optional server signer configuration"
         }
       },
       "required": [
@@ -37,6 +41,7 @@
       "properties": {
         "walletId": {
           "type": "string",
+          "description": "The ID of the Coinbase wallet to get the address from",
           "nullable": true
         }
       },
@@ -46,7 +51,8 @@
       "type": "object",
       "properties": {
         "address": {
-          "type": "string"
+          "type": "string",
+          "description": "The Ethereum address of the Coinbase wallet"
         }
       },
       "required": [

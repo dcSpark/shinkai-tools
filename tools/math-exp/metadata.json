@@ -17,7 +17,8 @@
       "type": "object",
       "properties": {
         "expression": {
-          "type": "string"
+          "type": "string",
+          "description": "The mathematical expression to evaluate (e.g., '2 + 2 * 3')"
         }
       },
       "required": [
@@ -28,7 +29,8 @@
       "type": "object",
       "properties": {
         "result": {
-          "type": "string"
+          "type": "string",
+          "description": "The evaluated result of the mathematical expression"
         }
       },
       "required": [

@@ -51,71 +51,87 @@ for tool_dir in tools/*/; do
         
         # Build and send tool JSON to node
         if [ "$tool_type" = "Python" ]; then
-            json_data=$(jq -n \
-            --arg code "$tool_content" \
-            --argjson metadata "$metadata_content" \
+            # Create temporary files for large content
+            echo "$tool_content" > /tmp/tool_content.txt
+            echo "$metadata_content" > /tmp/metadata.json
+            
+            jq -n \
+            --slurpfile metadata /tmp/metadata.json \
+            --rawfile code /tmp/tool_content.txt \
             --arg tool_type "$tool_type" \
             '{
                 content: [{
                     activated: false,
                     assets: null,
-                    author: ($metadata.author // "Unknown"),
+                    author: ($metadata[0].author // "Unknown"),
                     config: [],
-                    description: ($metadata.description // "No description provided."),
+                    description: ($metadata[0].description // "No description provided."),
                     file_inbox: null,
-                    input_args: ($metadata.parameters // []),
-                    keywords: ($metadata.keywords // []),
-                    name: ($metadata.name // "Unknown"),
+                    input_args: ($metadata[0].parameters // []),
+                    keywords: ($metadata[0].keywords // []),
+                    name: ($metadata[0].name // "Unknown"),
                     oauth: null,
                     output_arg: {
                         json: ""
                     },
-                    result: ($metadata.result // {}),
+                    result: ($metadata[0].result // {}),
                     sql_queries: [],
                     sql_tables: [],
-                    toolkit_name: ($metadata.id // "Unknown"),
+                    toolkit_name: ($metadata[0].id // "Unknown"),
                     tools: [],
                     py_code: $code
                 }, false],
                 type: $tool_type
-            }')
+            }' > /tmp/request.json
+            
+            # Clean up intermediate files
+            rm /tmp/tool_content.txt /tmp/metadata.json
         else
-            json_data=$(jq -n \
-            --arg code "$tool_content" \
-            --argjson metadata "$metadata_content" \
+            # Create temporary files for large content
+            echo "$tool_content" > /tmp/tool_content.txt
+            echo "$metadata_content" > /tmp/metadata.json
+            
+            jq -n \
+            --slurpfile metadata /tmp/metadata.json \
+            --rawfile code /tmp/tool_content.txt \
             --arg tool_type "$tool_type" \
             '{
                 content: [{
                     activated: false,
                     assets: null,
-                    author: ($metadata.author // "Unknown"),
+                    author: ($metadata[0].author // "Unknown"),
                     config: [],
-                    description: ($metadata.description // "No description provided."),
+                    description: ($metadata[0].description // "No description provided."),
                     file_inbox: null,
-                    input_args: ($metadata.parameters // []),
-                    keywords: ($metadata.keywords // []),
-                    name: ($metadata.name // "Unknown"),
+                    input_args: ($metadata[0].parameters // []),
+                    keywords: ($metadata[0].keywords // []),
+                    name: ($metadata[0].name // "Unknown"),
                     oauth: null,
                     output_arg: {
                         json: ""
                     },
-                    result: ($metadata.result // {}),
+                    result: ($metadata[0].result // {}),
                     sql_queries: [],
                     sql_tables: [],
-                    toolkit_name: ($metadata.id // "Unknown"),
+                    toolkit_name: ($metadata[0].id // "Unknown"),
                     tools: [],
                     js_code: $code
                 }, false],
                 type: $tool_type
-            }')
+            }' > /tmp/request.json
+            
+            # Clean up intermediate files
+            rm /tmp/tool_content.txt /tmp/metadata.json
         fi
-       
         
-        # Send to Shinkai node and capture response
+        # Send to Shinkai node using the temporary file and capture response
         uploaded_tool=$(curl -s --location "${SHINKAI_NODE_ADDR}/v2/add_shinkai_tool" \
             --header "Authorization: Bearer ${BEARER_TOKEN}" \
             --header 'Content-Type: application/json' \
-            --data "$json_data")
+            --data @/tmp/request.json)
+
+        # Clean up request file
+        rm /tmp/request.json
 
         tool_router_key=$(echo "$uploaded_tool" | jq -r '.message' | sed 's/.*key: //')
         tool_description=$(echo "$metadata_content" | jq -r '.description // "No description provided."')

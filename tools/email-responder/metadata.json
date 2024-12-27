@@ -1,101 +1,114 @@
 {
-  "name": "Respond to Email",
-  "version": "1.0.0",
-  "description": "Checks new emails and responds to them. Records in DB the email and the response.",
-  "author": "@@my_local_ai.arb-sep-shinkai",
-  "keywords": [
-    "email",
-    "smtp",
-    "automatic",
-    "response",
-    "reply",
-    "reply-to-email"
-  ],
-  "configurations": {
-    "type": "object",
-    "properties": {
-      "smtp_server": {
-        "type": "string",
-        "description": "The SMTP server address"
-      },
-      "smtp_port": {
-        "type": "integer",
-        "description": "The SMTP server port",
-        "default": 465
-      },
-      "smtp_sender_email": {
-        "type": "string",
-        "description": "The sender's email address"
-      },
-      "smtp_sender_password": {
-        "type": "string",
-        "description": "The sender's email password"
-      },
-      "imap_server": {
-          "type": "string",
-          "description": "The IMAP server address"
-      },
-      "imap_username": {
-        "type": "string",
-        "description": "The username for the IMAP account"
-      },
-      "imap_password": {
-        "type": "string",
-        "description": "The password for the IMAP account"
-      },
-      "imap_port": {
-        "type": "integer",
-        "description": "The port number for the IMAP server (defaults to 993 for IMAPS)",
-        "default": 993
+  "author": "@@eduardosotomontaner.arb-sep-shinkai",
+  "configurations": [
+    {
+      "BasicConfig": {
+        "description": "string",
+        "key_name": "imap_password",
+        "key_value": null,
+        "required": true
       }
     },
-    "required": [
-      "smtp_server",
-      "smtp_port",
-      "smtp_sender_email",
-      "smtp_sender_password",
-      "imap_server",
-      "imap_username",
-      "imap_password",
-      "imap_port"
-    ]
-  },
-  "parameters": {
-    "type": "object",
-    "properties": {
-      
+    {
+      "BasicConfig": {
+        "description": "number",
+        "key_name": "imap_port",
+        "key_value": null,
+        "required": true
+      }
     },
-    "required": [
-      
-    ]
+    {
+      "BasicConfig": {
+        "description": "string",
+        "key_name": "imap_server",
+        "key_value": null,
+        "required": true
+      }
+    },
+    {
+      "BasicConfig": {
+        "description": "string",
+        "key_name": "imap_username",
+        "key_value": null,
+        "required": true
+      }
+    },
+    {
+      "BasicConfig": {
+        "description": "string",
+        "key_name": "response_context",
+        "key_value": null,
+        "required": true
+      }
+    },
+    {
+      "BasicConfig": {
+        "description": "number",
+        "key_name": "smtp_port",
+        "key_value": null,
+        "required": true
+      }
+    },
+    {
+      "BasicConfig": {
+        "description": "string",
+        "key_name": "smtp_sender_email",
+        "key_value": null,
+        "required": true
+      }
+    },
+    {
+      "BasicConfig": {
+        "description": "string",
+        "key_name": "smtp_sender_password",
+        "key_value": null,
+        "required": true
+      }
+    },
+    {
+      "BasicConfig": {
+        "description": "string",
+        "key_name": "smtp_server",
+        "key_value": null,
+        "required": true
+      }
+    }
+  ],
+  "description": "Automated email responder that fetches emails and sends auto-generated responses.",
+  "keywords": [
+    "email",
+    "automation",
+    "response",
+    "shinkai"
+  ],
+  "name": "Email Response Automation",
+  "oauth": null,
+  "parameters": {
+    "properties": {},
+    "required": [],
+    "type": "object"
   },
   "result": {
-    "type": "object",
     "properties": {
-      "table_created": {
-        "type": "boolean",
-        "description": "Whether the table was created successfully"
-      },
-      "email_ids": {
-        "type": "array",
-        "description": "The IDs of the emails that have been answered on this iteration",
+      "mail_ids": {
+        "description": "List of mail IDs that were responded to",
         "items": {
-          "type": "string",
-          "description": "The ID of the email"
-        }
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "table_created": {
+        "description": "Indicates if the table was created",
+        "type": "boolean"
       }
     },
     "required": [
       "table_created",
-      "email_ids"
-    ]
+      "mail_ids"
+    ],
+    "type": "object"
   },
-  "sqlTables": [
-    "answered_emails"
-  ],
-  "sqlQueries": [
-    "CREATE TABLE IF NOT EXISTS personal_contacts (id TEXT PRIMARY KEY, name TEXT NOT NULL, email TEXT NOT NULL, creation_date DATETIME DEFAULT CURRENT_TIMESTAMP)",
-    "INSERT INTO answered_emails (subject, email, response, received_date, response_date) VALUES (?, ?, ?, ?, ?)"
-  ],
-  "tools": []
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": null
 }

@@ -222,7 +222,22 @@ function PackageList({ searchQuery }) {
                           >
                             <b>Author</b>: <a href={`https://shinkai-contracts.pages.dev/identity/${pkg.author.replace(/^@@/, '')}`} target="_blank" rel="noopener noreferrer">{pkg.author}</a>
                           </Typography>
-                        )}                      
+                        )}
+                        {pkg.default === "true" && (
+                          <Typography 
+                            variant="caption" 
+                            sx={{ 
+                              color: 'text.secondary',
+                              display: 'inline-block',
+                              backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                              px: 1,
+                              py: 0.5,
+                              borderRadius: 1,
+                            }}
+                          >
+                            <img src="/default.svg" alt="Core Tool" style={{ width: '16px', height: '16px' }} />
+                          </Typography>
+                        )}
                       </Stack>
                     </Box>
                     <Stack direction="row" spacing={1}>

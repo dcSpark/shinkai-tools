@@ -147,6 +147,12 @@ for tool_dir in tools/*/; do
         # Generate a blake3 hash of the .zip file
         blake3_hash=$(b3sum packages/${tool_name}.zip | cut -d ' ' -f 1)
 
+        # Check if a .default file exists for this tool
+        has_default=false
+        if [ -f "tools/${tool_name}/.default" ]; then
+            has_default=true
+        fi
+
         # Add tool to directory.json
         # Create temporary file with updated content
         jq --arg tool_name "$tool_name" \
@@ -157,8 +163,9 @@ for tool_dir in tools/*/; do
            --arg tool_router_key "$tool_router_key" \
            --arg description "$tool_description" \
            --arg blake3_hash "$blake3_hash" \
+           --arg has_default "$has_default" \
            --arg file "$DOWNLOAD_PREFIX/$tool_name.zip" \
-            '. += [{name: $tool_name, author: $author, keywords: $keywords, type: "Tool", tool_language: $tool_language, version: $version, description: $description, router_key: $tool_router_key, hash: $blake3_hash, file: $file}]' packages/directory.json > packages/directory.json.tmp
+            '. += [{default: $has_default, name: $tool_name, author: $author, keywords: $keywords, type: "Tool", tool_language: $tool_language, version: $version, description: $description, router_key: $tool_router_key, hash: $blake3_hash, file: $file}]' packages/directory.json > packages/directory.json.tmp
         # Replace original file with temporary file
         mv packages/directory.json.tmp packages/directory.json
     fi

@@ -47,6 +47,7 @@ jobs:
           BEARER_TOKEN: ${{ secrets.API_V2_KEY }}
           INITIALIZATION_DATA: ${{ secrets.INITIALIZATION_DATA }}
           DOWNLOAD_PREFIX: "https://download.shinkai.com/tools"
+          SKIP_IMPORT_FROM_DIRECTORY: true
         run: |
           ./.github/run_node.sh &
           timeout 60 bash -c 'until curl -s --location "$SHINKAI_NODE_ADDR/v2/health_check" | jq -e ".status == \"ok\"" > /dev/null; do sleep 1; done'

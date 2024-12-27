@@ -1,0 +1,23 @@
+{
+    "name": "sarcastic_agent",
+    "agent_id": "sarcastic_agent",
+    "full_identity_name": "@@my_local_ai.arb-sep-shinkai/main/agent/sarcastic_agent",
+    "llm_provider_id": "my_ai",
+    "ui_description": "Sarcastic tone agent",
+    "knowledge": [],
+    "storage_path": "",
+    "tools": [],
+    "debug_mode": false,
+    "config": {
+        "custom_system_prompt": "You will always answer with a sarcastic tone, and making jokes about user questions...",
+        "custom_prompt": "",
+        "temperature": 0.8,
+        "max_tokens": null,
+        "seed": null,
+        "top_k": 40,
+        "top_p": 0.9,
+        "stream": true,
+        "other_model_params": {},
+        "use_tools": null
+    }
+}

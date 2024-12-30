@@ -64,7 +64,20 @@ for tool_dir in tools/*/; do
                     activated: false,
                     assets: null,
                     author: ($metadata[0].author // "Unknown"),
-                    config: [],
+                    config: (
+                        if ($metadata[0].configurations | type) == "object" and ($metadata[0].configurations.properties | type) == "object" then
+                            ($metadata[0].configurations.properties | to_entries | map({
+                                BasicConfig: {
+                                    key_name: .key,
+                                    description: (.value.description // ""),
+                                    required: (if ($metadata[0].configurations.required | type) == "array" then .key as $k | $metadata[0].configurations.required | contains([$k]) else false end),
+                                    key_value: null
+                                }
+                            }))
+                        else
+                            []
+                        end
+                    ),
                     description: ($metadata[0].description // "No description provided."),
                     file_inbox: null,
                     input_args: ($metadata[0].parameters // []),
@@ -100,7 +113,20 @@ for tool_dir in tools/*/; do
                     activated: false,
                     assets: null,
                     author: ($metadata[0].author // "Unknown"),
-                    config: [],
+                    config: (
+                        if ($metadata[0].configurations | type) == "object" and ($metadata[0].configurations.properties | type) == "object" then
+                            ($metadata[0].configurations.properties | to_entries | map({
+                                BasicConfig: {
+                                    key_name: .key,
+                                    description: (.value.description // ""),
+                                    required: (if ($metadata[0].configurations.required | type) == "array" then .key as $k | $metadata[0].configurations.required | contains([$k]) else false end),
+                                    key_value: null
+                                }
+                            }))
+                        else
+                            []
+                        end
+                    ),
                     description: ($metadata[0].description // "No description provided."),
                     file_inbox: null,
                     input_args: ($metadata[0].parameters // []),

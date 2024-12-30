@@ -180,20 +180,7 @@ function PackageList({ searchQuery }) {
                         >
                           Hash: {pkg.hash.substring(0, 16)}...
                         </Typography>
-                        <Typography 
-                          variant="caption" 
-                          sx={{ 
-                            color: 'text.secondary',
-                            display: 'inline-block',
-                            backgroundColor: 'rgba(255, 255, 255, 0.05)',
-                            px: 1,
-                            py: 0.5,
-                            borderRadius: 1,
-                          }}
-                        >
-                          Type: {pkg.type || 'Unspecified'}
-                        </Typography>
-                        {pkg.tool_language && (
+                        {pkg.tool_type && (
                           <Typography 
                             variant="caption" 
                             sx={{ 
@@ -205,9 +192,9 @@ function PackageList({ searchQuery }) {
                               borderRadius: 1,
                             }}
                           >
-                            {pkg.tool_language === 'Python' ? <img src="/python.svg" alt="Python" style={{ width: '16px', height: '16px' }} /> : <img src="/deno.svg" alt="TypeScript" style={{ width: '16px', height: '16px' }} />}
+                            <b>Type</b>: {pkg.tool_type}
                           </Typography>
-                        )}
+                        )}                          
                         {pkg.author && (
                           <Typography 
                             variant="caption" 
@@ -222,22 +209,7 @@ function PackageList({ searchQuery }) {
                           >
                             <b>Author</b>: <a href={`https://shinkai-contracts.pages.dev/identity/${pkg.author.replace(/^@@/, '')}`} target="_blank" rel="noopener noreferrer">{pkg.author}</a>
                           </Typography>
-                        )}
-                        {pkg.default === "true" && (
-                          <Typography 
-                            variant="caption" 
-                            sx={{ 
-                              color: 'text.secondary',
-                              display: 'inline-block',
-                              backgroundColor: 'rgba(255, 255, 255, 0.05)',
-                              px: 1,
-                              py: 0.5,
-                              borderRadius: 1,
-                            }}
-                          >
-                            <img src="/default.svg" alt="Core Tool" style={{ width: '16px', height: '16px' }} />
-                          </Typography>
-                        )}
+                        )}                      
                       </Stack>
                     </Box>
                     <Stack direction="row" spacing={1}>

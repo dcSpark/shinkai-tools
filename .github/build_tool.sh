@@ -63,6 +63,11 @@ for tool_dir in tools/*/; do
                 content: [{
                     activated: false,
                     assets: null,
+                    file_inbox: null,
+                    oauth: null,
+                    output_arg: {
+                        json: ""
+                    },
                     author: ($metadata[0].author // "Unknown"),
                     config: (
                         if ($metadata[0].configurations | type) == "object" and ($metadata[0].configurations.properties | type) == "object" then
@@ -79,19 +84,15 @@ for tool_dir in tools/*/; do
                         end
                     ),
                     description: ($metadata[0].description // "No description provided."),
-                    file_inbox: null,
                     input_args: ($metadata[0].parameters // []),
                     keywords: ($metadata[0].keywords // []),
                     name: ($metadata[0].name // "Unknown"),
-                    oauth: null,
-                    output_arg: {
-                        json: ""
-                    },
                     result: ($metadata[0].result // {}),
-                    sql_queries: [],
-                    sql_tables: [],
+                    sql_queries: ($metadata[0].sqlQueries // []),
+                    sql_tables: ($metadata[0].sqlTables // []),
                     toolkit_name: ($metadata[0].id // "Unknown"),
-                    tools: [],
+                    tools: ($metadata[0].tools // []),
+                    version: ($metadata[0].version // "1.0.0"),
                     py_code: $code
                 }, false],
                 type: $tool_type
@@ -112,6 +113,11 @@ for tool_dir in tools/*/; do
                 content: [{
                     activated: false,
                     assets: null,
+                    file_inbox: null,
+                    oauth: null,
+                    output_arg: {
+                        json: ""
+                    },                    
                     author: ($metadata[0].author // "Unknown"),
                     config: (
                         if ($metadata[0].configurations | type) == "object" and ($metadata[0].configurations.properties | type) == "object" then
@@ -128,19 +134,15 @@ for tool_dir in tools/*/; do
                         end
                     ),
                     description: ($metadata[0].description // "No description provided."),
-                    file_inbox: null,
                     input_args: ($metadata[0].parameters // []),
                     keywords: ($metadata[0].keywords // []),
                     name: ($metadata[0].name // "Unknown"),
-                    oauth: null,
-                    output_arg: {
-                        json: ""
-                    },
                     result: ($metadata[0].result // {}),
-                    sql_queries: [],
-                    sql_tables: [],
+                    sql_queries: ($metadata[0].sqlQueries // []),
+                    sql_tables: ($metadata[0].sqlTables // []),
                     toolkit_name: ($metadata[0].id // "Unknown"),
-                    tools: [],
+                    tools: ($metadata[0].tools // []),
+                    version: ($metadata[0].version // "1.0.0"),                    
                     js_code: $code
                 }, false],
                 type: $tool_type

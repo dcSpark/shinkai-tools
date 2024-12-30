@@ -1,4 +1,5 @@
 {
+  "id": "shinkai-tool-smart-search",
   "name": "Smart Search Engine",
   "description": "This function takes a question as input and returns a comprehensive answer, along with the sources and statements used to generate the answer.",  
   "author": "Shinkai",

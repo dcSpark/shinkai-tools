@@ -1,4 +1,5 @@
 {
+    "id": "shinkai-tool-email-imap-fetcher",
     "name": "Email Fetcher",
     "version": "1.0.0",
     "description": "Fetches emails from an IMAP server and returns their subject, date, sender, and text content.",

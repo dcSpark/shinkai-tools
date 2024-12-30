@@ -1,4 +1,5 @@
 {
+    "id": "email-sender-shinkai",
     "name": "Send Email",
     "version": "1.0.0",
     "description": "Sends an email using SMTP.",

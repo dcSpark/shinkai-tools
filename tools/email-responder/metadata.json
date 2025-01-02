@@ -1,21 +1,20 @@
 {
-  "name": "Email Responder",
-  "description": "Downloads emails from an IMAP server, generates responses using an LLM, and sends the responses via SMTP.",
+  "name": "Email Answerer",
+  "description": "Tool for automatically answering emails by processing their content and responding to them.",
   "author": "@@eduardosotomontaner.arb-sep-shinkai",
   "version": "1.0.0",
   "keywords": [
     "email",
-    "LLM",
-    "response",
-    "IMAP",
-    "SMTP"
+    "answer",
+    "processor",
+    "shinkai"
   ],
   "configurations": {
     "type": "object",
     "properties": {
       "response_context": {
         "type": "string",
-        "description": "Contextual information for the LLM to use when generating responses."
+        "description": "The context to use when answering emails."
       }
     },
     "required": [
@@ -27,7 +26,11 @@
     "properties": {
       "from_date": {
         "type": "string",
-        "description": "Filter emails received after this date (ISO 8601 format)."
+        "description": "The date from which to start processing emails (inclusive)."
+      },
+      "to_date": {
+        "type": "string",
+        "description": "The date until which to process emails (exclusive)."
       }
     },
     "required": []
@@ -37,50 +40,55 @@
     "properties": {
       "table_created": {
         "type": "boolean",
-        "description": "Indicates if the answered_emails table was created."
+        "description": "Whether the table was created successfully."
       },
       "mail_ids": {
         "type": "array",
         "items": {
-          "oneOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "number"
-            }
-          ]
+          "type": "string"
         },
-        "description": "List of unique IDs of processed emails."
+        "description": "The IDs of the emails that were processed and answered."
       },
       "login_status": {
         "type": "string",
-        "description": "Status of the email server login."
+        "description": "The status of the login process on the imap fetcher."
+      },
+      "skipped": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "The IDs of the emails that were skipped."
       }
     },
     "required": [
       "table_created",
       "mail_ids",
-      "login_status"
+      "login_status",
+      "skipped"
     ]
   },
   "sqlTables": [
     {
       "name": "answered_emails",
-      "definition": "CREATE TABLE IF NOT EXISTS answered_emails (\n            email_unique_id TEXT PRIMARY KEY,\n            subject TEXT NOT NULL,\n            email TEXT NOT NULL,\n            response TEXT NOT NULL,\n            received_date DATETIME NOT NULL,\n            response_date DATETIME DEFAULT CURRENT_TIMESTAMP\n        );"
+      "definition": "CREATE TABLE IF NOT EXISTS answered_emails (email_unique_id TEXT UNIQUE PRIMARY KEY, subject TEXT NOT NULL, email TEXT NOT NULL, response TEXT NOT NULL, received_date DATETIME NOT NULL, response_date DATETIME DEFAULT CURRENT_TIMESTAMP)"
     }
   ],
   "sqlQueries": [
     {
-      "name": "Select all from answered_emails",
+      "name": "Get emails",
       "query": "SELECT * FROM answered_emails"
+    },
+    {
+      "name": "Get email by unique ID",
+      "query": "SELECT * FROM answered_emails WHERE email_unique_id = :emailUniqueId"
     }
   ],
   "tools": [
-    "local:::email_sender_shinkai:::send_email",
-    "local:::rust_toolkit:::shinkai_llm_prompt_processor",
-    "local:::rust_toolkit:::shinkai_sqlite_query_executor",
-    "local:::shinkai_tool_email_imap_fetcher:::email_fetcher"
+    "local:::shinkai_sqlite_query_executor",
+    "local:::shinkai_tool_email_imap_fetcher",
+    "local:::email_sender_shinkai",
+    "local:::rust_toolkit:::shinkai_llm_prompt_processor"
   ],
   "oauth": []
 }

@@ -1,7 +1,10 @@
-import { AppBar, Toolbar, Typography, TextField, Box, InputAdornment } from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
+import { AppBar, Toolbar, Typography, Box, Chip } from '@mui/material';
+import { usePrivy } from '@privy-io/react-auth';
+import { Link } from 'react-router-dom';
 
-function Header({ searchQuery, onSearchChange }) {
+function Header() {
+  const {ready, authenticated, login, logout} = usePrivy();
+
   return (
     <AppBar position="static">
       <Toolbar sx={{ flexDirection: { xs: 'column', sm: 'row' }, py: 2, gap: 2 }}>
@@ -14,7 +17,8 @@ function Header({ searchQuery, onSearchChange }) {
           <img 
             src="/shinkai-logo.png" 
             alt="Shinkai Logo" 
-            style={{ height: '32px' }} 
+            style={{ height: '32px', cursor: 'pointer' }} 
+            onClick={() => window.location.href = '/'}
           />
           <Typography 
             variant="h6" 
@@ -27,43 +31,41 @@ function Header({ searchQuery, onSearchChange }) {
             AI Store
           </Typography>
         </Box>
-        <Box sx={{ width: { xs: '100%', sm: '300px' } }}>
-          <TextField
-            fullWidth
-            variant="outlined"
-            placeholder="Search packages..."
-            size="small"
-            value={searchQuery}
-            onChange={(e) => onSearchChange(e.target.value)}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <SearchIcon sx={{ color: 'text.secondary' }} />
-                </InputAdornment>
-              ),
-            }}
-            sx={{
-              '& .MuiOutlinedInput-root': {
-                backgroundColor: 'background.paper',
-                '& fieldset': {
-                  borderColor: 'rgba(255, 255, 255, 0.1)',
-                },
-                '&:hover fieldset': {
-                  borderColor: 'rgba(255, 255, 255, 0.2)',
-                },
-                '&.Mui-focused fieldset': {
-                  borderColor: 'primary.main',
-                },
-              },
-              '& input': {
-                color: 'text.primary',
-                '&::placeholder': {
-                  color: 'text.secondary',
-                  opacity: 1,
-                },
-              },
-            }}
-          />
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+          {ready && authenticated ? (
+            <>
+              <Chip
+                label="Profile"
+                component={Link}
+                to="/profile"
+                clickable
+                color="primary"
+                sx={{ 
+                  borderRadius: 1
+                }}
+              />
+              <Chip
+                label="Log out"
+                onClick={logout}
+                clickable
+                color="primary"
+                sx={{ 
+                  borderRadius: 1
+                }}
+              />
+            </>
+          ) : (
+            <Chip
+              label="Login"
+              onClick={() => login()}
+              disabled={!ready}
+              clickable
+              color="primary"
+              sx={{ 
+                borderRadius: 1
+              }}
+            />
+          )}
         </Box>
       </Toolbar>
     </AppBar>

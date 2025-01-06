@@ -1,9 +1,26 @@
 import { AppBar, Toolbar, Typography, Box, Chip } from '@mui/material';
-import { usePrivy } from '@privy-io/react-auth';
+import { useLogin, usePrivy } from '@privy-io/react-auth';
 import { Link } from 'react-router-dom';
+import config from '../config';
 
-function Header() {
-  const {ready, authenticated, login, logout} = usePrivy();
+
+ function Header() {
+   const { ready, authenticated, logout } = usePrivy();
+   const { login } = useLogin({
+    onComplete: async (user) => {
+      await fetch(`${config.SHINKAI_STORE_API}/user/update`, {
+        method: "POST",
+        headers: {
+          "Authorization": JSON.parse(localStorage.getItem("privy:id_token")),
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(user)
+      });
+     },
+    onError: (error) => {
+      console.log("Login error.", error);
+    }
+  });
 
   return (
     <AppBar position="static">
@@ -57,7 +74,7 @@ function Header() {
           ) : (
             <Chip
               label="Login"
-              onClick={() => login()}
+              onClick={login}
               disabled={!ready}
               clickable
               color="primary"

@@ -1,49 +1,50 @@
-import { serve } from '@hono/node-server'
-import { Hono } from 'hono'
-import { PrivyClient } from '@privy-io/server-auth';
+import { serve } from '@hono/node-server';
+import { Hono } from 'hono';
+import { logger as honoLogger } from 'hono/logger';
+import { cors } from 'hono/cors';
+import logger from './libs/logger.js';
+import Users from './api/Users.js';
+import Store from './api/Store.js';
 
 const app = new Hono();
-const privy = new PrivyClient(
-  process.env.PRIVY_APP_ID!, // app id
-  process.env.PRIVY_APP_SECRET! // app secret
-);
+const users = new Users();
+const store = new Store();
 
-const port = 3000
-console.log(`Server is running on http://localhost:${port}`)
+// CORS
+app.use('*', cors({
+  origin: '*'
+}));
 
-app.get('/me', async (c) => {
-  const auth = c.req.header('Authorization');
-  if (!auth) {
-    return c.text('Unauthorized', { status: 401 });
-  }
-  try {
-    const user = await privy.getUser({ idToken: auth });
-    return c.json(user, { status: 200 });
-  } catch (e: any) {
-    return c.text(e.message, { status: 500 });
-  }
-})
 
-app.post('/register', async (c) => {
-  const auth = c.req.header('Authorization');
-  const data = await c.req.json();
-  if (!auth) {
-    return c.text('Unauthorized', { status: 401 });
+// Custom logger for Hono
+export const customLogger = (message: string, ...rest: any[]) => {
+  if (rest.length > 1) {
+    logger.info({ data: rest }, message);
+  } else if (rest.length > 0 ) {
+    logger.info(rest[0], message);
+  } else {
+    logger.info({}, message);
   }
-  try {
-    const user = await privy.getUser({ idToken: auth });
-    const metadata = await privy.setCustomMetadata(user.id, data);
-    return c.json(metadata, { status: 200 });
-  } catch (e: any) {
-    return c.text(e.message, { status: 500 });
-  }
-})
+}
+app.use(honoLogger(customLogger));
 
+// Users API endpoints
+app.get('/user/me', async (c) => users.getMe(c));
+app.post('/user/update', async (c) => users.updateUser(c));
+
+// Store API endpoints
+app.get('/store', async (c) => store.getStore(c));
+
+// Root endpoint
 app.get('/', (c) => {
-  return c.text('Shinkai Store API Server', { status: 200 });
-})
+  return c.json({ message: 'Shinkai Store API Server is running.' }, { status: 200 });
+});
 
+// Start server
+const port = process.env.PORT ? Number(process.env.PORT) : 3300;
 serve({
   fetch: app.fetch,
   port
-})
+});
+
+logger.info(`Server is running on http://localhost:${port}`);

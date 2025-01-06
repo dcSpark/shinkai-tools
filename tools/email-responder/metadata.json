@@ -1,0 +1,94 @@
+{
+  "name": "Email Answerer",
+  "description": "Tool for automatically answering emails by processing their content and responding to them.",
+  "author": "@@eduardosotomontaner.arb-sep-shinkai",
+  "version": "1.0.0",
+  "keywords": [
+    "email",
+    "answer",
+    "processor",
+    "shinkai"
+  ],
+  "configurations": {
+    "type": "object",
+    "properties": {
+      "response_context": {
+        "type": "string",
+        "description": "The context to use when answering emails."
+      }
+    },
+    "required": [
+      "response_context"
+    ]
+  },
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "from_date": {
+        "type": "string",
+        "description": "The date from which to start processing emails (inclusive)."
+      },
+      "to_date": {
+        "type": "string",
+        "description": "The date until which to process emails (exclusive)."
+      }
+    },
+    "required": []
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "table_created": {
+        "type": "boolean",
+        "description": "Whether the table was created successfully."
+      },
+      "mail_ids": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "The IDs of the emails that were processed and answered."
+      },
+      "login_status": {
+        "type": "string",
+        "description": "The status of the login process on the imap fetcher."
+      },
+      "skipped": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "The IDs of the emails that were skipped."
+      }
+    },
+    "required": [
+      "table_created",
+      "mail_ids",
+      "login_status",
+      "skipped"
+    ]
+  },
+  "sqlTables": [
+    {
+      "name": "answered_emails",
+      "definition": "CREATE TABLE IF NOT EXISTS answered_emails (email_unique_id TEXT UNIQUE PRIMARY KEY, subject TEXT NOT NULL, email TEXT NOT NULL, response TEXT NOT NULL, received_date DATETIME NOT NULL, response_date DATETIME DEFAULT CURRENT_TIMESTAMP)"
+    }
+  ],
+  "sqlQueries": [
+    {
+      "name": "Get emails",
+      "query": "SELECT * FROM answered_emails"
+    },
+    {
+      "name": "Get email by unique ID",
+      "query": "SELECT * FROM answered_emails WHERE email_unique_id = :emailUniqueId"
+    }
+  ],
+  "tools": [
+    "local:::shinkai_sqlite_query_executor",
+    "local:::shinkai_tool_email_imap_fetcher",
+    "local:::email_sender_shinkai",
+    "local:::rust_toolkit:::shinkai_llm_prompt_processor"
+  ],
+  "oauth": []
+}

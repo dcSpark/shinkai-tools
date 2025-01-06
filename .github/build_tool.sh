@@ -153,13 +153,22 @@ for tool_dir in tools/*/; do
         fi
         
         # Send to Shinkai node using the temporary file and capture response
-        uploaded_tool=$(curl -s --location "${SHINKAI_NODE_ADDR}/v2/add_shinkai_tool" \
+        response=$(curl -s -w "\n%{http_code}" --location "${SHINKAI_NODE_ADDR}/v2/add_shinkai_tool" \
             --header "Authorization: Bearer ${BEARER_TOKEN}" \
             --header 'Content-Type: application/json' \
             --data @/tmp/request.json)
+        
+        http_code=$(echo "$response" | tail -n1)
+        uploaded_tool=$(echo "$response" | head -n1)
 
         # Clean up request file
         rm /tmp/request.json
+
+        if [ "$http_code" != "200" ]; then
+            echo "Failed to upload tool to Shinkai node. HTTP status: $http_code"
+            echo "Response: $uploaded_tool"
+            continue
+        fi
 
         tool_router_key=$(echo "$uploaded_tool" | jq -r '.message' | sed 's/.*key: //')
         tool_description=$(echo "$metadata_content" | jq -r '.description // "No description provided."')
@@ -167,10 +176,21 @@ for tool_dir in tools/*/; do
         version=$(echo "$metadata_content" | jq -r '.version // "0.0.0"')
         keywords=$(echo "$metadata_content" | jq -r '.keywords // ["tool"]')
 
-        # Request zip file from the node.
-        curl -s --location "${SHINKAI_NODE_ADDR}/v2/export_tool?tool_key_path=${tool_router_key}" \
+        # Request zip file from the node
+        response=$(curl -s -w "\n%{http_code}" --location "${SHINKAI_NODE_ADDR}/v2/export_tool?tool_key_path=${tool_router_key}" \
             --header "Authorization: Bearer ${BEARER_TOKEN}" \
-            --header 'Content-Type: application/json; charset=utf-8' > packages/${tool_name}.zip
+            --header 'Content-Type: application/json; charset=utf-8')
+
+        http_code=$(echo "$response" | tail -n1)
+        zip_content=$(echo "$response" | head -n1)
+
+        if [ "$http_code" != "200" ]; then
+            echo "Failed to export tool from Shinkai node. HTTP status: $http_code"
+            echo "Response: $zip_content"
+            continue
+        fi
+
+        echo "$zip_content" > packages/${tool_name}.zip
 
         # Generate a blake3 hash of the .zip file
         blake3_hash=$(b3sum packages/${tool_name}.zip | cut -d ' ' -f 1)

@@ -13,7 +13,7 @@
     "configurations": [],
     "parameters": {
       "properties": {
-        "quert": {
+        "query": {
           "description": "The search query to look up",
           "type": "string"
         }

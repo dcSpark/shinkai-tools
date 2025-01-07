@@ -1,7 +1,7 @@
 {
-    "id": "shinkai-tool-download-pages",
+    "id": "download-pages",
     "version": "1.0.0",
-    "name": "Shinkai: Download Pages",
+    "name": "Download Pages",
     "description": "Downloads one or more URLs and converts their HTML content to Markdown",
     "author": "Shinkai",
     "keywords": [

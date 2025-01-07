@@ -68,20 +68,18 @@ export async function run(config: CONFIG, inputs: INPUTS): Promise<OUTPUT> {
         );
     `;
 
-    await shinkaiSqliteQueryExecutor({ query: createTableQuery, database_name: dbName });
+    await shinkaiSqliteQueryExecutor({ query: createTableQuery });
     // Ensure the connection is closed or cleaned up if necessary
     // Verify table creation was successful
     const tableCheck = await shinkaiSqliteQueryExecutor({
         query: `SELECT name FROM sqlite_master WHERE type='table' AND name=?;`,
-        database_name: dbName,
-        query_params: [tableName]
+        params: [tableName]
     });
     const tableCreated = tableCheck?.result?.length > 0;
     let { emails, login_status } = await emailFetcher({ from_date: inputs.from_date, to_date: inputs.to_date });
 
     const answeredEmailsQuery = await shinkaiSqliteQueryExecutor({
         query: `SELECT * FROM ${tableName}`,
-        database_name: dbName
     });
     if (!answeredEmailsQuery?.result) {
         throw new Error('Failed to query answered emails');
@@ -153,7 +151,7 @@ export async function run(config: CONFIG, inputs: INPUTS): Promise<OUTPUT> {
                 escapeSqlString(response.message),
                 new Date(email.date)
             );
-            await shinkaiSqliteQueryExecutor({ query: insertEmail, database_name: dbName })
+            await shinkaiSqliteQueryExecutor({ query: insertEmail })
             const mailId = emailUniqueId;
             mailIds.push(mailId);
         }

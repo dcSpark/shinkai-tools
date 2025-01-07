@@ -1,6 +1,6 @@
 {
-    "id": "shinkai-tool-youtube-summary",
-    "name": "Shinkai: YouTube Video Summary",
+    "id": "youtube-summary",
+    "name": "YouTube Video Summary",
     "description": "Summarizes a YouTube video. Provides a summary with organized sections and clickable timestamp links. Useful for quickly grasping main points, preparing for discussions, or efficient research. Example uses: summarizing tech talks, product reviews, or educational lectures. Parameters: url (string) - The full YouTube video URL to process.",
     "author": "Shinkai",
     "keywords": [

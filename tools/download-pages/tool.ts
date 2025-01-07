@@ -14,6 +14,9 @@ export const run: Run<Configurations, Parameters, Result> = async (
   parameters: Parameters,
 ): Promise<Result> => {
   try {
+    if (typeof parameters.urls === 'string') {
+      parameters.urls = [parameters.urls];
+    }
     const responses = await axios.all(
       parameters.urls.map((url) => axios.get(url)),
     );

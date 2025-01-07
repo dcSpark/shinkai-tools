@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { 
   Container, 
   Paper, 
@@ -7,11 +8,48 @@ import {
   Stack,
   Divider 
 } from '@mui/material';
-import { usePrivy, useUpdateAccount } from '@privy-io/react-auth';
-
+import { usePrivy, useUpdateAccount, useLinkAccount } from '@privy-io/react-auth';
+import config from '../config';
 function UserProfile() {
-  const { user, ready, authenticated, linkEmail, linkPhone, linkWallet } = usePrivy();
-  const { updateEmail, updatePhone } = useUpdateAccount();
+  const { user, ready, authenticated } = usePrivy();
+  const { linkEmail, linkPhone, linkWallet } = useLinkAccount({
+    onSuccess: async (user) => {
+      await fetch(`${config.SHINKAI_STORE_API}/user/update`, {
+        method: "POST",
+        headers: {
+          "Authorization": JSON.parse(localStorage.getItem("privy:id_token")),
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(user)
+      });
+    },
+    onError: (error) => {
+      console.log("Update account error.", error);
+    }
+  });
+
+  const { updateEmail, updatePhone } = useUpdateAccount({
+    onSuccess: async (user) => {
+      await fetch(`${config.SHINKAI_STORE_API}/user/update`, {
+        method: "POST",
+        headers: {
+          "Authorization": JSON.parse(localStorage.getItem("privy:id_token")),
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(user)
+      });
+    },
+    onError: (error) => {
+      console.log("Update account error.", error);
+    }
+  });
+
+  const [name, setName] = useState('');
+  useEffect(() => {
+    if (user?.customMetadata?.name) {
+      setName(user.customMetadata.name);
+    }
+  }, [user]);
 
   if (!ready || !authenticated) {
     return (
@@ -29,6 +67,46 @@ function UserProfile() {
         <Typography variant="h4" gutterBottom>User Profile</Typography>
 
         <Stack spacing={3}>
+          {/* Name Section */}
+          <Box>
+            <Typography variant="h6" gutterBottom>Name</Typography>
+            <Stack direction="row" spacing={2} alignItems="center">
+              <Typography sx={{ color: 'text.secondary' }}>
+                {name || 'No name set'}
+              </Typography>
+              <Chip
+                label={name ? "Update Name" : "Set Name"}
+                onClick={async() => {
+                  const name = prompt("Enter your name:");
+                  if (name) {
+                    const response = await fetch(`${config.SHINKAI_STORE_API}/user/update`, {
+                      method: "POST",
+                      headers: {
+                        "Authorization": JSON.parse(localStorage.getItem("privy:id_token")),
+                        "Content-Type": "application/json"
+                      },
+                      body: JSON.stringify({
+                        customMetadata: {
+                          ...user?.customMetadata,
+                          name
+                        }
+                      })
+                    });
+                    if (response.ok) {
+                      const data = await response.json();
+                      console.log(data);
+                      setName(data.customMetadata.name);
+                    }
+                  }
+                }}
+                color="primary"
+              />
+            </Stack>
+          </Box>
+
+          <Divider />
+
+          
           {/* Wallet Section */}
           <Box>
             <Typography variant="h6" gutterBottom>Wallet</Typography>
@@ -36,7 +114,7 @@ function UserProfile() {
             <Typography sx={{ color: 'text.secondary', wordBreak: 'break-all' }}>
               {user?.wallet?.address || 'No wallet connected'} ({user?.wallet?.walletClientType})
             </Typography>
-            {!user?.wallet?.address && (
+            {!user?.wallet?.address ?? (
               <Chip 
                 label="Link Wallet" 
                 onClick={linkWallet}

@@ -48,31 +48,33 @@ class ShinkaiStoreDatabase {
   }
 
   // Users (Customers)
-  public async createUser(user: User) {
-    const query = `
-      INSERT INTO users (id, email, name, phone, wallet) 
-      VALUES ($1, $2, $3, $4, $5)
-    `;
-    
-    return await ShinkaiStoreDatabase.db.query(query, [
-      user.id,
-      user.email,
-      user.name,
-      user.phone,
-      JSON.stringify(user.wallet)
-    ]);
+  public async createUser(user: User): Promise<Boolean> {  
+    try {
+      const userQuery = await ShinkaiStoreDatabase.db.query(`INSERT INTO users (id, email, name, phone, wallet) 
+        VALUES ($1, $2, $3, $4, $5)`, [
+        user.id,
+        user.email,
+        user.name,
+        user.phone,
+        JSON.stringify(user.wallet)
+      ]);
+
+      return (userQuery?.rowCount ?? 0) > 0;
+    } catch (error) {
+      logger.error(error, "Error creating user");
+      return false;
+    }
   }
   
-  public async getUser(id: string) {
-    const user = await ShinkaiStoreDatabase.db.query('SELECT * FROM users WHERE id = $1', [id]);
-    return user;
+  public async getUser(id: string): Promise<User> {
+    const userQuery = await ShinkaiStoreDatabase.db.query('SELECT * FROM users WHERE id = $1', [id]);
+    return userQuery.rows[0];
   }
 
-  public async updateUser(user: User) {
-    const query = `
-      UPDATE users SET email = $2, name = $3, phone = $4, wallet = $5 WHERE id = $1
-    `;
-    return await ShinkaiStoreDatabase.db.query(query, [user.id, user.email, user.name, user.phone, JSON.stringify(user.wallet)]);
+  public async updateUser(user: User): Promise<User> {
+    const query = 'UPDATE users SET email = $2, name = $3, phone = $4, wallet = $5 WHERE id = $1';
+    const updateQuery = await ShinkaiStoreDatabase.db.query(query, [user.id, user.email, user.name, user.phone, JSON.stringify(user.wallet)]);
+    return updateQuery.rows[0]
   }
 
   // Orders (Purchases)

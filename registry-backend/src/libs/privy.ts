@@ -31,7 +31,7 @@ class Privy {
         }
     }
 
-    public async setCustomMetadata(userId: string, data: any): Promise<PrivyUser | null> {
+    public async setCustomMetadata(userId: string, data: any): Promise<PrivyUser> {
         try {
             return await this.privy.setCustomMetadata(userId, data);
         } catch (e: any) {

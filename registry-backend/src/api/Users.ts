@@ -44,8 +44,8 @@ class Users {
         }
 
         try {
-            const user = await this.privy.getUser(auth);
-            const metadata = await this.privy.setCustomMetadata(user.id, data.customMetadata);
+            let user = await this.privy.getUser(auth);
+            if (data.customMetadata) user = await this.privy.setCustomMetadata(user.id, data.customMetadata);
             const dbUser = await this.db.getUser(user.id);
             
             const privyUser = {
@@ -59,7 +59,7 @@ class Users {
             if (!dbUser) await this.db.createUser(privyUser);
             else await this.db.updateUser(privyUser);
 
-            return c.json(metadata, { status: 200 });
+            return c.json(user, { status: 200 });
         } catch (e: any) {
             logger.error(e, "Error");
             return c.json({

@@ -3,16 +3,17 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { PrivyProvider } from '@privy-io/react-auth';
 import App from './App';
+import config from './config';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
     <PrivyProvider
-      appId="cm5gnvpmz0bytxokknq8flluf"
+      appId={config.PRIVY_APP_ID}
       config={{
         // Display email and wallet as login methods
-        loginMethods: ['email', 'wallet', 'phone'],
+        // loginMethods: ['email', 'wallet', 'phone'],
         // Customize Privy's appearance in your app
         appearance: {
           theme: 'dark',
@@ -21,7 +22,11 @@ root.render(
         },
         // Create embedded wallets for users who don't have a wallet
         embeddedWallets: {
-          createOnLogin: 'users-without-wallets',
+          createOnLogin: 'off',
+          priceDisplay: {primary: 'fiat-currency', secondary: 'native-token'},
+          extendedCalldataDecoding: true,
+          waitForTransactionConfirmation: true,
+          showWalletUIs: true,
         },
       }}
     >

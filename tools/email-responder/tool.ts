@@ -50,7 +50,7 @@ type OUTPUT = {
 
 // Helper function to escape user input
 function escapeSqlString(str: string): string {
-    return `'${str.replace(/'/g, "''")}'`; // Replaces single quotes with two single quotes
+    return `'${str.replace(/'/g, "''").replace('--', '').replace(';', '')}'`; // Replaces single quotes with two single quotes
 }
 
 export async function run(config: CONFIG, inputs: INPUTS): Promise<OUTPUT> {

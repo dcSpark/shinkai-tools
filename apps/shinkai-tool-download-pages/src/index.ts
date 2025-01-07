@@ -3,27 +3,23 @@ import axios from 'npm:axios@1.7.7';
 
 type Configurations = {};
 type Parameters = {
-  urls: string[];
+  url: string;
 };
 
-type Result = { markdowns: string[] };
+type Result = { markdown: string };
 
 export const run: Run<Configurations, Parameters, Result> = async (
   _configurations: Configurations,
   parameters: Parameters,
 ): Promise<Result> => {
   try {
-    const responses = await axios.all(
-      parameters.urls.map((url) => axios.get(url)),
-    );
+    const response = await axios.get(parameters.url);
     const turndownService = new TurndownService();
-    const markdowns = responses.map((response: any) =>
-      turndownService.turndown(response.data),
-    );
-    return Promise.resolve({ markdowns });
+    const markdown = turndownService.turndown(response.data);
+    return Promise.resolve({ markdown });
   } catch (error) {
     console.log('error', error);
-    return Promise.resolve({ markdowns: [] });
+    return Promise.resolve({ markdown: '' });
   }
 };
 
@@ -31,7 +27,7 @@ export const definition: ToolDefinition<typeof run> = {
   id: 'shinkai-tool-download-pages',
   name: 'Shinkai: Download Pages',
   description:
-    'Downloads one or more URLs and converts their HTML content to Markdown',
+    'Downloads a URL and converts its HTML content to Markdown',
   author: 'Shinkai',
   keywords: [
     'HTML to Markdown',
@@ -47,15 +43,15 @@ export const definition: ToolDefinition<typeof run> = {
   parameters: {
     type: 'object',
     properties: {
-      urls: { type: 'array', items: { type: 'string' } },
+      url: { type: 'string' },
     },
-    required: ['urls'],
+    required: ['url'],
   },
   result: {
     type: 'object',
     properties: {
-      markdowns: { type: 'array', items: { type: 'string' } },
+      markdown: { type: 'string' },
     },
-    required: ['markdowns'],
+    required: ['markdown'],
   },
 };

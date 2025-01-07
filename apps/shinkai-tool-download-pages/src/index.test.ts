@@ -7,17 +7,10 @@ Deno.test({
   fn: async () => {
     const result = await run(
       {},
-      { urls: ['https://en.wikipedia.org/wiki/Python_programming_language'] },
+      { url: 'https://en.wikipedia.org/wiki/Python_programming_language' },
     );
-    console.log('markdowns', result.markdowns);
-    expect(
-      result.markdowns.find((markdown) =>
-        markdown.includes('dynamically type'),
-      ),
-    ).toBeDefined();
-
-    expect(
-      result.markdowns.find((markdown) => markdown.includes('#History')),
-    ).toBeDefined();
+    console.log('markdown', result.markdown);
+    expect(result.markdown.includes('dynamically type')).toBe(true);
+    expect(result.markdown.includes('#History')).toBe(true);
   },
 });

@@ -29,9 +29,17 @@ class ShinkaiStoreDatabase {
       ShinkaiStoreDatabase.db.query(`
         CREATE TABLE IF NOT EXISTS products (
           id TEXT PRIMARY KEY,
-          name TEXT,
-          description TEXT,
-          price INTEGER,
+          name TEXT NOT NULL,
+          author TEXT NOT NULL,
+          description TEXT NOT NULL,
+          type TEXT NOT NULL,
+          tool_language TEXT NOT NULL,
+          version TEXT NOT NULL,
+          router_key TEXT NOT NULL,
+          hash TEXT NOT NULL,
+          file TEXT NOT NULL,
+          is_default BOOLEAN NOT NULL DEFAULT false,
+          keywords TEXT[] NOT NULL,
           created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
         )
       `);
@@ -39,8 +47,8 @@ class ShinkaiStoreDatabase {
       ShinkaiStoreDatabase.db.query(`
         CREATE TABLE IF NOT EXISTS orders (
           id TEXT PRIMARY KEY,
-          user_id TEXT,
-          product_id TEXT,
+          user_id TEXT REFERENCES users(id),
+          product_id TEXT REFERENCES products(id),
           created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
         )
       `);
@@ -100,20 +108,69 @@ class ShinkaiStoreDatabase {
   }
 
   // Products (Tools)
+  public async getProducts(page: number = 1, limit: number = 10, search?: string) {
+    const offset = (page - 1) * limit;
+    let query = 'SELECT * FROM products';
+    let countQuery = 'SELECT COUNT(*) FROM products';
+    const queryParams = [];
+    
+    if (search) {
+      const searchCondition = `
+        WHERE name ILIKE $1 
+        OR description ILIKE $1
+        OR keywords ILIKE $1
+      `;
+      query += searchCondition;
+      countQuery += searchCondition;
+      queryParams.push(`%${search}%`);
+    }
+
+    query += ' LIMIT $' + (queryParams.length + 1) + ' OFFSET $' + (queryParams.length + 2);
+    queryParams.push(limit, offset);
+
+    const products = await ShinkaiStoreDatabase.db.query(query, queryParams);
+    const totalCount = await ShinkaiStoreDatabase.db.query(countQuery, search ? [`%${search}%`] : []);
+
+    return {
+      products: products.rows,
+      total: parseInt(totalCount.rows[0].count),
+      page,
+      limit,
+      totalPages: Math.ceil(parseInt(totalCount.rows[0].count) / limit)
+    };
+  }
+
   public async createProduct(product: Product) {
-    return await ShinkaiStoreDatabase.db.query(`
-      INSERT INTO products (id, name, description, price) VALUES (${product.id}, ${product.name}, ${product.description}, ${product.price})
-    `);
-  }
+    // Validate required parameters
+    if (!product.id || !product.name) {
+      throw new Error('Product id and name are required');
+    }
 
-  public async getProduct(id: string) {
-    const product = await ShinkaiStoreDatabase.db.query(`SELECT * FROM products WHERE id = ${id}`);
-    return product;
-  }
+    const query = `
+      INSERT INTO products (
+        id, name, author, description, type, tool_language, 
+        version, router_key, hash, file, is_default, keywords
+      ) VALUES (
+        $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12
+      )
+    `;
 
-  public async getProducts(page: number = 1, limit: number = 10) {
-    const products = await ShinkaiStoreDatabase.db.query(`SELECT * FROM products LIMIT ${limit} OFFSET ${page}`);
-    return products;
+    const values = [
+      product.id,
+      product.name,
+      product.author,
+      product.description, 
+      product.type,
+      product.tool_language,
+      product.version,
+      product.router_key,
+      product.hash,
+      product.file,
+      product.is_default || false,
+      product.keywords
+    ];
+
+    return await ShinkaiStoreDatabase.db.query(query, values);
   }
 }
 

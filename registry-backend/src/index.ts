@@ -33,7 +33,8 @@ app.get('/user/me', async (c) => users.getMe(c));
 app.post('/user/update', async (c) => users.updateUser(c));
 
 // Store API endpoints
-app.get('/store', async (c) => store.getStore(c));
+app.post('/store/new', async (c) => store.createProduct(c));
+app.get('/store/products', async (c) => store.listProducts(c));
 
 // Root endpoint
 app.get('/', (c) => {

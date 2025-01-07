@@ -20,7 +20,10 @@ class Users {
     }
 
     public async getMe(c: Context): Promise<any> {
-        const auth = c.req.header('Authorization');
+        const auth = c.req.header('Authorization')?.startsWith('Bearer ') 
+          ? c.req.header('Authorization')?.replace('Bearer ', '')
+          : c.req.header('Authorization');
+        logger.info(auth, 'auth');
         if (!auth || !(await this.privy.verifyAuthToken(auth))) {
             return c.json({ message: Texts.Unauthorized }, { status: 401 });
         }
@@ -37,7 +40,9 @@ class Users {
     }
 
     public async updateUser(c: Context) {
-        const auth = c.req.header('Authorization');
+        const auth = c.req.header('Authorization')?.startsWith('Bearer ') 
+          ? c.req.header('Authorization')?.replace('Bearer ', '')
+          : c.req.header('Authorization');
         const data = await c.req.json();
         if (!auth || !(await this.privy.verifyAuthToken(auth))) {
             return c.json({ message: Texts.Unauthorized }, { status: 401 });

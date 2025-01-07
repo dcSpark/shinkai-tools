@@ -176,21 +176,17 @@ for tool_dir in tools/*/; do
         version=$(echo "$metadata_content" | jq -r '.version // "0.0.0"')
         keywords=$(echo "$metadata_content" | jq -r '.keywords // ["tool"]')
 
-        # Request zip file from the node
-        response=$(curl -s -w "\n%{http_code}" --location "${SHINKAI_NODE_ADDR}/v2/export_tool?tool_key_path=${tool_router_key}" \
+        # Request zip file from the node.
+        curl -s --location "${SHINKAI_NODE_ADDR}/v2/export_tool?tool_key_path=${tool_router_key}" \
             --header "Authorization: Bearer ${BEARER_TOKEN}" \
-            --header 'Content-Type: application/json; charset=utf-8')
+            --header 'Content-Type: application/json; charset=utf-8' > packages/${tool_name}.zip
 
-        http_code=$(echo "$response" | tail -n1)
-        zip_content=$(echo "$response" | head -n1)
-
-        if [ "$http_code" != "200" ]; then
-            echo "Failed to export tool from Shinkai node. HTTP status: $http_code"
-            echo "Response: $zip_content"
+        # Validate that the downloaded zip file is valid
+        if ! unzip -t "packages/${tool_name}.zip" > /dev/null 2>&1; then
+            echo "Error: Invalid zip file downloaded for ${tool_name}"
+            rm "packages/${tool_name}.zip"
             continue
         fi
-
-        echo "$zip_content" > packages/${tool_name}.zip
 
         # Generate a blake3 hash of the .zip file
         blake3_hash=$(b3sum packages/${tool_name}.zip | cut -d ' ' -f 1)

@@ -46,9 +46,8 @@ function UserProfile() {
 
   const [name, setName] = useState('');
   useEffect(() => {
-    if (user?.customMetadata?.name) {
-      setName(user.customMetadata.name);
-    }
+    if (user?.customMetadata?.name) setName(user.customMetadata.name);
+    else setName('');
   }, [user]);
 
   if (!ready || !authenticated) {

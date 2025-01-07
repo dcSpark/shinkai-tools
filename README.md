@@ -1,28 +1,10 @@
 # Shinkai Tools 🛠️
 
-[![Deployed Site](https://img.shields.io/badge/Deployed-Site-brightgreen)](https://packages.shinkai.com)
-
 A collection of official tools for Shinkai, providing various functionalities from basic examples to advanced search capabilities.
 
 ## Overview
 
-This repository hosts:
-1. A suite of tools designed to work with Shinkai's infrastructure
-2. A modern web-based package registry interface to browse and install tools
-
-## Package Registry
-
-The package registry provides a user-friendly interface to:
-- Browse available Shinkai tools
-- Search tools by name or description
-- View tool details including version, author, and hash
-- Install tools directly through the Shinkai desktop app
-
-### Features
-- Dark mode interface matching Shinkai's design
-- Real-time search functionality
-- Direct installation via `shinkai://` protocol
-- Responsive design for all devices
+This repository hosts a suite of tools designed to work with Shinkai's infrastructure
 
 ## Available Tools
 
@@ -41,6 +23,8 @@ Currently available tools include:
 - Performs intelligent query optimization
 - Returns comprehensive answers with sources
 - Advanced search capabilities
+
+And more!
 
 ## Project Structure
 ```

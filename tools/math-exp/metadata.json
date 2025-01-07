@@ -1,6 +1,6 @@
 {
-    "id": "shinkai-tool-math-exp",
-    "name": "Shinkai: Math Expression Evaluator",
+    "id": "math-exp",
+    "name": "Math Expression Evaluator",
     "description": "Parses and evaluates mathematical expressions. It’s a safer and more math-oriented alternative to using JavaScript’s eval function for mathematical expressions.",
     "author": "Shinkai",
     "keywords": [

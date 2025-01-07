@@ -1,0 +1,42 @@
+{
+    "id": "download-pages",
+    "version": "1.0.0",
+    "name": "Download Pages",
+    "description": "Downloads a URL and converts its HTML content to Markdown",
+    "author": "Shinkai",
+    "keywords": [
+      "HTML to Markdown",
+      "web page downloader",
+      "content conversion",
+      "URL to Markdown"
+    ],
+    "configurations": {
+      "type": "object",
+      "properties": {},
+      "required": []
+    },
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string",
+          "description": "A URL of a web page to download"
+        }
+      },
+      "required": [
+        "url"
+      ]
+    },
+    "result": {
+      "type": "object",
+      "properties": {
+        "markdown": {
+          "type": "string",
+          "description": "The Markdown content converted from the web page"
+        }
+      },
+      "required": [
+        "markdown"
+      ]
+    }
+  }

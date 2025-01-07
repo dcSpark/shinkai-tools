@@ -8,6 +8,7 @@ class CONFIG:
     username: str
     password: str
     port: int = 143  # Default port for IMAPS
+    ssl: bool = False  # New flag to specify SSL usage
 
 class INPUTS:
     from_date: Optional[str]
@@ -25,9 +26,14 @@ class Email:
 
 async def run(config: CONFIG, inputs: INPUTS) -> OUTPUT:
     output = OUTPUT()
+    output.login_status = "N/A"
     output.emails = []
     try:
-        imap = imaplib.IMAP4(config.imap_server, config.port)  # Use config port
+        # Use SSL if the ssl flag is set to True
+        if config.ssl:
+            imap = imaplib.IMAP4_SSL(config.imap_server, config.port)
+        else:
+            imap = imaplib.IMAP4(config.imap_server, config.port)  # Use config port
     except Exception as ee:
         output.login_status = 'IMAP4 INIT FAILED - ' + str(ee)
         return output

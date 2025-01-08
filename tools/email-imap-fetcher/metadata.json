@@ -44,7 +44,16 @@
     },
     "parameters": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "from_date": {
+          "type": "string",
+          "description": "The start date for the email search (optional)"
+        },
+        "to_date": {
+          "type": "string",
+          "description": "The end date for the email search (optional)"
+        }
+      },
       "required": []
     },
     "result": {

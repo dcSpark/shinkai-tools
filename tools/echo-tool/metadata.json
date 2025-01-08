@@ -1,0 +1,32 @@
+{
+  "name": "Echo Tool",
+  "version": "1.0.0",
+  "description": "Echoes the user input back to output",
+  "author": "Shinkai",
+  "keywords": ["echo", "test", "tool"],
+  "configurations": {
+    "type": "object",
+    "properties": {},
+    "required": []
+  },
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "text": {
+        "type": "string",
+        "description": "The text to echo."
+      }
+    },
+    "required": ["text"]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "echoed": {
+        "type": "string",
+        "description": "The echoed text."
+      }
+    },
+    "required": ["echoed"]
+  }
+}

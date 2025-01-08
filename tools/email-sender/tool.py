@@ -13,7 +13,7 @@ class CONFIG:
     port: int = 465  # Default port for SMTP
     sender_email: str
     sender_password: str
-    ssl: bool = False  # New flag to specify SSL usage for SMTP
+    ssl: bool = True  # New flag to specify SSL usage for SMTP
 
 class INPUTS:
     recipient_email: str

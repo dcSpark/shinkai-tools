@@ -8,7 +8,7 @@ class CONFIG:
     username: str
     password: str
     port: int = 143  # Default port for IMAPS
-    ssl: bool = False  # New flag to specify SSL usage
+    ssl: bool = True  # New flag to specify SSL usage
 
 class INPUTS:
     from_date: Optional[str]

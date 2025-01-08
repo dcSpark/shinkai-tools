@@ -1,0 +1,17 @@
+{
+  "name": "Shinkai: Meme Generator",
+  "description": "Generates a meme based on a given joke using the Imgflip API. The tool intelligently selects the most appropriate meme template based on the joke's content and automatically splits the text into optimal parts for the chosen template.",
+  "author": "Shinkai",
+  "params": {
+    "joke": {
+      "type": "string",
+      "description": "The joke text to be converted into a meme. Can be a single line, multiple lines, or a question-answer format."
+    }
+  },
+  "output": {
+    "memeUrl": {
+      "type": "string",
+      "description": "URL of the generated meme image from Imgflip. The URL will point to a publicly accessible image that combines the selected template with the provided joke text."
+    }
+  }
+}

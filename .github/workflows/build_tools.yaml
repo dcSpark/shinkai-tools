@@ -24,15 +24,15 @@ jobs:
       - name: Install b3sum
         run: cargo install b3sum
 
+      - name: Setup Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y curl jq coreutils
-
-      - name: Make script executable
-        run: |
-          chmod +x ./.github/build_tool.sh
-          chmod +x ./.github/run_node.sh
+          sudo apt-get install -y curl jq zip unzip coreutils
 
       - name: Run node in background
         id: run_node
@@ -49,12 +49,12 @@ jobs:
           DOWNLOAD_PREFIX: "https://download.shinkai.com/tools"
           SKIP_IMPORT_FROM_DIRECTORY: true
         run: |
-          ./.github/run_node.sh &
+          ./scripts/run_node.sh &
           timeout 60 bash -c 'until curl -s --location "$SHINKAI_NODE_ADDR/v2/health_check" | jq -e ".status == \"ok\"" > /dev/null; do sleep 1; done'
-            curl --location "$SHINKAI_NODE_ADDR/v2/initial_registration" \
-          --header 'Content-Type: application/json; charset=utf-8' \
+          curl --location "$SHINKAI_NODE_ADDR/v2/initial_registration" \
+            --header 'Content-Type: application/json; charset=utf-8' \
             --data "$INITIALIZATION_DATA"
-          ./.github/build_tool.sh
+          deno run --allow-read --allow-write --allow-env --allow-net --allow-run scripts/build_tools.ts
           if jq -e '.[] | select(.description == "")' packages/directory.json > /dev/null; then
             echo "Error: Empty descriptions found in packages/directory.json"
             exit 1

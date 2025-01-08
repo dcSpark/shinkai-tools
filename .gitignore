@@ -3,3 +3,4 @@ tools/**/shinkai-local-tools.ts
 .DS_Store
 packages**
 shinkai-node**
+deno.lock

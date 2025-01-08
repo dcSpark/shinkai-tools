@@ -1,7 +1,7 @@
 {
-    "id": "shinkai-tool-coinbase-call-faucet",
+    "id": "coinbase-call-faucet",
     "version": "1.0.0",
-    "name": "Shinkai: Coinbase Faucet Caller",
+    "name": "Coinbase Faucet Caller",
     "description": "Tool for calling a faucet on Coinbase",
     "author": "Shinkai",
     "keywords": [

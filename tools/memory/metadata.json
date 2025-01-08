@@ -1,0 +1,87 @@
+{
+    "name": "Memory Management",
+    "description": "Handles memory storage and retrieval using a SQLite database.",
+    "author": "@@my_local_ai.arb-sep-shinkai",
+    "version": "1.0.0",
+    "keywords": [
+      "memory",
+      "remember",
+      "management",
+      "recall",
+      "smart",
+      "agent"
+    ],
+    "configurations": {
+      "type": "object",
+      "properties": {},
+      "required": []
+    },
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "string",
+          "description": "The data to process for memory management"
+        },
+        "general_prompt": {
+          "type": "string",
+          "description": "The general prompt for generating memories",
+          "nullable": true
+        },
+        "specific_prompt": {
+          "type": "string",
+          "description": "The specific prompt for generating memories",
+          "nullable": true
+        },
+        "key": {
+          "type": "string",
+          "description": "The key for specific memory retrieval",
+          "nullable": true
+        }
+      },
+      "required": [
+        "data"
+      ]
+    },
+    "result": {
+      "type": "object",
+      "properties": {
+        "generalMemory": {
+          "type": "string",
+          "description": "The updated general memory",
+          "nullable": true
+        },
+        "specificMemory": {
+          "type": "string",
+          "description": "The updated specific memory",
+          "nullable": true
+        }
+      },
+      "required": []
+    },
+    "sqlTables": [
+      {
+        "name": "memory_table",
+        "definition": "CREATE TABLE IF NOT EXISTS memory_table (id INTEGER PRIMARY KEY AUTOINCREMENT, date DATETIME DEFAULT CURRENT_TIMESTAMP, key TEXT, memory TEXT)"
+      }
+    ],
+    "sqlQueries": [
+      {
+        "name": "Get general memory",
+        "query": "SELECT id, key, memory FROM memory_table WHERE key IS NULL"
+      },
+      {
+        "name": "Get specific memory",
+        "query": "SELECT id, key, memory FROM memory_table WHERE key = ?"
+      },
+      {
+        "name": "Update memory",
+        "query": "UPDATE memory_table SET memory = ? WHERE id = ?"
+      }
+    ],
+    "tools": [
+      "local:::rust_toolkit:::shinkai_sqlite_query_executor",
+      "local:::rust_toolkit:::shinkai_llm_prompt_processor"
+    ],
+    "oauth": []
+  }

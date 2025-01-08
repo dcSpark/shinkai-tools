@@ -1,7 +1,7 @@
 {
   "name": "Email Answerer",
   "description": "Tool for automatically answering emails by processing their content and responding to them.",
-  "author": "@@eduardosotomontaner.arb-sep-shinkai",
+  "author": "Shinkai",
   "version": "1.0.0",
   "keywords": [
     "email",

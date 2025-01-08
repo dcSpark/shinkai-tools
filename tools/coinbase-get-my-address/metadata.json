@@ -1,7 +1,7 @@
 {
-    "id": "shinkai-tool-coinbase-get-my-address",
+    "id": "coinbase-get-my-address",
     "version": "1.0.0",
-    "name": "Shinkai: Coinbase My Address Getter",
+    "name": "Coinbase My Address Getter",
     "description": "Tool for getting the default address of a Coinbase wallet",
     "author": "Shinkai",
     "keywords": [

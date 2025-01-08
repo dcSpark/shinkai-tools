@@ -1,4 +1,5 @@
 {
+  "id": "youtube-summary",
   "name": "Youtube Transcript Summarizer",
   "description": "Fetches the transcript of a YouTube video and generates a formatted summary using an LLM.",
   "author": "@@eduardosotomontaner.arb-sep-shinkai",

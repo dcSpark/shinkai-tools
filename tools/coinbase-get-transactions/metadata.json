@@ -1,7 +1,7 @@
 {
-    "id": "shinkai-tool-coinbase-get-transactions",
+    "id": "coinbase-get-transactions",
     "version": "1.0.0",
-    "name": "Shinkai: Coinbase Transactions Getter",
+    "name": "Coinbase Transactions Getter",
     "description": "Tool for getting the transactions of a Coinbase wallet after restoring it",
     "author": "Shinkai",
     "keywords": [

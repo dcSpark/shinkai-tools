@@ -3,7 +3,7 @@
     "name": "Send Email",
     "version": "1.0.0",
     "description": "Sends an email using SMTP.",
-    "author": "@@my_local_ai.arb-sep-shinkai",
+    "author": "Shinkai",
     "keywords": [
       "email",
       "smtp",

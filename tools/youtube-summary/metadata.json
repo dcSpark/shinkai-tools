@@ -1,70 +1,53 @@
 {
-    "id": "youtube-summary",
-    "name": "YouTube Video Summary",
-    "description": "Summarizes a YouTube video. Provides a summary with organized sections and clickable timestamp links. Useful for quickly grasping main points, preparing for discussions, or efficient research. Example uses: summarizing tech talks, product reviews, or educational lectures. Parameters: url (string) - The full YouTube video URL to process.",
-    "author": "Shinkai",
-    "keywords": [
-      "youtube",
-      "transcript",
-      "video",
-      "summary",
-      "sections",
-      "timestamp",
-      "links"
-    ],
-    "configurations": {
-      "type": "object",
-      "properties": {
-        "apiUrl": {
-          "type": "string",
-          "description": "The URL of the OpenAI compatible API endpoint for summary generation. Optional. Default: \"http://127.0.0.1:11435\".",
-          "nullable": true,
-          "example": "https://api.openai.com/v1"
-        },
-        "apiKey": {
-          "type": "string",
-          "description": "The API key for the OpenAI compatible endpoint. Required if using a service that needs authentication.",
-          "nullable": true,
-          "example": "sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-        },
-        "model": {
-          "type": "string",
-          "description": "The name of the language model for summary generation. Optional. Default: \"llama3.1:8b-instruct-q4_1\".",
-          "nullable": true,
-          "example": "gpt-3.5-turbo"
-        }
+  "id": "youtube-summary",
+  "name": "Youtube Transcript Summarizer",
+  "description": "Fetches the transcript of a YouTube video and generates a formatted summary using an LLM.",
+  "author": "@@eduardosotomontaner.arb-sep-shinkai",
+  "version": "1.0.0",
+  "keywords": [
+    "youtube",
+    "transcript",
+    "summary",
+    "video",
+    "LLM"
+  ],
+  "configurations": {
+    "type": "object",
+    "properties": {},
+    "required": []
+  },
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "url": {
+        "type": "string",
+        "description": "The URL of the YouTube video"
       },
-      "required": []
+      "lang": {
+        "type": "string",
+        "description": "The language for the transcript (optional)"
+      }
     },
-    "parameters": {
-      "type": "object",
-      "properties": {
-        "url": {
-          "type": "string",
-          "description": "The full URL of the YouTube video to transcribe and summarize. Must be a valid and accessible YouTube video link.",
-          "example": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-        },
-        "lang": {
-          "type": "string",
-          "description": "The language code for the transcript in ISO 639-1 format (e.g. \"en\" for English). Optional. If not specified, will use the default available transcript.",
-          "example": "en",
-          "nullable": true
-        }
-      },
-      "required": [
-        "url"
-      ]
+    "required": [
+      "url"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "summary": {
+        "type": "string",
+        "description": "The generated summary of the video"
+      }
     },
-    "result": {
-      "type": "object",
-      "properties": {
-        "summary": {
-          "type": "string",
-          "description": "A markdown-formatted summary of the video content, divided into sections with timestamp links to relevant parts of the video."
-        }
-      },
-      "required": [
-        "summary"
-      ]
-    }
-  }
+    "required": [
+      "summary"
+    ]
+  },
+  "sqlTables": [],
+  "sqlQueries": [],
+  "tools": [
+    "local:::rust_toolkit:::shinkai_llm_prompt_processor"
+  ],
+  "oauth": []
+}

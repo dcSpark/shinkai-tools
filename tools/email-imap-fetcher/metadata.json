@@ -29,6 +29,11 @@
           "type": "integer",
           "description": "The port number for the IMAP server (defaults to 993 for IMAPS)",
           "default": 993
+        },
+        "ssl": {
+          "type": "boolean",
+          "description": "Whether to use SSL for the IMAP connection (defaults to true)",
+          "default": true
         }
       },
       "required": [

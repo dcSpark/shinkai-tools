@@ -8,6 +8,7 @@ class CONFIG:
     port: int = 465  # Default port for SMTP
     sender_email: str
     sender_password: str
+    ssl: bool = False  # New flag to specify SSL usage for SMTP
 
 class INPUTS:
     recipient_email: str
@@ -33,11 +34,19 @@ async def run(config: CONFIG, inputs: INPUTS) -> OUTPUT:
     msg.attach(MIMEText(inputs.body, 'plain'))
 
     try:
-        with smtplib.SMTP(config.smtp_server, config.port) as server:
-            server.login(config.sender_email, config.sender_password)
-            server.send_message(msg)
-            output.status = "success"
-            output.message = "Email sent successfully"
+        # Use SSL if the ssl flag is set to True
+        if config.ssl:
+            with smtplib.SMTP_SSL(config.smtp_server, config.port) as server:
+                server.login(config.sender_email, config.sender_password)
+                server.send_message(msg)
+        else:
+            with smtplib.SMTP(config.smtp_server, config.port) as server:
+                server.starttls()  # Upgrade to a secure connection
+                server.login(config.sender_email, config.sender_password)
+                server.send_message(msg)
+
+        output.status = "success"
+        output.message = "Email sent successfully"
     except Exception as e:
         output.message = f"An error occurred: {e}"
 

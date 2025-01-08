@@ -3,6 +3,11 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from datetime import datetime
+import logging
+
+# Configure logging
+logging.basicConfig(level=logging.ERROR, format='%(asctime)s - %(levelname)s - %(message)s')
+
 class CONFIG:
     smtp_server: str
     port: int = 465  # Default port for SMTP
@@ -41,7 +46,11 @@ async def run(config: CONFIG, inputs: INPUTS) -> OUTPUT:
                 server.send_message(msg)
         else:
             with smtplib.SMTP(config.smtp_server, config.port) as server:
-                server.starttls()  # Upgrade to a secure connection
+                try:
+                    server.starttls()  # Upgrade to a secure connection
+                except Exception as e:
+                    logging.error(f"Failed to upgrade to a secure connection: {e}")
+                # Attempt to login and send the message regardless of starttls success
                 server.login(config.sender_email, config.sender_password)
                 server.send_message(msg)
 

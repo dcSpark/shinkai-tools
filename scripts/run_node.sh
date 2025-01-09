@@ -19,7 +19,7 @@ export NO_SECRET_FILE="true"
 export PROXY_IDENTITY="@@relayer_pub_01.arb-sep-shinkai"
 export SHINKAI_TOOLS_RUNNER_DENO_BINARY_PATH="./shinkai-tools-runner-resources/deno"
 export SHINKAI_TOOLS_RUNNER_UV_BINARY_PATH="./shinkai-tools-runner-resources/uv"
-export SHINKAI_VERSION="0.9.4"
+export SHINKAI_VERSION="0.9.5"
 
 # Add these lines to enable all log options
 export LOG_ALL=1

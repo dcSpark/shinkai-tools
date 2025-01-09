@@ -1,7 +1,7 @@
 {
     "name": "Memory Management",
     "description": "Handles memory storage and retrieval using a SQLite database.",
-    "author": "@@my_local_ai.arb-sep-shinkai",
+    "author": "Shinkai",
     "version": "1.0.0",
     "keywords": [
       "memory",

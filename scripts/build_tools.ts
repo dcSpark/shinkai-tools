@@ -290,8 +290,8 @@ async function processProducts() {
     });
 
     if (response.status === 409) {
-      const responseBody = await response.json();
-      if (responseBody.code === "PRODUCT_ALREADY_EXISTS") {
+      const responseBody = await response.text();
+      if (responseBody.includes("already exists")) {
         // Product exists, use PUT endpoint instead
         const putResponse = await fetch(`${Deno.env.get("SHINKAI_STORE_ADDR")}/store/products/${entry.router_key}`, {
           method: "PUT", 

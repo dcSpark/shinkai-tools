@@ -54,7 +54,6 @@ function escapeSqlString(str: string): string {
 }
 
 export async function run(config: CONFIG, inputs: INPUTS): Promise<OUTPUT> {
-    const dbName = 'default';
     const tableName = 'answered_emails';
 
     const createTableQuery = `
@@ -75,16 +74,19 @@ export async function run(config: CONFIG, inputs: INPUTS): Promise<OUTPUT> {
         query: `SELECT name FROM sqlite_master WHERE type='table' AND name=?;`,
         params: [tableName]
     });
-    const tableCreated = tableCheck?.result?.length > 0;
-    let { emails, login_status } = await emailFetcher({ from_date: inputs.from_date, to_date: inputs.to_date });
-
+    const tableCreated = (tableCheck?.result?.length ?? 0) > 0;
+    let { emails, login_status } = await emailFetcher({
+        from_date: inputs.from_date || '',
+        to_date: inputs.to_date || '',
+    });
+  
     const answeredEmailsQuery = await shinkaiSqliteQueryExecutor({
         query: `SELECT * FROM ${tableName}`,
     });
     if (!answeredEmailsQuery?.result) {
         throw new Error('Failed to query answered emails');
     }
-    const answeredEmails: ANSWERED_EMAIL_REGISTER[] = answeredEmailsQuery.result ?? [];
+    const answeredEmails: ANSWERED_EMAIL_REGISTER[] = (answeredEmailsQuery.result as ANSWERED_EMAIL_REGISTER[]) ?? [];
     const mailIds: string[] = [];
     const minDate = inputs.from_date ? new Date(inputs.from_date) : new Date('1970-01-01T00:00:00.000Z');
     emails = emails

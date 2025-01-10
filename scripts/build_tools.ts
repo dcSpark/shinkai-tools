@@ -78,7 +78,7 @@ async function buildToolJson(toolContent: string, metadata: Metadata, toolType: 
     sql_queries: [],
     sql_tables: [],
     toolkit_name: metadata.id || "Unknown",
-    tools: metadata.tools || [],,
+    tools: metadata.tools || [],
     version: metadata.version || "1.0.0",
     [toolType === "Python" ? "py_code" : "js_code"]: toolContent
   }, false];

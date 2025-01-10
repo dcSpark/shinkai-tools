@@ -17,6 +17,9 @@ interface Metadata {
     properties: Record<string, any>;
   };
   result: Record<string, any>;
+  price_usd?: number; // to-do: add to metadata.json
+  stripeProductId?: string; // to-do: add to metadata.json
+  categoryId?: string; // to-do: add to metadata.json
 }
 
 interface DirectoryEntry {
@@ -25,13 +28,16 @@ interface DirectoryEntry {
   author: string;
   keywords: string[];
   type: "Tool" | "Agent" | "Scheduled Task";
-  tool_language?: string;
+  toolLanguage?: string;
   version: string;
   description: string;
-  router_key?: string;
+  routerKey: string;
   hash: string;
   file: string;
   agent_id?: string;
+  price_usd?: number;
+  stripeProductId?: string;
+  categoryId?: string;
 }
 
 async function getToolType(file: string): Promise<string> {
@@ -170,17 +176,20 @@ async function processToolsDirectory() {
     const hasDefault = await exists(join(toolDir, ".default"));
 
     tools.push({
-      default: hasDefault,
+      // default: hasDefault,
       name: toolName,
       author: metadata.author || "Unknown",
       keywords: metadata.keywords || ["tool"],
       type: "Tool", 
-      tool_language: toolType,
+      toolLanguage: toolType,
       version: metadata.version || "0.0.0",
       description: metadata.description || "No description provided.",
-      router_key: toolRouterKey,
+      routerKey: toolRouterKey,
       hash: blake3Hash,
       file: `${Deno.env.get("DOWNLOAD_PREFIX")}/${toolName}.zip`,
+      price_usd: metadata.price_usd || 0.00,
+      stripeProductId: "prod_P000000000000",
+      // categoryId: "cat_P000000000000", // to-do: categories not implemented yet.
     });
   }
 
@@ -218,6 +227,7 @@ async function processAgentsDirectory() {
       hash: blake3Hash,
       file: `${Deno.env.get("DOWNLOAD_PREFIX")}/${agentId}.zip`,
       agent_id: agentId,
+      routerKey: 'not-implemented-yet',
     });
   }
 
@@ -254,6 +264,7 @@ async function processCronsDirectory() {
       description: cronContent.description,
       hash: blake3Hash,
       file: `${Deno.env.get("DOWNLOAD_PREFIX")}/${cronId}.zip`,
+      routerKey: 'not-implemented-yet',
     });
   }
 
@@ -268,14 +279,14 @@ async function processProducts() {
   await Deno.writeTextFile("packages/directory.json", "[]");
 
   // Process all directories in parallel
-  const [tools, agents, crons] = await Promise.all([
+  const [tools] = await Promise.all([
     processToolsDirectory(),
-    processAgentsDirectory(),
-    processCronsDirectory()
+    // processAgentsDirectory(),
+    // processCronsDirectory()
   ]);
 
   // Write final directory.json
-  const directory = [...tools, ...agents, ...crons];
+  const directory = [...tools];
   await Deno.writeTextFile("packages/directory.json", JSON.stringify(directory, null, 2));
 
   // Upload directory.json to Shinkai Store
@@ -306,6 +317,7 @@ async function processProducts() {
     }
 
     console.log(`Upload to Store Response (${response.status}): ${await response.text()}`);
+    if (response.status !== 200) console.log(`Request body failed: ${JSON.stringify(entry, null, 2)}`);
   }
 }
 

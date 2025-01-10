@@ -79,7 +79,8 @@ export async function run(config: CONFIG, inputs: INPUTS): Promise<OUTPUT> {
         from_date: inputs.from_date || '',
         to_date: inputs.to_date || '',
     });
-  
+    inputs.from_date = undefined;
+    inputs.to_date = undefined;
     const answeredEmailsQuery = await shinkaiSqliteQueryExecutor({
         query: `SELECT * FROM ${tableName}`,
     });

@@ -85,9 +85,9 @@
     }
   ],
   "tools": [
-    "local:::shinkai_sqlite_query_executor",
-    "local:::shinkai_tool_email_imap_fetcher",
-    "local:::email_sender_shinkai",
+    "local:::rust_toolkit:::shinkai_sqlite_query_executor",
+    "local:::email_imap_fetcher:::email_fetcher",
+    "local:::email_sender_shinkai:::send_email",
     "local:::rust_toolkit:::shinkai_llm_prompt_processor"
   ],
   "oauth": []

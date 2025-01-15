@@ -1,4 +1,5 @@
 {
+    "id": "meme-generator",
     "name": "Generate Meme",
     "description": "Generates a meme based on a joke input",
     "author": "Shinkai",

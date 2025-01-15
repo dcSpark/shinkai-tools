@@ -1,7 +1,7 @@
 {
     "name": "Generate Meme",
     "description": "Generates a meme based on a joke input",
-    "author": "@@my_local_ai.arb-sep-shinkai",
+    "author": "Shinkai",
     "version": "1.0.0",
     "keywords": [
       "meme",
@@ -49,7 +49,7 @@
     "sqlTables": [],
     "sqlQueries": [],
     "tools": [
-      "local:::rust_toolkit:::shinkai_llm_prompt_processor",
+      "local:::rust_toolkit:::shinkai_llm_prompt_processor"
     ],
     "oauth": []
   }

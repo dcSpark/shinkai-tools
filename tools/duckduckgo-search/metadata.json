@@ -37,6 +37,10 @@
         "message": {
           "type": "string",
           "description": "The search results from DuckDuckGo in JSON format, containing title, description, and URL for each result"
+        },
+        "puppeteer": {
+          "type": "boolean",
+          "description": "Whether the search was performed using Puppeteer"
         }
       },
       "required": [

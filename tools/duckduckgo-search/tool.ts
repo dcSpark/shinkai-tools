@@ -12,7 +12,7 @@ type Configurations = {
 type Parameters = {
   message: string;
 };
-type Result = { message: string };
+type Result = { message: string, puppeteer: boolean };
 
 interface SearchResult {
   title: string;
@@ -165,9 +165,10 @@ async function searchDuckDuckGoWithPuppeteer(
     // Wait for results to load
     await page.waitForSelector('.react-results--main');
     const pageContent = await page.$('.react-results--main');
+    let results: SearchResult[] = []
     if (pageContent) {
       // Process each `li` element inside the container
-      const results = await page.evaluate((container) => {
+      results = await page.evaluate((container) => {
         // Query all `li` elements within the container
         const listItems = container.querySelectorAll('li[data-layout="organic"]');
         // Map each `li` to extract title, snippet, and URL
@@ -191,27 +192,6 @@ async function searchDuckDuckGoWithPuppeteer(
       });
     }
     // Extract search results
-    const results: SearchResult[] = await page.evaluate((maxResults: number) => {
-      const searchResults: SearchResult[] = [];
-      const resultElements = document.querySelectorAll('.react-results--main');
-
-      for (let i = 0; i < Math.min(maxResults, resultElements.length); i++) {
-        const element = resultElements[i];
-        const titleElement = element.querySelector('h2');
-        const linkElement = element.querySelector('a');
-        const snippetElement = element.querySelector('.snippet');
-
-        if (titleElement && linkElement && snippetElement) {
-          searchResults.push({
-            title: titleElement.innerText,
-            url: linkElement.href,
-            description: snippetElement.textContent || '',
-          });
-        }
-      }
-
-      return searchResults;
-    }, numResults);
     await browser.close();
     return results;
   } catch (error) {
@@ -227,6 +207,7 @@ export const run: Run<Configurations, Parameters, Result> = async (
   configurations: Configurations,
   params: Parameters,
 ): Promise<Result> => {
+  let puppeteer = false
   console.log('run duckduckgo search from js', 4);
   console.log('second message', 4);
   console.log('params: ', params);
@@ -237,6 +218,7 @@ export const run: Run<Configurations, Parameters, Result> = async (
     } catch (textSearchError) {
       console.error('Text search failed', textSearchError);
       console.log('Text search failed, falling back to puppeteer search');
+      puppeteer = true
       const chromePath = configurations?.chromePath || 
         Deno.env.get('CHROME_PATH') ||
         chromePaths.chrome || 
@@ -244,12 +226,12 @@ export const run: Run<Configurations, Parameters, Result> = async (
       results = await searchDuckDuckGoWithPuppeteer(params.message, chromePath, 10);
     }
     console.log('results: ', results);
-    return { message: JSON.stringify(results) };
+    return { message: JSON.stringify(results), puppeteer };
   } catch (error) {
     let errorMessage = 'An unknown error occurred';
     if (error instanceof Error) {
       errorMessage = error.message;
     }
-    return { message: `Error: ${errorMessage}` };
+    return { message: `Error: ${errorMessage}`, puppeteer };
   }
 };

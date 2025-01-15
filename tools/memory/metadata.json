@@ -22,7 +22,7 @@
       "properties": {
         "data": {
           "type": "string",
-          "description": "The data to process for memory management"
+          "description": "The data to process for memory management, if not provided, the tool will return existing memories"
         },
         "general_prompt": {
           "type": "string",
@@ -40,9 +40,7 @@
           "nullable": true
         }
       },
-      "required": [
-        "data"
-      ]
+      "required": []
     },
     "result": {
       "type": "object",

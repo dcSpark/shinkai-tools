@@ -1,12 +1,12 @@
 {
   "name": "Email Answerer",
-  "description": "Tool for automatically answering emails by processing their content and responding to them.",
+  "description": "Generates responses to emails based on a given context and memory, and logs answered emails in a database.",
   "author": "Shinkai",
   "version": "1.0.0",
   "keywords": [
     "email",
-    "answer",
-    "processor",
+    "responder",
+    "database",
     "shinkai"
   ],
   "configurations": {
@@ -14,7 +14,7 @@
     "properties": {
       "response_context": {
         "type": "string",
-        "description": "The context to use when answering emails."
+        "description": "The context to guide the email responses"
       }
     },
     "required": [
@@ -26,11 +26,11 @@
     "properties": {
       "from_date": {
         "type": "string",
-        "description": "The date from which to start processing emails (inclusive)."
+        "description": "The starting date for fetching emails in DD-Mon-YYYY format"
       },
       "to_date": {
         "type": "string",
-        "description": "The date until which to process emails (exclusive)."
+        "description": "The ending date for fetching emails in DD-Mon-YYYY format"
       }
     },
     "required": []
@@ -40,32 +40,30 @@
     "properties": {
       "table_created": {
         "type": "boolean",
-        "description": "Whether the table was created successfully."
+        "description": "Indicates if the email logging table was created"
       },
       "mail_ids": {
         "type": "array",
         "items": {
           "type": "string"
         },
-        "description": "The IDs of the emails that were processed and answered."
-      },
-      "login_status": {
-        "type": "string",
-        "description": "The status of the login process on the imap fetcher."
+        "description": "The list of generated unique mail IDs"
       },
       "skipped": {
         "type": "array",
         "items": {
           "type": "string"
         },
-        "description": "The IDs of the emails that were skipped."
+        "description": "List of email IDs that were skipped"
+      },
+      "login_status": {
+        "type": "string",
+        "description": "The status of the email login"
       }
     },
     "required": [
       "table_created",
-      "mail_ids",
-      "login_status",
-      "skipped"
+      "mail_ids"
     ]
   },
   "sqlTables": [
@@ -76,19 +74,24 @@
   ],
   "sqlQueries": [
     {
-      "name": "Get emails",
+      "name": "Get answered emails",
       "query": "SELECT * FROM answered_emails"
     },
     {
       "name": "Get email by unique ID",
       "query": "SELECT * FROM answered_emails WHERE email_unique_id = :emailUniqueId"
+    },
+    {
+      "name": "Insert new email",
+      "query": "INSERT INTO answered_emails (email_unique_id, subject, email, response, received_date) VALUES (:emailUniqueId, :subject, :email, :response, :receivedDate)"
     }
   ],
   "tools": [
-    "local:::rust_toolkit:::shinkai_sqlite_query_executor",
     "local:::email_imap_fetcher:::email_fetcher",
     "local:::email_sender_shinkai:::send_email",
-    "local:::rust_toolkit:::shinkai_llm_prompt_processor"
+    "local:::rust_toolkit:::shinkai_sqlite_query_executor",
+    "local:::rust_toolkit:::shinkai_llm_prompt_processor",
+    "local:::memory_management:::memory_management"
   ],
   "oauth": []
 }

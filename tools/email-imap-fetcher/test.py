@@ -6,16 +6,16 @@ from tool import run, CONFIG, INPUTS
 async def test_imap_connection():
     # Create a CONFIG instance with fake credentials
     config = CONFIG()
-    config.imap_server = "server.fakemail.com"  # Replace with a valid IMAP server for testing
-    config.username = "shinkai.dev@fakemail.com"  # Fake username
+    config.imap_server = "imap.fakeemail.com"  # Replace with a valid IMAP server for testing
+    config.username = "shinkai.dev@fakeemail.com"  # Fake username
     config.password = "fakepassword"  # Fake password
     config.port = 993  # Common port for IMAPS
     config.ssl = True  # Use SSL
 
     # Create an INPUTS instance
     inputs = INPUTS()
-    inputs.from_date = None  # Optional: set to a date string if needed
-    inputs.to_date = None  # Optional: set to a date string if needed
+    inputs.from_date = None
+    inputs.to_date = None
 
     # Run the function and capture the output
     output = await run(config, inputs)

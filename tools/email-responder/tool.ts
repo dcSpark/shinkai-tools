@@ -3,6 +3,7 @@ import {
     sendEmail,
     shinkaiLlmPromptProcessor,
     shinkaiSqliteQueryExecutor,
+    memoryManagement,
 } from './shinkai-local-tools.ts';
 
 type EMAIL = {
@@ -53,7 +54,36 @@ function escapeSqlString(str: string): string {
     return `'${str.replace(/'/g, "''").replace('--', '').replace(';', '')}'`; // Replaces single quotes with two single quotes
 }
 
+// Validate inputs
+function validateInputs(inputs: INPUTS): void {
+    if (!inputs.from_date && !inputs.to_date) return
+    // Check if dates are on the DD-Mon-YYYY format
+    const dateRegex = /^[0-3]{1}[0-9]{1}-(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)-\d{4}$/;
+    if (inputs.from_date) {
+        if (!dateRegex.test(inputs.from_date)) {
+            throw new Error('from_date : Invalid from_date format. It must be on the DD-Mon-YYYY format');
+        }
+    }
+    if (inputs.to_date) {
+        if (!dateRegex.test(inputs.to_date)) {
+            throw new Error('to_date : Invalid to_date format. It must be on the DD-Mon-YYYY format');
+        }
+    }
+    return
+}
+
+function getTodayInDDMonYYYY(): string {
+    const date = new Date();
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = date.toLocaleString('en-US', { month: 'short' });
+    const year = date.getFullYear();
+    return `${day}-${month}-${year}`;
+}
+
 export async function run(config: CONFIG, inputs: INPUTS): Promise<OUTPUT> {
+    if (inputs.from_date || inputs.to_date) {
+        validateInputs(inputs)
+    }
     const tableName = 'answered_emails';
 
     const createTableQuery = `
@@ -76,11 +106,10 @@ export async function run(config: CONFIG, inputs: INPUTS): Promise<OUTPUT> {
     });
     const tableCreated = (tableCheck?.result?.length ?? 0) > 0;
     let { emails, login_status } = await emailFetcher({
-        from_date: inputs.from_date || '',
-        to_date: inputs.to_date || '',
+        from_date: inputs.from_date || getTodayInDDMonYYYY(),
+        to_date: inputs.to_date || '01-Jan-2099',
     });
-    inputs.from_date = undefined;
-    inputs.to_date = undefined;
+
     const answeredEmailsQuery = await shinkaiSqliteQueryExecutor({
         query: `SELECT * FROM ${tableName}`,
     });
@@ -109,6 +138,7 @@ export async function run(config: CONFIG, inputs: INPUTS): Promise<OUTPUT> {
     try {
         for (const email of emails as EMAIL[]) {
             const emailUniqueId = await generateEmailUniqueId(email);
+            const { specificMemory } = await memoryManagement({ key: email.sender, data: '#' })
             const answeredEmail = answeredEmails.find(answeredEmail => answeredEmail.email_unique_id === emailUniqueId);
             if (answeredEmail) {
                 skipped.push(answeredEmail.email_unique_id)
@@ -124,6 +154,10 @@ export async function run(config: CONFIG, inputs: INPUTS): Promise<OUTPUT> {
                     Please respond to a following email but only in the manner of the following context:
                     <context>
                       ${config.response_context}
+                      # memories of past conversations with this email sender:
+                      <memories>
+                      ${specificMemory || 'No memories found'}
+                      </memories>
                     </context>
                     This is the email you need to respond to:
                     <email>
@@ -146,7 +180,18 @@ export async function run(config: CONFIG, inputs: INPUTS): Promise<OUTPUT> {
                 subject: 'RE:' + email.subject,
                 body: response.message
             });
-            
+            const _insertMemory = await memoryManagement({ key: email.sender, data: `
+                <received_email>
+                  <email.subject>${email.subject}</email.subject>
+                  <email.sender>${email.sender}</email.sender>
+                  <email.date>${email.date}</email.date>
+                  <email.text>${email.text}</email.text>
+                </received_email>
+                <answered_email>
+                  <response>${response.message}</response>
+                </answered_email>
+                ` 
+            })
             const insertEmail = insertMailIdQuery(
                 escapeSqlString(emailUniqueId),
                 escapeSqlString(email.subject),

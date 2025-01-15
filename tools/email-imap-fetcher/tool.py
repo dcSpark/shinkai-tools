@@ -24,6 +24,15 @@ class Email:
     sender: str
     text: str
 
+# Function to validate date format
+def validate_date_format(date_str):
+    try:
+        # Attempt to parse the date string in the expected format
+        datetime.strptime(date_str, '%d-%b-%Y')  # Expected format: DD-Mon-YYYY
+    except ValueError:
+        raise ValueError(f"Invalid date format: {date_str}. Expected format is DD-Mon-YYYY. Example: 10-Jan-2025")
+
+
 async def run(config: CONFIG, inputs: INPUTS) -> OUTPUT:
     output = OUTPUT()
     output.login_status = "N/A"
@@ -47,6 +56,12 @@ async def run(config: CONFIG, inputs: INPUTS) -> OUTPUT:
 
         imap.select("INBOX")
 
+        # Validate the input dates
+        if inputs.from_date:
+            validate_date_format(inputs.from_date)
+        if inputs.to_date:
+            validate_date_format(inputs.to_date)
+
         # Construct the search criteria
         search_criteria = 'ALL'
         if inputs.from_date and inputs.to_date:
@@ -56,6 +71,7 @@ async def run(config: CONFIG, inputs: INPUTS) -> OUTPUT:
         elif inputs.to_date:
             search_criteria = f'BEFORE "{inputs.to_date}"'
 
+        print("Search Criteria:", search_criteria)
         _, data = imap.search(None, search_criteria)
         mail_ids = data[0].split()
 

@@ -11,7 +11,12 @@
     ],
     "configurations": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "chromePath": {
+          "type": "string",
+          "description": "The path to the Chrome executable. If not provided, the tool will use the CHROME_PATH environment variable or the default paths for Chrome and Chromium."
+        }
+      },
       "required": []
     },
     "parameters": {
@@ -32,6 +37,10 @@
         "message": {
           "type": "string",
           "description": "The search results from DuckDuckGo in JSON format, containing title, description, and URL for each result"
+        },
+        "puppeteer": {
+          "type": "boolean",
+          "description": "Whether the search was performed using Puppeteer"
         }
       },
       "required": [

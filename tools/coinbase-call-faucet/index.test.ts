@@ -1,4 +1,4 @@
-import { run } from './index.ts';
+import { run } from './tool.ts';
 import { expect } from 'jsr:@std/expect';
 
 // Deno.test('echo', async () => {

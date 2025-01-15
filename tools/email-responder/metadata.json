@@ -1,4 +1,5 @@
 {
+  "id": "email-answerer",
   "name": "Email Answerer",
   "description": "Tool for automatically answering emails by processing their content and responding to them.",
   "author": "Shinkai",

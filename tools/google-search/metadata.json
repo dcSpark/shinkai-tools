@@ -3,6 +3,7 @@
     "name": "Google Search",
     "description": "This function takes a question as input and returns a comprehensive answer, along with the sources and statements used to generate the answer.",  
     "author": "Shinkai",
+    "version": "1.0.0",
     "keywords": [
       "search",
       "answer generation",

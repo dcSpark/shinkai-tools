@@ -37,3 +37,8 @@ tools/
 │   ├── tool.zip # Zipped contents of the tool.
 │   └── directory.json # A listing of the available tools.
 ```
+
+## Run Tests
+```
+BEARER_TOKEN=debug SHINKAI_NODE_ADDR="http://0.0.0.0:9550" deno test scripts/ --allow-all
+```

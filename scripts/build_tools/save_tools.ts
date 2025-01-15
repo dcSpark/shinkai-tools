@@ -290,7 +290,7 @@ export async function saveToolsInNode(toolsOriginal: DirectoryEntry[]): Promise<
       tool.hash = await calculateBlake3Hash(zipPath);
       
       // Check for .default file
-      tool.default = await exists(join(tool.dir, ".default"));
+      tool.isDefault = await exists(join(tool.dir, ".default"));
 
       toolsSaved.push(tool);
     }

@@ -19,13 +19,14 @@ export async function uploadTools(tools: DirectoryEntry[]) {
   
     // Upload directory.json to Shinkai Store
     for (const entry of directory) {
+      let { dir, toolFile, isDefault, ...store_entry } = entry;
       let response = await fetch(`${store_addr}/store/products`, {
         method: "POST",
         headers: {
           "Authorization": `Bearer ${store_token}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(entry),
+        body: JSON.stringify(store_entry),
       });
   
       if (response.status === 409) {
@@ -38,14 +39,14 @@ export async function uploadTools(tools: DirectoryEntry[]) {
               "Authorization": `Bearer ${store_token}`,
               "Content-Type": "application/json",
             },
-            body: JSON.stringify(entry),
+            body: JSON.stringify(store_entry),
           });
           response = putResponse;
         }
       }
   
       console.log(`Upload to Store Response (${response.status}): ${await response.text()}`);
-      if (response.status !== 200) console.log(`Request body failed: ${JSON.stringify(entry, null, 2)}`);
+      if (response.status !== 200) console.log(`Request body failed: ${JSON.stringify(store_entry, null, 2)}`);
     }
   }
   

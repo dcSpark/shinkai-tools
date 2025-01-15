@@ -1,7 +1,7 @@
 interface ConfigurationBasicType {
   type: 'string' | 'number' | 'boolean' | 'date' | 'datetime';
   description: string;
-  default?: string;
+  isDefault?: string;
 }
 
 interface ConfigurationArray {
@@ -45,7 +45,7 @@ export interface Metadata {
 
 export interface DirectoryEntry {
   dir: string;
-  default?: boolean;
+  isDefault?: boolean;
   name: string;
   author: string;
   keywords: string[];

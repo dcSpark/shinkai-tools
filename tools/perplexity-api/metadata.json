@@ -3,6 +3,7 @@
     "name": "Perplexity API",
     "description": "Searches the web using Perplexity API (limited)",
     "author": "Shinkai",
+    "version": "1.0.0",
     "keywords": [
       "perplexity",
       "api",

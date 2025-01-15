@@ -1,4 +1,5 @@
 {
+    "id": "memory-management",
     "name": "Memory Management",
     "description": "Handles memory storage and retrieval using a SQLite database.",
     "author": "Shinkai",

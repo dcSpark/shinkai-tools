@@ -8,6 +8,7 @@
       "expr-eval",
       "shinkai"
     ],
+    "version": "1.0.0",
     "configurations": {
       "type": "object",
       "properties": {},

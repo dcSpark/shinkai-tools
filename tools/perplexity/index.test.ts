@@ -1,9 +1,6 @@
 import { expect } from 'jsr:@std/expect/expect';
-import { definition, run } from './index.ts';
+import { run } from './tool.ts';
 
-Deno.test('exists definition', () => {
-  expect(definition).toBeInstanceOf(Object);
-});
 
 Deno.test({
   name: 'run',

@@ -1,4 +1,5 @@
 {
+    "id": "file-writer",
     "name": "Write File Contents",
     "version": "1.0.0",
     "description": "Writes the text contents of a file to the given path.",

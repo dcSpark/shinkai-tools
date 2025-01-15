@@ -12,7 +12,12 @@
     ],
     "configurations": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "chromePath": {
+          "type": "string",
+          "description": "The path to the Chrome executable"
+        }
+      },
       "required": []
     },
     "parameters": {

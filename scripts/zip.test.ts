@@ -1,7 +1,31 @@
 import { assertEquals } from "jsr:@std/assert";
-import { processToolsDirectory, saveToolsInNode } from "./build_tools/save_tools.ts";
+import { getMetadata, processToolsDirectory, saveToolsInNode } from "./build_tools/save_tools.ts";
 import { join } from "https://deno.land/std/path/mod.ts";
 import { exists } from "https://deno.land/std/fs/mod.ts";
+
+Deno.test("Check if related tools exist", async () => {
+  const tools_raw = await processToolsDirectory();
+  const metadatas = await getMetadata(tools_raw);
+  const tool_key_list = [
+    "local:::rust_toolkit:::shinkai_llm_prompt_processor",
+    "local:::rust_toolkit:::shinkai_process_embeddings",
+    "local:::rust_toolkit:::shinkai_sqlite_query_executor",
+    "local:::rust_toolkit:::shinkai_tool_config_updater",
+    ...metadatas.map(tool => tool.key),
+  ];
+  console.log(tool_key_list);
+  for (const tool of metadatas) {
+    if (!tool.metadata.tools) continue;
+    console.log(`Testing tool ${tool.name}`);
+    const expectedTools = tool.metadata.tools.map(t => {
+      const parts = t.split(":::");
+      if (parts.length === 4) return `${parts[0]}:::${parts[1]}:::${parts[2]}`;
+      return t;
+    });
+    const actualTools = expectedTools.filter(tool => tool_key_list.includes(tool));
+    assertEquals(expectedTools.length, actualTools.length, `Tool ${tool.name}. Expected:\n${expectedTools.join("\n")}\nActual:\n${actualTools.join("\n")}`);
+  }
+});
 
 Deno.test("Compare shinkai-node generated ZIP __tool.json vs .tool-dump.test.json", async () => {
   const tools_raw = await processToolsDirectory();

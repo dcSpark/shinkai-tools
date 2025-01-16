@@ -97,6 +97,6 @@
   "tools": [
     "local:::google_search_shinkai:::google_search:::1.0.0",
     "local:::rust_toolkit:::shinkai_llm_prompt_processor:::1.0.0",
-    "local:::shinkai_tool_download_pages:::shinkai__download_pages:::1.0.0"
+    "local:::download_pages:::download_pages:::1.0.0"
   ]
 }

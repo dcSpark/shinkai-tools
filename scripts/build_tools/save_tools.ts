@@ -210,6 +210,15 @@ export async function processToolsDirectory(): Promise<DirectoryEntry[]> {
     return tools;
 } 
 
+export async function getMetadata(toolsOriginal: DirectoryEntry[]) {
+  const data = [];
+  for (const tool of toolsOriginal) {
+    const metadata: Metadata = JSON.parse(await Deno.readTextFile(join(tool.dir, "metadata.json")));
+    data.push({ name: tool.name, key: `local:::${metadata.id.toLowerCase().replace(/[^a-z]/g, "_")}:::${metadata.name.toLowerCase().replace(/[^a-z]/g, "_")}`, metadata });
+  }
+  return data;
+}
+
 export async function saveToolsInNode(toolsOriginal: DirectoryEntry[]): Promise<DirectoryEntry[]> {
   const tools = JSON.parse(JSON.stringify(toolsOriginal));
   const toolsSaved: DirectoryEntry[] = [];

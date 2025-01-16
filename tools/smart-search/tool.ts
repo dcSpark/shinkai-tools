@@ -1,4 +1,4 @@
-import { googleSearch, shinkaiLlmPromptProcessor, shinkaiDownloadPages } from './shinkai-local-tools.ts';
+import { googleSearch, shinkaiLlmPromptProcessor, downloadPages } from './shinkai-local-tools.ts';
 
 type CONFIG = {
   searchEngineApiKey?: string;
@@ -400,7 +400,7 @@ export async function run(
     let id = 1;
     for (const source of sources) {
       if (typeof source === 'string') throw new Error('Invalid source');
-      const searchResult = await shinkaiDownloadPages({ urls: [source.url] });
+      const searchResult = await downloadPages({ urls: [source.url] });
       smartSearchSouces.push({
         id: id++, url: source.url, title: source.title,
         markdown: searchResult.markdowns.join('\n'),

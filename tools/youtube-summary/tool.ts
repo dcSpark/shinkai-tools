@@ -39,5 +39,5 @@ export const run: Run<CONFIG, INPUTS, OUTPUT> = async (
     Add markdown links referencing every section using this format https://www.youtube.com/watch?v={video_id}&t={offset} where 'offset' is a number and can be obtained from the transcription in csv format to generate the URL
   `;
   const response = await shinkaiLlmPromptProcessor({ format: 'text', prompt: message })
-  return { summary: response.message }
+  return { summary: response.message, transcript }
 };

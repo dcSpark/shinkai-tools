@@ -3,8 +3,7 @@ import { DirectoryEntry, Metadata } from "./interfaces.ts";
 import { join } from "https://deno.land/std/path/mod.ts";
 import { exists } from "https://deno.land/std/fs/mod.ts";
 import { encodeBase64 } from "jsr:@std/encoding/base64";
-
-const author = "@@official.shinkai";
+import { generateToolRouterKey, systemTools, stripVersion, author } from "./system.ts";
 
 // deno-lint-ignore require-await
 async function getToolType(file: string): Promise<string> {
@@ -73,7 +72,6 @@ async function buildToolJson(
   }
 }
 
-
 // deno-lint-ignore no-unused-vars
 async function processAgentsDirectory() {
   const agents: DirectoryEntry[] = [];
@@ -108,6 +106,7 @@ async function processAgentsDirectory() {
       hash: blake3Hash,
       file: `${Deno.env.get("DOWNLOAD_PREFIX")}/${agentId}.zip`,
       agent_id: agentId,
+      routerKey: '',
     });
   }
 
@@ -147,6 +146,7 @@ async function processCronsDirectory() {
       description: cronContent.description,
       hash: blake3Hash,
       file: `${Deno.env.get("DOWNLOAD_PREFIX")}/${cronId}.zip`,
+      routerKey: '',
     });
   }
 
@@ -180,11 +180,6 @@ export async function processToolsDirectory(): Promise<DirectoryEntry[]> {
       const toolName = metadata.name;
       console.log(`Processing ${toolName}...`);
     
-    
-      if (!metadata.author) {
-        throw(`Error: Missing author in metadata for ${toolName}`);
-      }
-
       if (!metadata.author) {
         throw(`Error: Missing author in metadata for ${toolName}`);
       }
@@ -202,6 +197,7 @@ export async function processToolsDirectory(): Promise<DirectoryEntry[]> {
 
       tools.push({
         // default: hasDefault,
+        routerKey: generateToolRouterKey(author, toolName),
         dir: toolDir,
         name: toolName,
         author,
@@ -220,32 +216,14 @@ export async function processToolsDirectory(): Promise<DirectoryEntry[]> {
       });
     }
 
-    // Sort
-    function sanitizeToolName(author: string, name: string): string {
-      return `local:::${author.toLowerCase().replace(/[^a-z0-9_]/g, '_')}:::${name.toLowerCase().replace(/[^a-z0-9_]/g, '_')}`;
-    }
-
-    function stripVersion(toolKey: string): string {
-      const parts = toolKey.split(":::");
-      if (parts.length === 3) return toolKey;
-      if (parts.length === 4) return parts[0] + ":::" + parts[1] + ":::" + parts[2];
-      throw Error('Invalid name');
-    }
-
-    const otherValidTools = [
-      "local:::__official_shinkai:::shinkai_llm_prompt_processor",
-      "local:::__official_shinkai:::shinkai_sqlite_query_executor",
-      "local:::__official_shinkai:::shinkai_process_embeddings",
-      "local:::__official_shinkai:::shinkai_tool_config_updater",
-    ]
-
+    // Sort, so that tools are loaded in the correct order
     const allTools: DirectoryEntry[] = JSON.parse(JSON.stringify(tools));
     const orderedTools: DirectoryEntry[] = [];
     let retries = 100;
     while(allTools.length > 0) {
       const tool = allTools.shift();
       if (!tool) break;
-      const currentTools = [...otherValidTools, ...orderedTools.map(t => sanitizeToolName(author, t.name))];
+      const currentTools = [...systemTools, ...orderedTools.map(t => generateToolRouterKey(author, t.name))];
       const expectedTools = tool.dependencies?.map((t: string) => stripVersion(t)) ?? [];
       if (expectedTools.every(e => currentTools.includes(e))) {
         orderedTools.push(tool);
@@ -268,7 +246,7 @@ export async function getMetadata(toolsOriginal: DirectoryEntry[]) {
 }
 
 export async function saveToolsInNode(toolsOriginal: DirectoryEntry[]): Promise<DirectoryEntry[]> {
-  const tools = JSON.parse(JSON.stringify(toolsOriginal));
+  const tools: DirectoryEntry[] = JSON.parse(JSON.stringify(toolsOriginal));
   const toolsSaved: DirectoryEntry[] = [];
   for (const tool of tools) {
 
@@ -276,6 +254,8 @@ export async function saveToolsInNode(toolsOriginal: DirectoryEntry[]): Promise<
       const metadata: Metadata = JSON.parse(await Deno.readTextFile(join(tool.dir, "metadata.json")));
       const toolContent = await Deno.readTextFile(tool.toolFile);
       const toolType = await getToolType(tool.toolFile);
+      
+      // Generate assets data
       let assets: { file_name: string, data: string }[] | undefined = undefined;
       if (await exists(join(tool.dir, "assets"))) {
         assets = [];
@@ -289,8 +269,6 @@ export async function saveToolsInNode(toolsOriginal: DirectoryEntry[]): Promise<
 
       // Build tool JSON
       const toolJson = await buildToolJson(toolContent, metadata, toolType, assets);
-      
-      // console.log('>>>',toolJson);
 
       // Send to Shinkai node
       const response = await fetch(`${Deno.env.get("SHINKAI_NODE_ADDR")}/v2/add_shinkai_tool`, {
@@ -308,9 +286,12 @@ export async function saveToolsInNode(toolsOriginal: DirectoryEntry[]): Promise<
         continue;
       }
   
+      // Get tool router key.
       const uploadedTool = await response.json();
-      tool.routerKey = uploadedTool.message.replace(/.*key: /, "");
-  
+      if (tool.routerKey !== uploadedTool.message.replace(/.*key: /, "")) {
+        throw Error('Tool router does not match expected router key');
+      }
+
       // Get tool zip
       const zipResponse = await fetch(
         `${Deno.env.get("SHINKAI_NODE_ADDR")}/v2/export_tool?tool_key_path=${tool.routerKey}`,

@@ -44,6 +44,7 @@ export interface Metadata {
 
 export interface DirectoryEntry {
   dir: string;
+  routerKey: string;
   isDefault?: boolean;
   name: string;
   author: string;

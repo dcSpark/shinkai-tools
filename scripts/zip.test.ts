@@ -2,25 +2,19 @@ import { assertEquals } from "jsr:@std/assert";
 import { getMetadata, processToolsDirectory, saveToolsInNode } from "./build_tools/save_tools.ts";
 import { join } from "https://deno.land/std/path/mod.ts";
 import { exists } from "https://deno.land/std/fs/mod.ts";
+import { stripVersion, systemTools } from "./build_tools/system.ts";
 
 Deno.test("Check if related tools exist", async () => {
   const tools_raw = await processToolsDirectory();
   const metadatas = await getMetadata(tools_raw);
   const tool_key_list = [
-    "local:::__official_shinkai:::shinkai_llm_prompt_processor",
-    "local:::__official_shinkai:::shinkai_process_embeddings",
-    "local:::__official_shinkai:::shinkai_sqlite_query_executor",
-    "local:::__official_shinkai:::shinkai_tool_config_updater",
+    ...systemTools,
     ...metadatas.map(tool => tool.key),
   ];
   for (const tool of metadatas) {
     if (!tool.metadata.tools) continue;
     console.log(`Testing tool ${tool.name}`);
-    const expectedTools = tool.metadata.tools.map(t => {
-      const parts = t.split(":::");
-      if (parts.length === 4) return `${parts[0]}:::${parts[1]}:::${parts[2]}`;
-      return t;
-    });
+    const expectedTools = tool.metadata.tools.map(t => stripVersion(t));
     const actualTools = expectedTools.filter(tool => tool_key_list.includes(tool));
     assertEquals(expectedTools.length, actualTools.length, `Tool ${tool.name}. Expected:\n${expectedTools.join("\n")}\nActual:\n${actualTools.join("\n")}`);
   }

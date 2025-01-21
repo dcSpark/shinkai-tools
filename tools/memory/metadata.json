@@ -1,5 +1,4 @@
 {
-    "id": "memory-management",
     "name": "Memory Management",
     "description": "Handles memory storage and retrieval using a SQLite database.",
     "author": "Shinkai",
@@ -79,8 +78,8 @@
       }
     ],
     "tools": [
-      "local:::rust_toolkit:::shinkai_sqlite_query_executor",
-      "local:::rust_toolkit:::shinkai_llm_prompt_processor"
+      "local:::__official_shinkai:::shinkai_sqlite_query_executor",
+      "local:::__official_shinkai:::shinkai_llm_prompt_processor"
     ],
     "oauth": []
   }

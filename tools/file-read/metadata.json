@@ -1,5 +1,4 @@
 {
-    "id": "file-reader",
     "name": "Read File Contents",
     "version": "1.0.0",
     "description": "Reads the text contents of a file from the given path.",

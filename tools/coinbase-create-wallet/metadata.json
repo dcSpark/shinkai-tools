@@ -1,5 +1,4 @@
 {
-    "id": "coinbase-create-wallet",
     "version": "1.0.0",
     "name": "Coinbase Wallet Creator",
     "description": "Tool for creating a Coinbase wallet",

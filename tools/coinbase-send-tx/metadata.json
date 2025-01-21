@@ -1,5 +1,4 @@
 {
-    "id": "coinbase-send-tx",
     "version": "1.0.0",
     "name": "Coinbase Transaction Sender",
     "description": "Tool for restoring a Coinbase wallet and sending a transaction",

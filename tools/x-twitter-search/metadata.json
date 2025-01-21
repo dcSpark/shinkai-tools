@@ -1,6 +1,6 @@
 {
-  "id": "x-twitter-search",
   "name": "X/Twitter Search",
+  "version": "1.0.0",
   "author": "Shinkai",
   "configurations": {
     "properties": {
@@ -61,6 +61,5 @@
     },
     "sqlQueries": [],
     "sqlTables": [],
-    "tools": [],
-    "version": "1"
+    "tools": []
   }

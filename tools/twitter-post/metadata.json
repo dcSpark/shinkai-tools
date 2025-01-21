@@ -1,5 +1,4 @@
 {
-    "id": "x-twitter-post",
     "name": "X/Twitter Post",
     "description": "Function to post a tweet to Twitter.",
     "author": "Shinkai",

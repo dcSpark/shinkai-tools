@@ -1,5 +1,4 @@
 {
-    "id": "coinbase-get-transactions",
     "version": "1.0.0",
     "name": "Coinbase Transactions Getter",
     "description": "Tool for getting the transactions of a Coinbase wallet after restoring it",

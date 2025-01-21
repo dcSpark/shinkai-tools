@@ -1,5 +1,4 @@
 {
-    "id": "download-pages",
     "version": "1.0.0",
     "name": "Download Pages",
     "description": "Downloads a URL and converts its HTML content to Markdown",

@@ -1,5 +1,4 @@
 {
-    "id": "coinbase-call-faucet",
     "version": "1.0.0",
     "name": "Coinbase Faucet Caller",
     "description": "Tool for calling a faucet on Coinbase",

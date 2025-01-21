@@ -22,6 +22,8 @@ type ANSWERED_EMAIL_REGISTER = {
     response_date: string;
 }
 
+type ANSWERED_EMAIL_RESULT = Pick<ANSWERED_EMAIL_REGISTER, 'email_unique_id' | 'subject' | 'email' | 'received_date'>
+
 async function generateEmailUniqueId(email: EMAIL): Promise<string> {
     const encoder = new TextEncoder();
     if (!email.subject && !email.sender && !email.date) {
@@ -44,7 +46,7 @@ type INPUTS = {
 
 type OUTPUT = {
     table_created: boolean;
-    mail_ids: (string | number)[];
+    answered_emails: ANSWERED_EMAIL_RESULT[];
     skipped: string[];
     login_status: string;
 };
@@ -117,7 +119,12 @@ export async function run(config: CONFIG, inputs: INPUTS): Promise<OUTPUT> {
         throw new Error('Failed to query answered emails');
     }
     const answeredEmails: ANSWERED_EMAIL_REGISTER[] = (answeredEmailsQuery.result as ANSWERED_EMAIL_REGISTER[]) ?? [];
-    const mailIds: string[] = [];
+    const answeredEmailsResult: ANSWERED_EMAIL_RESULT[] = answeredEmails.map((email) => ({
+        email_unique_id: email.email_unique_id,
+        subject: email.subject,
+        email: email.email,
+        received_date: email.received_date,
+    }));
     const minDate = inputs.from_date ? new Date(inputs.from_date) : new Date('1970-01-01T00:00:00.000Z');
     emails = emails
         .filter((e: EMAIL) => (e.date && e.sender && e.subject))
@@ -201,7 +208,12 @@ export async function run(config: CONFIG, inputs: INPUTS): Promise<OUTPUT> {
             );
             await shinkaiSqliteQueryExecutor({ query: insertEmail })
             const mailId = emailUniqueId;
-            mailIds.push(mailId);
+            answeredEmailsResult.push({
+                email_unique_id: mailId,
+                subject: email.subject,
+                email: email.sender,
+                received_date: email.date,
+            });
         }
     } catch (error) {
         console.error(`Failed to process emails: ${error}`);
@@ -209,7 +221,7 @@ export async function run(config: CONFIG, inputs: INPUTS): Promise<OUTPUT> {
     }
     return {
         table_created: tableCreated,
-        mail_ids: mailIds,
+        answered_emails: answeredEmailsResult,
         login_status,
         skipped,
     };

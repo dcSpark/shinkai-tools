@@ -43,12 +43,26 @@
         "type": "boolean",
         "description": "Indicates if the email logging table was created"
       },
-      "mail_ids": {
+      "answered_emails": {
         "type": "array",
         "items": {
-          "type": "string"
+          "type": "object",
+          "properties": {
+            "email_unique_id": {
+              "type": "string"
+            },
+            "subject": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string"
+            },
+            "received_date": {
+              "type": "string"
+            }
+          }
         },
-        "description": "The list of generated unique mail IDs"
+        "description": "The list of answered emails"
       },
       "skipped": {
         "type": "array",
@@ -64,7 +78,7 @@
     },
     "required": [
       "table_created",
-      "mail_ids"
+      "answered_emails"
     ]
   },
   "sqlTables": [

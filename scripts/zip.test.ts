@@ -8,7 +8,10 @@ Deno.test("Check if related tools exist", async () => {
   const tools_raw = await processToolsDirectory();
   const metadatas = await getMetadata(tools_raw);
   const tool_key_list = [
-    ...systemTools,
+    "local:::__official_shinkai:::shinkai_llm_prompt_processor",
+    "local:::__official_shinkai:::shinkai_process_embeddings",
+    "local:::__official_shinkai:::shinkai_sqlite_query_executor",
+    "local:::__official_shinkai:::shinkai_tool_config_updater",
     ...metadatas.map(tool => tool.key),
   ];
   for (const tool of metadatas) {
@@ -41,7 +44,7 @@ Deno.test("Compare shinkai-node generated ZIP __tool.json vs .tool-dump.test.jso
     const metadata = JSON.parse(await Deno.readTextFile(join(toolDir, "metadata.json")));
 
     // Search for tool downloaded and extracted data
-    const zipDir = join("packages", metadata.name.toLowerCase().replace(/[^a-z0-9_.-]/g, '_'));
+    const zipDir = join("packages", metadata.name.replace(/[^a-z0-9_.-]/g, '_'));
     const zipDirExists = await exists(zipDir);
     assertEquals(zipDirExists, true, 'zip dir exists');
     const zipTool = await exists(join(zipDir, "__tool.json"));

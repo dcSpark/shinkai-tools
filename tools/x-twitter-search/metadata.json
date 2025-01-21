@@ -1,6 +1,7 @@
 {
   "name": "X/Twitter Search",
   "homepage": "https://github.com/dcSpark/shinkai-tools/blob/main/tools/x-twitter-search/README.md",
+  "version": "1.0.0",
   "author": "Shinkai",
   "configurations": {
     "properties": {
@@ -40,7 +41,6 @@
     },
     "sqlQueries": [],
     "sqlTables": [],
-    "tools": [],
-    "version": "1"
+    "tools": []
   }
 }

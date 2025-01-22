@@ -4,14 +4,7 @@
 A tool that downloads a URL and converts its HTML content to Markdown. This tool uses Puppeteer for web scraping and TurndownService for content conversion.
 
 ## Usage Example
-```typescript
-const run: Run<Configurations, Parameters, Result> = async (
-  configurations: Configurations,
-  parameters: Parameters,
-): Promise<Result> => {
-  // Tool execution
-};
-```
+Use Download Pages, with url: [YOUR_WEBPAGE_URL], and chromePath: [CHROME_EXECUTABLE_PATH]
 
 ## Parameters/Inputs
 The following parameter is required:

@@ -1,7 +1,7 @@
 {
     "version": "1.0.0",
     "name": "Download Pages",
-    "homepage": "https://github.com/dcSpark/shinkai-tools/blob/main/tools/download-page/README.md",
+    "homepage": "<https://github.com/dcSpark/shinkai-tools/blob/main/tools/download-page/README.md>",
     "description": "Downloads a URL and converts its HTML content to Markdown",
     "author": "Shinkai",
     "keywords": [

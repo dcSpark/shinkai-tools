@@ -1,6 +1,6 @@
 {
     "name": "Read File Contents",
-    "homepage": "https://github.com/dcSpark/shinkai-tools/blob/main/tools/file-read/README.md",
+    "homepage": "<https://github.com/dcSpark/shinkai-tools/blob/main/tools/file-read/README.md>",
     "version": "1.0.0",
     "description": "Reads the text contents of a file from the given path.",
     "author": "Shinkai",

@@ -1,6 +1,6 @@
 {
     "name": "Memory Management",
-    "homepage": "https://github.com/dcSpark/shinkai-tools/blob/main/tools/memory/README.md",
+    "homepage": "<https://github.com/dcSpark/shinkai-tools/blob/main/tools/memory/README.md>",
     "description": "Handles memory storage and retrieval using a SQLite database.",
     "author": "Shinkai",
     "version": "1.0.0",

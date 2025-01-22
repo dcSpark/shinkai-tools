@@ -4,14 +4,7 @@
 A tool that generates responses to emails based on a given context and memory, and logs answered emails in a database.
 
 ## Usage Example
-```typescript
-const run: Run<Configurations, Parameters, Result> = async (
-  configurations: Configurations,
-  params: Parameters,
-): Promise<Result> => {
-  // Tool execution
-};
-```
+Use Email Answerer, with response_context: [YOUR_RESPONSE_CONTEXT], from_date: [START_DATE], and to_date: [END_DATE]
 
 ## Parameters/Inputs
 The following parameters are available (all optional):

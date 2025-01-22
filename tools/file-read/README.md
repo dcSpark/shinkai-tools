@@ -4,12 +4,7 @@
 A tool that reads the text contents of a file from the given path.
 
 ## Usage Example
-```typescript
-async function run(config: CONFIG, inputs: INPUTS): Promise<OUTPUT> {
-    // Tool execution
-    pass
-}
-```
+Use File Reader, with path: [FILE_PATH]
 
 ## Parameters/Inputs
 The following parameter is required:

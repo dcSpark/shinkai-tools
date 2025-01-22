@@ -4,11 +4,7 @@
 A tool that sends emails using SMTP protocol with support for plain text messages. Uses SSL/TLS connection by default and handles various email-related operations including authentication and error handling.
 
 ## Usage Example
-```python
-async def run(config: CONFIG, inputs: INPUTS) -> OUTPUT:
-    # Tool execution
-    pass
-```
+Use Email Sender, with recipient_email: [RECIPIENT_EMAIL], subject: [EMAIL_SUBJECT], body: [EMAIL_CONTENT], smtp_server: [YOUR_SMTP_SERVER], sender_email: [YOUR_EMAIL], and sender_password: [YOUR_PASSWORD]
 
 ## Parameters/Inputs
 The following parameters are required:
@@ -18,10 +14,10 @@ The following parameters are required:
 
 ## Config
 The following configuration options are available:
-- `smtp_server` (string, required): The SMTP server address (e.g., `[YOUR_SMTP_SERVER]`)
+- `smtp_server` (string, required): The SMTP server address (e.g., [YOUR_SMTP_SERVER])
 - `port` (integer, optional): SMTP server port (defaults to 465 for SSL)
-- `sender_email` (string, required): Email address used to send the email (e.g., `[YOUR_EMAIL]`)
-- `sender_password` (string, required): Password for the sender's email account (e.g., `[YOUR_PASSWORD]`)
+- `sender_email` (string, required): Email address used to send the email (e.g., [YOUR_EMAIL])
+- `sender_password` (string, required): Password for the sender's email account (e.g., [YOUR_PASSWORD])
 - `ssl` (boolean, optional): Whether to use SSL for the SMTP connection (defaults to true)
 
 ## Output

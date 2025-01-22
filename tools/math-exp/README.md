@@ -4,14 +4,7 @@
 A tool that parses and evaluates mathematical expressions. It's a safer and more math-oriented alternative to using JavaScript's eval function for mathematical expressions.
 
 ## Usage Example
-```typescript
-const run: Run<Configurations, Parameters, Result> = async (
-  configurations: Configurations,
-  params: Parameters,
-): Promise<Result> => {
-  // Tool execution
-};
-```
+Use Math Expression Evaluator, with expression: [MATH_EXPRESSION]
 
 ## Parameters/Inputs
 The following parameter is required:

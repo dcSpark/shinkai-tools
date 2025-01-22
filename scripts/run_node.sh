@@ -58,7 +58,7 @@ if [ "$USE_DOCKER" = "true" ]; then
     -p ${NODE_WS_PORT}:${NODE_WS_PORT} \
     -p ${NODE_PORT}:${NODE_PORT} \
     -p ${NODE_HTTPS_PORT}:${NODE_HTTPS_PORT} \
-    ${SHINKAI_NODE_IMAGE}:${SHINKAI_VERSION}
+    ${SHINKAI_NODE_IMAGE}
 else
   # Download and run native binary
   if [[ "$(uname -s)" == "Darwin" && "$(uname -m)" == "arm64" ]]; then

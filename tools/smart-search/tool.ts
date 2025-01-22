@@ -400,7 +400,7 @@ export async function run(
     let id = 1;
     for (const source of sources) {
       if (typeof source === 'string') throw new Error('Invalid source');
-      const searchResult = await downloadPages({ urls: [source.url] });
+      const searchResult = await downloadPages({ url: source.url });
       smartSearchSouces.push({
         id: id++, url: source.url, title: source.title,
         markdown: searchResult.markdowns.join('\n'),

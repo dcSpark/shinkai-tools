@@ -4,14 +4,7 @@
 A tool that searches the DuckDuckGo search engine and returns formatted results. The tool first attempts to use DuckDuckGo's API, and if that fails, it falls back to using Puppeteer for web scraping.
 
 ## Usage Example
-```typescript
-const run: Run<Configurations, Parameters, Result> = async (
-  configurations: Configurations,
-  parameters: Parameters,
-): Promise<Result> => {
-  // Tool execution
-};
-```
+Use DuckDuckGo Search, with message: [YOUR_SEARCH_QUERY], and chromePath: [CHROME_EXECUTABLE_PATH]
 
 ## Parameters/Inputs
 The following parameter is required:

@@ -2,26 +2,19 @@ import { assertEquals } from "jsr:@std/assert";
 import { getMetadata, processToolsDirectory, saveToolsInNode } from "./build_tools/save_tools.ts";
 import { join } from "https://deno.land/std/path/mod.ts";
 import { exists } from "https://deno.land/std/fs/mod.ts";
+import { stripVersion, systemTools } from "./build_tools/system.ts";
 
 Deno.test("Check if related tools exist", async () => {
   const tools_raw = await processToolsDirectory();
   const metadatas = await getMetadata(tools_raw);
   const tool_key_list = [
-    "local:::rust_toolkit:::shinkai_llm_prompt_processor",
-    "local:::rust_toolkit:::shinkai_process_embeddings",
-    "local:::rust_toolkit:::shinkai_sqlite_query_executor",
-    "local:::rust_toolkit:::shinkai_tool_config_updater",
+    ...systemTools,
     ...metadatas.map(tool => tool.key),
   ];
-  console.log(tool_key_list);
   for (const tool of metadatas) {
     if (!tool.metadata.tools) continue;
     console.log(`Testing tool ${tool.name}`);
-    const expectedTools = tool.metadata.tools.map(t => {
-      const parts = t.split(":::");
-      if (parts.length === 4) return `${parts[0]}:::${parts[1]}:::${parts[2]}`;
-      return t;
-    });
+    const expectedTools = tool.metadata.tools.map(t => stripVersion(t));
     const actualTools = expectedTools.filter(tool => tool_key_list.includes(tool));
     assertEquals(expectedTools.length, actualTools.length, `Tool ${tool.name}. Expected:\n${expectedTools.join("\n")}\nActual:\n${actualTools.join("\n")}`);
   }
@@ -35,22 +28,24 @@ Deno.test("Compare shinkai-node generated ZIP __tool.json vs .tool-dump.test.jso
   assertEquals(tools_saved.map(tool => tool.name).sort(), tools_raw.map(tool => tool.name).sort());
   
   // Search for tools with .tool-dump.test.json
-  for await (const entry of Deno.readDir("tools")) {
-    if (!entry.isDirectory) continue;
-
-    const toolDir = join("tools", entry.name);
+  for await (const entryx of Deno.readDir("tools")) {
+    if (!entryx.isDirectory) continue;
+    const toolDir = join("tools", entryx.name);
     const toolDump = await exists(join(toolDir, ".tool-dump.test.json"));
     if (!toolDump) {
-      console.log(`[SKIPING] Tool ${entry.name} does not have a .tool-dump.test.json`);
+      console.log(`[SKIPING] Tool ${entryx.name} does not have a .tool-dump.test.json`);
       continue;
+    } else {
+      console.log(`[TESTING] Tool ${entryx.name}`);
     }
+    const metadata = JSON.parse(await Deno.readTextFile(join(toolDir, "metadata.json")));
 
     // Search for tool downloaded and extracted data
-    const zipDir = join("packages", `${entry.name}`);
+    const zipDir = join("packages", metadata.name.replace(/[^a-z0-9_.-]/g, '_'));
     const zipDirExists = await exists(zipDir);
-    assertEquals(zipDirExists, true);
+    assertEquals(zipDirExists, true, 'zip dir exists');
     const zipTool = await exists(join(zipDir, "__tool.json"));
-    assertEquals(zipTool, true);
+    assertEquals(zipTool, true, 'zip tool exists');
 
     // read zipTool and toolDump and compare
     const zipToolData = JSON.parse(await Deno.readTextFile(join(zipDir, "__tool.json")));

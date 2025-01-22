@@ -1,5 +1,4 @@
 {
-    "id": "email-imap-fetcher",
     "name": "Email Fetcher",
     "homepage": "https://github.com/dcSpark/shinkai-tools/blob/main/tools/email-imap-fetcher/README.md",
     "version": "1.0.0",

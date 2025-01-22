@@ -1,5 +1,4 @@
 {
-    "id": "file-reader",
     "name": "Read File Contents",
     "homepage": "https://github.com/dcSpark/shinkai-tools/blob/main/tools/file-read/README.md",
     "version": "1.0.0",

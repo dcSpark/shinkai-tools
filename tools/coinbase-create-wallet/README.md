@@ -4,14 +4,7 @@
 A tool for creating a Coinbase wallet. This tool creates a new wallet on the BaseSepolia network and returns the wallet's details.
 
 ## Usage Example
-```typescript
-const run: Run<Configurations, Parameters, Result> = async (
-  configurations: Configurations,
-  _parameters: Parameters,
-): Promise<Result> => {
-  // Tool execution
-};
-```
+Use Coinbase Wallet Creator, with name: [YOUR_WALLET_NAME], privateKey: [YOUR_PRIVATE_KEY], and useServerSigner: false
 
 ## Parameters/Inputs
 This tool does not require any parameters. The parameters object is empty.

@@ -4,14 +4,7 @@
 A tool for calling a faucet on Coinbase. This tool allows you to request test tokens from a faucet for a specified wallet on the BaseSepolia network.
 
 ## Usage Example
-```typescript
-const run: Run<Configurations, Parameters, Result> = async (
-  configurations: Configurations,
-  _params: Parameters,
-): Promise<Result> => {
-  // Tool execution
-};
-```
+Use Coinbase Faucet Caller, with name: [YOUR_WALLET_NAME], privateKey: [YOUR_PRIVATE_KEY], and walletId: [YOUR_WALLET_ID]
 
 ## Parameters/Inputs
 This tool does not require any parameters. The parameters object is empty.

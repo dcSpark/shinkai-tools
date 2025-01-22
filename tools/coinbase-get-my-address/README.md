@@ -4,14 +4,7 @@
 A tool for getting the default address of a Coinbase wallet. This tool retrieves the Ethereum address associated with a specified wallet.
 
 ## Usage Example
-```typescript
-const run: Run<Configurations, Parameters, Result> = async (
-  configurations: Configurations,
-  params: Parameters,
-): Promise<Result> => {
-  // Tool execution
-};
-```
+Use Coinbase My Address Getter, with name: [YOUR_WALLET_NAME], privateKey: [YOUR_PRIVATE_KEY], walletId: [YOUR_WALLET_ID], and useServerSigner: true
 
 ## Parameters/Inputs
 The following parameter is available:

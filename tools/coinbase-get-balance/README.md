@@ -4,14 +4,7 @@
 A tool for getting the balance of a Coinbase wallet after restoring it. This tool retrieves and displays the token balances for a specified wallet.
 
 ## Usage Example
-```typescript
-const run: Run<Configurations, Parameters, Result> = async (
-  configurations: Configurations,
-  params: Parameters,
-): Promise<Result> => {
-  // Tool execution
-};
-```
+Use Coinbase Balance Getter, with name: [YOUR_WALLET_NAME], privateKey: [YOUR_PRIVATE_KEY], walletId: [YOUR_WALLET_ID], and useServerSigner: true
 
 ## Parameters/Inputs
 The following parameter is available:

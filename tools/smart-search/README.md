@@ -1,8 +1,45 @@
-# Smart Search Tool
+# Smart Search Engine
 
-A sophisticated search and answer generation pipeline that combines multiple strategies to provide high-quality, well-cited answers to user questions.
+## Name & Description
+A tool that takes a question as input and returns a comprehensive answer, along with the sources and statements used to generate the answer. It uses multiple search engines and LLM processing to provide well-researched, cited responses.
 
-## Pipeline Steps
+## Usage Example
+```typescript
+const run: Run<CONFIG, INPUTS, OUTPUT> = async (
+  config: CONFIG,
+  inputs: INPUTS,
+): Promise<OUTPUT> => {
+  // Tool execution
+};
+```
+
+## Parameters/Inputs
+The following parameter is required:
+- `question` (string, required): The question to answer
+
+## Config
+The following configuration options are available:
+- `searchEngine` (string, optional): The search engine to use (defaults to "google")
+- `searchEngineApiKey` (string, optional): The API key for the search engine
+- `maxSources` (number, optional): The maximum number of sources to return (defaults to 10)
+
+## Output
+The tool returns an object with the following fields:
+- `response` (string, required): The generated answer
+- `sources` (array, required): The sources used to generate the answer. Each source has:
+  - `id` (number): Source identifier
+  - `url` (string): Source URL
+  - `title` (string): Source title
+- `statements` (array, required): The statements extracted from the sources. Each statement has:
+  - `sourceId` (number): Reference to the source
+  - `sourceTitle` (string): Title of the source
+  - `extractedFacts` (array): Array of facts with:
+    - `statement` (string): The extracted statement
+    - `relevance` (string): Relevance classification
+
+## Implementation Details
+
+### Pipeline Steps
 
 1. **Query Optimization**
    - Takes the user's natural language question

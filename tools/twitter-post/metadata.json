@@ -1,6 +1,6 @@
 {
     "name": "X/Twitter Post",
-    "homepage": "<https://github.com/dcSpark/shinkai-tools/blob/main/tools/twitter-post/README.md>",
+    "homepage": "https://github.com/dcSpark/shinkai-tools/blob/main/tools/twitter-post/README.md",
     "description": "Function to post a tweet to Twitter.",
     "author": "Shinkai",
     "version": "1.0.0",

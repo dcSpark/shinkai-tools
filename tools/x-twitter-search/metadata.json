@@ -1,6 +1,6 @@
 {
   "name": "X/Twitter Search",
-  "homepage": "<https://github.com/dcSpark/shinkai-tools/blob/main/tools/x-twitter-search/README.md>",
+  "homepage": "https://github.com/dcSpark/shinkai-tools/blob/main/tools/x-twitter-search/README.md",
   "author": "Shinkai",
   "configurations": {
     "properties": {

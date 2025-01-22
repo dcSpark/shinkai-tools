@@ -1,6 +1,6 @@
 {
   "name": "Smart Search Engine",
-  "homepage": "<https://github.com/dcSpark/shinkai-tools/blob/main/tools/smart-search/README.md>",
+  "homepage": "https://github.com/dcSpark/shinkai-tools/blob/main/tools/smart-search/README.md",
   "description": "This function takes a question as input and returns a comprehensive answer, along with the sources and statements used to generate the answer.",  
   "author": "Shinkai",
   "version": "1.0.0",

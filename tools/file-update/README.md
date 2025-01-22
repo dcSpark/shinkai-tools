@@ -4,12 +4,7 @@
 A tool that applies a prompt to modify file contents using an LLM. It reads the target file, processes its content according to the provided instructions, and writes back the updated version.
 
 ## Usage Example
-```typescript
-async function run(config: CONFIG, inputs: INPUTS): Promise<OUTPUT> {
-    // Tool execution
-    pass
-}
-```
+Use File Updater, with path: [FILE_PATH], and prompt: [UPDATE_INSTRUCTIONS]
 
 ## Parameters/Inputs
 The following parameters are required:

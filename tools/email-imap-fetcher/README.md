@@ -4,11 +4,7 @@
 A tool that fetches emails from an IMAP server and returns their subject, date, sender, and text content.
 
 ## Usage Example
-```python
-async def run(config: CONFIG, inputs: INPUTS) -> OUTPUT:
-    # Tool execution
-    pass
-```
+Use Email Fetcher, with imap_server: [YOUR_IMAP_SERVER], username: [YOUR_EMAIL], password: [YOUR_PASSWORD], from_date: [START_DATE], and to_date: [END_DATE]
 
 ## Parameters/Inputs
 The following parameters are available (all optional):
@@ -19,9 +15,9 @@ Note: Dates should be in the format DD-Mon-YYYY (e.g., 10-Jan-2025)
 
 ## Config
 The following configuration options are available:
-- `imap_server` (string, required): The IMAP server address (e.g., `[YOUR_IMAP_SERVER]`)
-- `username` (string, required): The username/email for the IMAP account (e.g., `[YOUR_EMAIL]`)
-- `password` (string, required): The password for the IMAP account (e.g., `[YOUR_PASSWORD]`)
+- `imap_server` (string, required): The IMAP server address (e.g., [YOUR_IMAP_SERVER])
+- `username` (string, required): The username/email for the IMAP account (e.g., [YOUR_EMAIL])
+- `password` (string, required): The password for the IMAP account (e.g., [YOUR_PASSWORD])
 - `port` (integer, optional): The port number for the IMAP server (defaults to 993 for IMAPS)
 - `ssl` (boolean, optional): Whether to use SSL for the IMAP connection (defaults to true)
 

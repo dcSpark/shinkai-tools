@@ -4,12 +4,7 @@
 A tool that writes text content to a file at the specified path. It provides simple file writing functionality with error handling.
 
 ## Usage Example
-```typescript
-async function run(config: CONFIG, inputs: INPUTS): Promise<OUTPUT> {
-    // Tool execution
-    pass
-}
-```
+Use File Writer, with path: [FILE_PATH], and content: [FILE_CONTENT]
 
 ## Parameters/Inputs
 The following parameters are required:

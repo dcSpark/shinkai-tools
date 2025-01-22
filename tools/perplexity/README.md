@@ -4,14 +4,7 @@
 A tool that searches the internet using Perplexity. It automates browser interaction with perplexity.ai to perform searches and retrieve results.
 
 ## Usage Example
-```typescript
-const run: Run<Configurations, Parameters, Result> = async (
-  configurations: Configurations,
-  params: Parameters,
-): Promise<Result> => {
-  // Tool execution
-};
-```
+Use Perplexity Search, with query: [YOUR_SEARCH_QUERY], and chromePath: [CHROME_EXECUTABLE_PATH]
 
 ## Parameters/Inputs
 The following parameter is required:

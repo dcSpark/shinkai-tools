@@ -4,14 +4,7 @@
 A tool that searches the web using Perplexity API (limited). It uses the llama-3.1-sonar-small-128k-online model to process search queries and return results.
 
 ## Usage Example
-```typescript
-const run: Run<Configurations, Parameters, Result> = async (
-  configurations: Configurations,
-  params: Parameters,
-): Promise<Result> => {
-  // Tool execution
-};
-```
+Use Perplexity API Search, with query: [YOUR_SEARCH_QUERY], and apiKey: [YOUR_PERPLEXITY_API_KEY]
 
 ## Parameters/Inputs
 The following parameter is required:

@@ -4,14 +4,7 @@
 A tool that takes a question as input and returns a comprehensive answer, along with the sources and statements used to generate the answer. It uses multiple search engines and LLM processing to provide well-researched, cited responses.
 
 ## Usage Example
-```typescript
-const run: Run<CONFIG, INPUTS, OUTPUT> = async (
-  config: CONFIG,
-  inputs: INPUTS,
-): Promise<OUTPUT> => {
-  // Tool execution
-};
-```
+Use Smart Search Engine, with question: [YOUR_QUESTION], searchEngine: [SEARCH_ENGINE_NAME], searchEngineApiKey: [YOUR_API_KEY], and maxSources: [MAX_SOURCES_NUMBER]
 
 ## Parameters/Inputs
 The following parameter is required:
@@ -166,8 +159,7 @@ interface SmartSearchGenerationContext {
   - `optimizedQuery`: Processed search query
   - `sources`: Array of processed source pages
 
-## Usage Example
-
+## Example Implementation
 ```typescript
 // Basic usage
 const result = await run({}, { 

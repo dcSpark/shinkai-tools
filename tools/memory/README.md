@@ -4,14 +4,7 @@
 A tool that handles memory storage and retrieval using a SQLite database. It manages both general and specific memories, allowing for intelligent memory updates based on new data.
 
 ## Usage Example
-```typescript
-const run: Run<CONFIG, INPUTS, OUTPUT> = async (
-  config: CONFIG,
-  inputs: INPUTS,
-): Promise<OUTPUT> => {
-  // Tool execution
-};
-```
+Use Memory Manager, with data: [YOUR_MEMORY_DATA], general_prompt: [GENERAL_PROMPT], specific_prompt: [SPECIFIC_PROMPT], and key: [MEMORY_KEY]
 
 ## Parameters/Inputs
 The following parameters are available (all optional):

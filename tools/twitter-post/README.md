@@ -4,14 +4,7 @@
 A tool that posts tweets to Twitter/X using the Twitter API v2. It handles OAuth 2.0 authentication and provides a simple interface for posting tweets.
 
 ## Usage Example
-```typescript
-const run: Run<CONFIG, INPUTS, OUTPUT> = async (
-  config: CONFIG,
-  inputs: INPUTS,
-): Promise<OUTPUT> => {
-  // Tool execution
-};
-```
+Use X/Twitter Post, with text: [YOUR_TWEET_TEXT]
 
 ## Parameters/Inputs
 The following parameter is required:

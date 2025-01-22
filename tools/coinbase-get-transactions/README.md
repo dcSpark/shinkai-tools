@@ -4,14 +4,7 @@
 A tool for getting the transactions of a Coinbase wallet after restoring it. This tool retrieves transaction history and formats it as a CSV string.
 
 ## Usage Example
-```typescript
-const run: Run<Configurations, Parameters, Result> = async (
-  configurations: Configurations,
-  _parameters: Parameters,
-): Promise<Result> => {
-  // Tool execution
-};
-```
+Use Coinbase Transactions Getter, with name: [YOUR_WALLET_NAME], privateKey: [YOUR_PRIVATE_KEY], and walletId: [YOUR_WALLET_ID]
 
 ## Parameters/Inputs
 This tool does not require any parameters. The parameters object is empty.

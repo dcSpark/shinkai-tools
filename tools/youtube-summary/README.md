@@ -4,14 +4,10 @@
 A tool that fetches the transcript of a YouTube video and generates a formatted summary using an LLM. It processes the video transcript into sections with timestamp links for easy navigation.
 
 ## Usage Example
-```typescript
-const run: Run<CONFIG, INPUTS, OUTPUT> = async (
-  config: CONFIG,
-  inputs: INPUTS,
-): Promise<OUTPUT> => {
-  // Tool execution
-};
-```
+Use Youtube Transcript Summarizer, with url: [YOUR_YOUTUBE_VIDEO_URL]
+
+Or with language specification:
+Use Youtube Transcript Summarizer, with url: [YOUR_YOUTUBE_VIDEO_URL], and lang: [LANGUAGE_CODE]
 
 ## Parameters/Inputs
 The following parameters are available:

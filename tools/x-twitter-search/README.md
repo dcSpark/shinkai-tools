@@ -4,14 +4,13 @@
 A tool that fetches data from X/Twitter API to perform various search and retrieval operations. It supports multiple search types and user data retrieval through RapidAPI's Twitter API.
 
 ## Usage Example
-```typescript
-const run: Run<CONFIG, INPUTS, OUTPUT> = async (
-  config: CONFIG,
-  inputs: INPUTS,
-): Promise<OUTPUT> => {
-  // Tool execution
-};
-```
+Use X/Twitter Search, with command: search-top, searchQuery: [YOUR_SEARCH_QUERY], and apiKey: [YOUR_RAPIDAPI_KEY]
+
+Or for user posts:
+Use X/Twitter Search, with command: get-user-posts, username: [TWITTER_USERNAME], and apiKey: [YOUR_RAPIDAPI_KEY]
+
+Or for specific tweets:
+Use X/Twitter Search, with command: get-post-by-id, tweetId: [TWEET_ID], and apiKey: [YOUR_RAPIDAPI_KEY]
 
 ## Parameters/Inputs
 The following parameters are available:

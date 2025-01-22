@@ -2,7 +2,7 @@
     "id": "coinbase-send-tx",
     "version": "1.0.0",
     "name": "Coinbase Transaction Sender",
-    "homepage": "<https://github.com/dcSpark/shinkai-tools/blob/main/tools/coinbase-send-tx/README.md>",
+    "homepage": "https://github.com/dcSpark/shinkai-tools/blob/main/tools/coinbase-send-tx/README.md",
     "description": "Tool for restoring a Coinbase wallet and sending a transaction",
     "author": "Shinkai",
     "keywords": [

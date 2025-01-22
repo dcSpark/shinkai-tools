@@ -2,7 +2,7 @@
     "id": "coinbase-get-balance",
     "version": "1.0.0",
     "name": "Coinbase Balance Getter",
-    "homepage": "<https://github.com/dcSpark/shinkai-tools/blob/main/tools/coinbase-get-balance/README.md>",
+    "homepage": "https://github.com/dcSpark/shinkai-tools/blob/main/tools/coinbase-get-balance/README.md",
     "description": "Tool for getting the balance of a Coinbase wallet after restoring it",
     "author": "Shinkai",
     "keywords": [

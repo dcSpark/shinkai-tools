@@ -1,7 +1,7 @@
 {
     "id": "meme-generator",
     "name": "Generate Meme",
-    "homepage": "<https://github.com/dcSpark/shinkai-tools/blob/main/tools/meme-generator/README.md>",
+    "homepage": "https://github.com/dcSpark/shinkai-tools/blob/main/tools/meme-generator/README.md",
     "description": "Generates a meme based on a joke input",
     "author": "Shinkai",
     "version": "1.0.0",

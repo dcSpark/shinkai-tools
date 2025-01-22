@@ -1,7 +1,7 @@
 {
   "id": "email-answerer",
   "name": "Email Answerer",
-  "homepage": "<https://github.com/dcSpark/shinkai-tools/blob/main/tools/email-responder/README.md>",
+  "homepage": "https://github.com/dcSpark/shinkai-tools/blob/main/tools/email-responder/README.md",
   "description": "Generates responses to emails based on a given context and memory, and logs answered emails in a database.",
   "author": "Shinkai",
   "version": "1.0.0",

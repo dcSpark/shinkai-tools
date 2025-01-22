@@ -1,5 +1,6 @@
 {
   "name": "Youtube Transcript Summarizer",
+  "homepage": "https://github.com/dcSpark/shinkai-tools/blob/main/tools/youtube-summary/README.md",
   "description": "Fetches the transcript of a YouTube video and generates a formatted summary using an LLM.",
   "author": "@@eduardosotomontaner.arb-sep-shinkai",
   "version": "1.0.0",

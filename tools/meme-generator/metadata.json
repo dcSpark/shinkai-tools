@@ -1,6 +1,6 @@
 {
   "name": "Meme Generator",
-  "homePage": "",
+  "homepage": "https://github.com/dcSpark/shinkai-tools/blob/main/tools/meme-generator/README.md",
   "description": "Generates a meme image based on a joke by selecting a template and splitting the joke into appropriate parts.",
   "author": "Shinkai",
   "version": "1.0.0",
@@ -18,8 +18,8 @@
         "description": "The username for the Imgflip API"
       },
       "password": {
-        "type": "string",
-        "description": "The password for the Imgflip API"
+          "type": "string",
+          "description": "The password for the Imgflip API"
       }
     },
     "required": [

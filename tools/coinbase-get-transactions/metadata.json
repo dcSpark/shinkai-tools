@@ -1,6 +1,7 @@
 {
     "version": "1.0.0",
     "name": "Coinbase Transactions Getter",
+    "homepage": "https://github.com/dcSpark/shinkai-tools/blob/main/tools/coinbase-get-transactions/README.md",
     "description": "Tool for getting the transactions of a Coinbase wallet after restoring it",
     "author": "Shinkai",
     "keywords": [

@@ -1,6 +1,7 @@
 {
   "id": "x-twitter-search",
   "name": "X/Twitter Search",
+  "homepage": "<https://github.com/dcSpark/shinkai-tools/blob/main/tools/x-twitter-search/README.md>",
   "author": "Shinkai",
   "configurations": {
     "properties": {
@@ -15,7 +16,6 @@
       "type": "object"
     },
     "description": "Fetch from X/Twitter API to perform various search and retrieval operations.",
-    "homepage": null,
     "keywords": [
       "X",
       "Twitter",

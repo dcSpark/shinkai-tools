@@ -1,6 +1,7 @@
 {
     "id": "perplexity-api",
     "name": "Perplexity API",
+    "homepage": "<https://github.com/dcSpark/shinkai-tools/blob/main/tools/perplexity-api/README.md>",
     "description": "Searches the web using Perplexity API (limited)",
     "author": "Shinkai",
     "version": "1.0.0",

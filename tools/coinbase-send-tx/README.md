@@ -4,14 +4,7 @@
 A tool for restoring a Coinbase wallet and sending a transaction. This tool allows you to send tokens from a specified wallet to a destination address.
 
 ## Usage Example
-```typescript
-const run: Run<Configurations, Parameters, Result> = async (
-  configurations: Configurations,
-  params: Parameters,
-): Promise<Result> => {
-  // Tool execution
-};
-```
+Use Coinbase Transaction Sender, with name: [YOUR_WALLET_NAME], privateKey: [YOUR_PRIVATE_KEY], recipient_address: [RECIPIENT_ADDRESS], assetId: [ASSET_ID], amount: [AMOUNT], and useServerSigner: [SERVER_SIGNER_VALUE]
 
 ## Parameters/Inputs
 The following parameters are required:

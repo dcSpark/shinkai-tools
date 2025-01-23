@@ -124,8 +124,17 @@ jobs:
           rm -rf ./packages && mkdir ./packages
           deno run --allow-read --allow-write --allow-env --allow-net --allow-run scripts/build_tools.ts
 
+      - name: Install AWS CLI v2 (R2 compatible version)
+        id: install_aws_cli
+        run: |
+          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64-2.22.25.zip" -o /tmp/awscliv2.zip
+          unzip -q /tmp/awscliv2.zip -d /tmp
+          rm /tmp/awscliv2.zip
+          sudo /tmp/aws/install --update
+          rm -rf /tmp/aws/
+
       - name: Upload to Cloudflare R2
-        if: steps.run_node.outcome == 'success'
+        if: steps.run_node.outcome == 'success' && steps.install_aws_cli.outcome == 'success'
         env:
           R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
           R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}

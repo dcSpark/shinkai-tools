@@ -41,7 +41,7 @@ Deno.test("Compare shinkai-node generated ZIP __tool.json vs .tool-dump.test.jso
     const metadata = JSON.parse(await Deno.readTextFile(join(toolDir, "metadata.json")));
 
     // Search for tool downloaded and extracted data
-    const zipDir = join("packages", metadata.name.replace(/[^a-z0-9_.-]/g, '_'));
+    const zipDir = join("packages", metadata.name.toLowerCase().replace(/[^a-z0-9_.-]/g, '_'));
     const zipDirExists = await exists(zipDir);
     assertEquals(zipDirExists, true, 'zip dir exists');
     const zipTool = await exists(join(zipDir, "__tool.json"));

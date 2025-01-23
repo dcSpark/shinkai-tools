@@ -240,7 +240,7 @@ export async function getMetadata(toolsOriginal: DirectoryEntry[]) {
   const data = [];
   for (const tool of toolsOriginal) {
     const metadata: Metadata = JSON.parse(await Deno.readTextFile(join(tool.dir, "metadata.json")));
-    data.push({ name: tool.name, key: `local:::${author.toLowerCase().replace(/[^a-z0-9_]/g, "_")}:::${metadata.name.toLowerCase().replace(/[^a-z0-9_]/g, "_")}`, metadata });
+    data.push({ name: tool.name, key: generateToolRouterKey(author, metadata.name), metadata });
   }
   return data;
 }
@@ -283,13 +283,13 @@ export async function saveToolsInNode(toolsOriginal: DirectoryEntry[]): Promise<
       if (!response.ok) {
         console.error(`Failed to upload tool to Shinkai node. HTTP status: ${response.status}`);
         console.error(`Response: ${await response.text()}`);
-        continue;
+        throw Error(`Failed to upload tool ${tool.name} to Shinkai node. HTTP status: ${response.status}`);
       }
   
       // Get tool router key.
       const uploadedTool = await response.json();
       if (tool.routerKey !== uploadedTool.message.replace(/.*key: /, "")) {
-        throw Error('Tool router does not match expected router key');
+        throw Error(`Tool router does not match expected router key for ${tool.name}`);
       }
 
       // Get tool zip
@@ -304,7 +304,7 @@ export async function saveToolsInNode(toolsOriginal: DirectoryEntry[]): Promise<
   
       if (!zipResponse.ok) {
         console.error(`Failed to download zip for ${tool.name}`);
-        continue;
+        throw Error(`Failed to download zip for ${tool.name}`);
       }
   
       // Save zip filex
@@ -333,7 +333,7 @@ export async function saveToolsInNode(toolsOriginal: DirectoryEntry[]): Promise<
       } catch {
         console.error(`Error: Invalid zip file downloaded for ${tool.name}`);
         await Deno.remove(zipPath);
-        continue;
+        throw Error(`Failed to validate zip file for ${tool.name}`);
       }
   
       // Calculate hash

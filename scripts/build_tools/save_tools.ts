@@ -308,7 +308,7 @@ export async function saveToolsInNode(toolsOriginal: DirectoryEntry[]): Promise<
       }
   
       // Save zip filex
-      const zipPath = join("packages", `${tool.name}.zip`.replace(/[^a-z0-9_.-]/g, '_'));
+      const zipPath = join("packages", `${tool.name}.zip`.toLowerCase().replace(/[^a-z0-9_.-]/g, '_'));
       await Deno.writeFile(zipPath, new Uint8Array(await zipResponse.arrayBuffer()));
   
       // Validate zip
@@ -318,7 +318,7 @@ export async function saveToolsInNode(toolsOriginal: DirectoryEntry[]): Promise<
         });
         await validateZip.output();
         
-        const zipPathFiles = join("packages", `${tool.name}`.replace(/[^a-z0-9_.-]/g, '_'));
+        const zipPathFiles = join("packages", `${tool.name}`.toLowerCase().replace(/[^a-z0-9_.-]/g, '_'));
         const unzip = new Deno.Command("unzip", {
           args: [zipPath, '-d', zipPathFiles],
         });

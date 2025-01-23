@@ -54,6 +54,7 @@ if [ "$USE_DOCKER" = "true" ]; then
     -e INITIAL_AGENT_API_KEYS \
     -e API_V2_KEY \
     -e EMBEDDINGS_SERVER_URL \
+    -e SKIP_IMPORT_FROM_DIRECTORY \
     -p ${NODE_API_PORT}:${NODE_API_PORT} \
     -p ${NODE_WS_PORT}:${NODE_WS_PORT} \
     -p ${NODE_PORT}:${NODE_PORT} \

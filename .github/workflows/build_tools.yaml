@@ -139,6 +139,7 @@ jobs:
           export AWS_SECRET_ACCESS_KEY=${R2_SECRET_ACCESS_KEY}
           export AWS_ENDPOINT_URL=https://${CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com
           UPLOAD_PATH=${{ inputs.use_dev_prefix && format('dev-tools-{0}', inputs.node_version) || format('tools-{0}', inputs.node_version) }}
+          aws configure set default.s3.max_concurrent_requests 1
           aws s3 sync ./packages/ s3://${R2_BUCKET}/${UPLOAD_PATH}/ --exclude "*" --include "*.zip" --include "directory.json" \
             --endpoint-url https://${CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com
           deno run --allow-read --allow-env --allow-net scripts/invalidate_cache.ts

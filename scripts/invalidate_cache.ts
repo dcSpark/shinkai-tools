@@ -18,6 +18,7 @@ try {
   const directory: DirectoryEntry[] = JSON.parse(directoryContent);
   
   const files = directory.map(entry => entry.file);
+  files.push(`${Deno.env.get("DOWNLOAD_PREFIX")}/directory.json`);
   console.log(`URLs to invalidate: ${JSON.stringify(files, null, 2)}`);
   
   const response = await fetch(

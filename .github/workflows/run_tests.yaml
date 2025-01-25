@@ -1,4 +1,4 @@
-name: Build Shinkai Tools
+name: Test Tools
 
 on:
   push:

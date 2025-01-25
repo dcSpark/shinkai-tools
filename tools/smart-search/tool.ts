@@ -403,7 +403,7 @@ export async function run(
       const searchResult = await downloadPages({ url: source.url });
       smartSearchSouces.push({
         id: id++, url: source.url, title: source.title,
-        markdown: searchResult.markdowns.join('\n'),
+        markdown: searchResult.markdown ?? '',
       });
     }
     const statements: SmartSearchStatement[] = []

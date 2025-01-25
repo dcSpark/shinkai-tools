@@ -1,0 +1,73 @@
+name: Build Shinkai Tools
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      node_version:
+        description: 'Shinkai Node version to use (e.g. 0.9.7)'
+        required: true
+        type: string
+        default: "0.9.7"
+
+jobs:
+  run_tests:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          profile: minimal
+
+      - name: Install b3sum
+        run: cargo install b3sum
+
+      - name: Setup Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y curl jq zip unzip coreutils
+
+      - name: Run node in background
+        id: run_node
+        env:
+          INITIAL_AGENT_NAMES: ${{ secrets.INITIAL_AGENT_NAMES }}
+          INITIAL_AGENT_URLS: ${{ secrets.INITIAL_AGENT_URLS }}
+          INITIAL_AGENT_MODELS: ${{ secrets.INITIAL_AGENT_MODELS }}
+          INITIAL_AGENT_API_KEYS: ${{ secrets.INITIAL_AGENT_API_KEYS }}
+          API_V2_KEY: ${{ secrets.API_V2_KEY }}
+          EMBEDDINGS_SERVER_URL: ${{ secrets.EMBEDDINGS_SERVER_URL }}
+          SHINKAI_NODE_ADDR: "http://localhost:9550"
+          BEARER_TOKEN: ${{ secrets.API_V2_KEY }}
+          INITIALIZATION_DATA: ${{ secrets.INITIALIZATION_DATA }}
+          DOWNLOAD_PREFIX: ${{ inputs.use_dev_prefix && 'https://download.shinkai.com/dev-tools-' || 'https://download.shinkai.com/tools-' }}${{ inputs.node_version }}
+          SKIP_IMPORT_FROM_DIRECTORY: true
+          SHINKAI_STORE_ADDR: "https://shinkai-store-302883622007.us-central1.run.app"
+          SHINKAI_STORE_TOKEN: ${{ secrets.SHINKAI_STORE_TOKEN }}
+          USE_DOCKER: true
+          SHINKAI_NODE_IMAGE: "dcsparkdevops/shinkai-node:${{ inputs.node_version }}"
+        run: |
+          ./scripts/run_node.sh &
+          timeout 60 bash -c 'until curl -s --location "$SHINKAI_NODE_ADDR/v2/health_check" | jq -e ".status == \"ok\"" > /dev/null; do sleep 1; done'
+          curl --location "$SHINKAI_NODE_ADDR/v2/initial_registration" \
+            --header 'Content-Type: application/json; charset=utf-8' \
+            --data "$INITIALIZATION_DATA"
+          rm -rf ./packages && mkdir ./packages
+          deno test --allow-read --allow-write --allow-env --allow-net --allow-run scripts/
+          rm -rf ./shinkai-node/storage
+  

@@ -383,8 +383,7 @@ export async function saveToolsInNode(toolsOriginal: DirectoryEntry[]): Promise<
           const bannerJson = await bannerResponse.json();
           tool.banner_url = bannerJson.url;
           console.log(`Banner upload successful. URL: ${tool.banner_url}`);
-
-      } catch (error) {
+        } catch (error) {
         if (error.name === 'AbortError') {
           console.warn(`Operation timed out for ${tool.name}`);
         } else {
@@ -416,7 +415,7 @@ export async function saveToolsInNode(toolsOriginal: DirectoryEntry[]): Promise<
             console.error(`Error setting default status for ${tool.name}:`, error);
           }
         }
-      };
+      }
 
       console.log(`=== Finished processing ${tool.name} ===\n`);
 
@@ -540,4 +539,4 @@ export async function saveToolsInNode(toolsOriginal: DirectoryEntry[]): Promise<
     }
   
     return toolsSaved;
-}
+  }

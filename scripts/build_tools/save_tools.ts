@@ -286,69 +286,233 @@ export async function saveToolsInNode(toolsOriginal: DirectoryEntry[]): Promise<
       }
 
       // Generate and upload tool images
-      const iconResponse = await fetch(`${Deno.env.get("SHINKAI_STORE_ADDR")}/store/defaults/${tool.routerKey}`, {
-        method: "POST",
-        headers: {
-          "Authorization": `Bearer ${Deno.env.get("SHINKAI_STORE_TOKEN")}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          type: "icon",
-          name: tool.name,
-          description: tool.description
-        }),
-      });
-
-      if (!iconResponse.ok) {
-        console.error(`Failed to upload icon for ${tool.name}. HTTP status: ${iconResponse.status}`);
-        throw Error(`Failed to upload icon for ${tool.name}`);
+      console.log(`\n=== Processing tool: ${tool.name} ===`);
+      console.log(`Router key: ${tool.routerKey}`);
+      
+      if (!Deno.env.get("SHINKAI_STORE_ADDR") || !Deno.env.get("SHINKAI_STORE_TOKEN")) {
+        throw new Error("Missing required environment variables: SHINKAI_STORE_ADDR or SHINKAI_STORE_TOKEN");
       }
-      const iconData = await iconResponse.json();
-      tool.icon_url = iconData.url;
 
-      const bannerResponse = await fetch(`${Deno.env.get("SHINKAI_STORE_ADDR")}/store/defaults/${tool.routerKey}`, {
-        method: "POST",
-        headers: {
-          "Authorization": `Bearer ${Deno.env.get("SHINKAI_STORE_TOKEN")}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          type: "banner",
-          name: tool.name,
-          description: tool.description
-        }),
-      });
+      // First create/update the product in store
+      const store_entry = {
+        name: tool.name,
+        description: tool.description,
+        routerKey: tool.routerKey,
+        version: tool.version,
+        author: tool.author
+      };
 
-      if (!bannerResponse.ok) {
-        console.error(`Failed to upload banner for ${tool.name}. HTTP status: ${bannerResponse.status}`);
-        throw Error(`Failed to upload banner for ${tool.name}`);
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 30000); // 30 second timeout
+
+      try {
+        console.log("Creating/updating product in store...");
+        let productResponse = await fetch(`${Deno.env.get("SHINKAI_STORE_ADDR")}/store/products`, {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${Deno.env.get("SHINKAI_STORE_TOKEN")}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(store_entry),
+          signal: controller.signal,
+        });
+
+        if (productResponse.status === 409) {
+          console.log("Product exists, updating...");
+          productResponse = await fetch(`${Deno.env.get("SHINKAI_STORE_ADDR")}/store/products/${tool.routerKey}`, {
+            method: "PUT",
+            headers: {
+              "Authorization": `Bearer ${Deno.env.get("SHINKAI_STORE_TOKEN")}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(store_entry),
+          });
       }
-      const bannerData = await bannerResponse.json();
-      tool.banner_url = bannerData.url;
+
+        if (!productResponse.ok && productResponse.status !== 409) {
+          console.error(`Failed to create/update product for ${tool.name}. HTTP status: ${productResponse.status}`);
+          throw Error(`Failed to create/update product for ${tool.name}`);
+        }
+
+      console.log("Product created/updated successfully");
+      
+      // Now upload the images with timeout and error handling
+      console.log("Uploading icon image...");
+      // Generate a basic 64x64 colored icon based on the tool name
+      // Since we're in Deno and don't have access to Canvas APIs, let's create a simple colored square with text
+      // We'll use a basic SVG for this purpose
+      const hash = [...tool.name].reduce((acc, char) => char.charCodeAt(0) + ((acc << 5) - acc), 0);
+      const color = `hsl(${hash % 360}, 70%, 60%)`;
+      
+      const svgIcon = `
+        <svg width="64" height="64" xmlns="http://www.w3.org/2000/svg">
+          <rect width="64" height="64" fill="${color}"/>
+          <text x="32" y="32" font-family="Arial" font-size="24" font-weight="bold" fill="white" text-anchor="middle" dominant-baseline="middle">
+            ${tool.name[0].toUpperCase()}
+          </text>
+        </svg>
+      `;
+      
+      const iconBase64 = btoa(svgIcon);
+
+      try {
+        // Convert SVG to Blob
+        const iconBlob = new Blob([svgIcon], { type: 'image/svg+xml' });
+        const formData = new FormData();
+        formData.append('file', iconBlob, 'icon.svg');
+        
+        const iconResponse = await fetch(`${Deno.env.get("SHINKAI_STORE_ADDR")}/store/products/${tool.routerKey}/assets`, {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${Deno.env.get("SHINKAI_STORE_TOKEN")}`,
+          },
+          body: formData,
+          signal: controller.signal,
+        });
+
+        if (!iconResponse.ok) {
+          console.error(`Failed to upload icon for ${tool.name}. HTTP status: ${iconResponse.status}`);
+          throw Error(`Failed to upload icon for ${tool.name}`);
+        }
+        const iconData = await iconResponse.json();
+        tool.icon_url = iconData.url;
+        console.log(`Icon upload successful. URL: ${tool.icon_url}`);
+
+        console.log("Uploading banner image...");
+        // Generate a basic 1000x500 banner using SVG
+        const svgBanner = `
+          <svg width="1000" height="500" xmlns="http://www.w3.org/2000/svg">
+            <rect width="1000" height="500" fill="${color}"/>
+            <text x="500" y="250" font-family="Arial" font-size="72" font-weight="bold" fill="white" text-anchor="middle" dominant-baseline="middle">
+              ${tool.name}
+            </text>
+          </svg>
+        `;
+        
+        const bannerBase64 = btoa(svgBanner);
+
+        // Convert SVG to Blob
+        const bannerBlob = new Blob([svgBanner], { type: 'image/svg+xml' });
+        const bannerFormData = new FormData();
+        bannerFormData.append('file', bannerBlob, 'banner.svg');
+      
+        const bannerResponse = await fetch(`${Deno.env.get("SHINKAI_STORE_ADDR")}/store/products/${tool.routerKey}/assets`, {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${Deno.env.get("SHINKAI_STORE_TOKEN")}`,
+          },
+          body: bannerFormData,
+          signal: controller.signal,
+        });
+
+        if (!bannerResponse.ok) {
+          console.error(`Failed to upload banner for ${tool.name}. HTTP status: ${bannerResponse.status}`);
+          throw Error(`Failed to upload banner for ${tool.name}`);
+        }
+        const bannerData = await bannerResponse.json();
+        tool.banner_url = bannerData.url;
+        console.log(`Banner upload successful. URL: ${tool.banner_url}`);
+
+      } catch (error) {
+        if (error.name === 'AbortError') {
+          console.warn(`Operation timed out for ${tool.name}`);
+        } else {
+          console.error(`Error processing ${tool.name}:`, error);
+        }
+        throw error;
+      } finally {
+        clearTimeout(timeout);
+      }
+
+      // Set as default if needed
+      if (tool.isDefault) {
+        console.log("Setting as default tool...");
+        try {
+          const defaultResponse = await fetch(`${Deno.env.get("SHINKAI_STORE_ADDR")}/store/defaults/${tool.routerKey}`, {
+            method: "POST",
+            headers: {
+              "Authorization": `Bearer ${Deno.env.get("SHINKAI_STORE_TOKEN")}`,
+            },
+            signal: controller.signal,
+          });
+          if (!defaultResponse.ok && defaultResponse.status !== 409) {
+            console.error(`Failed to set as default tool. HTTP status: ${defaultResponse.status}`);
+          }
+        } catch (error) {
+          if (error.name === 'AbortError') {
+            console.warn(`Timeout while setting default status for ${tool.name}`);
+          } else {
+            console.error(`Error setting default status for ${tool.name}:`, error);
+          }
+        }
+      };
+
+      console.log(`=== Finished processing ${tool.name} ===\n`);
 
       // Build tool JSON
+      console.log("Building tool JSON...");
       const toolJson = await buildToolJson(toolContent, metadata, toolType, assets);
-
-      // Send to Shinkai node
-      const response = await fetch(`${Deno.env.get("SHINKAI_NODE_ADDR")}/v2/add_shinkai_tool`, {
-        method: "POST",
-        headers: {
-          "Authorization": `Bearer ${Deno.env.get("BEARER_TOKEN")}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(toolJson),
-      });
-  
-      if (!response.ok) {
-        console.error(`Failed to upload tool to Shinkai node. HTTP status: ${response.status}`);
-        console.error(`Response: ${await response.text()}`);
-        throw Error(`Failed to upload tool ${tool.name} to Shinkai node. HTTP status: ${response.status}`);
+      
+      // Write to directory.json
+      try {
+        const directoryPath = "./packages/directory.json";
+        const directory = [];
+        
+        if (await Deno.stat(directoryPath).catch(() => null)) {
+          const content = await Deno.readTextFile(directoryPath);
+          directory.push(...JSON.parse(content));
+        }
+        
+        directory.push(tool);
+        await Deno.writeTextFile(directoryPath, JSON.stringify(directory, null, 2));
+        console.log(`Updated ${directoryPath} with tool: ${tool.name}`);
+      } catch (error) {
+        console.error(`Error writing to directory.json: ${error.message}`);
+        throw error;
       }
-  
+
+      // Send to Shinkai node with timeout
+      console.log(`Uploading tool ${tool.name} to Shinkai node...`);
+      const nodeController = new AbortController();
+      const nodeTimeout = setTimeout(() => nodeController.abort(), 30000); // 30 second timeout
+      
+      try {
+        const response = await fetch(`${Deno.env.get("SHINKAI_NODE_ADDR")}/v2/add_shinkai_tool`, {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${Deno.env.get("BEARER_TOKEN")}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(toolJson),
+          signal: nodeController.signal,
+        });
+    
+        if (!response.ok) {
+          console.error(`Failed to upload tool ${tool.name} to Shinkai node. HTTP status: ${response.status}`);
+          const responseText = await response.text();
+          console.error(`Response: ${responseText}`);
+          throw new Error(`Failed to upload tool ${tool.name}: ${responseText}`);
+        }
+        console.log(`Successfully uploaded tool ${tool.name} to Shinkai node`);
+      } catch (error) {
+        if (error.name === 'AbortError') {
+          console.error(`Timeout uploading tool ${tool.name} to Shinkai node`);
+          throw error;
+        }
+        throw error;
+      } finally {
+        clearTimeout(nodeTimeout);
+      }
+
       // Get tool router key.
-      const uploadedTool = await response.json();
-      if (tool.routerKey !== uploadedTool.message.replace(/.*key: /, "")) {
-        throw Error(`Tool router does not match expected router key for ${tool.name}`);
+      try {
+        const uploadedTool = await response.json();
+        if (tool.routerKey !== uploadedTool.message.replace(/.*key: /, "")) {
+          throw Error(`Tool router does not match expected router key for ${tool.name}`);
+        }
+      } catch (error) {
+        console.error(`Error validating tool router key for ${tool.name}:`, error);
+        throw error;
       }
 
       // Get tool zip
@@ -366,7 +530,7 @@ export async function saveToolsInNode(toolsOriginal: DirectoryEntry[]): Promise<
         throw Error(`Failed to download zip for ${tool.name}`);
       }
   
-      // Save zip filex
+      // Save zip file
       const zipPath = join("packages", `${tool.name}.zip`.toLowerCase().replace(/[^a-z0-9_.-]/g, '_'));
       await Deno.writeFile(zipPath, new Uint8Array(await zipResponse.arrayBuffer()));
   
@@ -406,3 +570,4 @@ export async function saveToolsInNode(toolsOriginal: DirectoryEntry[]): Promise<
   
     return toolsSaved;
   }
+};

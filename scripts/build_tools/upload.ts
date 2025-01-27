@@ -1,5 +1,6 @@
 import { DirectoryEntry } from "./interfaces.ts";
 
+// Upload tools to Shinkai Store
 export async function uploadTools(tools: DirectoryEntry[]) {
     const store_addr = Deno.env.get("SHINKAI_STORE_ADDR");
     const store_token = Deno.env.get("SHINKAI_STORE_TOKEN");
@@ -45,8 +46,25 @@ export async function uploadTools(tools: DirectoryEntry[]) {
         }
       }
   
-      console.log(`Upload to Store Response (${response.status}): ${await response.text()}`);
-      if (response.status !== 200) console.log(`Request body failed: ${JSON.stringify(store_entry, null, 2)}`);
+      if (response.status !== 200) {
+        console.log(`Upload to Store Response (${response.status}): ${await response.text()}`);
+        console.log(`Request body failed: ${JSON.stringify(store_entry, null, 2)}`);
+      }
+      if (response.status === 200) {
+        console.log(`Created/Updated ${entry.routerKey} to Shinkai Store`);
+        if (entry.isDefault) {
+          const default_tool = await fetch(`${store_addr}/store/defaults/${entry.routerKey}`, {
+            method: "POST",
+            headers: {
+              "Authorization": `Bearer ${store_token}`,
+            },
+          });
+          if (default_tool.status !== 200) {
+            console.log(`Set default tool for ${entry.routerKey}: ${default_tool.status}`);
+            console.log(await default_tool.text());
+          } 
+        }
+      }
     }
   }
   

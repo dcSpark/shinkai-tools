@@ -17,8 +17,9 @@ export async function fetchCategoriesFromStore(): Promise<Category[]> {
     }
     const categories: Category[] = await response.json();
     return categories;
-  } catch (error) {
-    throw new Error(`Error fetching categories from store: ${error.message}`);
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    throw new Error(`Error fetching categories from store: ${errorMessage}`);
   }
 }
 
@@ -45,8 +46,9 @@ export async function getCategories(): Promise<Category[]> {
     const categories = await fetchCategoriesFromStore();
     await cacheCategories(categories);
     return categories;
-  } catch (error) {
-    console.warn(`Warning: Failed to fetch categories from store: ${error.message}`);
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    console.warn(`Warning: Failed to fetch categories from store: ${errorMessage}`);
     console.warn("Falling back to cached categories...");
     const cached = await loadCachedCategories();
     if (cached.length === 0) {

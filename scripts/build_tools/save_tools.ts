@@ -189,7 +189,7 @@ export async function processToolsDirectory(): Promise<DirectoryEntry[]> {
       // Validate tool has a category mapping
       const routerKey = generateToolRouterKey(author, toolName);
       console.log(`Debug - Tool: ${toolName}, Generated Router Key: ${routerKey}`);
-      const localEntry = toolCategories.find(tc => tc.routerKey === routerKey);
+      const localEntry = toolCategories.find((tc: { routerKey: string; categoryId: string }) => tc.routerKey === routerKey);
       if (!localEntry) {
         throw new Error(`No category mapping found for tool ${toolName}. Please add a mapping in tool_categories.json.`);
       }

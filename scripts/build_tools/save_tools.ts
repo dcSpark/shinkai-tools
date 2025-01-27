@@ -285,7 +285,7 @@ export async function saveToolsInNode(toolsOriginal: DirectoryEntry[]): Promise<
         }
       }
 
-      // Generate and upload tool images
+      // Upload tool images
       console.log(`\n=== Processing tool: ${tool.name} ===`);
       console.log(`Router key: ${tool.routerKey}`);
       
@@ -327,91 +327,62 @@ export async function saveToolsInNode(toolsOriginal: DirectoryEntry[]): Promise<
             },
             body: JSON.stringify(store_entry),
           });
-      }
-
-      if (!productResponse.ok && productResponse.status !== 409) {
-        console.error(`Failed to create/update product for ${tool.name}. HTTP status: ${productResponse.status}`);
-        throw Error(`Failed to create/update product for ${tool.name}`);
-      }
-
-      console.log("Product created/updated successfully");
-      
-      // Now upload the images with timeout and error handling
-      console.log("Uploading icon image...");
-      // Generate a basic 64x64 colored icon based on the tool name
-      // Since we're in Deno and don't have access to Canvas APIs, let's create a simple colored square with text
-      // We'll use a basic SVG for this purpose
-      const hash = [...tool.name].reduce((acc, char) => char.charCodeAt(0) + ((acc << 5) - acc), 0);
-      const color = `hsl(${hash % 360}, 70%, 60%)`;
-      
-      const svgIcon = `
-        <svg width="64" height="64" xmlns="http://www.w3.org/2000/svg">
-          <rect width="64" height="64" fill="${color}"/>
-          <text x="32" y="32" font-family="Arial" font-size="24" font-weight="bold" fill="white" text-anchor="middle" dominant-baseline="middle">
-            ${tool.name[0].toUpperCase()}
-          </text>
-        </svg>
-      `;
-      
-      const iconBase64 = btoa(svgIcon);
-
-      try {
-        // Convert SVG to Blob
-        const iconBlob = new Blob([svgIcon], { type: 'image/svg+xml' });
-        const formData = new FormData();
-        formData.append('file', iconBlob, 'icon.svg');
-        
-        const iconResponse = await fetch(`${Deno.env.get("SHINKAI_STORE_ADDR")}/store/products/${tool.routerKey}/assets`, {
-          method: "POST",
-          headers: {
-            "Authorization": `Bearer ${Deno.env.get("SHINKAI_STORE_TOKEN")}`,
-          },
-          body: formData,
-          signal: controller.signal,
-        });
-
-        if (!iconResponse.ok) {
-          console.error(`Failed to upload icon for ${tool.name}. HTTP status: ${iconResponse.status}`);
-          throw Error(`Failed to upload icon for ${tool.name}`);
         }
-        const iconData = await iconResponse.json();
-        tool.icon_url = iconData.url;
-        console.log(`Icon upload successful. URL: ${tool.icon_url}`);
 
-        console.log("Uploading banner image...");
-        // Generate a basic 1000x500 banner using SVG
-        const svgBanner = `
-          <svg width="1000" height="500" xmlns="http://www.w3.org/2000/svg">
-            <rect width="1000" height="500" fill="${color}"/>
-            <text x="500" y="250" font-family="Arial" font-size="72" font-weight="bold" fill="white" text-anchor="middle" dominant-baseline="middle">
-              ${tool.name}
-            </text>
-          </svg>
-        `;
-        
-        const bannerBase64 = btoa(svgBanner);
-
-        // Convert SVG to Blob
-        const bannerBlob = new Blob([svgBanner], { type: 'image/svg+xml' });
-        const bannerFormData = new FormData();
-        bannerFormData.append('file', bannerBlob, 'banner.svg');
-      
-        const bannerResponse = await fetch(`${Deno.env.get("SHINKAI_STORE_ADDR")}/store/products/${tool.routerKey}/assets`, {
-          method: "POST",
-          headers: {
-            "Authorization": `Bearer ${Deno.env.get("SHINKAI_STORE_TOKEN")}`,
-          },
-          body: bannerFormData,
-          signal: controller.signal,
-        });
-
-        if (!bannerResponse.ok) {
-          console.error(`Failed to upload banner for ${tool.name}. HTTP status: ${bannerResponse.status}`);
-          throw Error(`Failed to upload banner for ${tool.name}`);
+        if (!productResponse.ok && productResponse.status !== 409) {
+          console.error(`Failed to create/update product for ${tool.name}. HTTP status: ${productResponse.status}`);
+          throw Error(`Failed to create/update product for ${tool.name}`);
         }
-        const bannerData = await bannerResponse.json();
-        tool.banner_url = bannerData.url;
-        console.log(`Banner upload successful. URL: ${tool.banner_url}`);
+
+        console.log("Product created/updated successfully");
+      
+        // Now upload the images with timeout and error handling
+        console.log("Uploading icon image...");
+        try {
+          // Read and upload icon.png
+          const iconData = await Deno.readFile(join(tool.dir, "icon.png"));
+          const formData = new FormData();
+          formData.append("file", new Blob([iconData], { type: "image/png" }), "icon.png");
+          
+          const iconResponse = await fetch(`${Deno.env.get("SHINKAI_STORE_ADDR")}/store/products/${tool.routerKey}/assets`, {
+            method: "POST",
+            headers: {
+              "Authorization": `Bearer ${Deno.env.get("SHINKAI_STORE_TOKEN")}`,
+            },
+            body: formData,
+            signal: controller.signal,
+          });
+
+          if (!iconResponse.ok) {
+            console.error(`Failed to upload icon for ${tool.name}. HTTP status: ${iconResponse.status}`);
+            throw Error(`Failed to upload icon for ${tool.name}`);
+          }
+          const iconJson = await iconResponse.json();
+          tool.icon_url = iconJson.url;
+          console.log(`Icon upload successful. URL: ${tool.icon_url}`);
+
+          console.log("Uploading banner image...");
+          // Read and upload banner.png
+          const bannerData = await Deno.readFile(join(tool.dir, "banner.png"));
+          const bannerFormData = new FormData();
+          bannerFormData.append("file", new Blob([bannerData], { type: "image/png" }), "banner.png");
+        
+          const bannerResponse = await fetch(`${Deno.env.get("SHINKAI_STORE_ADDR")}/store/products/${tool.routerKey}/assets`, {
+            method: "POST",
+            headers: {
+              "Authorization": `Bearer ${Deno.env.get("SHINKAI_STORE_TOKEN")}`,
+            },
+            body: bannerFormData,
+            signal: controller.signal,
+          });
+
+          if (!bannerResponse.ok) {
+            console.error(`Failed to upload banner for ${tool.name}. HTTP status: ${bannerResponse.status}`);
+            throw Error(`Failed to upload banner for ${tool.name}`);
+          }
+          const bannerJson = await bannerResponse.json();
+          tool.banner_url = bannerJson.url;
+          console.log(`Banner upload successful. URL: ${tool.banner_url}`);
 
       } catch (error) {
         if (error.name === 'AbortError') {
@@ -568,7 +539,5 @@ export async function saveToolsInNode(toolsOriginal: DirectoryEntry[]): Promise<
       toolsSaved.push(tool);
     }
   
-  return toolsSaved;
+    return toolsSaved;
 }
-
-export default saveToolsInNode;

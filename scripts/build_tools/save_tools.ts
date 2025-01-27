@@ -570,3 +570,5 @@ export async function saveToolsInNode(toolsOriginal: DirectoryEntry[]): Promise<
   
   return toolsSaved;
 }
+
+export default saveToolsInNode;

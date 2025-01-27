@@ -329,10 +329,10 @@ export async function saveToolsInNode(toolsOriginal: DirectoryEntry[]): Promise<
           });
       }
 
-        if (!productResponse.ok && productResponse.status !== 409) {
-          console.error(`Failed to create/update product for ${tool.name}. HTTP status: ${productResponse.status}`);
-          throw Error(`Failed to create/update product for ${tool.name}`);
-        }
+      if (!productResponse.ok && productResponse.status !== 409) {
+        console.error(`Failed to create/update product for ${tool.name}. HTTP status: ${productResponse.status}`);
+        throw Error(`Failed to create/update product for ${tool.name}`);
+      }
 
       console.log("Product created/updated successfully");
       
@@ -568,6 +568,5 @@ export async function saveToolsInNode(toolsOriginal: DirectoryEntry[]): Promise<
       toolsSaved.push(tool);
     }
   
-    return toolsSaved;
-  }
+  return toolsSaved;
 }

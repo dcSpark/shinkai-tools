@@ -210,7 +210,6 @@ export async function processToolsDirectory(): Promise<DirectoryEntry[]> {
         toolFile,
         file: `${Deno.env.get("DOWNLOAD_PREFIX")}/${toolName.toLowerCase().replace(/[^a-z0-9_.-]/g, '_')}.zip`,
         price_usd: metadata.price_usd || 0.00,
-        stripeProductId: "prod_P000000000000",
         // categoryId: "cat_P000000000000", // to-do: categories not implemented yet.
         dependencies,
       });

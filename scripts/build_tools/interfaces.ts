@@ -61,4 +61,6 @@ export interface DirectoryEntry {
   stripeProductId?: string;
   categoryId?: string;
   dependencies?: string[];
+  icon_url?: string;
+  banner_url?: string;
 }

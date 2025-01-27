@@ -285,6 +285,47 @@ export async function saveToolsInNode(toolsOriginal: DirectoryEntry[]): Promise<
         }
       }
 
+      // Generate and upload tool images
+      const iconResponse = await fetch(`${Deno.env.get("SHINKAI_STORE_ADDR")}/store/defaults/${tool.routerKey}`, {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${Deno.env.get("SHINKAI_STORE_TOKEN")}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          type: "icon",
+          name: tool.name,
+          description: tool.description
+        }),
+      });
+
+      if (!iconResponse.ok) {
+        console.error(`Failed to upload icon for ${tool.name}. HTTP status: ${iconResponse.status}`);
+        throw Error(`Failed to upload icon for ${tool.name}`);
+      }
+      const iconData = await iconResponse.json();
+      tool.icon_url = iconData.url;
+
+      const bannerResponse = await fetch(`${Deno.env.get("SHINKAI_STORE_ADDR")}/store/defaults/${tool.routerKey}`, {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${Deno.env.get("SHINKAI_STORE_TOKEN")}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          type: "banner",
+          name: tool.name,
+          description: tool.description
+        }),
+      });
+
+      if (!bannerResponse.ok) {
+        console.error(`Failed to upload banner for ${tool.name}. HTTP status: ${bannerResponse.status}`);
+        throw Error(`Failed to upload banner for ${tool.name}`);
+      }
+      const bannerData = await bannerResponse.json();
+      tool.banner_url = bannerData.url;
+
       // Build tool JSON
       const toolJson = await buildToolJson(toolContent, metadata, toolType, assets);
 

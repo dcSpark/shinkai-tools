@@ -4,6 +4,7 @@ import { join } from "https://deno.land/std/path/mod.ts";
 import { exists } from "https://deno.land/std/fs/mod.ts";
 import { encodeBase64 } from "jsr:@std/encoding/base64";
 import { generateToolRouterKey, systemTools, stripVersion, author } from "./system.ts";
+import { getCategories, Category } from "./fetch_categories.ts";
 
 // deno-lint-ignore require-await
 async function getToolType(file: string): Promise<string> {
@@ -155,6 +156,11 @@ async function processCronsDirectory() {
 
 export async function processToolsDirectory(): Promise<DirectoryEntry[]> {
     const tools: DirectoryEntry[] = [];
+    
+    // Fetch store categories and read tool categories mapping
+    const storeCategories = await getCategories();
+    const toolCategoriesPath = join("tools", "tool_categories.json");
+    const toolCategories = JSON.parse(await Deno.readTextFile(toolCategoriesPath));
   
     // Process tools
     for await (const entry of Deno.readDir("tools")) {
@@ -179,6 +185,19 @@ export async function processToolsDirectory(): Promise<DirectoryEntry[]> {
       const toolType = await getToolType(toolFile);
       const toolName = metadata.name;
       console.log(`Processing ${toolName}...`);
+
+      // Validate tool has a category mapping
+      const routerKey = generateToolRouterKey(author, toolName);
+      console.log(`Debug - Tool: ${toolName}, Generated Router Key: ${routerKey}`);
+      const localEntry = toolCategories.find(tc => tc.routerKey === routerKey);
+      if (!localEntry) {
+        throw new Error(`No category mapping found for tool ${toolName}. Please add a mapping in tool_categories.json.`);
+      }
+
+      // Validate category exists in store
+      if (!storeCategories.some(sc => sc.id === localEntry.categoryId)) {
+        throw new Error(`Invalid categoryId ${localEntry.categoryId} for tool ${toolName}. Category not found in store endpoint.`);
+      }
     
       if (!metadata.author) {
         throw(`Error: Missing author in metadata for ${toolName}`);
@@ -210,7 +229,7 @@ export async function processToolsDirectory(): Promise<DirectoryEntry[]> {
         toolFile,
         file: `${Deno.env.get("DOWNLOAD_PREFIX")}/${toolName.toLowerCase().replace(/[^a-z0-9_.-]/g, '_')}.zip`,
         price_usd: metadata.price_usd || 0.00,
-        // categoryId: "cat_P000000000000", // to-do: categories not implemented yet.
+        categoryId: localEntry.categoryId, // Using validated category from earlier check
         dependencies,
       });
     }

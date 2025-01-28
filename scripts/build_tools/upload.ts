@@ -1,5 +1,6 @@
+import { join } from "https://deno.land/std/path/mod.ts";
 import { DirectoryEntry } from "./interfaces.ts";
-
+import { uploadAsset } from "./system.ts";
 // Upload tools to Shinkai Store
 export async function uploadTools(tools: DirectoryEntry[]) {
     const store_addr = Deno.env.get("SHINKAI_STORE_ADDR");
@@ -31,20 +32,24 @@ export async function uploadTools(tools: DirectoryEntry[]) {
         body: JSON.stringify(store_entry),
       });
   
-      if (response.status === 409) {
-        const responseBody = await response.text();
-        if (responseBody.includes("already exists")) {
-          // Product exists, use PUT endpoint instead
-          const putResponse = await fetch(`${store_addr}/store/products/${entry.routerKey}`, {
-            method: "PUT", 
-            headers: {
-              "Authorization": `Bearer ${store_token}`,
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(store_entry),
-          });
-          response = putResponse;
-        }
+      if (response.status === 409 || response.status === 200) {
+        // Upload tool assets to store
+        console.log(`Uploading tool assets for ${entry.name}...`);
+        store_entry.icon_url = await uploadAsset(entry.routerKey, join(entry.dir, "icon.png"), 'icon', `${entry.name}_icon.png`);
+        store_entry.banner_url = await uploadAsset(entry.routerKey, join(entry.dir, "banner.png"), 'banner', `${entry.name}_banner.png`);
+        store_entry.file = await uploadAsset(entry.routerKey, join("packages", `${entry.name}.zip`.toLowerCase().replace(/[^a-z0-9_.-]/g, '_')), 'tool', `${entry.hash}.zip`);
+        console.log(`Tool assets for ${entry.name} uploaded`);
+
+        // Product exists, use PUT endpoint instead
+        const putResponse = await fetch(`${store_addr}/store/products/${entry.routerKey}`, {
+          method: "PUT",
+          headers: {
+            "Authorization": `Bearer ${store_token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(store_entry),
+        });
+        response = putResponse;
       }
   
       if (response.status !== 200) {

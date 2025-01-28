@@ -56,6 +56,7 @@ export interface DirectoryEntry {
   hash: string;
   toolFile: string;
   file: string;
+  storeFile?: string;
   agent_id?: string;
   price_usd?: number;
   stripeProductId?: string;

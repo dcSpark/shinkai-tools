@@ -3,7 +3,7 @@ import { DirectoryEntry, Metadata } from "./interfaces.ts";
 import { join } from "https://deno.land/std/path/mod.ts";
 import { exists } from "https://deno.land/std/fs/mod.ts";
 import { encodeBase64 } from "jsr:@std/encoding/base64";
-import { generateToolRouterKey, systemTools, stripVersion, author } from "./system.ts";
+import { generateToolRouterKey, systemTools, stripVersion, author, uploadAsset } from "./system.ts";
 import { getCategories, Category } from "./fetch_categories.ts";
 
 // deno-lint-ignore require-await
@@ -214,8 +214,18 @@ export async function processToolsDirectory(): Promise<DirectoryEntry[]> {
 
       const dependencies = metadata.tools;
 
+      // Check for required images
+      const iconPath = join(toolDir, "icon.png");
+      const bannerPath = join(toolDir, "banner.png");
+      
+      if (!await exists(iconPath)) {
+        throw new Error(`Missing icon.png for tool ${toolName}`);
+      }
+      if (!await exists(bannerPath)) {
+        throw new Error(`Missing banner.png for tool ${toolName}`);
+      }
+
       tools.push({
-        // default: hasDefault,
         routerKey: generateToolRouterKey(author, toolName),
         dir: toolDir,
         name: toolName,
@@ -229,7 +239,7 @@ export async function processToolsDirectory(): Promise<DirectoryEntry[]> {
         toolFile,
         file: `${Deno.env.get("DOWNLOAD_PREFIX")}/${toolName.toLowerCase().replace(/[^a-z0-9_.-]/g, '_')}.zip`,
         price_usd: metadata.price_usd || 0.00,
-        categoryId: localEntry.categoryId, // Using validated category from earlier check
+        categoryId: localEntry.categoryId,
         dependencies,
       });
     }
@@ -285,260 +295,89 @@ export async function saveToolsInNode(toolsOriginal: DirectoryEntry[]): Promise<
         }
       }
 
-      // Upload tool images
-      console.log(`\n=== Processing tool: ${tool.name} ===`);
-      console.log(`Router key: ${tool.routerKey}`);
-      
-      if (!Deno.env.get("SHINKAI_STORE_ADDR") || !Deno.env.get("SHINKAI_STORE_TOKEN")) {
-        throw new Error("Missing required environment variables: SHINKAI_STORE_ADDR or SHINKAI_STORE_TOKEN");
+      // Build tool JSON
+      const toolJson = await buildToolJson(toolContent, metadata, toolType, assets);
+
+      // Send to Shinkai node
+      const response = await fetch(`${Deno.env.get("SHINKAI_NODE_ADDR")}/v2/add_shinkai_tool`, {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${Deno.env.get("BEARER_TOKEN")}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(toolJson),
+      });
+  
+      if (!response.ok) {
+        console.error(`Failed to upload tool to Shinkai node. HTTP status: ${response.status}`);
+        console.error(`Response: ${await response.text()}`);
+        throw Error(`Failed to upload tool ${tool.name} to Shinkai node. HTTP status: ${response.status}`);
+      }
+  
+      // Get tool router key.
+      const uploadedTool = await response.json();
+      if (tool.routerKey !== uploadedTool.message.replace(/.*key: /, "")) {
+        throw Error(`Tool router does not match expected router key for ${tool.name}`);
       }
 
-      try {
-        // First create/update the product in store
-        const store_entry = {
-          name: tool.name,
-          description: tool.description,
-          routerKey: tool.routerKey,
-          version: tool.version,
-          author: tool.author
-        };
-
-        const controller = new AbortController();
-        const timeout = setTimeout(() => controller.abort(), 30000); // 30 second timeout
-        console.log("Creating/updating product in store...");
-        let productResponse = await fetch(`${Deno.env.get("SHINKAI_STORE_ADDR")}/store/products`, {
-          method: "POST",
+      // Get tool zip
+      const zipResponse = await fetch(
+        `${Deno.env.get("SHINKAI_NODE_ADDR")}/v2/export_tool?tool_key_path=${tool.routerKey}`,
+        {
           headers: {
-            "Authorization": `Bearer ${Deno.env.get("SHINKAI_STORE_TOKEN")}`,
-            "Content-Type": "application/json",
+            "Authorization": `Bearer ${Deno.env.get("BEARER_TOKEN")}`,
           },
-          body: JSON.stringify(store_entry),
-          signal: controller.signal,
+        }
+      );
+  
+      if (!zipResponse.ok) {
+        console.error(`Failed to download zip for ${tool.name}`);
+        throw Error(`Failed to download zip for ${tool.name}`);
+      }
+  
+      // Save zip filex
+      const zipPath = join("packages", `${tool.name}.zip`.toLowerCase().replace(/[^a-z0-9_.-]/g, '_'));
+      await Deno.writeFile(zipPath, new Uint8Array(await zipResponse.arrayBuffer()));
+  
+      // Validate zip
+      try {
+        const validateZip = new Deno.Command("unzip", {
+          args: ["-t", zipPath],
         });
-
-        if (productResponse.status === 409) {
-          console.log("Product exists, updating...");
-          productResponse = await fetch(`${Deno.env.get("SHINKAI_STORE_ADDR")}/store/products/${tool.routerKey}`, {
-            method: "PUT",
-            headers: {
-              "Authorization": `Bearer ${Deno.env.get("SHINKAI_STORE_TOKEN")}`,
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(store_entry),
-          });
-        }
-
-        if (!productResponse.ok && productResponse.status !== 409) {
-          console.error(`Failed to create/update product for ${tool.name}. HTTP status: ${productResponse.status}`);
-          throw Error(`Failed to create/update product for ${tool.name}`);
-        }
-
-        console.log("Product created/updated successfully");
-      
-        // Now upload the images with timeout and error handling
-        console.log("Uploading icon image...");
-        try {
-          // Read and upload icon.png
-          const iconData = await Deno.readFile(join(tool.dir, "icon.png"));
-          const formData = new FormData();
-          formData.append("file", new Blob([iconData], { type: "image/png" }), "icon.png");
-          
-          const iconResponse = await fetch(`${Deno.env.get("SHINKAI_STORE_ADDR")}/store/products/${tool.routerKey}/assets`, {
-            method: "POST",
-            headers: {
-              "Authorization": `Bearer ${Deno.env.get("SHINKAI_STORE_TOKEN")}`,
-            },
-            body: formData,
-            signal: controller.signal,
-          });
-
-          if (!iconResponse.ok) {
-            console.error(`Failed to upload icon for ${tool.name}. HTTP status: ${iconResponse.status}`);
-            throw Error(`Failed to upload icon for ${tool.name}`);
-          }
-          const iconJson = await iconResponse.json();
-          tool.icon_url = iconJson.url;
-          console.log(`Icon upload successful. URL: ${tool.icon_url}`);
-
-          console.log("Uploading banner image...");
-          // Read and upload banner.png
-          const bannerData = await Deno.readFile(join(tool.dir, "banner.png"));
-          const bannerFormData = new FormData();
-          bannerFormData.append("file", new Blob([bannerData], { type: "image/png" }), "banner.png");
+        await validateZip.output();
         
-          const bannerResponse = await fetch(`${Deno.env.get("SHINKAI_STORE_ADDR")}/store/products/${tool.routerKey}/assets`, {
-            method: "POST",
-            headers: {
-              "Authorization": `Bearer ${Deno.env.get("SHINKAI_STORE_TOKEN")}`,
-            },
-            body: bannerFormData,
-            signal: controller.signal,
-          });
-
-          if (!bannerResponse.ok) {
-            console.error(`Failed to upload banner for ${tool.name}. HTTP status: ${bannerResponse.status}`);
-            throw Error(`Failed to upload banner for ${tool.name}`);
-          }
-          const bannerJson = await bannerResponse.json();
-          tool.banner_url = bannerJson.url;
-          console.log(`Banner upload successful. URL: ${tool.banner_url}`);
-          } catch (error) {
-          if (error.name === 'AbortError') {
-            console.warn(`Operation timed out for ${tool.name}`);
-          } else {
-            console.error(`Error processing ${tool.name}:`, error);
-          }
-          throw error;
-        } finally {
-          clearTimeout(timeout);
-        }
-
-        // Set as default if needed
-        if (tool.isDefault) {
-          console.log("Setting as default tool...");
-          try {
-            const defaultResponse = await fetch(`${Deno.env.get("SHINKAI_STORE_ADDR")}/store/defaults/${tool.routerKey}`, {
-              method: "POST",
-              headers: {
-                "Authorization": `Bearer ${Deno.env.get("SHINKAI_STORE_TOKEN")}`,
-              },
-              signal: controller.signal,
-            });
-            if (defaultResponse.status === 409) {
-              console.log(`Tool ${tool.name} is already set as default (409)`);
-            } else if (!defaultResponse.ok) {
-              console.error(`Failed to set as default tool. HTTP status: ${defaultResponse.status}`);
-            }
-          } catch (error) {
-            if (error.name === 'AbortError') {
-              console.warn(`Timeout while setting default status for ${tool.name}`);
-            } else {
-              console.error(`Error setting default status for ${tool.name}:`, error);
-            }
-            // Don't throw error for default setting failures
-            console.log(`Continuing despite error setting default status for ${tool.name}`);
-          }
-        }
-
-        console.log(`=== Finished processing ${tool.name} ===\n`);
-
-        // Build tool JSON
-        console.log("Building tool JSON...");
-        const toolJson = await buildToolJson(toolContent, metadata, toolType, assets);
+        const zipPathFiles = join("packages", `${tool.name}`.toLowerCase().replace(/[^a-z0-9_.-]/g, '_'));
+        const unzip = new Deno.Command("unzip", {
+          args: [zipPath, '-d', zipPathFiles],
+        });
+        await unzip.output();
         
-        // Write to directory.json
-        try {
-          const directoryPath = "./packages/directory.json";
-          const directory = [];
-          
-          if (await Deno.stat(directoryPath).catch(() => null)) {
-            const content = await Deno.readTextFile(directoryPath);
-            directory.push(...JSON.parse(content));
-          }
-          
-          directory.push(tool);
-          await Deno.writeTextFile(directoryPath, JSON.stringify(directory, null, 2));
-          console.log(`Updated ${directoryPath} with tool: ${tool.name}`);
-        } catch (error) {
-          console.error(`Error writing to directory.json: ${error.message}`);
-          throw error;
+        // Enable flag to update reference files
+        // copy the unzipped __tool.json to the tool directory as .tool-dump.test.json
+        if (Deno.env.get("UPDATE_DUMP_FILES")) {
+          await Deno.copyFile(join(zipPathFiles, "__tool.json"), join(tool.dir, ".tool-dump.test.json"));
         }
 
-        // Send to Shinkai node with timeout
-        console.log(`Uploading tool ${tool.name} to Shinkai node...`);
-        const nodeController = new AbortController();
-        const nodeTimeout = setTimeout(() => nodeController.abort(), 30000); // 30 second timeout
-        
-        try {
-          const response = await fetch(`${Deno.env.get("SHINKAI_NODE_ADDR")}/v2/add_shinkai_tool`, {
-            method: "POST",
-            headers: {
-              "Authorization": `Bearer ${Deno.env.get("BEARER_TOKEN")}`,
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(toolJson),
-            signal: nodeController.signal,
-          });
+      } catch {
+        console.error(`Error: Invalid zip file downloaded for ${tool.name}`);
+        await Deno.remove(zipPath);
+        throw Error(`Failed to validate zip file for ${tool.name}`);
+      }
+  
+      // Calculate hash
+      tool.hash = await calculateBlake3Hash(zipPath);
       
-          if (!response.ok) {
-            console.error(`Failed to upload tool ${tool.name} to Shinkai node. HTTP status: ${response.status}`);
-            const responseText = await response.text();
-            console.error(`Response: ${responseText}`);
-            throw new Error(`Failed to upload tool ${tool.name}: ${responseText}`);
-          }
-          console.log(`Successfully uploaded tool ${tool.name} to Shinkai node`);
+      // Check for .default file
+      tool.isDefault = await exists(join(tool.dir, ".default"));
 
-          // Get tool router key.
-          try {
-            const uploadedTool = await response.json();
-            if (tool.routerKey !== uploadedTool.message.replace(/.*key: /, "")) {
-              throw Error(`Tool router does not match expected router key for ${tool.name}`);
-            }
-          } catch (error) {
-            console.error(`Error validating tool router key for ${tool.name}:`, error);
-            throw error;
-          }
+      // Upload tool assets to store
+      console.log(`Uploading tool assets for ${tool.name}...`);
+      tool.icon_url = await uploadAsset(tool.routerKey, join(tool.dir, "icon.png"), 'icon', `${tool.name}_icon.png`);
+      tool.banner_url = await uploadAsset(tool.routerKey, join(tool.dir, "banner.png"), 'banner', `${tool.name}_banner.png`);
+      tool.storeFile = await uploadAsset(tool.routerKey, zipPath, 'tool', `${tool.hash}.zip`);
+      console.log(`Tool assets for ${tool.name} uploaded`);
 
-          // Get tool zip
-          const zipResponse = await fetch(
-            `${Deno.env.get("SHINKAI_NODE_ADDR")}/v2/export_tool?tool_key_path=${tool.routerKey}`,
-            {
-              headers: {
-                "Authorization": `Bearer ${Deno.env.get("BEARER_TOKEN")}`,
-              },
-            }
-          );
-      
-          if (!zipResponse.ok) {
-            console.error(`Failed to download zip for ${tool.name}`);
-            throw Error(`Failed to download zip for ${tool.name}`);
-          }
-      
-          // Save zip file
-          const zipPath = join("packages", `${tool.name}.zip`.toLowerCase().replace(/[^a-z0-9_.-]/g, '_'));
-          await Deno.writeFile(zipPath, new Uint8Array(await zipResponse.arrayBuffer()));
-      
-          // Validate zip
-          try {
-            const validateZip = new Deno.Command("unzip", {
-              args: ["-t", zipPath],
-            });
-            await validateZip.output();
-            
-            const zipPathFiles = join("packages", `${tool.name}`.toLowerCase().replace(/[^a-z0-9_.-]/g, '_'));
-            const unzip = new Deno.Command("unzip", {
-              args: [zipPath, '-d', zipPathFiles],
-            });
-            await unzip.output();
-            
-            // Enable flag to update reference files
-            // copy the unzipped __tool.json to the tool directory as .tool-dump.test.json
-            if (Deno.env.get("UPDATE_DUMP_FILES")) {
-              await Deno.copyFile(join(zipPathFiles, "__tool.json"), join(tool.dir, ".tool-dump.test.json"));
-            }
-
-          } catch {
-            console.error(`Error: Invalid zip file downloaded for ${tool.name}`);
-            await Deno.remove(zipPath);
-            throw Error(`Failed to validate zip file for ${tool.name}`);
-          }
-      
-          // Calculate hash
-          tool.hash = await calculateBlake3Hash(zipPath);
-          
-          // Check for .default file
-          tool.isDefault = await exists(join(tool.dir, ".default"));
-
-          toolsSaved.push(tool);
-        } catch (error) {
-          if (error.name === 'AbortError') {
-            console.error(`Timeout uploading tool ${tool.name} to Shinkai node`);
-            throw error;
-          }
-          throw error;
-        } finally {
-          clearTimeout(nodeTimeout);
-        }
+      toolsSaved.push(tool);
     }
   
     return toolsSaved;

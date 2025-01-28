@@ -51,8 +51,14 @@ Every Shinkai tool requires specific files to function properly. Here's a detail
 ### icon.png
 - Square image in PNG format (1:1 ratio)
 - Minimum dimensions: 80x80 pixels
-- Used for tool identification in the Shinkai UI
+- Used for tool identification in the Shinkai UI and Store
 - Example: A distinctive icon representing the tool's primary function
+
+### banner.png
+- Wide image in PNG format (16:9 ratio)
+- Minimum dimensions: 1200x676 pixels
+- Used for tool identification in the Shinkai UI and Store
+- Example: A real world usage scenario that explains the tool benefits.
 
 ### metadata.json
 - Defines tool configuration and interface
@@ -94,24 +100,6 @@ export default async function(input: string): Promise<string> {
 - Examples of input/output formats
 - Any additional requirements or dependencies
 
-## Tool Development Requirements
-
-### Required Files
-1. `metadata.json`: Tool configuration and interface definition
-2. `tool.ts` or `tool.py`: Implementation code
-3. `README.md`: Documentation and usage instructions
-
-### Required Assets
-1. Icon Image
-   - Dimensions: Must be 1:1 ratio, at least 80x80 pixels
-   - Format: PNG
-   - Purpose: Tool identification in UI
-
-2. Banner Image
-   - Dimensions: Must be 16:9 ratio, at least 1200x676 pixels
-   - Format: PNG
-   - Purpose: Visual representation in store
-
 ## Project Structure
 ```
 tools/
@@ -119,9 +107,8 @@ tools/
 │   ├── metadata.json # Tool metadata.
 │   ├── README.md # A description of the tool.
 │   └── tool.ts # The code of the tool.
-├── packages/
-│   ├── tool.zip # Zipped contents of the tool.
-│   └── directory.json # A listing of the available tools.
+│   └── icon.png # Icon of the tool.
+│   └── banner.png # Banner of the tool.
 ```
 
 ## Run Tests

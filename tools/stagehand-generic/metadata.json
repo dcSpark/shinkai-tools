@@ -1,0 +1,88 @@
+{
+    "name": "Stagehand Runner",
+    "homePage": "",
+    "description": "Automates web interactions and extracts data using Stagehand.",
+    "author": "@@official.shinkai",
+    "version": "1.0.0",
+    "keywords": [
+      "stagehand",
+      "web automation",
+      "data extraction"
+    ],
+    "configurations": {
+      "type": "object",
+      "properties": {},
+      "required": [
+      ]
+    },
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "commands": {
+          "type": "array",
+          "description": "List of commands to execute",
+          "items": {
+            "description": "",
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "Unique identifier for the command"
+              },
+              "action": {
+                "type": "string",
+                "enum": [
+                  "goto",
+                  "wait",
+                  "act",
+                  "goto-stage",
+                  "extract"
+                ],
+                "description": "Type of action to perform: 'goto' | 'wait' | 'extract' | 'act' | 'goto-stage'"
+              },
+              "payload": {
+                "type": "string",
+                "description": "Action Payload: goto=>url, wait=>ms, extract=>text-prompt, act=>text-prompt, goto-stage=>stage-id"
+              },
+              "jsonSchema": {
+                "type": "object",
+                "description": "Optional JSON Schema for extract format"
+              }
+            },
+            "required": [
+              "id",
+              "action",
+              "payload"
+            ]
+          }
+        }
+      },
+      "required": [
+        "commands"
+      ]
+    },
+    "result": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "description": "The success message"
+        },
+        "data": {
+          "type": "array",
+          "description": "Extracted data from executed commands",
+          "items": {}
+        }
+      },
+      "required": [
+        "message",
+        "data"
+      ]
+    },
+    "sqlTables": [],
+    "sqlQueries": [],
+    "tools": [
+      "local:::__official_shinkai:::shinkai_typescript_unsafe_processor"
+    ],
+    "oauth": []
+  }

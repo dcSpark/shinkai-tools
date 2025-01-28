@@ -94,5 +94,9 @@
   {
     "routerKey": "local:::__official_shinkai:::download_pages",
     "categoryId": "5f10d0b4-6acd-477a-96e1-be35634465b2"
+  },
+  {
+    "routerKey": "local:::__official_shinkai:::text_to_audio",
+    "categoryId": "5f10d0b4-6acd-477a-96e1-be35634465b2"
   }
 ]

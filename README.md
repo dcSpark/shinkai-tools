@@ -10,57 +10,89 @@ This repository hosts a suite of tools designed to work with Shinkai's infrastru
 
 Currently available tools include:
 
-### 1. Email IMAP Fetcher
-- Fetches emails from an IMAP server
-- Returns subject, date, sender, and text content
-- Secure email handling
+### Search & Information
+- **Smart Search**: Comprehensive answer generation with source citations and statement extraction
+- **DuckDuckGo Search**: Web search functionality with structured results
+- **Google Search**: Web search using Google's search engine
+- **X/Twitter Search**: Search tweets and user information
+- **YouTube Summary**: Generate summaries of YouTube video content
+- **Perplexity**: AI-powered search and analysis
+- **Perplexity API**: Direct integration with Perplexity's API
 
-### 2. Email Sender
-- Sends emails using SMTP
-- Simple and reliable email dispatch
+### Email & Communication
+- **Email IMAP Fetcher**: Secure email retrieval from IMAP servers
+- **Email Sender**: SMTP-based email dispatch service
+- **Email Responder**: Automated email response generation with context awareness
+- **Twitter Post**: Post updates to X/Twitter platform
 
-### 3. Smart Search
-- Performs intelligent query optimization
-- Returns comprehensive answers with sources
-- Advanced search capabilities
+### File & Data Management
+- **File Read**: Secure file reading operations
+- **File Write**: File creation and update capabilities
+- **File Update**: Modify existing file contents
+- **Memory**: SQLite-based memory storage and retrieval
+- **Download Page**: Web page content retrieval
 
-And more!
+### Blockchain & Crypto
+- **Coinbase Call Faucet**: Interact with Coinbase faucet
+- **Coinbase Create Wallet**: Wallet creation functionality
+- **Coinbase Get Balance**: Check wallet balances
+- **Coinbase Get My Address**: Retrieve wallet addresses
+- **Coinbase Get Transactions**: View transaction history
+- **Coinbase Send TX**: Execute transactions
 
-## Tool Spotlight: DuckDuckGo Search
+### Media & Content
+- **Meme Generator**: Create custom meme images
+- **Text-to-Audio Kokoro**: Convert text to audio using Kokoro
 
-The DuckDuckGo Search tool demonstrates the capabilities and structure of a Shinkai tool:
+## Tool Structure and Required Files
 
-### Functionality
-- Performs web searches using DuckDuckGo
-- Supports both API-based and browser-based search methods
-- Returns structured results with titles, descriptions, and URLs
+Every Shinkai tool requires specific files to function properly. Here's a detailed look at each required file:
 
-### Implementation
-- Primary search using DuckDuckGo's API
-- Fallback to Puppeteer-based web scraping
-- Configurable Chrome path for browser automation
+### icon.png
+- Square image in PNG format (1:1 ratio)
+- Minimum dimensions: 80x80 pixels
+- Used for tool identification in the Shinkai UI
+- Example: A distinctive icon representing the tool's primary function
 
-### Required Configuration
+### metadata.json
+- Defines tool configuration and interface
+- Contains version, name, description, and author
+- Specifies input parameters and output format
+- Example:
 ```json
 {
-  "chromePath": "Optional path to Chrome executable"
+  "version": "1.0.0",
+  "name": "Example Tool",
+  "description": "Brief description of the tool's purpose",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "input": {
+        "type": "string",
+        "description": "Description of the input"
+      }
+    }
+  }
 }
 ```
 
-### Input Parameters
-```json
-{
-  "message": "Your search query string"
+### tool.ts or tool.py
+- Main implementation file (TypeScript or Python)
+- Contains the core logic and functionality
+- Exports a default function that processes inputs
+- Example:
+```typescript
+export default async function(input: string): Promise<string> {
+  // Tool implementation
+  return processedResult;
 }
 ```
 
-### Output Format
-```json
-{
-  "message": "[{\"title\": \"Result Title\", \"description\": \"Result Description\", \"url\": \"https://result.url\"}]",
-  "puppeteer": false
-}
-```
+### README.md
+- Documentation for tool usage and setup
+- Installation and configuration instructions
+- Examples of input/output formats
+- Any additional requirements or dependencies
 
 ## Tool Development Requirements
 

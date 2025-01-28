@@ -14,13 +14,13 @@ export async function start() {
   const tools_raw = await processToolsDirectory();
   console.log(`Found ${tools_raw.length} tools to process`);
   
-  console.log("\nSaving tools to node and generating images...");
+  console.log("\nSaving tools to node and generating zip files...");
   const tools_saved = await saveToolsInNode(tools_raw);
   console.log(`Successfully processed ${tools_saved.length} tools`);
   
-  console.log("\nUploading tools...");
+  console.log("\nUploading tools to Shinkai Store...");
   await uploadTools(tools_saved);
-  console.log("Tool processing complete!");
+  console.log("Tool uploading complete!");
 }
 
 if (import.meta.main) {

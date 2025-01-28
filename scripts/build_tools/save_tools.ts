@@ -4,7 +4,7 @@ import { join } from "https://deno.land/std/path/mod.ts";
 import { exists } from "https://deno.land/std/fs/mod.ts";
 import { encodeBase64 } from "jsr:@std/encoding/base64";
 import { generateToolRouterKey, systemTools, stripVersion, author, uploadAsset } from "./system.ts";
-import { getCategories, Category } from "./fetch_categories.ts";
+import { getCategories } from "./fetch_categories.ts";
 
 // deno-lint-ignore require-await
 async function getToolType(file: string): Promise<string> {
@@ -188,7 +188,6 @@ export async function processToolsDirectory(): Promise<DirectoryEntry[]> {
 
       // Validate tool has a category mapping
       const routerKey = generateToolRouterKey(author, toolName);
-      console.log(`Debug - Tool: ${toolName}, Generated Router Key: ${routerKey}`);
       const localEntry = toolCategories.find((tc: { routerKey: string; categoryId: string }) => tc.routerKey === routerKey);
       if (!localEntry) {
         throw new Error(`No category mapping found for tool ${toolName}. Please add a mapping in tool_categories.json.`);
@@ -369,13 +368,6 @@ export async function saveToolsInNode(toolsOriginal: DirectoryEntry[]): Promise<
       
       // Check for .default file
       tool.isDefault = await exists(join(tool.dir, ".default"));
-
-      // Upload tool assets to store
-      console.log(`Uploading tool assets for ${tool.name}...`);
-      tool.icon_url = await uploadAsset(tool.routerKey, join(tool.dir, "icon.png"), 'icon', `${tool.name}_icon.png`);
-      tool.banner_url = await uploadAsset(tool.routerKey, join(tool.dir, "banner.png"), 'banner', `${tool.name}_banner.png`);
-      tool.storeFile = await uploadAsset(tool.routerKey, zipPath, 'tool', `${tool.hash}.zip`);
-      console.log(`Tool assets for ${tool.name} uploaded`);
 
       toolsSaved.push(tool);
     }

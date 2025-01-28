@@ -20,3 +20,41 @@ export function stripVersion(toolKey: string): string {
   throw Error('Invalid name');
 }
 
+export async function uploadAsset(
+  routerKey: string, 
+  filePath: string, 
+  assetType: 'icon' | 'banner' | 'tool',
+  fileName: string
+): Promise<string> {
+  const formData = new FormData();
+  const file = await Deno.readFile(filePath);
+
+  switch (assetType) {
+    case 'icon':
+      formData.append('file', new Blob([file], { type: 'image/png' }), 'icon.png');
+      break;
+    case 'banner':
+      formData.append('file', new Blob([file], { type: 'image/png' }), 'banner.png');
+      break;
+    case 'tool':
+      formData.append('file', new Blob([file], { type: 'application/zip' }), fileName);
+      break;
+  }
+
+
+  const response = await fetch(`${Deno.env.get("SHINKAI_STORE_ADDR")}/store/products/${routerKey}/assets`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${Deno.env.get("SHINKAI_STORE_TOKEN")}`,
+    },
+    body: formData,
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to upload ${assetType} for ${routerKey} in path ${filePath}`);
+  }
+
+  const data = await response.json();
+  return data.url;
+}
+

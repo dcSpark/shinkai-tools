@@ -20,7 +20,8 @@ export async function uploadTools(tools: DirectoryEntry[]) {
   
     // Upload directory.json to Shinkai Store
     for (const entry of directory) {
-      let { dir, toolFile, isDefault, ...store_entry } = entry;
+      let { dir, toolFile, isDefault, storeFile, ...store_entry } = entry;
+      if (storeFile) store_entry.file = storeFile;
       let response = await fetch(`${store_addr}/store/products`, {
         method: "POST",
         headers: {
@@ -51,7 +52,7 @@ export async function uploadTools(tools: DirectoryEntry[]) {
         console.log(`Request body failed: ${JSON.stringify(store_entry, null, 2)}`);
       }
       if (response.status === 200) {
-        console.log(`Created/Updated ${entry.routerKey} to Shinkai Store`);
+        console.log(`Created/Updated ${entry.routerKey} to Shinkai Store successfully.`);
         if (entry.isDefault) {
           const default_tool = await fetch(`${store_addr}/store/defaults/${entry.routerKey}`, {
             method: "POST",
@@ -59,9 +60,9 @@ export async function uploadTools(tools: DirectoryEntry[]) {
               "Authorization": `Bearer ${store_token}`,
             },
           });
-          if (default_tool.status !== 200) {
-            console.log(`Set default tool for ${entry.routerKey}: ${default_tool.status}`);
-            console.log(await default_tool.text());
+          if (default_tool.status !== 200 && default_tool.status !== 409) {
+            const message = await default_tool.text();
+            console.log(`Set default tool for ${entry.routerKey} (${default_tool.status}): ${message}`);
           } 
         }
       }

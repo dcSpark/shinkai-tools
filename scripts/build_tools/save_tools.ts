@@ -3,7 +3,7 @@ import { DirectoryEntry, Metadata } from "./interfaces.ts";
 import { join } from "https://deno.land/std/path/mod.ts";
 import { exists } from "https://deno.land/std/fs/mod.ts";
 import { encodeBase64 } from "jsr:@std/encoding/base64";
-import { generateToolRouterKey, systemTools, stripVersion, author } from "./system.ts";
+import { generateToolRouterKey, systemTools, stripVersion, author, uploadAsset } from "./system.ts";
 import { getCategories, Category } from "./fetch_categories.ts";
 
 // deno-lint-ignore require-await
@@ -214,8 +214,18 @@ export async function processToolsDirectory(): Promise<DirectoryEntry[]> {
 
       const dependencies = metadata.tools;
 
+      // Check for required images
+      const iconPath = join(toolDir, "icon.png");
+      const bannerPath = join(toolDir, "banner.png");
+      
+      if (!await exists(iconPath)) {
+        throw new Error(`Missing icon.png for tool ${toolName}`);
+      }
+      if (!await exists(bannerPath)) {
+        throw new Error(`Missing banner.png for tool ${toolName}`);
+      }
+
       tools.push({
-        // default: hasDefault,
         routerKey: generateToolRouterKey(author, toolName),
         dir: toolDir,
         name: toolName,
@@ -229,7 +239,7 @@ export async function processToolsDirectory(): Promise<DirectoryEntry[]> {
         toolFile,
         file: `${Deno.env.get("DOWNLOAD_PREFIX")}/${toolName.toLowerCase().replace(/[^a-z0-9_.-]/g, '_')}.zip`,
         price_usd: metadata.price_usd || 0.00,
-        categoryId: localEntry.categoryId, // Using validated category from earlier check
+        categoryId: localEntry.categoryId,
         dependencies,
       });
     }
@@ -359,6 +369,13 @@ export async function saveToolsInNode(toolsOriginal: DirectoryEntry[]): Promise<
       
       // Check for .default file
       tool.isDefault = await exists(join(tool.dir, ".default"));
+
+      // Upload tool assets to store
+      console.log(`Uploading tool assets for ${tool.name}...`);
+      tool.icon_url = await uploadAsset(tool.routerKey, join(tool.dir, "icon.png"), 'icon', `${tool.name}_icon.png`);
+      tool.banner_url = await uploadAsset(tool.routerKey, join(tool.dir, "banner.png"), 'banner', `${tool.name}_banner.png`);
+      tool.storeFile = await uploadAsset(tool.routerKey, zipPath, 'tool', `${tool.hash}.zip`);
+      console.log(`Tool assets for ${tool.name} uploaded`);
 
       toolsSaved.push(tool);
     }

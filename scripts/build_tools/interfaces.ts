@@ -40,7 +40,7 @@ export interface Metadata {
     name: string;
     query: string;
   }[];
-  oauth: Record<string, string>;
+  oauth: Record<string, string>[] | null;
 }
 
 export interface DirectoryEntry {

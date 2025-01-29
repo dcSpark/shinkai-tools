@@ -94,5 +94,5 @@
     "local:::__official_shinkai:::shinkai_llm_prompt_processor",
     "local:::__official_shinkai:::memory_management"
   ],
-  "oauth": []
+  "oauth": null
 }

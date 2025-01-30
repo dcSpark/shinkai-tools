@@ -1,0 +1,29 @@
+{
+    "name": "Play Crypto 2048",
+    "homePage": "",
+    "description": "Automatically play Crypto 2048",
+    "author": "@@official.shinkai",
+    "version": "1.0.0",
+    "keywords": [],
+    "configurations": {
+      "type": "object",
+      "properties": {},
+      "required": []
+    },
+    "parameters": {
+      "type": "object",
+      "properties": {},
+      "required": []
+    },
+    "result": {
+      "type": "object",
+      "properties": {},
+      "required": []
+    },
+    "sqlTables": [],
+    "sqlQueries": [],
+    "tools": [
+      "local:::__official_shinkai:::shinkai_typescript_unsafe_processor"
+    ],
+    "oauth": []
+  }

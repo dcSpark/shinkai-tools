@@ -8,11 +8,6 @@ on:
         required: true
         type: string
         default: "0.9.8"
-      use_dev_prefix:
-        description: 'Use dev prefix for download URL (e.g. https://download.shinkai.com/dev-tools-0.9.7). If false, it will build for production (e.g. https://download.shinkai.com/tools-0.9.7)'
-        required: true
-        type: boolean
-        default: true
       environment:
         type: environment
         default: "development"

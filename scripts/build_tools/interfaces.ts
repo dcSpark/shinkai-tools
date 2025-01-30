@@ -40,6 +40,7 @@ export interface Metadata {
     name: string;
     query: string;
   }[];
+  oauth: Record<string, string>[] | null;
 }
 
 export interface DirectoryEntry {
@@ -56,9 +57,12 @@ export interface DirectoryEntry {
   hash: string;
   toolFile: string;
   file: string;
+  storeFile?: string;
   agent_id?: string;
   price_usd?: number;
   stripeProductId?: string;
   categoryId?: string;
   dependencies?: string[];
+  icon_url?: string;
+  banner_url?: string;
 }

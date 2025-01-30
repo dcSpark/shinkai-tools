@@ -24,7 +24,13 @@ jobs:
       contents: write
     
     steps:
-      - uses: actions/checkout@v3
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y curl jq zip unzip coreutils
+
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
       - name: Install Rust
         uses: actions-rs/toolchain@v1
@@ -40,14 +46,6 @@ jobs:
         with:
           deno-version: v2.x
 
-      - name: Install dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y curl jq zip unzip coreutils
-          echo "environment: ${{ inputs.environment }}"
-          echo ${{ vars }}
-          echo ${{ secrets }}
-
       - name: Run node in background
         id: run_node
         env:
@@ -60,9 +58,9 @@ jobs:
           SHINKAI_NODE_ADDR: "http://localhost:9550"
           BEARER_TOKEN: ${{ secrets.API_V2_KEY }}
           INITIALIZATION_DATA: ${{ secrets.INITIALIZATION_DATA }}
-          DOWNLOAD_PREFIX: ${{ inputs.use_dev_prefix && 'https://download.shinkai.com/dev-tools-' || 'https://download.shinkai.com/tools-' }}${{ inputs.node_version }}
+          DOWNLOAD_PREFIX: ${{ vars.DOWNLOAD_PREFIX }}
           SKIP_IMPORT_FROM_DIRECTORY: true
-          SHINKAI_STORE_ADDR: ${{ inputs.use_dev_prefix && 'https://shinkai-store-dev-302883622007.us-central1.run.app' || 'https://shinkai-store-302883622007.us-central1.run.app' }}
+          SHINKAI_STORE_ADDR: ${{ vars.SHINKAI_STORE_ADDR }}
           SHINKAI_STORE_TOKEN: ${{ secrets.SHINKAI_STORE_TOKEN }}
           USE_DOCKER: true
           SHINKAI_NODE_IMAGE: "dcsparkdevops/shinkai-node:${{ inputs.node_version }}"

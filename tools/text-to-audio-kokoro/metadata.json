@@ -1,0 +1,90 @@
+{
+    "name": "Text to Audio",
+    "homepage": "https://github.com/dcSpark/shinkai-tools/blob/main/tools/text-to-audio/README.md",
+    "description": "Converts text files (.txt or .md) to audio files using high-quality text-to-speech synthesis",
+    "author": "Shinkai",
+    "version": "1.0.0",
+    "keywords": [
+        "text-to-speech",
+        "audio",
+        "conversion",
+        "text",
+        "markdown"
+    ],
+    "configurations": {
+        "properties": {
+            "model_path": {
+                "description": "Path to the Kokoro model file",
+                "type": "string",
+                "default": "kokoro-v0_19.onnx"
+            },
+            "voices_path": {
+                "description": "Path to the voices configuration file",
+                "type": "string",
+                "default": "voices.json"
+            }
+        },
+        "required": [],
+        "type": "object"
+    },
+    "parameters": {
+        "properties": {
+            "text": {
+                "description": "text to convert to audio",
+                "type": "string"
+            },
+            "voice": {
+                "description": "Voice to use for synthesis",
+                "type": "string",
+                "default": "af_sky"
+            },
+            "language": {
+                "description": "Language code for synthesis (e.g., en-gb, en-us, fr-fr)",
+                "type": "string",
+                "default": "en-gb"
+            },
+            "speed": {
+                "description": "Speech speed multiplier (0.5 to 2.0)",
+                "type": "number",
+                "default": 1.0,
+                "minimum": 0.5,
+                "maximum": 2.0
+            },
+            "output_format": {
+                "description": "Output audio format",
+                "type": "string",
+                "default": "wav",
+                "enum": ["wav"]
+            }
+        },
+        "required": [
+            "text"
+        ],
+        "type": "object"
+    },
+    "result": {
+        "properties": {
+            "output_file": {
+                "description": "Path to the generated audio file",
+                "type": "string"
+            },
+            "duration": {
+                "description": "Duration of the audio in seconds",
+                "type": "number"
+            },
+            "sample_rate": {
+                "description": "Sample rate of the audio in Hz",
+                "type": "number"
+            }
+        },
+        "required": [
+            "output_file",
+            "duration",
+            "sample_rate"
+        ],
+        "type": "object"
+    },
+    "sqlTables": [],
+    "sqlQueries": [],
+    "tools": []
+} 

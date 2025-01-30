@@ -1,56 +1,61 @@
 {
-    "id": "meme-generator",
-    "name": "Generate Meme",
-    "description": "Generates a meme based on a joke input",
-    "author": "Shinkai",
-    "version": "1.0.0",
-    "keywords": [
-      "meme",
-      "joke",
-      "imgflip"
-    ],
-    "configurations": {
-      "type": "object",
-      "properties": {
-        "username": {
-          "type": "string",
-          "description": "The username for the Imgflip API"
-        },
-        "password": {
+  "name": "Meme Generator",
+  "homepage": "https://github.com/dcSpark/shinkai-tools/blob/main/tools/meme-generator/README.md",
+  "description": "Generates a meme image based on a joke by selecting a template and splitting the joke into appropriate parts.",
+  "author": "Shinkai",
+  "version": "1.0.0",
+  "keywords": [
+    "meme",
+    "generator",
+    "joke",
+    "image"
+  ],
+  "configurations": {
+    "type": "object",
+    "properties": {
+      "username": {
+        "type": "string",
+        "description": "The username for the Imgflip API"
+      },
+      "password": {
           "type": "string",
           "description": "The password for the Imgflip API"
-        }
-      },
-      "required": ["username", "password"]
+      }
     },
-    "parameters": {
-      "type": "object",
-      "properties": {
-        "joke": {
-          "type": "string",
-          "description": "The joke to process"
-        }
-      },
-      "required": [
-        "joke"
-      ]
+    "required": [
+      "username",
+      "password"
+    ]
+  },
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "joke": {
+        "type": "string",
+        "description": "The joke to create the meme from"
+      }
     },
-    "result": {
-      "type": "object",
-      "properties": {
-        "memeUrl": {
-          "type": "string",
-          "description": "The URL of the generated meme"
-        }
-      },
-      "required": [
-        "memeUrl"
-      ]
+    "required": [
+      "joke"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "memeUrl": {
+        "type": "string",
+        "description": "The URL of the generated meme image"
+      }
     },
-    "sqlTables": [],
-    "sqlQueries": [],
-    "tools": [
-      "local:::rust_toolkit:::shinkai_llm_prompt_processor"
-    ],
-    "oauth": []
-  }
+    "required": [
+      "memeUrl"
+    ]
+  },
+  "sqlTables": [],
+  "sqlQueries": [],
+  "tools": [
+    "local:::__official_shinkai:::shinkai_llm_prompt_processor",
+    "local:::__official_shinkai:::smart_search_engine"
+  ],
+  "oauth": null
+}

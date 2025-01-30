@@ -20,7 +20,6 @@ interface ConfigurationObject {
 type Configuration = ConfigurationBasicType | ConfigurationArray | ConfigurationObject;
 
 export interface Metadata {
-  id: string;
   name: string;
   description: string;
   author: string;
@@ -41,10 +40,12 @@ export interface Metadata {
     name: string;
     query: string;
   }[];
+  oauth: Record<string, string>[] | null;
 }
 
 export interface DirectoryEntry {
   dir: string;
+  routerKey: string;
   isDefault?: boolean;
   name: string;
   author: string;
@@ -53,12 +54,15 @@ export interface DirectoryEntry {
   toolLanguage?: string;
   version: string;
   description: string;
-  routerKey: string;
   hash: string;
   toolFile: string;
   file: string;
+  storeFile?: string;
   agent_id?: string;
   price_usd?: number;
   stripeProductId?: string;
   categoryId?: string;
+  dependencies?: string[];
+  icon_url?: string;
+  banner_url?: string;
 }

@@ -1,6 +1,6 @@
 {
-    "id": "memory-management",
     "name": "Memory Management",
+    "homepage": "https://github.com/dcSpark/shinkai-tools/blob/main/tools/memory/README.md",
     "description": "Handles memory storage and retrieval using a SQLite database.",
     "author": "Shinkai",
     "version": "1.0.0",
@@ -79,8 +79,8 @@
       }
     ],
     "tools": [
-      "local:::rust_toolkit:::shinkai_sqlite_query_executor",
-      "local:::rust_toolkit:::shinkai_llm_prompt_processor"
+      "local:::__official_shinkai:::shinkai_sqlite_query_executor",
+      "local:::__official_shinkai:::shinkai_llm_prompt_processor"
     ],
-    "oauth": []
+    "oauth": null
   }

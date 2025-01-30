@@ -1,6 +1,6 @@
 {
-  "id": "smart-search-shinkai",
   "name": "Smart Search Engine",
+  "homepage": "https://github.com/dcSpark/shinkai-tools/blob/main/tools/smart-search/README.md",
   "description": "This function takes a question as input and returns a comprehensive answer, along with the sources and statements used to generate the answer.",  
   "author": "Shinkai",
   "version": "1.0.0",
@@ -95,8 +95,8 @@
   "sqlTables": [],  
   "sqlQueries": [],
   "tools": [
-    "local:::google_search_shinkai:::google_search:::1.0.0",
-    "local:::rust_toolkit:::shinkai_llm_prompt_processor:::1.0.0",
-    "local:::download_pages:::download_pages:::1.0.0"
+    "local:::__official_shinkai:::google_search:::1.0.0",
+    "local:::__official_shinkai:::shinkai_llm_prompt_processor:::1.0.0",
+    "local:::__official_shinkai:::download_pages:::1.0.0"
   ]
 }

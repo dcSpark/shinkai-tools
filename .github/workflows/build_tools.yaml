@@ -15,6 +15,7 @@ on:
 jobs:
   build_tools:
     runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
     permissions:
       contents: write
     

@@ -42,7 +42,7 @@ async function buildToolJson(
           activated: false,
           assets: null,
           file_inbox: null,
-          oauth: null,
+          oauth: metadata.oauth,
           output_arg: { json: "" },
           author,
           config: metadata.configurations?.properties ? 

@@ -82,5 +82,5 @@
       "local:::__official_shinkai:::shinkai_sqlite_query_executor",
       "local:::__official_shinkai:::shinkai_llm_prompt_processor"
     ],
-    "oauth": []
+    "oauth": null
   }

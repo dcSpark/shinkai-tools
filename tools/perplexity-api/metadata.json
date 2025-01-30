@@ -1,0 +1,48 @@
+{
+    "name": "Perplexity API",
+    "homepage": "https://github.com/dcSpark/shinkai-tools/blob/main/tools/perplexity-api/README.md",
+    "description": "Searches the web using Perplexity API (limited)",
+    "author": "Shinkai",
+    "version": "1.0.0",
+    "keywords": [
+      "perplexity",
+      "api",
+      "shinkai"
+    ],
+    "configurations": {
+      "type": "object",
+      "properties": {
+        "apiKey": {
+          "type": "string",
+          "description": "API key for accessing the Perplexity API"
+        }
+      },
+      "required": [
+        "apiKey"
+      ]
+    },
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "query": {
+          "type": "string",
+          "description": "The search query to send to Perplexity API"
+        }
+      },
+      "required": [
+        "query"
+      ]
+    },
+    "result": {
+      "type": "object",
+      "properties": {
+        "response": {
+          "type": "string",
+          "description": "The search results and analysis from Perplexity API"
+        }
+      },
+      "required": [
+        "response"
+      ]
+    }
+  }

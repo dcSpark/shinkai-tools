@@ -8,9 +8,11 @@ class CONFIG:
     username: str
     password: str
     port: int = 143  # Default port for IMAPS
+    ssl: bool = True  # New flag to specify SSL usage
 
 class INPUTS:
-    pass
+    from_date: Optional[str]
+    to_date: Optional[str]
 
 class OUTPUT:
     emails: List[Dict[str, Any]]
@@ -22,28 +24,55 @@ class Email:
     sender: str
     text: str
 
+# Function to validate date format
+def validate_date_format(date_str):
+    try:
+        # Attempt to parse the date string in the expected format
+        datetime.strptime(date_str, '%d-%b-%Y')  # Expected format: DD-Mon-YYYY
+    except ValueError:
+        raise ValueError(f"Invalid date format: {date_str}. Expected format is DD-Mon-YYYY. Example: 10-Jan-2025")
+
+
 async def run(config: CONFIG, inputs: INPUTS) -> OUTPUT:
     output = OUTPUT()
+    output.login_status = "N/A"
     output.emails = []
     try:
-      imap = imaplib.IMAP4(config.imap_server, config.port)  # Use config port
+        # Use SSL if the ssl flag is set to True
+        if config.ssl:
+            imap = imaplib.IMAP4_SSL(config.imap_server, config.port)
+        else:
+            imap = imaplib.IMAP4(config.imap_server, config.port)  # Use config port
     except Exception as ee:
-      output.login_status = 'IMAP4 INIT FAILED - '+str(ee)
-      return output
+        output.login_status = 'IMAP4 INIT FAILED - ' + str(ee)
+        return output
+
     try:
-        try:
-            login_status, login_response = imap.login(config.username, config.password)
-            if login_status == "OK":
-                print("Login successful")
-            else:
-                raise Exception("Login failed")
-        except imaplib.IMAP4.error as e:
-            print(f"Login failed: {e}")
-            raise Exception(f"Login failed: {e}")
+        login_status, login_response = imap.login(config.username, config.password)
+        if login_status == "OK":
+            print("Login successful")
+        else:
+            raise Exception("Login failed")
 
         imap.select("INBOX")
 
-        _, data = imap.search(None, 'ALL')
+        # Validate the input dates
+        if inputs.from_date:
+            validate_date_format(inputs.from_date)
+        if inputs.to_date:
+            validate_date_format(inputs.to_date)
+
+        # Construct the search criteria
+        search_criteria = 'ALL'
+        if inputs.from_date and inputs.to_date:
+            search_criteria = f'SINCE "{inputs.from_date}" BEFORE "{inputs.to_date}"'
+        elif inputs.from_date:
+            search_criteria = f'SINCE "{inputs.from_date}"'
+        elif inputs.to_date:
+            search_criteria = f'BEFORE "{inputs.to_date}"'
+
+        print("Search Criteria:", search_criteria)
+        _, data = imap.search(None, search_criteria)
         mail_ids = data[0].split()
 
         for mail_id in mail_ids:

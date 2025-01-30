@@ -1,7 +1,9 @@
 {
     "name": "Send Email",
+    "homepage": "https://github.com/dcSpark/shinkai-tools/blob/main/tools/email-sender/README.md",
+    "version": "1.0.0",
     "description": "Sends an email using SMTP.",
-    "author": "@@my_local_ai.arb-sep-shinkai",
+    "author": "Shinkai",
     "keywords": [
       "email",
       "smtp",
@@ -27,6 +29,11 @@
         "sender_password": {
           "type": "string",
           "description": "The sender's email password"
+        },
+        "ssl": {
+          "type": "boolean",
+          "description": "Whether to use SSL for the SMTP connection (defaults to true)",
+          "default": true
         }
       },
       "required": [

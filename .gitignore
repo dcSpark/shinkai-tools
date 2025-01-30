@@ -1,5 +1,9 @@
 tools/**/shinkai-local-support.ts
 tools/**/shinkai-local-tools.ts
+tools/.categories-cache.json
 .DS_Store
 packages**
 shinkai-node**
+deno.lock
+*_local.sh
+

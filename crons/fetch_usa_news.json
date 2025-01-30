@@ -1,0 +1,47 @@
+{
+    "name": "Fetch top 5 news from the USA",
+    "description": "Fetch news from Google",
+    "task_id": 2,
+    "cron": "* * * * *",
+    "created_at": "2024-12-24T19:26:16.436569+00:00",
+    "last_modified": "2024-12-24T19:26:16.436569+00:00",
+    "action": {
+        "CreateJobWithConfigAndMessage": {
+            "config": {
+                "custom_system_prompt": "Give the responses in a sarcastic tone, with right leaning jokes.",
+                "custom_prompt": "",
+                "temperature": 0.8,
+                "max_tokens": null,
+                "seed": null,
+                "top_k": 40,
+                "top_p": 0.9,
+                "stream": true,
+                "other_model_params": null,
+                "use_tools": true
+            },
+            "message": {
+                "job_id": "jobid_b7b7d161-0cc4-47a1-8d52-f6fc0801a3ae",
+                "content": "Give me the top 5 news from the USA",
+                "files_inbox": "",
+                "parent": null,
+                "sheet_job_data": null,
+                "callback": null,
+                "metadata": null,
+                "tool_key": null
+            },
+            "job_creation_info": {
+                "scope": {
+                    "local_vrkai": [],
+                    "local_vrpack": [],
+                    "vector_fs_items": [],
+                    "vector_fs_folders": [],
+                    "vector_search_mode": []
+                },
+                "is_hidden": true,
+                "associated_ui": null
+            },
+            "llm_provider": "my_ai"
+        }
+    },
+    "paused": false
+}

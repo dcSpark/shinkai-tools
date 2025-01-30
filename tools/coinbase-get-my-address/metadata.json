@@ -1,0 +1,62 @@
+{
+    "version": "1.0.0",
+    "name": "Coinbase My Address Getter",
+    "homepage": "https://github.com/dcSpark/shinkai-tools/blob/main/tools/coinbase-get-my-address/README.md",
+    "description": "Tool for getting the default address of a Coinbase wallet",
+    "author": "Shinkai",
+    "keywords": [
+      "coinbase",
+      "address",
+      "shinkai"
+    ],
+    "configurations": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The name of the Coinbase wallet"
+        },
+        "privateKey": {
+          "type": "string",
+          "description": "The private key of the Coinbase wallet"
+        },
+        "walletId": {
+          "type": "string",
+          "nullable": true,
+          "description": "Optional wallet ID for specific wallet selection"
+        },
+        "useServerSigner": {
+          "type": "string",
+          "nullable": true,
+          "description": "Optional server signer configuration"
+        }
+      },
+      "required": [
+        "name",
+        "privateKey"
+      ]
+    },
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "walletId": {
+          "type": "string",
+          "description": "The ID of the Coinbase wallet to get the address from",
+          "nullable": true
+        }
+      },
+      "required": []
+    },
+    "result": {
+      "type": "object",
+      "properties": {
+        "address": {
+          "type": "string",
+          "description": "The Ethereum address of the Coinbase wallet"
+        }
+      },
+      "required": [
+        "address"
+      ]
+    }
+  }

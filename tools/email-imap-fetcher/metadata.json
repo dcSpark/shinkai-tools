@@ -1,7 +1,9 @@
 {
     "name": "Email Fetcher",
+    "homepage": "https://github.com/dcSpark/shinkai-tools/blob/main/tools/email-imap-fetcher/README.md",
+    "version": "1.0.0",
     "description": "Fetches emails from an IMAP server and returns their subject, date, sender, and text content.",
-    "author": "@@my_local_ai.arb-sep-shinkai",
+    "author": "Shinkai",
     "keywords": [
       "email",
       "imap",
@@ -27,6 +29,11 @@
           "type": "integer",
           "description": "The port number for the IMAP server (defaults to 993 for IMAPS)",
           "default": 993
+        },
+        "ssl": {
+          "type": "boolean",
+          "description": "Whether to use SSL for the IMAP connection (defaults to true)",
+          "default": true
         }
       },
       "required": [
@@ -37,7 +44,16 @@
     },
     "parameters": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "from_date": {
+          "type": "string",
+          "description": "The start date for the email search (optional)"
+        },
+        "to_date": {
+          "type": "string",
+          "description": "The end date for the email search (optional)"
+        }
+      },
       "required": []
     },
     "result": {

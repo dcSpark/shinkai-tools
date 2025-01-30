@@ -1,0 +1,46 @@
+{
+    "name": "Perplexity",
+    "homepage": "https://github.com/dcSpark/shinkai-tools/blob/main/tools/perplexity/README.md",
+    "description": "Searches the internet using Perplexity",
+    "author": "Shinkai",
+    "version": "1.0.0",
+    "keywords": [
+      "perplexity",
+      "search"
+    ],
+    "configurations": {
+      "type": "object",
+      "properties": {
+        "chromePath": {
+          "type": "string",
+          "nullable": true,
+          "description": "Optional path to Chrome executable for browser automation"
+        }
+      },
+      "required": []
+    },
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "query": {
+          "type": "string",
+          "description": "The search query to send to Perplexity"
+        }
+      },
+      "required": [
+        "query"
+      ]
+    },
+    "result": {
+      "type": "object",
+      "properties": {
+        "response": {
+          "type": "string",
+          "description": "The search results and analysis from Perplexity"
+        }
+      },
+      "required": [
+        "response"
+      ]
+    }
+  }

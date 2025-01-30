@@ -1,7 +1,9 @@
 {
     "name": "Write File Contents",
+    "homepage": "https://github.com/dcSpark/shinkai-tools/blob/main/tools/file-write/README.md",
+    "version": "1.0.0",
     "description": "Writes the text contents of a file to the given path.",
-    "author": "@@shinkai.arb-sep-shinkai",
+    "author": "Shinkai",
     "keywords": [
       "file",
       "write",
@@ -46,5 +48,5 @@
     "sqlTables": [],
     "sqlQueries": [],
     "tools": [],
-    "oauth": []
+    "oauth": null
   }

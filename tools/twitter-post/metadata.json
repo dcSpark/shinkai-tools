@@ -1,0 +1,64 @@
+{
+    "name": "X/Twitter Post",
+    "homepage": "https://github.com/dcSpark/shinkai-tools/blob/main/tools/twitter-post/README.md",
+    "description": "Function to post a tweet to Twitter.",
+    "author": "Shinkai",
+    "version": "1.0.0",
+    "url": "https://help.shinkai.com/official-twitter-tool",
+    "keywords": [
+      "twitter",
+      "X",
+      "post",
+      "social media"
+    ],
+    "configurations": {
+      "type": "object",
+      "properties": {},
+      "required": []
+    },
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "description": "Message to post"
+        }
+      },
+      "required": []
+    },
+    "result": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "string",
+          "description": "The data returned by the Twitter API"
+        }
+      },
+      "required": [
+        "data"
+      ]
+    },
+    "sqlTables": [],
+    "sqlQueries": [],
+    "tools": [],
+    "oauth": [
+      {
+      "name": "twitter",
+      "version": "2.0",
+      "authorizationUrl": "https://twitter.com/i/oauth2/authorize",
+      "redirectUrl": "https://secrets.shinkai.com/redirect",
+      "tokenUrl": "https://api.x.com/2/oauth2/token",
+        "clientId": "",
+        "clientSecret": "",
+         "scopes": [
+        "tweet.read",
+        "tweet.write",
+        "users.read",
+        "offline.access"
+      ],
+      "responseType": "code",
+      "pkceType": "plain",
+      "refreshToken": "true"
+      }
+    ]
+  }

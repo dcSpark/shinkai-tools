@@ -1,0 +1,98 @@
+{
+  "name": "Email Answerer",
+  "homepage": "https://github.com/dcSpark/shinkai-tools/blob/main/tools/email-responder/README.md",
+  "description": "Generates responses to emails based on a given context and memory, and logs answered emails in a database.",
+  "author": "Shinkai",
+  "version": "1.0.0",
+  "keywords": [
+    "email",
+    "responder",
+    "database",
+    "shinkai"
+  ],
+  "configurations": {
+    "type": "object",
+    "properties": {
+      "response_context": {
+        "type": "string",
+        "description": "The context to guide the email responses"
+      }
+    },
+    "required": [
+      "response_context"
+    ]
+  },
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "from_date": {
+        "type": "string",
+        "description": "The starting date for fetching emails in DD-Mon-YYYY format"
+      },
+      "to_date": {
+        "type": "string",
+        "description": "The ending date for fetching emails in DD-Mon-YYYY format"
+      }
+    },
+    "required": []
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "table_created": {
+        "type": "boolean",
+        "description": "Indicates if the email logging table was created"
+      },
+      "mail_ids": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "The list of generated unique mail IDs"
+      },
+      "skipped": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "List of email IDs that were skipped"
+      },
+      "login_status": {
+        "type": "string",
+        "description": "The status of the email login"
+      }
+    },
+    "required": [
+      "table_created",
+      "mail_ids"
+    ]
+  },
+  "sqlTables": [
+    {
+      "name": "answered_emails",
+      "definition": "CREATE TABLE IF NOT EXISTS answered_emails (email_unique_id TEXT UNIQUE PRIMARY KEY, subject TEXT NOT NULL, email TEXT NOT NULL, response TEXT NOT NULL, received_date DATETIME NOT NULL, response_date DATETIME DEFAULT CURRENT_TIMESTAMP)"
+    }
+  ],
+  "sqlQueries": [
+    {
+      "name": "Get answered emails",
+      "query": "SELECT * FROM answered_emails"
+    },
+    {
+      "name": "Get email by unique ID",
+      "query": "SELECT * FROM answered_emails WHERE email_unique_id = :emailUniqueId"
+    },
+    {
+      "name": "Insert new email",
+      "query": "INSERT INTO answered_emails (email_unique_id, subject, email, response, received_date) VALUES (:emailUniqueId, :subject, :email, :response, :receivedDate)"
+    }
+  ],
+  "tools": [
+    "local:::__official_shinkai:::email_fetcher",
+    "local:::__official_shinkai:::send_email",
+    "local:::__official_shinkai:::shinkai_sqlite_query_executor",
+    "local:::__official_shinkai:::shinkai_llm_prompt_processor",
+    "local:::__official_shinkai:::memory_management"
+  ],
+  "oauth": null
+}

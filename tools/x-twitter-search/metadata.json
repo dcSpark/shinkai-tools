@@ -1,0 +1,65 @@
+{
+  "name": "X/Twitter Search",
+  "homepage": "https://github.com/dcSpark/shinkai-tools/blob/main/tools/x-twitter-search/README.md",
+  "version": "1.0.0",
+  "author": "Shinkai",
+  "configurations": {
+    "properties": {
+      "apiKey": {
+        "description": "Get your API Key from https://rapidapi.com/twttrapi-twttrapi-default/api/twttrapi",
+        "type": "string"
+      }
+    },
+    "required": [
+      "apiKey"
+    ],
+    "type": "object"
+  },
+  "description": "Fetch from X/Twitter API to perform various search and retrieval operations.",
+  "keywords": [
+    "X",
+    "Twitter",
+    "API",
+    "search",
+    "tweets"
+  ],
+  "parameters": {
+    "properties": {
+      "command": {
+        "description": "The exact command to execute: 'search-top' | 'search-suggestions' | 'search-latest' | 'get-user-posts' | 'get-post-by-id'",
+        "type": "string"
+      },
+      "searchQuery": {
+        "description": "The search query for fetching tweets",
+        "type": "string"
+      },
+      "tweetId": {
+        "description": "The ID of the tweet to retrieve",
+        "type": "string"
+      },
+      "username": {
+        "description": "The username for retrieving user posts",
+        "type": "string"
+      }
+    },
+    "required": [
+      "command"
+    ],
+    "type": "object"
+  },
+  "result": {
+    "properties": {
+      "data": {
+        "description": "The data returned from the Twitter API",
+        "type": "object"
+      }
+    },
+    "required": [
+      "data"
+    ],
+    "type": "object"
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": []
+}

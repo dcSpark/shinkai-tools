@@ -1,0 +1,53 @@
+{
+  "name": "Youtube Transcript Summarizer",
+  "homepage": "https://github.com/dcSpark/shinkai-tools/blob/main/tools/youtube-summary/README.md",
+  "description": "Fetches the transcript of a YouTube video and generates a formatted summary using an LLM.",
+  "author": "@@eduardosotomontaner.arb-sep-shinkai",
+  "version": "1.0.0",
+  "keywords": [
+    "youtube",
+    "transcript",
+    "summary",
+    "video",
+    "LLM"
+  ],
+  "configurations": {
+    "type": "object",
+    "properties": {},
+    "required": []
+  },
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "url": {
+        "type": "string",
+        "description": "The URL of the YouTube video"
+      },
+      "lang": {
+        "type": "string",
+        "description": "The language for the transcript (optional)"
+      }
+    },
+    "required": [
+      "url"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "summary": {
+        "type": "string",
+        "description": "The generated summary of the video"
+      }
+    },
+    "required": [
+      "summary"
+    ]
+  },
+  "sqlTables": [],
+  "sqlQueries": [],
+  "tools": [
+    "local:::__official_shinkai:::shinkai_llm_prompt_processor"
+  ],
+  "oauth": null
+}

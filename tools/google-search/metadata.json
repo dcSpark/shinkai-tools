@@ -1,0 +1,57 @@
+{
+    "name": "Google Search",
+    "homepage": "https://github.com/dcSpark/shinkai-tools/blob/main/tools/google-search/README.md",
+    "description": "This function takes a question as input and returns a comprehensive answer, along with the sources and statements used to generate the answer.",  
+    "author": "Shinkai",
+    "version": "1.0.0",
+    "keywords": [
+      "search",
+      "answer generation",
+      "fact extraction",
+      "wikipedia",
+      "google"
+    ],  
+    "configurations": [],
+    "parameters": {
+      "properties": {
+        "query": {
+          "description": "The search query to look up",
+          "type": "string"
+        }
+      },
+      "num_results": {
+        "description": "The number of results to return",
+        "type": "number"
+      },
+      "required": [
+        "query"
+      ],
+      "type": "object"
+    },
+    "result": {
+      "properties": {
+        "query": {"type": "string"},
+        "results": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "title": {"type": "string"},
+                    "url": {"type": "string"},
+                    "description": {"type": "string"}
+                },
+                "required": ["title", "url", "description"]
+            }
+        }
+    },
+      "required": [
+        "query",
+        "results"
+      ],
+      "type": "object"
+    },
+    "sqlTables": [],  
+    "sqlQueries": [],
+    "tools": [
+    ]
+  }

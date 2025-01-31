@@ -1,6 +1,6 @@
 # Analysis Framework
 
-Below is a structured framework you can use to analyze and summarize podcasts on any topic. It mirrors the style of a whitepaper prompt but adapts each section to the audio and conversational format typical of podcasts.
+Below is a structured framework you can use to analyze and summarize podcasts on any topic. The framework is to adapt the source material to an audio and conversational format typical of podcasts.
 
 ---
 

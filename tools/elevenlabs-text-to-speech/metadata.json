@@ -1,0 +1,71 @@
+{
+    "author": "Shinkai",
+    "configurations": {
+      "properties": {
+        "ELEVENLABS_API_KEY": {
+          "description": "API key for Eleven Labs",
+          "type": "string"
+        },
+        "voice": {
+          "description": "The voice used for text-to-speech, options include: Aria, Roger, Sarah, Laura, Charlie, George, Callum, River, Liam, Charlotte, Alice, Matilda, Will, Jessica, Eric, Chris, Brian, Daniel, Lily, Bill",
+          "type": "string"
+        }
+      },
+      "required": [
+        "ELEVENLABS_API_KEY"
+      ],
+      "type": "object"
+    },
+    "description": "Converts text to speech using Eleven Labs API and saves the audio as an MP3 file.",
+    "homepage": null,
+    "keywords": [
+      "text-to-speech",
+      "audio",
+      "Eleven Labs",
+      "API"
+    ],
+    "name": "Eleven Labs Text-to-Speech",
+    "oauth": [],
+    "parameters": {
+      "properties": {
+        "fileName": {
+          "description": "The name of the file to save the audio as",
+          "type": "string"
+        },
+        "text": {
+          "description": "The text to be converted to speech",
+          "type": "string"
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "type": "object"
+    },
+    "result": {
+      "properties": {
+        "audio_file": {
+          "description": "The file path to the generated audio file",
+          "type": "string"
+        },
+        "characters_remaining": {
+          "description": "The number of characters remaining in the user's limit",
+          "type": "number"
+        },
+        "characters_used": {
+          "description": "The number of characters used in the request",
+          "type": "number"
+        }
+      },
+      "required": [
+        "audio_file",
+        "characters_used",
+        "characters_remaining"
+      ],
+      "type": "object"
+    },
+    "sqlQueries": [],
+    "sqlTables": [],
+    "tools": [],
+    "version": "1.0.0"
+  }

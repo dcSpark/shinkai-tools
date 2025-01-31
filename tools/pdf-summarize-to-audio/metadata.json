@@ -24,7 +24,7 @@
       "text to speech",
       "audio"
     ],
-    "name": "PDF Summary and Audio Converter",
+    "name": "PDF Summarize to Audio",
     "oauth": [],
     "parameters": {
       "properties": {

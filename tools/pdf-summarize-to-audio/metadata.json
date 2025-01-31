@@ -1,0 +1,70 @@
+{
+    "author": "Shinkai",
+    "configurations": {
+      "properties": {
+        "promptStructure": {
+          "description": "The structure for the summarization prompt",
+          "type": "string"
+        },
+        "voicePrompt": {
+          "description": "The narration guidelines for the audio output",
+          "type": "string"
+        }
+      },
+      "required": [
+        "promptStructure"
+      ],
+      "type": "object"
+    },
+    "description": "Extracts text from a PDF, summarizes it, and converts the summary to speech.",
+    "homepage": null,
+    "keywords": [
+      "PDF",
+      "summary",
+      "text to speech",
+      "audio"
+    ],
+    "name": "PDF Summarize to Audio",
+    "oauth": [],
+    "parameters": {
+      "properties": {
+        "pdfURL": {
+          "description": "The URL of the PDF to download and extract text from",
+          "type": "string"
+        }
+      },
+      "required": [
+        "pdfURL"
+      ],
+      "type": "object"
+    },
+    "result": {
+      "properties": {
+        "audioFilePath": {
+          "description": "The local file path of the generated audio",
+          "type": "string"
+        },
+        "audiotext": {
+          "description": "The trasncribed audio",
+          "type": "string"
+        },
+        "summaryText": {
+          "description": "The summarized text from the PDF",
+          "type": "string"
+        }
+      },
+      "required": [
+        "summaryText",
+        "audioFilePath"
+      ],
+      "type": "object"
+    },
+    "sqlQueries": [],
+    "sqlTables": [],
+    "tools": [
+      "local:::__official_shinkai:::pdf_text_extractor",
+      "local:::__official_shinkai:::shinkai_llm_prompt_processor",
+      "local:::__official_shinkai:::eleven_labs_text_to_speech"
+    ],
+    "version": "1.0.0"
+  }

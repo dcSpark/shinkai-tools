@@ -1,0 +1,46 @@
+{
+    "author": "Shinkai",
+    "configurations": {
+      "properties": {},
+      "required": [],
+      "type": "object"
+    },
+    "description": "Extracts clean text from PDFs by fetching them using a URL and processing each page.",
+    "homepage": null,
+    "keywords": [
+      "PDF",
+      "text extraction",
+      "document processing",
+      "clean text"
+    ],
+    "name": "PDF Text Extractor",
+    "oauth": [],
+    "parameters": {
+      "properties": {
+        "url": {
+          "description": "The URL from which to download the PDF",
+          "type": "string"
+        }
+      },
+      "required": [
+        "url"
+      ],
+      "type": "object"
+    },
+    "result": {
+      "properties": {
+        "text": {
+          "description": "The extracted and cleaned text from the PDF",
+          "type": "string"
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "type": "object"
+    },
+    "sqlQueries": [],
+    "sqlTables": [],
+    "tools": [],
+    "version": "1.0.0"
+  }

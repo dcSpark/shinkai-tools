@@ -98,5 +98,25 @@
   {
     "routerKey": "local:::__official_shinkai:::text_to_audio",
     "categoryId": "5f10d0b4-6acd-477a-96e1-be35634465b2"
+  },
+  {
+    "routerKey": "local:::__official_shinkai:::stagehand_runner",
+    "categoryId": "5f10d0b4-6acd-477a-96e1-be35634465b2"
+  },
+  {
+    "routerKey": "local:::__official_shinkai:::play_crypto_2048",
+    "categoryId": "5f10d0b4-6acd-477a-96e1-be35634465b2"
+  },
+  {
+    "routerKey": "local:::__official_shinkai:::eleven_labs_text_to_speech",
+    "categoryId": "5f10d0b4-6acd-477a-96e1-be35634465b2"
+  },
+  {
+    "routerKey": "local:::__official_shinkai:::pdf_text_extractor",
+    "categoryId": "5f10d0b4-6acd-477a-96e1-be35634465b2"
+  },
+  {
+    "routerKey": "local:::__official_shinkai:::pdf_summarize_to_audio",
+    "categoryId": "b31efbe7-2b3e-4fa1-bd7d-b19950705ea2"
   }
 ]

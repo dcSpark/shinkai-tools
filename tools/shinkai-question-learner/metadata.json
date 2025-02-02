@@ -1,0 +1,75 @@
+{
+  "name": "Question Learner",
+  "homePage": "",
+  "description": "Learns from web pages by generating questions and answers, and interacts with users based on these questions. If the action was 'ask' it returns a question, always include the question number when referencing it",
+  "author": "Shinkai",
+  "version": "1.0.0",
+  "keywords": [],
+  "configurations": {
+    "type": "object",
+    "properties": {},
+    "required": []
+  },
+  "parameters": {
+    "type": "object",
+    "properties": {
+        "url": {
+            "type": "string",
+            "description": "The URL to download for learning"
+        },
+        "action": {
+            "type": "string",
+            "description": "The action to perform: 'learn', 'ask', or 'respond'"
+        },
+        "questionId": {
+            "type": "number",
+            "description": "The ID of the question being asked"
+        },
+        "userResponse": {
+            "type": "string",
+            "description": "The user's response to the current question"
+        }
+    },
+    "required": [
+        "action"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+        "message": {
+            "description": "The response message after processing the action",
+            "type": "string"
+        }
+    },
+    "required": [
+        "message"
+    ]
+  },
+  "sqlTables": [
+    {
+      "name": "Questions",
+      "definition": "CREATE TABLE IF NOT EXISTS Questions (ID INTEGER PRIMARY KEY AUTOINCREMENT, Question TEXT NOT NULL, Answer TEXT NOT NULL, CorrectCount INTEGER DEFAULT 0, IncorrectCount INTEGER DEFAULT 0)"
+    }
+  ],
+  "sqlQueries": [
+    {
+      "name": "Insert question and answer",
+      "query": "INSERT INTO Questions (Question, Answer) VALUES (?, ?)"
+    },
+    {
+      "name": "Select all questions",
+      "query": "SELECT * FROM Questions ORDER BY CorrectCount ASC LIMIT 10"
+    },
+    {
+      "name": "Select question by ID",
+      "query": "SELECT * FROM Questions WHERE ID = ?"
+    }
+  ],
+  "tools": [
+      "local:::__official_shinkai:::shinkai_llm_prompt_processor",
+      "local:::__official_shinkai:::shinkai_sqlite_query_executor",
+      "local:::__official_shinkai:::download_pages"
+  ],
+  "oauth": []
+}

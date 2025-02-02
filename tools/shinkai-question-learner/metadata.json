@@ -1,5 +1,5 @@
 {
-  "name": "Question Learner",
+  "name": "Shinkai Question Learner",
   "homePage": "",
   "description": "Learns from web pages by generating questions and answers, and interacts with users based on these questions. If the action was 'ask' it returns a question, always include the question number when referencing it",
   "author": "Shinkai",

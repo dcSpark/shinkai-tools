@@ -1,0 +1,69 @@
+{
+    "name": "Airtable Developer API",
+    "homepage": "",
+    "description": "Tool to make requests to the Airtable Developer API using OAuth for authentication.",
+    "author": "@@localhost.sep-shinkai",
+    "version": "1.0.0",
+    "keywords": [
+        "airtable",
+        "api",
+        "oauth"
+    ],
+    "configurations": {
+        "type": "object",
+        "properties": {},
+        "required": []
+    },
+    "parameters": {
+        "type": "object",
+        "properties": {
+            "url": { "type": "string", "description": "The API endpoint URL" },
+            "method": { "type": "string", "description": "HTTP method (GET, POST, PUT, DELETE)" },
+            "body": { "type": "string", "description": "Request body (if applicable)", "nullable": true },
+            "query_params": { "type": "string", "description": "Query parameters to append to the URL", "nullable": true },
+            "headers": { "type": "string", "description": "Additional headers as newline-separated key:value pairs", "nullable": true }
+        },
+        "required": [
+            "url",
+            "method"
+        ]
+    },
+    "result": {
+        "type": "object",
+        "properties": {
+            "status": { "type": "number", "description": "HTTP response status code" },
+            "statusText": { "type": "string", "description": "HTTP response status text" },
+            "data": { "type": "any", "description": "Response data in JSON format" }
+        },
+        "required": [
+            "status",
+            "statusText",
+            "data"
+        ]
+    },
+    "sqlTables": [],
+    "sqlQueries": [],
+    "tools": [],
+    "oauth": [
+        {
+            "name": "Airtable",
+            "version": "2.0",
+            "authorizationUrl": "https://airtable.com/oauth2/v1/authorize",
+            "redirectUrl": "https://secrets.shinkai.com/redirect",
+            "tokenUrl": "https://airtable.com/oauth2/v1/token",
+            "clientId": "",
+            "clientSecret": "",
+            "scopes": [
+              "data.records:read",
+              "data.records:write",
+              "schema.bases:read",
+              "schema.bases:write"
+            ],
+            "responseType": "code",
+            "refreshToken": "",
+            "pkceType": "S256",
+            "requestTokenAuthHeader": "basic",
+            "requestTokenContentType": "application/x-www-form-urlencoded"
+          }
+    ]
+}

@@ -130,5 +130,9 @@
   {
     "routerKey": "local:::__official_shinkai:::youtube_download_mp3",
     "categoryId": "b31efbe7-2b3e-4fa1-bd7d-b19950705ea2"
+  },
+  {
+    "routerKey": "local:::__official_shinkai:::shinkai_question_learner",
+    "categoryId": "b31efbe7-2b3e-4fa1-bd7d-b19950705ea2"
   }
 ]

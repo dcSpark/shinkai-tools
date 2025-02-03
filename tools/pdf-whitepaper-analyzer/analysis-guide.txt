@@ -1,0 +1,46 @@
+Please analyze the whitepaper following these guidelines:
+
+1. Executive Summary
+- Provide a brief 2-3 sentence overview of the main purpose and goals
+- Identify the key problem or challenge being addressed
+
+2. Technical Architecture
+- Describe the core technical components and how they interact
+- Evaluate the technical feasibility and innovation
+- Note any novel approaches or technologies introduced
+
+3. Token Economics (if applicable) 
+- Explain the token model and utility
+- Assess the economic incentives and sustainability
+- Review token distribution and vesting schedules
+
+4. Team Analysis
+- Evaluate the team's relevant experience and expertise
+- Note any notable advisors or partnerships
+- Flag any potential red flags or concerns
+
+5. Market Analysis
+- Define the target market and use cases
+- Assess market size and growth potential
+- Analyze competitive landscape and differentiators
+
+6. Risk Assessment
+- Identify technical risks and challenges
+- Note regulatory/compliance considerations
+- Flag potential security vulnerabilities
+- Consider business/market risks
+
+7. Implementation & Roadmap
+- Review development progress and milestones
+- Assess timeline feasibility
+- Note any dependencies or bottlenecks
+
+8. Overall Rating
+- Provide a rating from 1-10 based on:
+  * Technical innovation and feasibility
+  * Market opportunity
+  * Team capability
+  * Risk profile
+- Give 2-3 key strengths and weaknesses
+
+Please be objective and fact-based in the analysis. Note both positive aspects and potential concerns. Support conclusions with specific evidence from the whitepaper.

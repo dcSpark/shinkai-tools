@@ -1,0 +1,69 @@
+{
+    "name": "ElevenLabs Isolate Voice",
+    "author": "Shinkai",
+    "homePage": "",
+    "description": "Isolates audio from YouTube videos or processes local audio files using ElevenLabs API.",
+    "version": "1.0.0",
+    "keywords": [
+        "youtube",
+        "audio",
+        "isolation",
+        "elevenlabs"
+    ],
+    "configurations": {
+        "type": "object",
+        "properties": {
+            "ELEVENLABS_API_KEY": {
+                "type": "string",
+                "description": "The API key for accessing ElevenLabs services"
+            }
+        },
+        "required": [
+            "ELEVENLABS_API_KEY"
+        ]
+    },
+    "parameters": {
+        "type": "object",
+        "properties": {
+            "audio_file": {
+                "type": "string",
+                "description": "The path to the local audio file to process"
+            },
+            "youtube_url": {
+                "type": "string",
+                "description": "The URL of the YouTube video to download audio from"
+            },
+            "fileName": {
+                "type": "string",
+                "description": "The desired name for the output audio file"
+            }
+        },
+        "required": []
+    },
+    "result": {
+        "type": "object",
+        "properties": {
+            "audio_file": {
+                "type": "string",
+                "description": "The path to the output audio file"
+            },
+            "characters_used": {
+                "type": "number",
+                "description": "The number of characters used in the ElevenLabs API"
+            },
+            "characters_remaining": {
+                "type": "number",
+                "description": "The number of characters remaining in the ElevenLabs API limit"
+            }
+        },
+        "required": [
+            "audio_file"
+        ]
+    },
+    "sqlTables": [],
+    "sqlQueries": [],
+    "oauth": [],
+    "tools": [
+        "local:::__official_shinkai:::youtube_download_mp3"
+    ]
+}

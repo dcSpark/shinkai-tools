@@ -1,0 +1,67 @@
+{
+  "id": "article-scraper",
+  "name": "Article Scraper",
+  "version": "1.0.0",
+  "description": "Extracts article text, authors, images, and metadata from a given URL or raw HTML using newspaper3k",
+  "author": "Shinkai",
+  "keywords": [
+    "article",
+    "news",
+    "newspaper3k",
+    "scraper",
+    "metadata",
+    "text extraction"
+  ],
+  "configurations": {
+    "type": "object",
+    "properties": {
+      "default_language": {
+        "type": "string",
+        "description": "The default language to assume for articles",
+        "default": "en"
+      }
+    },
+    "required": []
+  },
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "url": {
+        "type": "string",
+        "description": "Article URL to scrape"
+      },
+      "html": {
+        "type": "string",
+        "description": "Optional raw HTML content (if you already have it), will override fetching from 'url'"
+      },
+      "language": {
+        "type": "string",
+        "description": "Override default language, e.g. 'en', 'zh'"
+      }
+    },
+    "required": ["url"]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "title": {"type": "string"},
+      "authors": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "publish_date": {"type": "string"},
+      "summary": {"type": "string"},
+      "keywords": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "top_image": {"type": "string"},
+      "text": {"type": "string"}
+    },
+    "required": ["title","authors","publish_date","summary","keywords","top_image","text"]
+  }
+} 

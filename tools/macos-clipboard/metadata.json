@@ -1,0 +1,54 @@
+{
+  "id": "macos-clipboard",
+  "name": "macos-clipboard",
+  "version": "1.0.0",
+  "description": "Manage macOS clipboard via AppleScript",
+  "author": "Example",
+  "keywords": [
+    "macos",
+    "clipboard",
+    "automation",
+    "applescript"
+  ],
+  "configurations": {
+    "type": "object",
+    "properties": {},
+    "required": []
+  },
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "command": {
+        "type": "string",
+        "enum": [
+          "getClipboard",
+          "setClipboard",
+          "clearClipboard"
+        ],
+        "description": "Command to execute: getClipboard to read, setClipboard to write, clearClipboard to clear"
+      },
+      "content": {
+        "type": "string",
+        "description": "Text to put in clipboard for setClipboard"
+      },
+      "content_type": {
+        "type": "string",
+        "enum": ["text", "filePaths"],
+        "description": "When getClipboard, specify if it's text or file paths"
+      }
+    },
+    "required": [
+      "command"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "result": {
+        "type": "string",
+        "description": "Resulting text from AppleScript"
+      }
+    },
+    "required": ["result"]
+  }
+}  

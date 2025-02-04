@@ -1,0 +1,65 @@
+{
+  "name": "arxiv-search",
+  "version": "1.0.0",
+  "description": "Search for papers on arXiv with optional date range and category filters",
+  "author": "Shinkai",
+  "configurations": {
+    "type": "object",
+    "properties": {}
+  },
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "query": {
+        "type": "string",
+        "description": "Search query string"
+      },
+      "max_results": {
+        "type": "number",
+        "description": "Maximum number of results to return",
+        "default": 10
+      },
+      "date_from": {
+        "type": "string",
+        "description": "Earliest publication date in a parseable date string (optional)"
+      },
+      "date_to": {
+        "type": "string",
+        "description": "Latest publication date in a parseable date string (optional)"
+      },
+      "categories": {
+        "type": "array",
+        "description": "List of category filters (e.g. [cs.LG])",
+        "items": { "type": "string" }
+      }
+    },
+    "required": ["query"]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "papers": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": { "type": "string" },
+            "title": { "type": "string" },
+            "authors": {
+              "type": "array",
+              "items": { "type": "string" }
+            },
+            "abstract": { "type": "string" },
+            "published": { "type": "string" },
+            "categories": {
+              "type": "array",
+              "items": { "type": "string" }
+            },
+            "pdf_url": { "type": "string" }
+          }
+        }
+      },
+      "total_results": { "type": "number" }
+    }
+  }
+} 

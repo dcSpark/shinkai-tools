@@ -1,0 +1,35 @@
+{
+  "name": "Chess Move",
+  "version": "1.0.0",
+  "description": "Apply a move in UCI format to a given FEN and return the resulting position",
+  "author": "Example",
+  "configurations": {
+    "type": "object",
+    "properties": {}
+  },
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "fen": {
+        "type": "string",
+        "description": "FEN describing the current position"
+      },
+      "move_uci": {
+        "type": "string",
+        "description": "Move in UCI format (e.g. 'e2e4')"
+      }
+    },
+    "required": ["fen", "move_uci"]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "new_fen": {
+        "type": "string"
+      },
+      "is_legal": {
+        "type": "boolean"
+      }
+    }
+  }
+} 

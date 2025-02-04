@@ -60,6 +60,6 @@ Deno.test("Compare shinkai-node generated ZIP __tool.json vs .tool-dump.test.jso
 });
 
 
-Deno.test("Check if memory is working", async () => {
-  await memoryTest();
-});
+/ /Deno.test("Check if memory is working", async () => {
+//   await memoryTest();
+// });

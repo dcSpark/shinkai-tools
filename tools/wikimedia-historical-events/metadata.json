@@ -1,0 +1,73 @@
+{
+  "id": "wikimedia-historical-events",
+  "version": "1.0.0",
+  "name": "Wikimedia Historical Events",
+  "description": "Get historical events, births, deaths, and holidays for a specific date from Wikimedia",
+  "author": "Shinkai",
+  "keywords": ["wikimedia", "history", "wikipedia", "events", "onthisday"],
+  "configurations": {
+    "type": "object",
+    "properties": {
+      "project": {
+        "type": "string",
+        "description": "Wikimedia project (e.g., wikipedia)",
+        "default": "wikipedia"
+      },
+      "language": {
+        "type": "string",
+        "description": "Language code (e.g., en)",
+        "default": "en"
+      }
+    }
+  },
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "date": {
+        "type": "string",
+        "description": "Date in YYYY-MM-DD format (defaults to current date)",
+        "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+      },
+      "type": {
+        "type": "string",
+        "description": "Type of historical events to fetch",
+        "enum": ["all", "events", "births", "deaths", "holidays"],
+        "default": "all"
+      }
+    }
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "events": {
+        "type": "object",
+        "properties": {
+          "selected_date": {"type": "string"},
+          "events": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "text": {"type": "string"},
+                "year": {"type": "string"},
+                "links": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "title": {"type": "string"},
+                      "url": {"type": "string"}
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "births": {"$ref": "#/result/properties/events/properties/events"},
+          "deaths": {"$ref": "#/result/properties/events/properties/events"},
+          "holidays": {"$ref": "#/result/properties/events/properties/events"}
+        }
+      }
+    }
+  }
+}

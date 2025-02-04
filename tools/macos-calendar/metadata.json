@@ -1,0 +1,51 @@
+{
+  "name": "macos-calendar",
+  "version": "1.0.0",
+  "description": "Add or list calendar events using AppleScript",
+  "author": "Example",
+  "configurations": {
+    "type": "object",
+    "properties": {}
+  },
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "command": {
+        "type": "string",
+        "enum": [
+          "addEvent",
+          "listToday"
+        ]
+      },
+      "title": {
+        "type": "string",
+        "description": "Title of the event"
+      },
+      "start_date": {
+        "type": "string",
+        "description": "Event start date/time in 'YYYY-MM-DD HH:mm:ss'"
+      },
+      "end_date": {
+        "type": "string",
+        "description": "Event end date/time in 'YYYY-MM-DD HH:mm:ss'"
+      },
+      "calendar_name": {
+        "type": "string",
+        "description": "Name of the calendar to add the event to (default 'Calendar')"
+      }
+    },
+    "required": [
+      "command"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "result": {
+        "type": "string",
+        "description": "Message describing what happened"
+      }
+    },
+    "required": ["result"]
+  }
+} 

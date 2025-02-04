@@ -1,0 +1,46 @@
+{
+  "name": "hacker-news",
+  "version": "1.0.0",
+  "description": "Fetches top tech stories from Hacker News",
+  "author": "Shinkai",
+  "license": "MIT",
+  "configurations": {
+    "type": "object",
+    "properties": {
+      "limit": {
+        "type": "number",
+        "description": "Number of stories to fetch (default: 10)",
+        "default": 10
+      }
+    }
+  },
+  "parameters": {
+    "type": "object",
+    "properties": {}
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "stories": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string",
+              "description": "Title of the story"
+            },
+            "author": {
+              "type": "string",
+              "description": "Author/poster of the story"
+            },
+            "url": {
+              "type": "string",
+              "description": "URL of the story or HN discussion if no URL provided"
+            }
+          }
+        }
+      }
+    }
+  }
+} 

@@ -1,0 +1,49 @@
+{
+  "id": "mermaid",
+  "name": "mermaid",
+  "version": "1.0.0",
+  "description": "Generate diagrams and flowcharts using Mermaid syntax",
+  "author": "Shinkai",
+  "keywords": [
+    "mermaid",
+    "diagram",
+    "flowchart",
+    "visualization",
+    "markdown"
+  ],
+  "configurations": {
+    "type": "object",
+    "properties": {},
+    "required": []
+  },
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "code": {
+        "type": "string",
+        "description": "Mermaid diagram code"
+      },
+      "format": {
+        "type": "string",
+        "enum": ["svg", "png"],
+        "default": "svg",
+        "description": "Output format for the diagram"
+      }
+    },
+    "required": ["code"]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "image": {
+        "type": "string",
+        "description": "Base64 encoded image data"
+      },
+      "format": {
+        "type": "string",
+        "description": "Format of the generated image (svg or png)"
+      }
+    },
+    "required": ["image", "format"]
+  }
+}

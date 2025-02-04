@@ -1,0 +1,39 @@
+{
+  "name": "iterm-control",
+  "version": "1.0.0",
+  "description": "Sends a control character (like Ctrl-C) to the active iTerm terminal session.",
+  "author": "Shinkai",
+  "keywords": ["iterm", "terminal", "control", "key", "shinkai"],
+  "configurations": {
+    "type": "object",
+    "properties": {}
+  },
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "letter": {
+        "type": "string",
+        "description": "The single letter to send as Ctrl-letter (e.g. 'C', 'D', 'Z')",
+        "enum": ["C", "D", "Z", "L", "U", "R"]
+      }
+    },
+    "required": ["letter"]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "success": {
+        "type": "boolean",
+        "description": "Whether the control character was successfully sent"
+      },
+      "message": {
+        "type": "string",
+        "description": "Result of the control operation"
+      }
+    },
+    "required": ["success", "message"]
+  },
+  "sqlTables": [],
+  "sqlQueries": [],
+  "tools": []
+} 

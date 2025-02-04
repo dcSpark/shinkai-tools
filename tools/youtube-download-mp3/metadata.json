@@ -1,0 +1,63 @@
+{
+    "name": "Youtube Download MP3",
+    "description": "Downloads audio from a YouTube video and saves it as an MP3 file.",
+    "author": "Shinkai",
+    "homepage": null,
+    "keywords": [
+        "youtube",
+        "mp3",
+        "downloader",
+        "audio"
+    ],
+    "oauth": [],
+    "configurations": {
+        "properties": {
+            "apiKey": {
+                "description": "The API key for accessing the RapidAPI service",
+                "type": "string"
+            }
+        },
+        "required": [
+            "apiKey"
+        ],
+        "type": "object"
+    },
+    "parameters": {
+        "properties": {
+            "fileName": {
+                "description": "Optional file name for the downloaded MP3",
+                "type": "string"
+            },
+            "youtubeUrl": {
+                "description": "The URL of the YouTube video to download",
+                "type": "string"
+            }
+        },
+        "required": [
+            "youtubeUrl"
+        ],
+        "type": "object"
+    },
+    "result": {
+        "properties": {
+            "audiofile": {
+                "description": "The name of the MP3 file saved",
+                "type": "string"
+            },
+            "error": {
+                "description": "Error message if the process fails",
+                "type": "string"
+            },
+            "rapidDownloadUrl": {
+                "description": "The URL from which the MP3 file was downloaded",
+                "type": "string"
+            }
+        },
+        "required": [],
+        "type": "object"
+    },
+    "sqlQueries": [],
+    "sqlTables": [],
+    "tools": [],
+    "version": "1.0.0"
+}

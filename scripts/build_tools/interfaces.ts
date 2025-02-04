@@ -43,6 +43,11 @@ export interface Metadata {
   oauth: Record<string, string>[] | null;
 }
 
+export interface StoreMetadata {
+  categoryId: string;
+  node_version: string;
+}
+
 export interface DirectoryEntry {
   dir: string;
   routerKey: string;

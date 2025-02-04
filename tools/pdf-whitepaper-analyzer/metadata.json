@@ -1,0 +1,64 @@
+{
+  "name": "PDF Whitepaper Analyzer",
+  "homepage": null,
+  "author": "Shinkai",
+  "version": "1.0.0",
+  "tools": [
+    "local:::__official_shinkai:::shinkai_llm_prompt_processor",
+    "local:::__official_shinkai:::smart_search_engine"
+  ],
+  "configurations": {
+    "properties": {
+      "analysisGuide": {
+        "description": "A guide for analyzing the PDF text.",
+        "type": "string"
+      }
+    },
+    "required": [],
+    "type": "object"
+  },
+  "description": "A tool to analyze PDF documents by extracting text and processing it with language models and search engines.",
+  "keywords": [
+    "PDF",
+    "analysis",
+    "LLM",
+    "text extraction"
+  ],
+  "oauth": [],
+  "parameters": {
+    "properties": {
+      "pdfUrl": {
+        "description": "The URL of the PDF to analyze.",
+        "type": "string"
+      }
+    },
+    "required": [
+      "pdfUrl"
+    ],
+    "type": "object"
+  },
+  "result": {
+    "properties": {
+      "analysis": {
+        "description": "The analysis of the PDF content based on the guide.",
+        "type": "string"
+      },
+      "projectAndAuthors": {
+        "description": "The project name, company, and authors extracted from the PDF.",
+        "type": "string"
+      },
+      "reviews": {
+        "description": "Reviews related to the project and authors.",
+        "type": "string"
+      }
+    },
+    "required": [
+      "projectAndAuthors",
+      "analysis",
+      "reviews"
+    ],
+    "type": "object"
+  },
+  "sqlQueries": [],
+  "sqlTables": []
+}

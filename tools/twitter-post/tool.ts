@@ -30,7 +30,7 @@ async function postTweet(bearerToken: string, text: string) {
     return data;
   } catch (error) {
     console.error('Error posting tweet:', error);
-    return error;
+    throw error;
   }
 }
 

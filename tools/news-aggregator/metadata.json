@@ -1,0 +1,107 @@
+{
+  "id": "news-aggregator",
+  "name": "News Aggregator",
+  "version": "1.0.0",
+  "description": "Aggregates latest news from multiple sources using newspaper3k, supporting parallel processing and category-based filtering",
+  "author": "Shinkai",
+  "keywords": [
+    "news",
+    "aggregator",
+    "newspaper3k",
+    "scraper",
+    "articles",
+    "multi-source"
+  ],
+  "configurations": {
+    "type": "object",
+    "properties": {
+      "language": {
+        "type": "string",
+        "description": "The language to use for article processing",
+        "default": "en"
+      },
+      "number_threads": {
+        "type": "integer",
+        "description": "Number of threads for article processing",
+        "default": 10
+      },
+      "request_timeout": {
+        "type": "integer",
+        "description": "Timeout in seconds for HTTP requests",
+        "default": 30
+      },
+      "max_concurrent_sources": {
+        "type": "integer",
+        "description": "Maximum number of sources to process concurrently",
+        "default": 5
+      }
+    },
+    "required": []
+  },
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "providers": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "List of news provider URLs to aggregate from"
+      },
+      "articles_per_source": {
+        "type": "integer",
+        "description": "Maximum number of articles to fetch per source",
+        "default": 5
+      },
+      "categories": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "enum": ["general", "tech", "business"]
+        },
+        "description": "Categories to fetch news from (uses default providers if no specific providers given)"
+      }
+    },
+    "required": ["providers"]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "total_sources_processed": {
+        "type": "integer"
+      },
+      "total_articles_found": {
+        "type": "integer"
+      },
+      "failed_sources": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "articles": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "title": {"type": "string"},
+            "url": {"type": "string"},
+            "source": {"type": "string"},
+            "summary": {"type": "string"},
+            "publish_date": {"type": "string"},
+            "authors": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "top_image": {"type": "string"},
+            "text": {"type": "string"}
+          }
+        }
+      },
+      "processing_time": {"type": "number"}
+    },
+    "required": ["total_sources_processed", "total_articles_found", "failed_sources", "articles", "processing_time"]
+  }
+} 

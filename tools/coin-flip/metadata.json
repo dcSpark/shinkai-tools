@@ -21,7 +21,8 @@
       "sideNames": {
         "type": "array",
         "items": {
-          "type": "string"
+          "type": "string",
+          "description": "Custon name for the side"
         },
         "description": "Optional custom names for sides (must match number of sides)"
       }

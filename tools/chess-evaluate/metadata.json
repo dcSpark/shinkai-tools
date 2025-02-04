@@ -1,0 +1,49 @@
+{
+  "id": "chess-evaluate",
+  "name": "Chess Evaluate",
+  "version": "1.0.0",
+  "description": "Evaluate a chess position using Stockfish at a given depth",
+  "author": "Example",
+  "keywords": [
+    "chess",
+    "stockfish",
+    "evaluation",
+    "analysis",
+    "engine",
+    "position"
+  ],
+  "configurations": {
+    "type": "object",
+    "properties": {},
+    "required": []
+  },
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "fen": {
+        "type": "string",
+        "description": "FEN describing the position to evaluate"
+      },
+      "depth": {
+        "type": "number",
+        "description": "Depth for the engine search",
+        "default": 15
+      },
+      "time_limit_ms": {
+        "type": "number",
+        "description": "Time limit in milliseconds if depth is small",
+        "default": 1000
+      }
+    },
+    "required": ["fen"]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "message": {
+        "type": "string"
+      }
+    },
+    "required": ["message"]
+  }
+}   

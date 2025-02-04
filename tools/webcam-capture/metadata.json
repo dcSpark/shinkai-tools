@@ -1,0 +1,67 @@
+{
+  "id": "webcam-capture",
+  "name": "Webcam Capture Tool",
+  "description": "Captures a single frame from a local webcam and returns it as a Base64-encoded image (PNG or JPEG). Example usage with Python + opencv.",
+  "author": "Shinkai",
+  "version": "1.0.0",
+  "keywords": [
+    "webcam",
+    "capture",
+    "camera",
+    "image",
+    "tools"
+  ],
+  "configurations": {
+    "type": "object",
+    "properties": {
+      "cameraIndex": {
+        "type": "number",
+        "description": "Which camera index to capture from. 0 is the default. If you only have one camera, use 0."
+      },
+      "format": {
+        "type": "string",
+        "description": "Image format to return (png or jpeg)",
+        "default": "png"
+      }
+    },
+    "required": []
+  },
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "width": {
+        "type": "number",
+        "description": "Requested width of the capture in pixels",
+        "default": 640
+      },
+      "height": {
+        "type": "number",
+        "description": "Requested height of the capture in pixels",
+        "default": 480
+      }
+    },
+    "required": []
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "imageBase64": {
+        "type": "string",
+        "description": "The captured image as a Base64-encoded string"
+      },
+      "width": {
+        "type": "number",
+        "description": "Actual width of the returned frame"
+      },
+      "height": {
+        "type": "number",
+        "description": "Actual height of the returned frame"
+      }
+    },
+    "required": [
+      "imageBase64",
+      "width",
+      "height"
+    ]
+  }
+} 

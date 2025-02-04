@@ -1,0 +1,52 @@
+{
+  "id": "macos-say-text-to-audio",
+  "version": "1.0.0",
+  "name": "macOS Text-to-Speech",
+  "description": "Speaks text aloud using macOS 'say' command. Available voices can be found by running 'say -v ?' in terminal, common voices include: Alex (default), Daniel, Karen, Samantha, Victoria",
+  "author": "Shinkai",
+  "keywords": [
+    "macos",
+    "say",
+    "text-to-speech",
+    "audio"
+  ],
+  "configurations": {
+    "type": "object",
+    "properties": {},
+    "required": []
+  },
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "text": {
+        "type": "string",
+        "description": "The text to convert to speech"
+      },
+      "voice": {
+        "type": "string",
+        "description": "The voice to use (e.g., Alex, Daniel, Karen)",
+        "default": "Alex"
+      }
+    },
+    "required": ["text"]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "success": {
+        "type": "boolean",
+        "description": "Whether the text was successfully converted to speech"
+      },
+      "message": {
+        "type": "string",
+        "description": "Success or error message"
+      }
+    },
+    "required": ["success", "message"]
+  },
+  "sqlTables": [],
+  "sqlQueries": [],
+  "tools": [
+    "local:::macos_speak:::macos_say_text_to_audio_speak:::1.0.0"
+  ]
+}    

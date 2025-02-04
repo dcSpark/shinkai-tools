@@ -1,0 +1,56 @@
+{
+  "id": "macos-notifications",
+  "name": "macos-notifications",
+  "version": "1.0.0",
+  "description": "Manage macOS notifications and Do Not Disturb via AppleScript",
+  "author": "Example",
+  "keywords": [
+    "macos",
+    "notifications",
+    "dnd",
+    "automation",
+    "applescript"
+  ],
+  "configurations": {
+    "type": "object",
+    "properties": {},
+    "required": []
+  },
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "command": {
+        "type": "string",
+        "enum": [
+          "toggleDoNotDisturb",
+          "sendNotification"
+        ]
+      },
+      "title": {
+        "type": "string",
+        "description": "Notification title for sendNotification"
+      },
+      "message": {
+        "type": "string",
+        "description": "Notification message for sendNotification"
+      },
+      "sound": {
+        "type": "boolean",
+        "description": "Play default sound if true (default = true)"
+      }
+    },
+    "required": [
+      "command"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "result": {
+        "type": "string",
+        "description": "Message describing what happened"
+      }
+    },
+    "required": ["result"]
+  }
+}  

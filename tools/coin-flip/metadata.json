@@ -1,0 +1,45 @@
+{
+  "id": "coin-flip",
+  "version": "1.0.0",
+  "name": "Coin Flip Tool",
+  "description": "Flip a coin with n sides using true randomness from random.org. Supports custom side names and various meta-usage patterns.",
+  "author": "Shinkai",
+  "keywords": ["random", "coin-flip", "decision-making", "shinkai"],
+  "tool_type": "typescript",
+  "configurations": {
+    "type": "object",
+    "properties": {},
+    "required": []
+  },
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "sides": {
+        "type": "number",
+        "description": "Number of sides (default: 3)"
+      },
+      "sideNames": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "Optional custom names for sides (must match number of sides)"
+      }
+    },
+    "required": []
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "result": {
+        "type": "string",
+        "description": "The result of the coin flip"
+      },
+      "error": {
+        "type": "string",
+        "description": "Error message if the flip failed"
+      }
+    },
+    "required": ["result"]
+  }
+}

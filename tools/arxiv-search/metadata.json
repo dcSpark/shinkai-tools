@@ -40,7 +40,10 @@
       "categories": {
         "type": "array",
         "description": "List of category filters (e.g. [cs.LG])",
-        "items": { "type": "string" }
+        "items": {
+          "type": "string",
+          "description": "Category filter"
+        }
       }
     },
     "required": ["query"]

@@ -1,0 +1,51 @@
+{
+  "name": "macos-system",
+  "version": "1.0.0",
+  "description": "Control macOS system features via AppleScript",
+  "author": "Example",
+  "configurations": {
+    "type": "object",
+    "properties": {}
+  },
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "command": {
+        "type": "string",
+        "enum": [
+          "setVolume",
+          "getFrontmostApp",
+          "launchApp",
+          "quitApp", 
+          "toggleDarkMode",
+          "getBatteryStatus"
+        ]
+      },
+      "level": {
+        "type": "number",
+        "description": "Volume level (0..100) for setVolume"
+      },
+      "app_name": {
+        "type": "string",
+        "description": "Application name (for launchApp/quitApp)"
+      },
+      "force": {
+        "type": "boolean",
+        "description": "Force quit if true (for quitApp)"
+      }
+    },
+    "required": [
+      "command"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "result": {
+        "type": "string",
+        "description": "Message describing what happened"
+      }
+    },
+    "required": ["result"]
+  }
+} 

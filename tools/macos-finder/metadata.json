@@ -1,0 +1,48 @@
+{
+  "name": "macos-finder",
+  "version": "1.0.0",
+  "description": "Manage files in Finder via AppleScript",
+  "author": "Example",
+  "configurations": {
+    "type": "object",
+    "properties": {}
+  },
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "command": {
+        "type": "string",
+        "enum": [
+          "getSelectedFiles",
+          "searchFiles",
+          "quickLookFile"
+        ]
+      },
+      "query": {
+        "type": "string",
+        "description": "Search term for searchFiles"
+      },
+      "location": {
+        "type": "string",
+        "description": "Search location (default = ~) for searchFiles"
+      },
+      "file_path": {
+        "type": "string",
+        "description": "Path for quickLookFile"
+      }
+    },
+    "required": [
+      "command"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "result": {
+        "type": "string",
+        "description": "Output text from AppleScript"
+      }
+    },
+    "required": ["result"]
+  }
+} 

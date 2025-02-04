@@ -1,0 +1,66 @@
+{
+  "id": "wikimedia-search",
+  "version": "1.0.0",
+  "name": "Wikimedia Search",
+  "description": "Search across Wikimedia page content with full-text search capabilities",
+  "author": "Shinkai",
+  "keywords": [
+    "wikimedia",
+    "search",
+    "wikipedia",
+    "full-text",
+    "content"
+  ],
+  "configurations": {
+    "type": "object",
+    "properties": {
+      "project": {
+        "type": "string",
+        "description": "Wikimedia project (e.g., wikipedia)",
+        "default": "wikipedia"
+      },
+      "language": {
+        "type": "string",
+        "description": "Language code (e.g., en)",
+        "default": "en"
+      }
+    },
+    "required": []
+  },
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "query": {
+        "type": "string",
+        "description": "Search query"
+      },
+      "limit": {
+        "type": "integer",
+        "description": "Maximum number of results (1-50)",
+        "minimum": 1,
+        "maximum": 50,
+        "default": 10
+      }
+    },
+    "required": ["query"]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "results": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "title": {"type": "string"},
+            "description": {"type": "string"},
+            "excerpt": {"type": "string"},
+            "url": {"type": "string"}
+          },
+          "required": ["title", "description", "excerpt", "url"]
+        }
+      }
+    },
+    "required": ["results"]
+  }
+}

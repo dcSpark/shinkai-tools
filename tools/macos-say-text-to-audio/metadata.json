@@ -47,6 +47,5 @@
   "sqlTables": [],
   "sqlQueries": [],
   "tools": [
-    "local:::macos_speak:::macos_say_text_to_audio_speak:::1.0.0"
   ]
 }    

@@ -44,7 +44,8 @@
       "providers": {
         "type": "array",
         "items": {
-          "type": "string"
+          "type": "string",
+          "description": "URL of the news provider"
         },
         "description": "List of news provider URLs to aggregate from"
       },
@@ -57,6 +58,7 @@
         "type": "array",
         "items": {
           "type": "string",
+          "description": "News category",
           "enum": ["general", "tech", "business"]
         },
         "description": "Categories to fetch news from (uses default providers if no specific providers given)"

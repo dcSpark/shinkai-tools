@@ -17,12 +17,12 @@
   "configurations": {
         "properties": {
             "model_path": {
-                "description": "Path to the Kokoro model file",
+                "description": "Local path to Kokoro ONNX model file. Default: kokoro-v0_19.onnx",
                 "type": "string",
                 "default": "kokoro-v0_19.onnx"
             },
             "voices_path": {
-                "description": "Path to the voices configuration file",
+                "description": "Local path to JSON file defining available voices. Default: voices.json",
                 "type": "string",
                 "default": "voices.json"
             }
@@ -33,28 +33,28 @@
     "parameters": {
         "properties": {
             "text": {
-                "description": "text to convert to audio",
+                "description": "Input text content to synthesize into speech. No length limit but longer text takes more time",
                 "type": "string"
             },
             "voice": {
-                "description": "Voice to use for synthesis",
+                "description": "Voice ID from voices.json to use for synthesis. Default: af_sky",
                 "type": "string",
                 "default": "af_sky"
             },
             "language": {
-                "description": "Language code for synthesis (e.g., en-gb, en-us, fr-fr)",
+                "description": "ISO language code (en-gb, en-us, fr-fr, etc). Must match voice language. Default: en-gb",
                 "type": "string",
                 "default": "en-gb"
             },
             "speed": {
-                "description": "Speech speed multiplier (0.5 to 2.0)",
+                "description": "Playback speed multiplier (0.5-2.0). Higher is faster. Default: 1.0",
                 "type": "number",
                 "default": 1.0,
                 "minimum": 0.5,
                 "maximum": 2.0
             },
             "output_format": {
-                "description": "Output audio format",
+                "description": "Audio file format (only wav supported). Default: wav",
                 "type": "string",
                 "default": "wav",
                 "enum": ["wav"]
@@ -68,15 +68,15 @@
     "result": {
         "properties": {
             "output_file": {
-                "description": "Path to the generated audio file",
+                "description": "Absolute path to generated WAV audio file. Created in system temp directory",
                 "type": "string"
             },
             "duration": {
-                "description": "Duration of the audio in seconds",
+                "description": "Length of generated audio in seconds. Varies with text length and speed",
                 "type": "number"
             },
             "sample_rate": {
-                "description": "Sample rate of the audio in Hz",
+                "description": "Audio sampling rate in Hz (e.g., 44100). Determined by voice model",
                 "type": "number"
             }
         },
@@ -90,4 +90,4 @@
     "sqlTables": [],
     "sqlQueries": [],
     "tools": []
-} 
+}  

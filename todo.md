@@ -22,7 +22,7 @@
 - [x] dev-twitter
 - [x] download-page
 - [x] duckduckgo-search
-- [ ] elevenlabs-isolate-voice
+- [x] elevenlabs-isolate-voice
 - [ ] elevenlabs-text-to-speech
 - [ ] email-imap-fetcher
 - [ ] email-responder

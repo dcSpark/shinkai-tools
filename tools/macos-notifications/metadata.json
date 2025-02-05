@@ -28,19 +28,19 @@
           "toggleDoNotDisturb",
           "sendNotification"
         ],
-        "description": "Command to execute: toggleDoNotDisturb to toggle DND mode, sendNotification to show notification"
+        "description": "Action to perform: 'toggle' switches Do Not Disturb mode, 'send' displays system notification"
       },
       "title": {
         "type": "string",
-        "description": "Notification title for sendNotification"
+        "description": "Bold header text for notification. Required for sendNotification command"
       },
       "message": {
         "type": "string",
-        "description": "Notification message for sendNotification"
+        "description": "Main body text for notification. Required for sendNotification command"
       },
       "sound": {
         "type": "boolean",
-        "description": "Play default sound if true (default = true)"
+        "description": "Play system notification sound when shown. Default: true (plays sound)"
       }
     },
     "required": [
@@ -52,9 +52,9 @@
     "properties": {
       "result": {
         "type": "string",
-        "description": "Message describing what happened"
+        "description": "Operation result: DND state after toggle, notification delivery status, or error details if failed"
       }
     },
     "required": ["result"]
   }
-}  
+}    

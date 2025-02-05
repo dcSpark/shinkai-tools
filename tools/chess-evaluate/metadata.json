@@ -25,17 +25,15 @@
     "properties": {
       "fen": {
         "type": "string",
-        "description": "FEN describing the position to evaluate"
+        "description": "Chess position in Forsyth-Edwards Notation (e.g., 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1')"
       },
       "depth": {
         "type": "number",
-        "description": "Depth for the engine search",
-        "default": 15
+        "description": "Stockfish analysis depth (1-30). Higher values give better evaluation but take longer. Default: 15"
       },
       "time_limit_ms": {
         "type": "number",
-        "description": "Time limit in milliseconds if depth is small",
-        "default": 1000
+        "description": "Maximum analysis time in milliseconds. Used if depth not reached. Default: 1000"
       }
     },
     "required": ["fen"]
@@ -49,4 +47,4 @@
     },
     "required": ["message"]
   }
-}   
+}      

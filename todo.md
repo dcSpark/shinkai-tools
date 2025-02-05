@@ -3,7 +3,7 @@
 - [x] article-scraper
 - [x] arxiv-download
 - [x] arxiv-search
-- [ ] chess-evaluate
+- [x] chess-evaluate
 - [ ] chess-generate-image
 - [ ] chess-move
 - [ ] coin-flip

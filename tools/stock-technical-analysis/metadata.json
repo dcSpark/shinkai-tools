@@ -13,7 +13,7 @@
     "properties": {
       "tiingo_api_key": {
         "type": "string",
-        "description": "Your Tiingo API key. If not provided, we will check the TIINGO_API_KEY environment variable."
+        "description": "Valid Tiingo API key for data access. Falls back to TIINGO_API_KEY env var if not provided"
       }
     },
     "required": []
@@ -23,11 +23,11 @@
     "properties": {
       "symbol": {
         "type": "string",
-        "description": "The stock symbol to fetch data for."
+        "description": "Stock ticker symbol (e.g., AAPL, MSFT). Must be valid symbol on supported exchanges"
       },
       "lookback_days": {
         "type": "number",
-        "description": "How many days of historical data to fetch.",
+        "description": "Number of historical trading days to analyze (1-3650). More data gives better trends. Default: 365",
         "default": 365
       }
     },
@@ -38,7 +38,7 @@
     "properties": {
       "analysis": {
         "type": "object",
-        "description": "Contains various technical analysis indicators and booleans describing the trend.",
+        "description": "Technical indicators: SMAs (20/50/200), RSI, MACD, ATR, volume. Boolean flags show trend signals",
         "properties": {
           "latestClose": { "type": "number" },
           "aboveSma20": { "type": "boolean" },
@@ -60,4 +60,4 @@
   "sqlTables": [],
   "sqlQueries": [],
   "tools": []
-} 
+}  

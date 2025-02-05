@@ -1,7 +1,7 @@
 # Tools to Update
 
 - [x] article-scraper
-- [ ] arxiv-download
+- [x] arxiv-download
 - [ ] arxiv-search
 - [ ] chess-evaluate
 - [ ] chess-generate-image

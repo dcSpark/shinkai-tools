@@ -30,12 +30,11 @@
     "properties": {
       "paper_id": {
         "type": "string",
-        "description": "ArXiv paper ID to download"
+        "description": "ArXiv paper identifier (e.g., '2101.12345' or 'math/0501001'). Must be a valid arXiv ID"
       },
       "convert_to_md": {
         "type": "boolean",
-        "description": "Whether to convert the downloaded PDF to .md",
-        "default": true
+        "description": "Convert downloaded PDF to markdown format for easier text processing. Default: true"
       }
     },
     "required": ["paper_id"]
@@ -49,4 +48,4 @@
     },
     "required": ["status", "message"]
   }
-} 
+}  

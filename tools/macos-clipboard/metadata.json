@@ -28,16 +28,16 @@
           "setClipboard",
           "clearClipboard"
         ],
-        "description": "Command to execute: getClipboard to read, setClipboard to write, clearClipboard to clear"
+        "description": "Action to perform: 'get' reads content, 'set' writes new content, 'clear' empties clipboard"
       },
       "content": {
         "type": "string",
-        "description": "Text to put in clipboard for setClipboard"
+        "description": "Content to write to clipboard. Required for setClipboard command. Supports text or file paths"
       },
       "content_type": {
         "type": "string",
         "enum": ["text", "filePaths"],
-        "description": "When getClipboard, specify if it's text or file paths"
+        "description": "Type of content to read: 'text' for plain text, 'filePaths' for copied files. Required for getClipboard"
       }
     },
     "required": [
@@ -49,9 +49,9 @@
     "properties": {
       "result": {
         "type": "string",
-        "description": "Resulting text from AppleScript"
+        "description": "Clipboard content (text/paths) for get, success message for set/clear, error details if failed"
       }
     },
     "required": ["result"]
   }
-}  
+}    

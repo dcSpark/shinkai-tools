@@ -6,11 +6,11 @@
   "configurations": {
       "properties": {
         "ELEVENLABS_API_KEY": {
-          "description": "API key for Eleven Labs",
+          "description": "ElevenLabs API key for text-to-speech conversion. Required for authentication",
           "type": "string"
         },
         "voice": {
-          "description": "The voice used for text-to-speech, options include: Aria, Roger, Sarah, Laura, Charlie, George, Callum, River, Liam, Charlotte, Alice, Matilda, Will, Jessica, Eric, Chris, Brian, Daniel, Lily, Bill",
+          "description": "Voice ID or name (e.g., 'Aria', 'Roger'). Default: first available voice",
           "type": "string"
         }
       },
@@ -32,11 +32,11 @@
     "parameters": {
       "properties": {
         "fileName": {
-          "description": "The name of the file to save the audio as",
+          "description": "Custom name for output MP3 file. If omitted, generates from text content",
           "type": "string"
         },
         "text": {
-          "description": "The text to be converted to speech",
+          "description": "Input text to synthesize into speech. Must not be empty",
           "type": "string"
         }
       },
@@ -48,15 +48,15 @@
     "result": {
       "properties": {
         "audio_file": {
-          "description": "The file path to the generated audio file",
+          "description": "Path to generated MP3 file containing synthesized speech",
           "type": "string"
         },
         "characters_remaining": {
-          "description": "The number of characters remaining in the user's limit",
+          "description": "Remaining character quota in ElevenLabs API after this request",
           "type": "number"
         },
         "characters_used": {
-          "description": "The number of characters used in the request",
+          "description": "Characters consumed from ElevenLabs API quota for this request",
           "type": "number"
         }
       },

@@ -6,11 +6,11 @@
   "configurations": {
       "properties": {
         "promptStructure": {
-          "description": "The structure for the summarization prompt",
+          "description": "Template for generating PDF summary. Define key points to extract and summary style/length",
           "type": "string"
         },
         "voicePrompt": {
-          "description": "The narration guidelines for the audio output",
+          "description": "Voice style instructions (tone, pace, emphasis). Optional - uses neutral style if not provided",
           "type": "string"
         }
       },
@@ -32,7 +32,7 @@
     "parameters": {
       "properties": {
         "pdfURL": {
-          "description": "The URL of the PDF to download and extract text from",
+          "description": "Public HTTP/HTTPS URL to PDF file. Must be accessible and valid PDF format",
           "type": "string"
         }
       },
@@ -44,15 +44,15 @@
     "result": {
       "properties": {
         "audioFilePath": {
-          "description": "The local file path of the generated audio",
+          "description": "Absolute path to generated MP3 audio file. Created in system temp directory",
           "type": "string"
         },
         "audiotext": {
-          "description": "The trasncribed audio",
+          "description": "Text content that was converted to speech. Useful for verification",
           "type": "string"
         },
         "summaryText": {
-          "description": "The summarized text from the PDF",
+          "description": "Concise summary of PDF content based on promptStructure template",
           "type": "string"
         }
       },

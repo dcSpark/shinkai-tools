@@ -31,15 +31,15 @@
     "properties": {
       "url": {
         "type": "string",
-        "description": "Article URL to scrape"
+        "description": "Valid URL of the article to extract content from. Must be accessible and contain article content"
       },
       "html": {
         "type": "string",
-        "description": "Optional raw HTML content (if you already have it), will override fetching from 'url'"
+        "description": "Raw HTML content of the article page. If provided, overrides URL fetching. Must be valid HTML"
       },
       "language": {
         "type": "string",
-        "description": "Override default language, e.g. 'en', 'zh'"
+        "description": "Two-letter language code (e.g., 'en', 'zh') for article parsing. Overrides default_language setting"
       }
     },
     "required": ["url"]
@@ -67,4 +67,4 @@
     },
     "required": ["title","authors","publish_date","summary","keywords","top_image","text"]
   }
-} 
+}  

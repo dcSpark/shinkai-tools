@@ -17,7 +17,7 @@
     "properties": {
       "api_key": {
         "type": "string",
-        "description": "Optional. If provided, uses pro-api.coingecko.com for requests."
+        "description": "CoinGecko API key for pro endpoints. If omitted, uses free public API with rate limits"
       }
     }
   },
@@ -26,23 +26,23 @@
     "properties": {
       "id": {
         "type": "string",
-        "description": "Coin ID from CoinGecko, e.g. 'bitcoin'"
+        "description": "Unique CoinGecko identifier for the coin (e.g., 'bitcoin', 'ethereum'). Must be valid ID"
       },
       "vs_currency": {
         "type": "string",
-        "description": "Fiat or crypto currency symbol, e.g. 'usd'"
+        "description": "Target currency for price data (e.g., 'usd', 'btc'). Must be supported by CoinGecko"
       },
       "from_date": {
         "type": "string",
-        "description": "Start date in YYYY-MM-DD format"
+        "description": "Start date in YYYY-MM-DD format. Must be earlier than to_date"
       },
       "to_date": {
         "type": "string",
-        "description": "End date in YYYY-MM-DD format"
+        "description": "End date in YYYY-MM-DD format. Must not be in the future"
       },
       "interval": {
         "type": "string",
-        "description": "Optional. '5m', 'hourly', or 'daily'. Controls the data granularity.",
+        "description": "Data granularity: '5m' (5 minutes), 'hourly', or 'daily'. Pro API required for 5m. Default: daily",
         "enum": ["5m", "hourly", "daily"]
       }
     },
@@ -51,19 +51,35 @@
   "result": {
     "type": "object",
     "properties": {
-      "from_date": { "type": "string" },
-      "to_date": { "type": "string" },
-      "interval": { "type": "string" },
+      "from_date": { 
+        "type": "string",
+        "description": "Actual start date used for data retrieval in YYYY-MM-DD format"
+      },
+      "to_date": { 
+        "type": "string",
+        "description": "Actual end date used for data retrieval in YYYY-MM-DD format"
+      },
+      "interval": { 
+        "type": "string",
+        "description": "Time interval between data points ('5m', 'hourly', or 'daily')"
+      },
       "data": {
         "type": "object",
         "properties": {
           "prices": {
             "type": "array",
+            "description": "Array of [timestamp, price] pairs. Timestamp in milliseconds, price in vs_currency",
             "items": {
               "type": "array",
               "items": [
-                { "type": "number" },
-                { "type": "number" }
+                { 
+                  "type": "number",
+                  "description": "Unix timestamp in milliseconds"
+                },
+                { 
+                  "type": "number",
+                  "description": "Price in vs_currency at timestamp"
+                }
               ],
               "minItems": 2,
               "maxItems": 2
@@ -71,11 +87,18 @@
           },
           "market_caps": {
             "type": "array",
+            "description": "Array of [timestamp, market_cap] pairs. Market cap in vs_currency",
             "items": {
               "type": "array",
               "items": [
-                { "type": "number" },
-                { "type": "number" }
+                { 
+                  "type": "number",
+                  "description": "Unix timestamp in milliseconds"
+                },
+                { 
+                  "type": "number",
+                  "description": "Market capitalization in vs_currency"
+                }
               ],
               "minItems": 2,
               "maxItems": 2
@@ -83,11 +106,18 @@
           },
           "total_volumes": {
             "type": "array",
+            "description": "Array of [timestamp, volume] pairs. Trading volume in vs_currency",
             "items": {
               "type": "array",
               "items": [
-                { "type": "number" },
-                { "type": "number" }
+                { 
+                  "type": "number",
+                  "description": "Unix timestamp in milliseconds"
+                },
+                { 
+                  "type": "number",
+                  "description": "Trading volume in vs_currency"
+                }
               ],
               "minItems": 2,
               "maxItems": 2
@@ -99,4 +129,4 @@
     },
     "required": ["from_date", "to_date", "data"]
   }
-} 
+}  

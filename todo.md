@@ -14,7 +14,7 @@
 - [x] coinbase-get-transactions
 - [x] coinbase-send-tx
 - [x] coingecko-get-coins
-- [ ] coingecko-get-historical-data
+- [x] coingecko-get-historical-data
 - [ ] dev-airtable
 - [ ] dev-github
 - [ ] dev-gmail

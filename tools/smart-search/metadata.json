@@ -19,17 +19,17 @@
     "properties": {
       "searchEngine": {
         "type": "string",
-        "description": "The search engine to use",
+        "description": "Search provider: google (default) or other supported engines. Affects API key requirements",
         "default": "google"
       },
       "searchEngineApiKey": {
         "type": "string",
-        "description": "The API key for the search engine",
+        "description": "Valid API key for chosen search engine. Required for non-default engines. Optional for Google",
         "default": ""
       },
       "maxSources": {
         "type": "number",
-        "description": "The maximum number of sources to return",
+        "description": "Max sources to fetch and analyze (1-50). Higher values give better answers but take longer. Default: 10",
         "default": 10
       }
     },
@@ -39,7 +39,7 @@
   "parameters": {
     "properties": {
       "question": {
-        "description": "The question to answer",
+        "description": "Natural language question to research. Should be specific and clear for best results",
         "type": "string"
       }
     },
@@ -51,11 +51,11 @@
   "result": {
     "properties": {
       "response": {
-        "description": "The generated answer",
+        "description": "Comprehensive answer synthesized from found sources. Includes citations and reasoning",
         "type": "string"
       },
       "sources": {
-        "description": "The sources used to generate the answer",
+        "description": "Array of reference sources with URLs and titles. Ordered by relevance to question",
         "items": {
           "type": "object",
           "properties": {
@@ -67,7 +67,7 @@
         "type": "array"
       },
       "statements": {
-        "description": "The statements extracted from the sources",
+        "description": "Key facts and quotes extracted from sources, with relevance scores and source attribution",
         "items": {
           "type": "object",
           "properties": {

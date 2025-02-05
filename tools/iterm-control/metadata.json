@@ -16,7 +16,7 @@
     "properties": {
       "letter": {
         "type": "string",
-        "description": "The single letter to send as Ctrl-letter (e.g. 'C', 'D', 'Z')",
+        "description": "Control key to send: C (interrupt), D (EOF), Z (suspend), L (clear), U (clear line), R (redraw)",
         "enum": ["C", "D", "Z", "L", "U", "R"]
       }
     },
@@ -27,11 +27,11 @@
     "properties": {
       "success": {
         "type": "boolean",
-        "description": "Whether the control character was successfully sent"
+        "description": "True if control character was sent to active terminal session, false if no active session"
       },
       "message": {
         "type": "string",
-        "description": "Result of the control operation"
+        "description": "Details about control operation result, includes error message if failed"
       }
     },
     "required": ["success", "message"]
@@ -39,4 +39,4 @@
   "sqlTables": [],
   "sqlQueries": [],
   "tools": []
-} 
+}   

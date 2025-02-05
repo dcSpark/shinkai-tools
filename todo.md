@@ -5,7 +5,7 @@
 - [x] arxiv-search
 - [x] chess-evaluate
 - [x] chess-generate-image
-- [ ] chess-move
+- [x] chess-move
 - [ ] coin-flip
 - [ ] coinbase-call-faucet
 - [ ] coinbase-create-wallet

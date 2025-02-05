@@ -25,11 +25,11 @@
     "properties": {
       "fen": {
         "type": "string",
-        "description": "FEN describing the current position"
+        "description": "Starting position in FEN notation (e.g., 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1')"
       },
       "move_uci": {
         "type": "string",
-        "description": "Move in UCI format (e.g. 'e2e4')"
+        "description": "Chess move in UCI format: source square + target square (e.g., 'e2e4', 'g1f3'). For promotion: add piece letter"
       }
     },
     "required": ["fen", "move_uci"]
@@ -46,4 +46,4 @@
     },
     "required": ["new_fen", "is_legal"]
   }
-}   
+}      

@@ -1,7 +1,7 @@
 import { DirectoryEntry, Metadata, StoreMetadata } from "./interfaces.ts";
-import { join } from "@std/path";
-import { exists } from "@std/fs";
-import { encodeBase64 } from "@std/encoding/base64";
+import { join } from "https://deno.land/std@0.224.0/path/mod.ts";
+import { exists } from "https://deno.land/std@0.224.0/fs/mod.ts";
+import { encodeBase64 } from "https://deno.land/std@0.224.0/encoding/base64.ts";
 
 
 interface Tool {
@@ -42,8 +42,8 @@ async function buildToolJson(
     name = name + '_' + new Date().getTime();
   }
 
-  return { 
-    type: "Python",
+  return {
+    type: toolType, 
     tool: {
       content: [
         {
@@ -53,28 +53,21 @@ async function buildToolJson(
           oauth: metadata.oauth,
           output_arg: { json: "" },
           author,
-          config: metadata.configurations?.properties ? 
-            Object.entries(metadata.configurations.properties).map(([key, value]) => ({
-              BasicConfig: {
-                key_name: key,
-                description: value.description ?? "",
-                required: metadata.configurations?.required?.includes(key) ?? false,
-                key_value: null
-              }
-            })) : [],
+          config: [],
           description: metadata.description,
           input_args: metadata.parameters,
           keywords: metadata.keywords,
-          name: name,
+          name: metadata.name,
           result: metadata.result,
-          sql_queries: metadata.sqlQueries,
-          sql_tables: metadata.sqlTables,
-          tools: metadata.tools,
+          sql_queries: [],
+          sql_tables: [],
+          tools: [],
           version: metadata.version,
           [toolType === "Python" ? "py_code" : "js_code"]: toolContent,
-          runner: metadata.runner,
-          operating_system: metadata.operating_system,
-          tool_set: metadata.tool_set,
+          runner: "any",
+          operating_system: ["linux", "macos", "windows"],
+          tool_set: "",
+          embedding: [],
         }, 
         false
       ], 

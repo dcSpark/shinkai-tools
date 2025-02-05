@@ -17,7 +17,7 @@
       "properties": {
         "apiKey": {
           "type": "string",
-          "description": "API key for accessing the Perplexity API"
+          "description": "Valid Perplexity API key. Required for authentication. Get from perplexity.ai dashboard"
         }
       },
       "required": [
@@ -29,7 +29,7 @@
       "properties": {
         "query": {
           "type": "string",
-          "description": "The search query to send to Perplexity API"
+          "description": "Search query text (1-1000 chars). Natural language questions work best. No HTML/markdown"
         }
       },
       "required": [
@@ -41,7 +41,7 @@
       "properties": {
         "response": {
           "type": "string",
-          "description": "The search results and analysis from Perplexity API"
+          "description": "AI-generated answer combining web search results with analysis. Includes citations when available"
         }
       },
       "required": [

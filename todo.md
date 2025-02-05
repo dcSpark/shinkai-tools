@@ -52,7 +52,7 @@
 - [x] ntfy-push
 - [x] pdf-summarize-to-audio
 - [x] pdf-text-extractor
-- [ ] pdf-whitepaper-analyzer
+- [x] pdf-whitepaper-analyzer
 - [ ] perplexity-api
 - [ ] perplexity
 - [ ] podcast-to-podcast

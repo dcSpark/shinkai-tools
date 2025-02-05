@@ -17,7 +17,7 @@
         "chromePath": {
           "type": "string",
           "nullable": true,
-          "description": "Optional path to Chrome executable for browser automation"
+          "description": "Full path to Chrome/Chromium executable. Optional - uses system default if not specified"
         }
       },
       "required": []
@@ -27,7 +27,7 @@
       "properties": {
         "query": {
           "type": "string",
-          "description": "The search query to send to Perplexity"
+          "description": "Search query text. Natural language questions work best. No length limit but keep reasonable"
         }
       },
       "required": [
@@ -39,7 +39,7 @@
       "properties": {
         "response": {
           "type": "string",
-          "description": "The search results and analysis from Perplexity"
+          "description": "AI-generated answer combining web search results with analysis. May include citations"
         }
       },
       "required": [

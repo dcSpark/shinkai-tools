@@ -20,8 +20,21 @@
     },
     "result": {
       "type": "object",
-      "properties": {},
-      "required": []
+      "properties": {
+        "score": {
+          "type": "number",
+          "description": "Current game score achieved by the AI player"
+        },
+        "highestTile": {
+          "type": "number",
+          "description": "Value of the highest numbered tile on the game board"
+        },
+        "grid": {
+          "type": "array",
+          "description": "4x4 matrix of tile values. Empty cells are 0, other cells contain powers of 2"
+        }
+      },
+      "required": ["score", "highestTile", "grid"]
     },
     "sqlTables": [],
     "sqlQueries": [],

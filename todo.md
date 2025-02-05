@@ -34,7 +34,7 @@
 - [x] google-news-search
 - [x] google-search
 - [x] hacker-news
-- [ ] iterm-control
+- [x] iterm-control
 - [ ] iterm-read
 - [ ] iterm-write
 - [ ] macos-calendar

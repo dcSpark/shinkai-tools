@@ -2,7 +2,7 @@
   "id": "wikimedia-search",
   "version": "1.0.0",
   "name": "Wikimedia Search",
-  "description": "Search across Wikimedia page content with full-text search capabilities",
+  "description": "Performs full-text search across entire Wikimedia page content. Returns titles, excerpts, and URLs",
   "author": "Shinkai",
   "keywords": [
     "wikimedia",
@@ -19,12 +19,12 @@
     "properties": {
       "project": {
         "type": "string",
-        "description": "Wikimedia project (e.g., wikipedia)",
+        "description": "Target Wikimedia project (wikipedia, wiktionary, etc). Default: wikipedia",
         "default": "wikipedia"
       },
       "language": {
         "type": "string",
-        "description": "Language code (e.g., en)",
+        "description": "Two-letter ISO language code (en, es, fr, etc). Must be supported by project. Default: en",
         "default": "en"
       }
     },
@@ -35,11 +35,11 @@
     "properties": {
       "query": {
         "type": "string",
-        "description": "Search query"
+        "description": "Text to search for in page content. Supports full-text matching and basic search operators"
       },
       "limit": {
         "type": "integer",
-        "description": "Maximum number of results (1-50)",
+        "description": "Maximum number of results to return. Range: 1-50. Default: 10",
         "minimum": 1,
         "maximum": 50,
         "default": 10
@@ -55,10 +55,10 @@
         "items": {
           "type": "object",
           "properties": {
-            "title": {"type": "string"},
-            "description": {"type": "string"},
-            "excerpt": {"type": "string"},
-            "url": {"type": "string"}
+            "title": {"type": "string", "description": "Title of the matching page"},
+            "description": {"type": "string", "description": "Brief summary of the page content"},
+            "excerpt": {"type": "string", "description": "Relevant text excerpt containing the search match"},
+            "url": {"type": "string", "description": "Full URL to view the page in a web browser"}
           },
           "required": ["title", "description", "excerpt", "url"]
         }

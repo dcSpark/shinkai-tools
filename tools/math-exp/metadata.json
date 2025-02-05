@@ -22,7 +22,7 @@
       "properties": {
         "expression": {
           "type": "string",
-          "description": "The mathematical expression to evaluate (e.g., '2 + 2 * 3')"
+          "description": "Math expression using operators (+,-,*,/,^), functions (sin,cos,sqrt), and parentheses. Example: '2*(3+4)'"
         }
       },
       "required": [
@@ -34,7 +34,7 @@
       "properties": {
         "result": {
           "type": "string",
-          "description": "The evaluated result of the mathematical expression"
+          "description": "Numeric result of expression evaluation. Returns error message if expression is invalid"
         }
       },
       "required": [

@@ -30,7 +30,7 @@
 - [x] file-read
 - [x] file-update
 - [x] file-write
-- [ ] game-crypto-2048
+- [x] game-crypto-2048
 - [ ] google-news-search
 - [ ] google-search
 - [ ] hacker-news

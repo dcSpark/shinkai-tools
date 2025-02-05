@@ -10,12 +10,51 @@
   "tool_set": "",
   "configurations": {
       "type": "object",
-      "properties": {},
-      "required": []
+      "properties": {
+        "OPENAI_KEY": {
+          "type": "string",
+          "description": "OpenAI API key for GPT-4 model that controls game strategy"
+        },
+        "domSettleTimeoutMs": {
+          "type": "number",
+          "description": "Milliseconds to wait for UI updates between moves. Default: 100",
+          "default": 100
+        },
+        "verbose": {
+          "type": "number",
+          "description": "Logging level (0-2). Higher values show more debug info. Default: 1",
+          "default": 1
+        }
+      },
+      "required": ["OPENAI_KEY"]
     },
     "parameters": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "minMoveDelayMs": {
+          "type": "number",
+          "description": "Minimum milliseconds between moves. Default: 100",
+          "default": 100
+        },
+        "maxMoveDelayMs": {
+          "type": "number",
+          "description": "Maximum milliseconds between moves. Default: 300",
+          "default": 300
+        },
+        "maxMoves": {
+          "type": "number",
+          "description": "Stop after this many moves. Default: infinite",
+          "default": 0
+        },
+        "username": {
+          "type": "string",
+          "description": "Username for game login. Optional if already logged in"
+        },
+        "password": {
+          "type": "string",
+          "description": "Password for game login. Optional if already logged in"
+        }
+      },
       "required": []
     },
     "result": {

@@ -27,7 +27,7 @@
 - [x] email-imap-fetcher
 - [x] email-responder
 - [x] email-sender
-- [ ] file-read
+- [x] file-read
 - [ ] file-update
 - [ ] file-write
 - [ ] game-crypto-2048

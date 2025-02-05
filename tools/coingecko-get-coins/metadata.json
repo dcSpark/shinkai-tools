@@ -17,7 +17,7 @@
     "properties": {
       "api_key": {
         "type": "string",
-        "description": "Optional. If provided, uses pro-api.coingecko.com. Otherwise uses the free public endpoints."
+        "description": "CoinGecko API key for pro endpoints. If omitted, uses free public API with rate limits"
       }
     }
   },
@@ -26,7 +26,7 @@
     "properties": {
       "page": {
         "type": "number",
-        "description": "Page number, starts from 1",
+        "description": "Page number for pagination (1-N). Higher pages may be slower to retrieve. Default: 1",
         "default": 1
       },
       "page_size": {
@@ -44,16 +44,34 @@
         "items": {
           "type": "object",
           "properties": {
-            "id": { "type": "string" },
-            "symbol": { "type": "string" },
-            "name": { "type": "string" }
+            "id": { 
+              "type": "string",
+              "description": "Unique CoinGecko identifier for the coin (e.g., 'bitcoin')"
+            },
+            "symbol": { 
+              "type": "string",
+              "description": "Trading symbol of the coin in lowercase (e.g., 'btc')"
+            },
+            "name": { 
+              "type": "string",
+              "description": "Human-readable name of the cryptocurrency (e.g., 'Bitcoin')"
+            }
           },
           "required": ["id", "symbol", "name"]
         }
       },
-      "total": { "type": "number" },
-      "page": { "type": "number" },
-      "page_size": { "type": "number" }
+      "total": { 
+        "type": "number",
+        "description": "Total number of coins available across all pages"
+      },
+      "page": { 
+        "type": "number",
+        "description": "Current page number of results"
+      },
+      "page_size": { 
+        "type": "number",
+        "description": "Number of coins per page in current response"
+      }
     },
     "required": [
       "coins",
@@ -62,4 +80,4 @@
       "page_size"
     ]
   }
-} 
+}  

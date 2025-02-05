@@ -13,7 +13,7 @@
 - [x] coinbase-get-my-address
 - [x] coinbase-get-transactions
 - [x] coinbase-send-tx
-- [ ] coingecko-get-coins
+- [x] coingecko-get-coins
 - [ ] coingecko-get-historical-data
 - [ ] dev-airtable
 - [ ] dev-github

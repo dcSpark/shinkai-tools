@@ -16,32 +16,46 @@
   "tool_set": "",
   "configurations": [],
     "parameters": {
+      "type": "object",
       "properties": {
         "query": {
-          "description": "The search query to look up",
-          "type": "string"
+          "type": "string",
+          "description": "Search terms to find web pages. Keywords separated by spaces, quotes for exact phrases"
+        },
+        "num_results": {
+          "type": "number",
+          "description": "Maximum number of search results to return (1-100). Default: 10",
+          "default": 10
         }
-      },
-      "num_results": {
-        "description": "The number of results to return",
-        "type": "number"
       },
       "required": [
         "query"
-      ],
-      "type": "object"
+      ]
     },
     "result": {
       "properties": {
-        "query": {"type": "string"},
+        "query": {
+          "type": "string",
+          "description": "Search query that was used to find these results"
+        },
         "results": {
             "type": "array",
+            "description": "Array of web pages matching search criteria, ordered by relevance",
             "items": {
                 "type": "object",
                 "properties": {
-                    "title": {"type": "string"},
-                    "url": {"type": "string"},
-                    "description": {"type": "string"}
+                    "title": {
+                      "type": "string",
+                      "description": "Page title or headline"
+                    },
+                    "url": {
+                      "type": "string",
+                      "description": "Full URL to the web page"
+                    },
+                    "description": {
+                      "type": "string",
+                      "description": "Brief excerpt or summary of page content"
+                    }
                 },
                 "required": ["title", "url", "description"]
             }

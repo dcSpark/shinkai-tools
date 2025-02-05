@@ -1,7 +1,7 @@
 import { config as dotenvConfig } from "https://deno.land/x/dotenv@v3.2.2/mod.ts";
 import { join, dirname, fromFileUrl } from "https://deno.land/std@0.210.0/path/mod.ts";
 import { existsSync } from "https://deno.land/std@0.210.0/fs/mod.ts";
-import { Image } from 'https://deno.land/x/imagescript@1.2.15/mod.ts';
+import { createCanvas, loadImage } from "https://deno.land/x/canvas/mod.ts";
 import axios from "npm:axios@1.6.2";
 
 // Load environment variables
@@ -42,13 +42,6 @@ async function readToolMetadata(toolPath: string): Promise<ToolMetadata> {
   return metadata;
 }
 
-async function downloadAndResizeImage(url: string, outputPath: string, width: number, height: number): Promise<void> {
-  const response = await axios.get(url, { responseType: 'arraybuffer' });
-  const image = await Image.decode(response.data);
-  await image.resize(width, height);
-  await Deno.writeFile(outputPath, await image.encode());
-}
-
 async function waitForImageGeneration(requestId: string): Promise<string> {
   while (true) {
     const response = await axios.get<BFLResponse>(`${BFL_API_URL}/get_result?id=${requestId}`, {
@@ -75,6 +68,7 @@ async function generateImage(options: GenerateImageOptions): Promise<string> {
   const defaultOptions = {
     width: 1024,
     height: 1024,
+    // prompt_upsampling: true,
   };
 
   if (!options.prompt) {
@@ -121,11 +115,11 @@ async function copyPlaceholderImages(scriptDir: string, toolPath: string, missin
 }
 
 async function generateToolImages(toolPath: string, metadata: ToolMetadata): Promise<void> {
-  const bannerPath = join(toolPath, 'banner.png');
+  const bannerPath = join(toolPath, 'banner_background.png');
   const iconPath = join(toolPath, 'icon.png');
   const missingFiles: string[] = [];
 
-  if (!existsSync(bannerPath)) missingFiles.push('banner.png');
+  if (!existsSync(bannerPath)) missingFiles.push('banner_background.png');
   if (!existsSync(iconPath)) missingFiles.push('icon.png');
 
   if (!missingFiles.length) {
@@ -136,22 +130,24 @@ async function generateToolImages(toolPath: string, metadata: ToolMetadata): Pro
   console.log(`Generating missing images: ${missingFiles.join(', ')}`);
 
   try {
-    if (missingFiles.includes('banner.png')) {
+    if (missingFiles.includes('banner_background.png')) {
       const bannerPrompt = 
         `Create a professional banner image for a software tool named '${metadata.name}'. ` +
-        `The tool ${metadata.description}. Use a modern, minimalist style with subtle tech elements. ` +
-        "Make it suitable for a developer tool interface. Use a cohesive color scheme " +
-        "and include some abstract geometric elements that represent the tool's function.";
+        `The tool description is: ${metadata.description}. Use a modern, minimalist style with subtle tech elements. ` +
+        "Make it suitable for a developer tool interface. Use a cohesive color scheme, dark colors, allowing for white text to be readable on the image. " +
+        "and include some abstract geometric elements that represent the tool's function." +
+        "Do not include any text, just create a beautiful image. And I repeat, do not include any text.";
 
       console.log(`Generating banner for ${metadata.name}...`);
       const bannerUrl = await generateImage({
         prompt: bannerPrompt,
-        width: 1440,
-        height: 800,
+        width: 1280,
+        height: 736,
         num_outputs: 1
       });
 
-      await downloadAndResizeImage(bannerUrl, bannerPath, BANNER_WIDTH, BANNER_HEIGHT);
+      const response = await axios.get(bannerUrl, { responseType: 'arraybuffer' });
+      await Deno.writeFile(join(toolPath, 'banner_background.png'), new Uint8Array(response.data));
     }
 
     if (missingFiles.includes('icon.png')) {
@@ -169,8 +165,8 @@ async function generateToolImages(toolPath: string, metadata: ToolMetadata): Pro
         num_outputs: 1
       });
 
-      console.log("Downloading and resizing icon...");
-      await downloadAndResizeImage(iconUrl, iconPath, ICON_SIZE, ICON_SIZE);
+      const response = await axios.get(iconUrl, { responseType: 'arraybuffer' });
+      await Deno.writeFile(join(toolPath, 'icon.png'), new Uint8Array(response.data));      
     }
 
     console.log("Successfully generated missing images");
@@ -206,7 +202,7 @@ async function main() {
       console.error(`Error processing tool ${tool}:`, error);
       // Copy placeholder images if available
       const missingFiles = [];
-      if (!existsSync(join(toolPath, 'banner.png'))) missingFiles.push('banner.png');
+      if (!existsSync(join(toolPath, 'banner_background.png'))) missingFiles.push('banner_background.png');
       if (!existsSync(join(toolPath, 'icon.png'))) missingFiles.push('icon.png');
       if (missingFiles.length) {
         await copyPlaceholderImages(scriptDir, toolPath, missingFiles);

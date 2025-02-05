@@ -46,7 +46,7 @@
 - [x] macos-system
 - [x] math-exp
 - [x] meme-generator
-- [ ] memory
+- [x] memory
 - [ ] mermaid
 - [ ] news-aggregator
 - [ ] ntfy-push

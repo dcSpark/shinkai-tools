@@ -49,6 +49,7 @@ export interface Metadata {
 export interface StoreMetadata {
   categoryId: string;
   node_version: string;
+  name?: string;
 }
 
 export interface DirectoryEntry {

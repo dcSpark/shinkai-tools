@@ -23,11 +23,11 @@
       "properties": {
         "path": {
           "type": "string",
-          "description": "The path of the file to update."
+          "description": "Absolute or relative path to text file. Must have read and write permissions"
         },
         "prompt": {
           "type": "string",
-          "description": "The prompt to apply to the file contents."
+          "description": "Instructions for modifying file content. Used by LLM to transform text"
         }
       },
       "required": [
@@ -40,11 +40,11 @@
       "properties": {
         "new_file_content": {
           "type": "string",
-          "description": "The path of the file that was updated."
+          "description": "Modified content after applying prompt transformation"
         },
         "message": {
           "type": "string",
-          "description": "The message returned from the tool."
+          "description": "Status message indicating success or details of any errors encountered"
         }
       },
       "required": [

@@ -26,7 +26,7 @@
 - [x] elevenlabs-text-to-speech
 - [x] email-imap-fetcher
 - [x] email-responder
-- [ ] email-sender
+- [x] email-sender
 - [ ] file-read
 - [ ] file-update
 - [ ] file-write

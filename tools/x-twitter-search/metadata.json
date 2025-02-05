@@ -9,7 +9,7 @@
   "configurations": {
     "properties": {
       "apiKey": {
-        "description": "Get your API Key from https://rapidapi.com/twttrapi-twttrapi-default/api/twttrapi",
+        "description": "RapidAPI key for Twitter API access. Get from rapidapi.com/twttrapi-twttrapi-default/api/twttrapi",
         "type": "string"
       }
     },
@@ -18,7 +18,7 @@
     ],
     "type": "object"
   },
-  "description": "Fetch from X/Twitter API to perform various search and retrieval operations.",
+  "description": "Searches and retrieves tweets, users, and suggestions from X/Twitter API. Requires RapidAPI key",
   "keywords": [
     "X",
     "Twitter",
@@ -29,19 +29,19 @@
   "parameters": {
     "properties": {
       "command": {
-        "description": "The exact command to execute: 'search-top' | 'search-suggestions' | 'search-latest' | 'get-user-posts' | 'get-post-by-id'",
+        "description": "Operation to perform: search-top (trending), search-suggestions (autocomplete), search-latest (recent), get-user-posts, get-post-by-id",
         "type": "string"
       },
       "searchQuery": {
-        "description": "The search query for fetching tweets",
+        "description": "Search terms for finding tweets. Required for search-top, search-suggestions, search-latest commands",
         "type": "string"
       },
       "tweetId": {
-        "description": "The ID of the tweet to retrieve",
+        "description": "Numeric tweet ID to fetch. Required for get-post-by-id command",
         "type": "string"
       },
       "username": {
-        "description": "The username for retrieving user posts",
+        "description": "Twitter username (without @) to fetch posts from. Required for get-user-posts command",
         "type": "string"
       }
     },
@@ -53,7 +53,7 @@
   "result": {
     "properties": {
       "data": {
-        "description": "The data returned from the Twitter API",
+        "description": "JSON response from Twitter API containing tweets, users, or suggestions based on command",
         "type": "object"
       }
     },

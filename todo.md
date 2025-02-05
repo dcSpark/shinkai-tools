@@ -44,7 +44,7 @@
 - [x] macos-notifications
 - [x] macos-say-text-to-audio
 - [x] macos-system
-- [ ] math-exp
+- [x] math-exp
 - [ ] meme-generator
 - [ ] memory
 - [ ] mermaid

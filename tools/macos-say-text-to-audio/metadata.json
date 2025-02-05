@@ -23,11 +23,11 @@
     "properties": {
       "text": {
         "type": "string",
-        "description": "The text to convert to speech"
+        "description": "Text content to be spoken. Can include punctuation for natural speech patterns"
       },
       "voice": {
         "type": "string",
-        "description": "The voice to use (e.g., Alex, Daniel, Karen)",
+        "description": "System voice name (run 'say -v ?' for list). Common: Alex, Daniel, Karen. Default: Alex",
         "default": "Alex"
       }
     },
@@ -38,11 +38,11 @@
     "properties": {
       "success": {
         "type": "boolean",
-        "description": "Whether the text was successfully converted to speech"
+        "description": "True if text was spoken through system audio, false if voice not found or audio failed"
       },
       "message": {
         "type": "string",
-        "description": "Success or error message"
+        "description": "Details about speech synthesis result, includes voice used or error if failed"
       }
     },
     "required": ["success", "message"]
@@ -51,4 +51,4 @@
   "sqlQueries": [],
   "tools": [
   ]
-}    
+}        

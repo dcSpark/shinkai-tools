@@ -11,7 +11,7 @@
 - [x] coinbase-create-wallet
 - [x] coinbase-get-balance
 - [x] coinbase-get-my-address
-- [ ] coinbase-get-transactions
+- [x] coinbase-get-transactions
 - [ ] coinbase-send-tx
 - [ ] coingecko-get-coins
 - [ ] coingecko-get-historical-data

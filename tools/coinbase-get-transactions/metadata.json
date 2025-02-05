@@ -16,13 +16,16 @@
       "type": "object",
       "properties": {
         "name": {
-          "type": "string"
+          "type": "string",
+          "description": "Identifier name for the Coinbase wallet to fetch transactions from"
         },
         "privateKey": {
-          "type": "string"
+          "type": "string",
+          "description": "Private key for wallet authentication. Must be a valid hex string"
         },
         "walletId": {
-          "type": "string"
+          "type": "string",
+          "description": "Specific wallet ID to get transactions for. Required for transaction history access"
         }
       },
       "required": [
@@ -40,13 +43,16 @@
       "type": "object",
       "properties": {
         "tableCsv": {
-          "type": "string"
+          "type": "string",
+          "description": "Transaction history in CSV format with headers. Each row represents one transaction"
         },
         "rowsCount": {
-          "type": "number"
+          "type": "number",
+          "description": "Total number of transactions (rows) in the CSV data, excluding header row"
         },
         "columnsCount": {
-          "type": "number"
+          "type": "number",
+          "description": "Number of columns in the CSV data representing different transaction attributes"
         }
       },
       "required": [

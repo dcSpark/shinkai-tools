@@ -10,7 +10,7 @@
 - [x] coinbase-call-faucet
 - [x] coinbase-create-wallet
 - [x] coinbase-get-balance
-- [ ] coinbase-get-my-address
+- [x] coinbase-get-my-address
 - [ ] coinbase-get-transactions
 - [ ] coinbase-send-tx
 - [ ] coingecko-get-coins

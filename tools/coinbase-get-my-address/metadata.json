@@ -17,21 +17,21 @@
       "properties": {
         "name": {
           "type": "string",
-          "description": "The name of the Coinbase wallet"
+          "description": "Identifier name for the Coinbase wallet to retrieve address from"
         },
         "privateKey": {
           "type": "string",
-          "description": "The private key of the Coinbase wallet"
+          "description": "Private key for wallet authentication. Must be a valid hex string"
         },
         "walletId": {
           "type": "string",
           "nullable": true,
-          "description": "Optional wallet ID for specific wallet selection"
+          "description": "Specific wallet ID to get address for. If not provided, uses default wallet"
         },
         "useServerSigner": {
           "type": "string",
           "nullable": true,
-          "description": "Optional server signer configuration"
+          "description": "Enable server-side signing for transactions. Set to 'true' or 'false'"
         }
       },
       "required": [
@@ -44,7 +44,7 @@
       "properties": {
         "walletId": {
           "type": "string",
-          "description": "The ID of the Coinbase wallet to get the address from",
+          "description": "Override wallet ID from configuration. If provided, takes precedence over config walletId",
           "nullable": true
         }
       },

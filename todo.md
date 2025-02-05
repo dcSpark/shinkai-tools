@@ -31,7 +31,7 @@
 - [x] file-update
 - [x] file-write
 - [x] game-crypto-2048
-- [ ] google-news-search
+- [x] google-news-search
 - [ ] google-search
 - [ ] hacker-news
 - [ ] iterm-control

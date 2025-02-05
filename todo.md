@@ -45,7 +45,7 @@
 - [x] macos-say-text-to-audio
 - [x] macos-system
 - [x] math-exp
-- [ ] meme-generator
+- [x] meme-generator
 - [ ] memory
 - [ ] mermaid
 - [ ] news-aggregator

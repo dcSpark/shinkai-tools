@@ -64,7 +64,7 @@ jobs:
           SHINKAI_STORE_ADDR: ${{ vars.SHINKAI_STORE_ADDR }}
           SHINKAI_STORE_TOKEN: ${{ secrets.SHINKAI_STORE_TOKEN }}
           USE_DOCKER: true
-          SHINKAI_NODE_IMAGE: "dcsparkdevops/shinkai-node:${{ inputs.node_version || 'debug-latest' }}"
+          SHINKAI_NODE_IMAGE: "dcsparkdevops/shinkai-node:${{ inputs.node_version || 'release-latest' }}"
         run: |
           ./scripts/run_node.sh &
           timeout 60 bash -c 'until curl -s --location "$SHINKAI_NODE_ADDR/v2/health_check" | jq -e ".status == \"ok\"" > /dev/null; do sleep 1; done'

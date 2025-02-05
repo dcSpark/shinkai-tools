@@ -20,7 +20,7 @@
 - [x] dev-gmail
 - [x] dev-google-drive
 - [x] dev-twitter
-- [ ] download-page
+- [x] download-page
 - [ ] duckduckgo-search
 - [ ] elevenlabs-isolate-voice
 - [ ] elevenlabs-text-to-speech

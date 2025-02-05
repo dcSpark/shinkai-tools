@@ -18,7 +18,7 @@
       "properties": {
         "chromePath": {
           "type": "string",
-          "description": "The path to the Chrome executable"
+          "description": "Absolute path to Chrome/Chromium executable. Required for headless browser operation"
         }
       },
       "required": []
@@ -28,7 +28,7 @@
       "properties": {
         "url": {
           "type": "string",
-          "description": "A URL of a web page to download"
+          "description": "Valid HTTP/HTTPS URL of webpage to download. Must be publicly accessible"
         }
       },
       "required": [
@@ -40,7 +40,7 @@
       "properties": {
         "markdown": {
           "type": "string",
-          "description": "The Markdown content converted from the web page"
+          "description": "HTML content converted to GitHub-flavored Markdown, preserving headings and basic formatting"
         }
       },
       "required": [

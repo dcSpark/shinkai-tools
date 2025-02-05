@@ -6,7 +6,7 @@
 - [x] chess-evaluate
 - [x] chess-generate-image
 - [x] chess-move
-- [ ] coin-flip
+- [x] coin-flip
 - [ ] coinbase-call-faucet
 - [ ] coinbase-create-wallet
 - [ ] coinbase-get-balance

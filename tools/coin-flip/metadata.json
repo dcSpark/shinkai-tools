@@ -19,15 +19,15 @@
     "properties": {
       "sides": {
         "type": "number",
-        "description": "Number of sides (default: 3)"
+        "description": "Number of sides for the coin/die (2-100). For regular coin use 2. Default: 3"
       },
       "sideNames": {
         "type": "array",
         "items": {
           "type": "string",
-          "description": "Custon name for the side"
+          "description": "Custom label for a single side (e.g., 'heads', 'tails')"
         },
-        "description": "Optional custom names for sides (must match number of sides)"
+        "description": "Custom labels for each side. Array length must equal sides parameter if provided"
       }
     },
     "required": []

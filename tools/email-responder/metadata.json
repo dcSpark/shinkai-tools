@@ -18,7 +18,7 @@
     "properties": {
       "response_context": {
         "type": "string",
-        "description": "The context to guide the email responses"
+        "description": "Instructions and context for generating email responses. Used to maintain consistent tone"
       }
     },
     "required": [
@@ -30,11 +30,11 @@
     "properties": {
       "from_date": {
         "type": "string",
-        "description": "The starting date for fetching emails in DD-Mon-YYYY format"
+        "description": "Start date for email fetch in DD-Mon-YYYY format (e.g., '01-Jan-2024'). Optional filter"
       },
       "to_date": {
         "type": "string",
-        "description": "The ending date for fetching emails in DD-Mon-YYYY format"
+        "description": "End date for email fetch in DD-Mon-YYYY format (e.g., '31-Jan-2024'). Optional filter"
       }
     },
     "required": []
@@ -44,25 +44,25 @@
     "properties": {
       "table_created": {
         "type": "boolean",
-        "description": "Indicates if the email logging table was created"
+        "description": "True if answered_emails SQLite table was created successfully"
       },
       "mail_ids": {
         "type": "array",
         "items": {
           "type": "string"
         },
-        "description": "The list of generated unique mail IDs"
+        "description": "Array of unique IDs for successfully processed and answered emails"
       },
       "skipped": {
         "type": "array",
         "items": {
           "type": "string"
         },
-        "description": "List of email IDs that were skipped"
+        "description": "Array of email IDs that were skipped (e.g., already answered or invalid)"
       },
       "login_status": {
         "type": "string",
-        "description": "The status of the email login"
+        "description": "Login status: 'success' or error message if authentication failed"
       }
     },
     "required": [

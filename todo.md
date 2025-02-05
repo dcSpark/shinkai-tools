@@ -18,7 +18,7 @@
 - [x] dev-airtable
 - [x] dev-github
 - [x] dev-gmail
-- [ ] dev-google-drive
+- [x] dev-google-drive
 - [ ] dev-twitter
 - [ ] download-page
 - [ ] duckduckgo-search

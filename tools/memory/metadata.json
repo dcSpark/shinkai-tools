@@ -25,21 +25,21 @@
       "properties": {
         "data": {
           "type": "string",
-          "description": "The data to process for memory management, if not provided, the tool will return existing memories"
+          "description": "Text data to store in memory. If omitted, returns all stored memories. Supports any text format"
         },
         "general_prompt": {
           "type": "string",
-          "description": "The general prompt for generating memories",
+          "description": "Template for processing general/global memories. Optional - uses default if not provided",
           "nullable": true
         },
         "specific_prompt": {
           "type": "string",
-          "description": "The specific prompt for generating memories",
+          "description": "Template for processing key-specific memories. Optional - uses default if not provided",
           "nullable": true
         },
         "key": {
           "type": "string",
-          "description": "The key for specific memory retrieval",
+          "description": "Unique identifier to store/retrieve specific memories. Optional - uses general memory if omitted",
           "nullable": true
         }
       },
@@ -50,12 +50,12 @@
       "properties": {
         "generalMemory": {
           "type": "string",
-          "description": "The updated general memory",
+          "description": "Latest state of general/global memory after processing. Null if using specific memories",
           "nullable": true
         },
         "specificMemory": {
           "type": "string",
-          "description": "The updated specific memory",
+          "description": "Latest state of key-specific memory after processing. Null if using general memory",
           "nullable": true
         }
       },

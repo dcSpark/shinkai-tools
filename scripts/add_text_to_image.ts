@@ -13,8 +13,8 @@ async function addTextToImage(inputPath: string, outputPath: string, toolName: s
     const width = image.width;
     const height = image.height;
     
-    // Calculate font size (start with 15% of height)
-    const fontSize = Math.floor(height * 0.15);
+    // Calculate font size (start with 10% of height)
+    const fontSize = Math.floor(height * 0.10);
     console.log(`Image dimensions: ${width}x${height}, fontSize: ${fontSize}`);
     
     // Load font
@@ -31,15 +31,17 @@ async function addTextToImage(inputPath: string, outputPath: string, toolName: s
     // Create shadow text
     const shadowText = Image.renderText(font, fontSize, toolName, 0x000000FF, layout);
     
-    // Calculate bottom right position with padding
-    const padding = Math.floor(height * 0.05); // 5% of height as padding
-    let x = Math.floor(width - shadowText.width - padding);
-    let y = Math.floor(height - shadowText.height - padding);
+    // Calculate center position
+    let x = Math.floor((width - shadowText.width) / 2);
+    let y = Math.floor((height - shadowText.height) / 2);
     console.log(`Text position: (${x},${y})`);
     
     // Ensure we don't go beyond image boundaries
-    if (x < 0) x = padding;
-    if (y < 0) y = padding;
+    const minPadding = Math.floor(height * 0.05); // 5% of height as minimum padding
+    if (x < minPadding) x = minPadding;
+    if (y < minPadding) y = minPadding;
+    if (x + shadowText.width > width - minPadding) x = width - shadowText.width - minPadding;
+    if (y + shadowText.height > height - minPadding) y = height - shadowText.height - minPadding;
     
     // Draw shadow with multiple offsets for thickness
     for (let offsetX = 1; offsetX <= 4; offsetX++) {
@@ -61,7 +63,7 @@ async function addTextToImage(inputPath: string, outputPath: string, toolName: s
 }
 
 async function readToolMetadata(toolPath: string) {
-  const metadataPath = join(toolPath, 'metadata.json');
+  const metadataPath = join(toolPath, 'store.json');
   const metadata = JSON.parse(await Deno.readTextFile(metadataPath));
   return metadata;
 }

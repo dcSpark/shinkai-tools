@@ -6,7 +6,7 @@
   "configurations": {
     "properties": {
       "wallet_sk": {
-        "description": "EVM Wallet Private Key",
+        "description": "64-character hexadecimal EVM wallet private key. Required for blockchain interactions",
         "type": "string"
       }
     },
@@ -25,24 +25,24 @@
   "parameters": {
     "properties": {
       "commands": {
-        "description": "List of commands to execute",
+        "description": "Ordered array of automation commands. Each command requires action, id, and payload fields",
         "items": {
           "description": "",
           "properties": {
             "action": {
-              "description": "Type of action to perform: 'goto' | 'wait' | 'extract' | 'act' | 'goto-stage' | 'observe'",
+              "description": "Command type: goto (URL), wait (delay), extract (data), act (interact), goto-stage (nav), observe (monitor)",
               "type": "string"
             },
             "id": {
-              "description": "index of the command (1, 2, 3, ...)",
+              "description": "Sequential command identifier (1-based). Must be unique within command list",
               "type": "number"
             },
             "jsonSchema": {
-              "description": "Optional JSON Schema for extract format",
+              "description": "JSON Schema defining structure of extracted data. Optional - uses default if not provided",
               "type": "object"
             },
             "payload": {
-              "description": "Action Payload: goto=>url, wait=>ms, extract=>text-prompt, act=>text-prompt, goto-stage=>stage-id, observe=>text-prompt",
+              "description": "Action-specific data: URL, milliseconds, prompt text, or stage ID. Format depends on action type",
               "type": "string"
             }
           },
@@ -59,12 +59,12 @@
   "result": {
     "properties": {
       "data": {
-        "description": "Extracted data from executed commands",
+        "description": "Array of data objects extracted by 'extract' commands. Structure follows jsonSchema if provided",
         "items": {},
         "type": "array"
       },
       "message": {
-        "description": "The success message",
+        "description": "Status message indicating automation sequence completion or error details if failed",
         "type": "string"
       }
     },

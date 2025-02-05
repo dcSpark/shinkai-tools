@@ -19,7 +19,7 @@
     "properties": {
       "limit": {
         "type": "number",
-        "description": "Number of stories to fetch (default: 10)",
+        "description": "Maximum number of top stories to fetch (1-500). Default: 10",
         "default": 10
       }
     },
@@ -40,15 +40,15 @@
           "properties": {
             "title": {
               "type": "string",
-              "description": "Title of the story"
+              "description": "Story headline or link title as posted on Hacker News"
             },
             "author": {
               "type": "string",
-              "description": "Author/poster of the story"
+              "description": "Hacker News username of story submitter"
             },
             "url": {
               "type": "string",
-              "description": "URL of the story or HN discussion if no URL provided"
+              "description": "External URL of story content, or HN discussion URL if story is text-only"
             }
           },
           "required": ["title", "author", "url"]
@@ -57,4 +57,4 @@
     },
     "required": ["stories"]
   }
-} 
+}  

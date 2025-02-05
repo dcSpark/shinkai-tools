@@ -28,15 +28,15 @@
           "pasteClipboard",
           "runCommand"
         ],
-        "description": "Command to execute: pasteClipboard to paste clipboard content, runCommand to execute shell command"
+        "description": "Action to perform: 'paste' inserts clipboard content, 'run' executes shell command in terminal"
       },
       "cmd": {
         "type": "string",
-        "description": "Command to run if using runCommand"
+        "description": "Shell command to execute. Required for runCommand. Supports any valid shell command/script"
       },
       "new_window": {
         "type": "boolean",
-        "description": "Whether to run command in a new window (default false)"
+        "description": "Open new terminal window for command execution. Default: false (uses active window)"
       }
     },
     "required": [
@@ -48,9 +48,9 @@
     "properties": {
       "result": {
         "type": "string",
-        "description": "Message describing what happened"
+        "description": "Operation result: paste confirmation, command output, or error details if operation failed"
       }
     },
     "required": ["result"]
   }
-}  
+}    

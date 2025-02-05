@@ -20,22 +20,22 @@
     "properties": {
       "language": {
         "type": "string",
-        "description": "The language to use for article processing",
+        "description": "ISO 639-1 language code (e.g., 'en', 'es', 'fr'). Affects article parsing. Default: en",
         "default": "en"
       },
       "number_threads": {
         "type": "integer",
-        "description": "Number of threads for article processing",
+        "description": "Parallel processing threads (1-20). Higher values speed up scraping. Default: 10",
         "default": 10
       },
       "request_timeout": {
         "type": "integer",
-        "description": "Timeout in seconds for HTTP requests",
+        "description": "HTTP request timeout in seconds (5-60). Increase for slow sources. Default: 30",
         "default": 30
       },
       "max_concurrent_sources": {
         "type": "integer",
-        "description": "Maximum number of sources to process concurrently",
+        "description": "Max parallel source processing (1-10). Higher values use more memory. Default: 5",
         "default": 5
       }
     },
@@ -48,23 +48,23 @@
         "type": "array",
         "items": {
           "type": "string",
-          "description": "URL of the news provider"
+          "description": "Valid HTTP/HTTPS URL to news website homepage. Must be accessible without login"
         },
-        "description": "List of news provider URLs to aggregate from"
+        "description": "Array of news website URLs to scrape. Each URL must be valid and publicly accessible"
       },
       "articles_per_source": {
         "type": "integer",
-        "description": "Maximum number of articles to fetch per source",
+        "description": "Max articles to fetch per source (1-50). Higher values take longer. Default: 5",
         "default": 5
       },
       "categories": {
         "type": "array",
         "items": {
           "type": "string",
-          "description": "News category",
+          "description": "Article category filter: general (all), tech (technology), or business",
           "enum": ["general", "tech", "business"]
         },
-        "description": "Categories to fetch news from (uses default providers if no specific providers given)"
+        "description": "Filter articles by categories. Uses built-in sources if no providers specified",
       }
     },
     "required": ["providers"]
@@ -74,11 +74,11 @@
     "properties": {
       "total_sources_processed": {
         "type": "integer",
-        "description": "Number of news sources that were processed"
+        "description": "Count of successfully processed news sources out of total attempted sources",
       },
       "total_articles_found": {
         "type": "integer",
-        "description": "Total number of articles found across all sources"
+        "description": "Total articles found and processed across all successful sources",
       },
       "failed_sources": {
         "type": "array",
@@ -91,19 +91,41 @@
         "items": {
           "type": "object",
           "properties": {
-            "title": {"type": "string"},
-            "url": {"type": "string"},
-            "source": {"type": "string"},
-            "summary": {"type": "string"},
-            "publish_date": {"type": "string"},
+            "title": {
+              "type": "string",
+              "description": "Article headline text as extracted from the news source"
+            },
+            "url": {
+              "type": "string",
+              "description": "Direct URL to original article on news website"
+            },
+            "source": {
+              "type": "string",
+              "description": "Domain name or identifier of the news source website"
+            },
+            "summary": {
+              "type": "string",
+              "description": "Auto-generated brief summary of article content"
+            },
+            "publish_date": {
+              "type": "string",
+              "description": "Article publication date in ISO 8601 format (YYYY-MM-DD[T]HH:mm:ss[Z])"
+            },
             "authors": {
               "type": "array",
               "items": {
-                "type": "string"
+                "type": "string",
+                "description": "Name of article author as listed on the news source"
               }
             },
-            "top_image": {"type": "string"},
-            "text": {"type": "string"}
+            "top_image": {
+              "type": "string",
+              "description": "URL to main article image. May be null if no image found"
+            },
+            "text": {
+              "type": "string",
+              "description": "Full article text content with formatting removed"
+            }
           }
         }
       },
@@ -111,4 +133,4 @@
     },
     "required": ["total_sources_processed", "total_articles_found", "failed_sources", "articles", "processing_time"]
   }
-}    
+}                

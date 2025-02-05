@@ -25,15 +25,15 @@
     "properties": {
       "fen": {
         "type": "string",
-        "description": "FEN string representing the chess position"
+        "description": "Chess position in FEN notation (e.g., 'rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1')"
       },
       "last_move_uci": {
         "type": "string",
-        "description": "Optional UCI format move to highlight (e.g. 'e2e4')"
+        "description": "Move to highlight in UCI format (e.g., 'e2e4' for pawn to e4). Optional"
       },
       "output_filename": {
         "type": "string",
-        "description": "Optional filename for the output PNG image (default: chess_position.png)",
+        "description": "Custom filename for the output PNG image. Must end in .png. Default: chess_position.png",
         "default": "chess_position.png"
       }
     },
@@ -49,4 +49,4 @@
     },
     "required": ["image_path"]
   }
-}   
+}      

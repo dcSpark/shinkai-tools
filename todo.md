@@ -4,7 +4,7 @@
 - [x] arxiv-download
 - [x] arxiv-search
 - [x] chess-evaluate
-- [ ] chess-generate-image
+- [x] chess-generate-image
 - [ ] chess-move
 - [ ] coin-flip
 - [ ] coinbase-call-faucet

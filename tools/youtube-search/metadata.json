@@ -1,6 +1,6 @@
 {
   "name": "YouTube Search",
-  "description": "Searches YouTube for videos via SerpAPI. Requires SERP_API_KEY in configuration.",
+  "description": "Searches YouTube videos using SerpAPI. Returns titles, links, thumbnails, and metadata. Supports geolocation",
   "version": "1.0.0",
   "author": "Devin",
   "keywords": ["youtube", "serpapi", "video", "search"],
@@ -12,7 +12,7 @@
     "properties": {
       "SERP_API_KEY": {
         "type": "string",
-        "description": "Your SerpAPI key for authentication"
+        "description": "SerpAPI authentication key. Required for accessing YouTube search API"
       }
     },
     "required": ["SERP_API_KEY"]
@@ -21,19 +21,19 @@
     "type": "object",
     "properties": {
       "search_query": {
-        "description": "The search query for YouTube videos",
+        "description": "Search terms to find YouTube videos. Supports quotes for exact matches"
         "type": "string"
       },
       "gl": {
-        "description": "Geolocation (country code). E.g. 'us', 'uk'",
+        "description": "Two-letter country code for regional results (us, uk, etc). Default: us"
         "type": "string"
       },
       "hl": {
-        "description": "Language code. E.g. 'en', 'es'",
+        "description": "Two-letter language code for result text (en, es, etc). Default: en"
         "type": "string"
       },
       "max_results": {
-        "description": "Maximum number of results to return",
+        "description": "Maximum number of video results to return. Range: 1-100. Default: 10"
         "type": "number",
         "default": 10
       }
@@ -44,22 +44,22 @@
     "type": "object",
     "properties": {
       "results": {
-        "description": "List of video search results",
+        "description": "Array of matching YouTube videos with metadata. Sorted by relevance"
         "type": "array",
         "items": {
           "type": "object",
           "properties": {
-            "title": { "type": "string" },
-            "link": { "type": "string" },
-            "thumbnail": { "type": "string" },
-            "channel": { "type": "string" },
-            "views": { "type": "string" },
-            "duration": { "type": "string" }
+            "title": { "type": "string", "description": "Full title of the video" },
+            "link": { "type": "string", "description": "Complete URL to watch the video on YouTube" },
+            "thumbnail": { "type": "string", "description": "URL of video thumbnail image" },
+            "channel": { "type": "string", "description": "Name of YouTube channel that posted the video" },
+            "views": { "type": "string", "description": "View count as formatted string (e.g., '1.2M views')" },
+            "duration": { "type": "string", "description": "Video length in MM:SS or HH:MM:SS format" }
           }
         }
       },
       "query": {
-        "description": "The original search query",
+        "description": "Search query string that was used to find videos"
         "type": "string"
       }
     },

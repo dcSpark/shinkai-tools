@@ -4,6 +4,9 @@
   "description": "Reads output from the active iTerm terminal.",
   "author": "Shinkai",
   "keywords": ["iterm", "terminal", "read", "automation", "shinkai"],
+  "runner": "any",
+  "operating_system": ["linux", "macos", "windows"],
+  "tool_set": "",
   "configurations": {
     "type": "object",
     "properties": {}

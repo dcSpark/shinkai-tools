@@ -10,6 +10,9 @@
     "automation",
     "applescript"
   ],
+  "runner": "any",
+  "operating_system": ["linux", "macos", "windows"],
+  "tool_set": "",
   "configurations": {
     "type": "object",
     "properties": {},

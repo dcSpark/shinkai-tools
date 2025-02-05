@@ -41,6 +41,9 @@ export interface Metadata {
     query: string;
   }[];
   oauth: Record<string, string>[] | null;
+  runner: string;
+  operating_system: string[];
+  tool_set: string;
 }
 
 export interface StoreMetadata {

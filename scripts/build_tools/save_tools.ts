@@ -63,7 +63,10 @@ async function buildToolJson(
           sql_tables: metadata.sqlTables,
           tools: metadata.tools,
           version: metadata.version,
-          [toolType === "Python" ? "py_code" : "js_code"]: toolContent
+          [toolType === "Python" ? "py_code" : "js_code"]: toolContent,
+          runner: metadata.runner,
+          operating_system: metadata.operating_system,
+          tool_set: metadata.tool_set,
         }, 
         false
       ], 
@@ -273,6 +276,8 @@ export async function saveToolsInNode(toolsOriginal: DirectoryEntry[]): Promise<
   const tools: DirectoryEntry[] = JSON.parse(JSON.stringify(toolsOriginal));
   const toolsSaved: DirectoryEntry[] = [];
   for (const tool of tools) {
+      // Wait 250ms between tool uploads
+      await new Promise(resolve => setTimeout(resolve, 250));
 
       // Read files
       const metadata: Metadata = JSON.parse(await Deno.readTextFile(join(tool.dir, "metadata.json")));

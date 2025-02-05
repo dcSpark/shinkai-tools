@@ -5,6 +5,9 @@
   "description": "Fetches historical stock data from Tiingo and calculates basic technical indicators (SMA, RSI, MACD, ATR, etc.), then returns a structured analysis of the trend.",
   "author": "Shinkai",
   "keywords": ["stock", "analysis", "technical-indicators", "tiingo"],
+  "runner": "any",
+  "operating_system": ["linux", "macos", "windows"],
+  "tool_set": "",
   "configurations": {
     "type": "object",
     "properties": {

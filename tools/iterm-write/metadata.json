@@ -4,6 +4,9 @@
   "description": "Writes a command (or text) to the active iTerm terminal.",
   "author": "Shinkai",
   "keywords": ["iterm", "terminal", "automation", "shinkai"],
+  "runner": "any",
+  "operating_system": ["linux", "macos", "windows"],
+  "tool_set": "",
   "configurations": {
     "type": "object",
     "properties": {

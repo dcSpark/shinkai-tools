@@ -11,7 +11,10 @@
         "text",
         "markdown"
     ],
-    "configurations": {
+    "runner": "any",
+  "operating_system": ["linux", "macos", "windows"],
+  "tool_set": "",
+  "configurations": {
         "properties": {
             "model_path": {
                 "description": "Path to the Kokoro model file",

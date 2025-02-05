@@ -1,6 +1,9 @@
 {
     "author": "Shinkai",
-    "configurations": {
+    "runner": "any",
+  "operating_system": ["linux", "macos", "windows"],
+  "tool_set": "",
+  "configurations": {
       "properties": {
         "promptStructure": {
           "description": "The structure for the summarization prompt",

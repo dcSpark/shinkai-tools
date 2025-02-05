@@ -1,6 +1,9 @@
 {
     "author": "Shinkai",
-    "configurations": {
+    "runner": "any",
+  "operating_system": ["linux", "macos", "windows"],
+  "tool_set": "",
+  "configurations": {
       "properties": {
         "ELEVENLABS_API_KEY": {
           "description": "API key for Eleven Labs",

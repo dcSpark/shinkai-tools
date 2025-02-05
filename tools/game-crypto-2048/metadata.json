@@ -5,7 +5,10 @@
     "author": "@@official.shinkai",
     "version": "1.0.0",
     "keywords": [],
-    "configurations": {
+    "runner": "any",
+  "operating_system": ["linux", "macos", "windows"],
+  "tool_set": "",
+  "configurations": {
       "type": "object",
       "properties": {},
       "required": []

@@ -10,7 +10,10 @@
         "audio"
     ],
     "oauth": [],
-    "configurations": {
+    "runner": "any",
+  "operating_system": ["linux", "macos", "windows"],
+  "tool_set": "",
+  "configurations": {
         "properties": {
             "apiKey": {
                 "description": "The API key for accessing the RapidAPI service",

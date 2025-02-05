@@ -48,7 +48,7 @@
 - [x] meme-generator
 - [x] memory
 - [x] mermaid
-- [ ] news-aggregator
+- [x] news-aggregator
 - [ ] ntfy-push
 - [ ] pdf-summarize-to-audio
 - [ ] pdf-text-extractor

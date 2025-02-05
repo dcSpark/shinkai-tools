@@ -54,8 +54,8 @@
 - [x] pdf-text-extractor
 - [x] pdf-whitepaper-analyzer
 - [x] perplexity-api
-- [ ] perplexity
-- [ ] podcast-to-podcast
+- [x] perplexity
+- [x] podcast-to-podcast
 - [ ] pubmed-search
 - [ ] shinkai-question-learner
 - [ ] smart-search

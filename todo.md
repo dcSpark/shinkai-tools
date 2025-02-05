@@ -51,7 +51,7 @@
 - [x] news-aggregator
 - [x] ntfy-push
 - [x] pdf-summarize-to-audio
-- [ ] pdf-text-extractor
+- [x] pdf-text-extractor
 - [ ] pdf-whitepaper-analyzer
 - [ ] perplexity-api
 - [ ] perplexity

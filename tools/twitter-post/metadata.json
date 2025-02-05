@@ -1,7 +1,7 @@
 {
     "name": "X/Twitter Post",
     "homepage": "https://github.com/dcSpark/shinkai-tools/blob/main/tools/twitter-post/README.md",
-    "description": "Function to post a tweet to Twitter.",
+    "description": "Posts a tweet to X/Twitter using OAuth 2.0 authentication. Requires tweet.write scope.",
     "author": "Shinkai",
     "version": "1.0.0",
     "url": "https://help.shinkai.com/official-twitter-tool",
@@ -24,7 +24,7 @@
       "properties": {
         "text": {
           "type": "string",
-          "description": "Message to post"
+          "description": "Tweet text content. Must not exceed platform character limit (280 chars). No HTML/markdown"
         }
       },
       "required": []
@@ -34,7 +34,7 @@
       "properties": {
         "data": {
           "type": "string",
-          "description": "The data returned by the Twitter API"
+          "description": "Twitter API response containing tweet ID, timestamp, and engagement metrics"
         }
       },
       "required": [

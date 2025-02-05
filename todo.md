@@ -28,7 +28,7 @@
 - [x] email-responder
 - [x] email-sender
 - [x] file-read
-- [ ] file-update
+- [x] file-update
 - [ ] file-write
 - [ ] game-crypto-2048
 - [ ] google-news-search

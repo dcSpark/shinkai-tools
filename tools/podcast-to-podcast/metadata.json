@@ -1,6 +1,9 @@
 {
     "author": "@@localhost.arb-sep-shinkai",
-    "configurations": {
+    "runner": "any",
+  "operating_system": ["linux", "macos", "windows"],
+  "tool_set": "",
+  "configurations": {
       "properties": {},
       "required": [],
       "type": "object"

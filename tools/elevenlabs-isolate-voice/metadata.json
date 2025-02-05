@@ -10,7 +10,10 @@
         "isolation",
         "elevenlabs"
     ],
-    "configurations": {
+    "runner": "any",
+  "operating_system": ["linux", "macos", "windows"],
+  "tool_set": "",
+  "configurations": {
         "type": "object",
         "properties": {
             "ELEVENLABS_API_KEY": {

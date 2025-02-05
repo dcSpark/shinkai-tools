@@ -4,6 +4,9 @@
   "description": "Sends a control character (like Ctrl-C) to the active iTerm terminal session.",
   "author": "Shinkai",
   "keywords": ["iterm", "terminal", "control", "key", "shinkai"],
+  "runner": "any",
+  "operating_system": ["linux", "macos", "windows"],
+  "tool_set": "",
   "configurations": {
     "type": "object",
     "properties": {}

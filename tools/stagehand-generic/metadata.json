@@ -1,5 +1,8 @@
 {
   "author": "@@official.shinkai",
+  "runner": "any",
+  "operating_system": ["linux", "macos", "windows"],
+  "tool_set": "",
   "configurations": {
     "properties": {
       "wallet_sk": {

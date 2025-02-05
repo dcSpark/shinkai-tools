@@ -22,7 +22,7 @@
     "parameters": {
       "properties": {
         "youtubeUrlOrId": {
-          "description": "The YouTube URL or video ID",
+          "description": "Full YouTube video URL or video ID. Must be public video with available transcript",
           "type": "string"
         }
       },
@@ -34,7 +34,7 @@
     "result": {
       "properties": {
         "podcast": {
-          "description": "The generated podcast content in Buffer format",
+          "description": "Generated audio podcast in MP3 format. Created by processing transcript with LLM and text-to-speech",
           "nullable": true,
           "type": "string"
         }

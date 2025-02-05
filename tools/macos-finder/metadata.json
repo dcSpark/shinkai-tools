@@ -29,19 +29,19 @@
           "searchFiles",
           "quickLookFile"
         ],
-        "description": "Command to execute: getSelectedFiles to list selected items, searchFiles to find files, quickLookFile to preview"
+        "description": "Action to perform: 'get' lists selected files, 'search' finds files by name, 'quickLook' previews a file"
       },
       "query": {
         "type": "string",
-        "description": "Search term for searchFiles"
+        "description": "Search pattern for finding files. Supports wildcards (*). Required for searchFiles command"
       },
       "location": {
         "type": "string",
-        "description": "Search location (default = ~) for searchFiles"
+        "description": "Directory path to search in. Absolute or relative to home. Default: '~' (home directory)"
       },
       "file_path": {
         "type": "string",
-        "description": "Path for quickLookFile"
+        "description": "Absolute or relative path to file for preview. Required for quickLookFile command"
       }
     },
     "required": [
@@ -53,9 +53,9 @@
     "properties": {
       "result": {
         "type": "string",
-        "description": "Output text from AppleScript"
+        "description": "File paths for get/search, preview status for quickLook, or error details if command failed"
       }
     },
     "required": ["result"]
   }
-}  
+}    

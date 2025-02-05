@@ -32,7 +32,7 @@ async function buildToolJson(
   const generate_random_name = !!Deno.env.get("GENERATE_RANDOM_NAME");
   let name = metadata.name;
   try {
-    const storeMetadata = JSON.parse(await Deno.readTextFile(join(toolDir, "store.json")));
+    const storeMetadata = JSON.parse(await Deno.readTextFile(join(tool.dir, "store.json")));
     if (storeMetadata.name) {
       name = storeMetadata.name;
     }

@@ -18,11 +18,11 @@
     "properties": {
       "username": {
         "type": "string",
-        "description": "The username for the Imgflip API"
+        "description": "Imgflip API account username. Required for meme generation. Create account at imgflip.com"
       },
       "password": {
           "type": "string",
-          "description": "The password for the Imgflip API"
+          "description": "Imgflip API account password. Required for authentication with the meme generation service"
       }
     },
     "required": [
@@ -35,7 +35,7 @@
     "properties": {
       "joke": {
         "type": "string",
-        "description": "The joke to create the meme from"
+        "description": "Text content for meme. Tool auto-splits into top/bottom captions based on joke structure"
       }
     },
     "required": [
@@ -47,7 +47,7 @@
     "properties": {
       "memeUrl": {
         "type": "string",
-        "description": "The URL of the generated meme image"
+        "description": "Direct URL to generated meme image on imgflip.com. Image format is typically JPG"
       }
     },
     "required": [

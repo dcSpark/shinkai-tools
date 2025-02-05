@@ -18,24 +18,24 @@
       "properties": {
         "imap_server": {
           "type": "string",
-          "description": "The IMAP server address"
+          "description": "IMAP server hostname (e.g., 'imap.gmail.com'). Must be valid IMAP server"
         },
         "username": {
           "type": "string",
-          "description": "The username for the IMAP account"
+          "description": "Email address or username for IMAP authentication"
         },
         "password": {
           "type": "string",
-          "description": "The password for the IMAP account"
+          "description": "Password or app-specific password for IMAP authentication"
         },
         "port": {
           "type": "integer",
-          "description": "The port number for the IMAP server (defaults to 993 for IMAPS)",
+          "description": "IMAP server port number. Default: 993 for secure IMAPS connection",
           "default": 993
         },
         "ssl": {
           "type": "boolean",
-          "description": "Whether to use SSL for the IMAP connection (defaults to true)",
+          "description": "Use SSL/TLS for secure connection. Default: true (recommended)",
           "default": true
         }
       },
@@ -50,11 +50,11 @@
       "properties": {
         "from_date": {
           "type": "string",
-          "description": "The start date for the email search (optional)"
+          "description": "Start date for email search in YYYY-MM-DD format. Optional filter"
         },
         "to_date": {
           "type": "string",
-          "description": "The end date for the email search (optional)"
+          "description": "End date for email search in YYYY-MM-DD format. Optional filter"
         }
       },
       "required": []
@@ -64,26 +64,26 @@
       "properties": {
         "emails": {
           "type": "array",
-          "description": "A list of email objects",
+          "description": "Array of fetched emails with subject, date, sender, and content",
           "items": {
             "type": "object",
             "properties": {
               "subject": {
                 "type": "string",
-                "description": "The subject of the email"
+                "description": "Email subject line text"
               },
               "date": {
                 "type": "string",
                 "format": "date-time",
-                "description": "The date and time the email was sent"
+                "description": "Email sent timestamp in ISO 8601 format"
               },
               "sender": {
                 "type": "string",
-                "description": "The sender of the email"
+                "description": "Sender's email address in RFC 5322 format"
               },
               "text": {
                 "type": "string",
-                "description": "The text content of the email"
+                "description": "Plain text content of email body, with HTML tags removed"
               }
             },
             "required": [
@@ -96,7 +96,7 @@
         },
         "login_status": {
           "type": "string",
-          "description": "Indicates if login was successful or not"
+          "description": "Login status: 'success' or error message if failed"
         }
       },
       "required": [

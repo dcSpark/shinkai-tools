@@ -21,7 +21,7 @@
 - [x] dev-google-drive
 - [x] dev-twitter
 - [x] download-page
-- [ ] duckduckgo-search
+- [x] duckduckgo-search
 - [ ] elevenlabs-isolate-voice
 - [ ] elevenlabs-text-to-speech
 - [ ] email-imap-fetcher

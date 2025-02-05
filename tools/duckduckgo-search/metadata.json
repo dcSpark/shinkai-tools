@@ -17,7 +17,7 @@
       "properties": {
         "chromePath": {
           "type": "string",
-          "description": "The path to the Chrome executable. If not provided, the tool will use the CHROME_PATH environment variable or the default paths for Chrome and Chromium."
+          "description": "Absolute path to Chrome/Chromium. Uses CHROME_PATH env var or default install paths if not set"
         }
       },
       "required": []
@@ -27,7 +27,7 @@
       "properties": {
         "message": {
           "type": "string",
-          "description": "The search query to send to DuckDuckGo"
+          "description": "Search query text. Supports DuckDuckGo search operators (e.g., site:, filetype:)"
         }
       },
       "required": [
@@ -39,11 +39,11 @@
       "properties": {
         "message": {
           "type": "string",
-          "description": "The search results from DuckDuckGo in JSON format, containing title, description, and URL for each result"
+          "description": "JSON array of results with title, description (with HTML tags), and URL for each match"
         },
         "puppeteer": {
           "type": "boolean",
-          "description": "Whether the search was performed using Puppeteer"
+          "description": "Indicates if headless browser (Puppeteer) was used for search. True if Chrome path valid"
         }
       },
       "required": [

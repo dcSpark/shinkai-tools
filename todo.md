@@ -25,7 +25,7 @@
 - [x] elevenlabs-isolate-voice
 - [x] elevenlabs-text-to-speech
 - [x] email-imap-fetcher
-- [ ] email-responder
+- [x] email-responder
 - [ ] email-sender
 - [ ] file-read
 - [ ] file-update

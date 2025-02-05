@@ -31,6 +31,14 @@ async function buildToolJson(
   // So multiple tools with the same name can be uploaded into the node.
   const generate_random_name = !!Deno.env.get("GENERATE_RANDOM_NAME");
   let name = metadata.name;
+  try {
+    const storeMetadata = JSON.parse(await Deno.readTextFile(join(toolDir, "store.json")));
+    if (storeMetadata.name) {
+      name = storeMetadata.name;
+    }
+  } catch (e) {
+    // If store.json doesn't exist or doesn't have a name field, use metadata.name
+  }
   if (generate_random_name) {
     name = name + '_' + new Date().getTime();
   }

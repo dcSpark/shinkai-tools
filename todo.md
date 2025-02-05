@@ -37,7 +37,7 @@
 - [x] iterm-control
 - [x] iterm-read
 - [x] iterm-write
-- [ ] macos-calendar
+- [x] macos-calendar
 - [ ] macos-clipboard
 - [ ] macos-finder
 - [ ] macos-iterm

@@ -1,8 +1,9 @@
-import { assertEquals } from "jsr:@std/assert";
+import { assertEquals } from "https://deno.land/std@0.224.0/assert/mod.ts";
 import { getMetadata, processToolsDirectory, saveToolsInNode } from "./build_tools/save_tools.ts";
-import { join } from "https://deno.land/std/path/mod.ts";
-import { exists } from "https://deno.land/std/fs/mod.ts";
+import { join } from "https://deno.land/std@0.224.0/path/mod.ts";
+import { exists } from "https://deno.land/std@0.224.0/fs/mod.ts";
 import { stripVersion, systemTools } from "./build_tools/system.ts";
+
 
 Deno.test("Check if related tools exist", async () => {
   const tools_raw = await processToolsDirectory();

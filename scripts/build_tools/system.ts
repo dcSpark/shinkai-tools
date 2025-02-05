@@ -1,5 +1,6 @@
-// These values and function are defined by the shinkai-node.
 
+
+// These values and function are defined by the shinkai-node.
 export const author = "@@official.shinkai";
 
 export const systemTools = [

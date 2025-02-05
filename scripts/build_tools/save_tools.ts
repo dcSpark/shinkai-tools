@@ -1,12 +1,14 @@
 import { DirectoryEntry, Metadata, StoreMetadata } from "./interfaces.ts";
+import { join } from "@std/path";
+import { exists } from "@std/fs";
+import { encodeBase64 } from "@std/encoding/base64";
+
 
 interface Tool {
   dir: string;
+  name: string;
+  routerKey: string;
 }
-
-import { join } from "@std/path/mod.ts";
-import { exists } from "@std/fs/mod.ts";
-import { encodeBase64 } from "https://deno.land/std@0.224.0/encoding/base64.ts";
 import { generateToolRouterKey, systemTools, stripVersion, author, uploadAsset } from "./system.ts";
 import { getCategories } from "./fetch_categories.ts";
 
@@ -243,9 +245,9 @@ export async function processToolsDirectory(): Promise<DirectoryEntry[]> {
       }
 
       tools.push({
-        routerKey: generateToolRouterKey(author, metadata.name),
+        routerKey: generateToolRouterKey(author, toolName),
         dir: toolDir,
-        name: metadata.name,
+        name: toolName,
         author,
         keywords: metadata.keywords,
         type: "Tool", 

@@ -57,6 +57,7 @@ export interface DirectoryEntry {
   routerKey: string;
   isDefault?: boolean;
   name: string;
+  storeName?: string;
   author: string;
   keywords: string[];
   type: "Tool" | "Agent" | "Scheduled Task";

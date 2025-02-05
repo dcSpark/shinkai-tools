@@ -1,6 +1,6 @@
 {
     "version": "1.0.0",
-    "name": "Coinbase Faucet Caller",
+    "name": "Coinbase Token Faucet",
     "homepage": "https://github.com/dcSpark/shinkai-tools/blob/main/tools/coinbase-call-faucet/README.md",
     "description": "Tool for calling a faucet on Coinbase",
     "author": "Shinkai",

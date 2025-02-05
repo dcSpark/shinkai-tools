@@ -1,6 +1,6 @@
 {
     "version": "1.0.0",
-    "name": "Coinbase Wallet Creator",
+    "name": "Coinbase Wallet Generator",
     "homepage": "https://github.com/dcSpark/shinkai-tools/blob/main/tools/coinbase-create-wallet/README.md",
     "description": "Tool for creating a Coinbase wallet",
     "author": "Shinkai",

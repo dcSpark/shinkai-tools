@@ -1,6 +1,6 @@
 {
   "id": "webcam-capture",
-  "name": "Webcam Capture Tool",
+  "name": "Webcam Frame Capture",
   "description": "Captures a single frame from a local webcam and returns it as a Base64-encoded image (PNG or JPEG). Example usage with Python + opencv.",
   "author": "Shinkai",
   "version": "1.0.0",
@@ -67,4 +67,4 @@
       "height"
     ]
   }
-} 
+}  

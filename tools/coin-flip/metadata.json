@@ -1,7 +1,7 @@
 {
   "id": "coin-flip",
   "version": "1.0.0",
-  "name": "Coin Flip Tool",
+  "name": "True Random Coin Flip",
   "description": "Flip a coin with n sides using true randomness from random.org. Supports custom side names and various meta-usage patterns.",
   "author": "Shinkai",
   "keywords": ["random", "coin-flip", "decision-making", "shinkai"],

@@ -1,6 +1,6 @@
 {
   "id": "arxiv-search",
-  "name": "arxiv-search",
+  "name": "arXiv Paper Search",
   "version": "1.0.0",
   "description": "Search for papers on arXiv with optional date range and category filters",
   "author": "Shinkai",
@@ -79,4 +79,4 @@
     },
     "required": ["papers", "total_results"]
   }
-} 
+}  

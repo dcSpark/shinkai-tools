@@ -1,7 +1,7 @@
 {
   "id": "wikimedia-featured-content",
   "version": "1.0.0",
-  "name": "Wikimedia Featured Content",
+  "name": "Wikimedia Daily Features",
   "description": "Get featured content including article, image, and news from Wikimedia",
   "author": "Shinkai",
   "keywords": [

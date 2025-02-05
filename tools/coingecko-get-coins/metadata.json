@@ -1,5 +1,5 @@
 {
-  "name": "coingecko-get-coins",
+  "name": "CoinGecko Coin List",
   "version": "1.0.0",
   "description": "Fetch a paginated list of all coins from CoinGecko. Works by retrieving the entire list and slicing manually.",
   "author": "Shinkai",
@@ -62,4 +62,4 @@
       "page_size"
     ]
   }
-} 
+}  

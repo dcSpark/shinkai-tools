@@ -1,6 +1,6 @@
 {
   "id": "macos-calendar",
-  "name": "macos-calendar",
+  "name": "macOS Calendar Events",
   "version": "1.0.0",
   "description": "Add or list calendar events using AppleScript",
   "author": "Example",
@@ -60,4 +60,4 @@
     },
     "required": ["result"]
   }
-}  
+}    

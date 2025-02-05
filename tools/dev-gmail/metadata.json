@@ -1,5 +1,5 @@
 {
-    "name": "Gmail Developer API",
+    "name": "Gmail API Client",
     "homepage": "https://shinkai.com",
     "description": "Tool to make requests to the Gmail Developer API using OAuth for authentication.",
     "author": "@@localhost.sep-shinkai",

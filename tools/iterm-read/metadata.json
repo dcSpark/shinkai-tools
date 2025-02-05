@@ -1,5 +1,5 @@
 {
-  "name": "iterm-read",
+  "name": "iTerm Output Reader",
   "version": "1.0.0",
   "description": "Reads output from the active iTerm terminal.",
   "author": "Shinkai",
@@ -42,4 +42,4 @@
   "sqlTables": [],
   "sqlQueries": [],
   "tools": []
-} 
+}  

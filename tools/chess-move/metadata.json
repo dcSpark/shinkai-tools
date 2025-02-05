@@ -1,6 +1,6 @@
 {
   "id": "chess-move",
-  "name": "Chess Move",
+  "name": "Chess Move Validator",
   "version": "1.0.0",
   "description": "Apply a move in UCI format to a given FEN and return the resulting position",
   "author": "Example",
@@ -46,4 +46,4 @@
     },
     "required": ["new_fen", "is_legal"]
   }
-}   
+}      

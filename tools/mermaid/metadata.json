@@ -24,13 +24,13 @@
     "properties": {
       "code": {
         "type": "string",
-        "description": "Mermaid diagram code"
+        "description": "Mermaid syntax diagram definition (flowchart, sequence, etc). Must follow Mermaid.js syntax rules"
       },
       "format": {
         "type": "string",
         "enum": ["svg", "png"],
         "default": "svg",
-        "description": "Output format for the diagram"
+        "description": "Output image format: svg (vector, default) or png (raster). SVG recommended for diagrams"
       }
     },
     "required": ["code"]
@@ -40,11 +40,11 @@
     "properties": {
       "image": {
         "type": "string",
-        "description": "Base64 encoded image data"
+        "description": "Base64 encoded diagram image data. Can be decoded to view/save the generated diagram"
       },
       "format": {
         "type": "string",
-        "description": "Format of the generated image (svg or png)"
+        "description": "Actual format of returned image data (svg/png). Matches input format unless conversion occurred"
       }
     },
     "required": ["image", "format"]

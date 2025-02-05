@@ -16,7 +16,7 @@
 - [x] coingecko-get-coins
 - [x] coingecko-get-historical-data
 - [x] dev-airtable
-- [ ] dev-github
+- [x] dev-github
 - [ ] dev-gmail
 - [ ] dev-google-drive
 - [ ] dev-twitter

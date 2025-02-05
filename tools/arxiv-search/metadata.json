@@ -25,27 +25,26 @@
     "properties": {
       "query": {
         "type": "string",
-        "description": "Search query string"
+        "description": "Search terms to find papers. Supports AND, OR, ANDNOT operators and field prefixes (e.g., 'ti:', 'au:')"
       },
       "max_results": {
         "type": "number",
-        "description": "Maximum number of results to return",
-        "default": 10
+        "description": "Maximum number of papers to return in the results. Default: 10"
       },
       "date_from": {
         "type": "string",
-        "description": "Earliest publication date in a parseable date string (optional)"
+        "description": "Start date for paper search in YYYY-MM-DD format (e.g., '2024-01-01'). Optional"
       },
       "date_to": {
         "type": "string",
-        "description": "Latest publication date in a parseable date string (optional)"
+        "description": "End date for paper search in YYYY-MM-DD format (e.g., '2024-01-31'). Optional"
       },
       "categories": {
         "type": "array",
-        "description": "List of category filters (e.g. [cs.LG])",
+        "description": "List of arXiv category codes (e.g., ['cs.LG', 'cs.AI']) to filter papers. See arxiv.org/category_taxonomy",
         "items": {
           "type": "string",
-          "description": "Category filter"
+          "description": "Valid arXiv category code (e.g., 'cs.LG', 'math.AG')"
         }
       }
     },
@@ -79,4 +78,4 @@
     },
     "required": ["papers", "total_results"]
   }
-} 
+}  

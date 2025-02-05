@@ -2,7 +2,7 @@
 
 - [x] article-scraper
 - [x] arxiv-download
-- [ ] arxiv-search
+- [x] arxiv-search
 - [ ] chess-evaluate
 - [ ] chess-generate-image
 - [ ] chess-move

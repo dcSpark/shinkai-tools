@@ -19,7 +19,7 @@
 - [x] dev-github
 - [x] dev-gmail
 - [x] dev-google-drive
-- [ ] dev-twitter
+- [x] dev-twitter
 - [ ] download-page
 - [ ] duckduckgo-search
 - [ ] elevenlabs-isolate-voice

@@ -22,11 +22,29 @@
   "parameters": {
       "type": "object",
       "properties": {
-          "url": { "type": "string", "description": "The API endpoint URL" },
-          "method": { "type": "string", "description": "HTTP method (GET, POST, PUT, DELETE)" },
-          "body": { "type": "string", "description": "Request body (if applicable)", "nullable": true },
-          "query_params": { "type": "string", "description": "Query parameters to append to the URL", "nullable": true },
-          "headers": { "type": "string", "description": "Additional headers as newline-separated key:value pairs", "nullable": true }
+          "url": { 
+              "type": "string", 
+              "description": "Twitter API v2 endpoint URL (e.g., 'https://api.twitter.com/2/tweets')"
+          },
+          "method": { 
+              "type": "string", 
+              "description": "HTTP method: GET (read tweets/users), POST (create tweet), DELETE (remove tweet)"
+          },
+          "body": { 
+              "type": "string", 
+              "description": "JSON string for request body. For tweets, include text and optional parameters",
+              "nullable": true 
+          },
+          "query_params": { 
+              "type": "string", 
+              "description": "URL parameters as JSON (e.g., '{\"tweet.fields\": \"created_at,author_id\"}')",
+              "nullable": true 
+          },
+          "headers": { 
+              "type": "string", 
+              "description": "Custom headers as 'key: value' pairs, one per line. OAuth headers added automatically",
+              "nullable": true 
+          }
       },
       "required": [
           "url",
@@ -36,9 +54,18 @@
   "result": {
       "type": "object",
       "properties": {
-          "status": { "type": "number", "description": "HTTP response status code" },
-          "statusText": { "type": "string", "description": "HTTP response status text" },
-          "data": { "type": "any", "description": "Response data in JSON format" }
+          "status": { 
+              "type": "number", 
+              "description": "HTTP status code (2xx=success, 4xx=client error, 5xx=server error)"
+          },
+          "statusText": { 
+              "type": "string", 
+              "description": "HTTP status message (e.g., 'OK', 'Tweet Created', 'Not Found')"
+          },
+          "data": { 
+              "type": "any", 
+              "description": "Response payload as JSON. Contains tweet data, user info, or operation results"
+          }
       },
       "required": [
           "status",

@@ -13,7 +13,7 @@
   "configurations": {
     "properties": {
       "analysisGuide": {
-        "description": "A guide for analyzing the PDF text.",
+        "description": "Template defining analysis focus areas, key points to extract, and output format. Optional - uses default analysis",
         "type": "string"
       }
     },
@@ -31,7 +31,7 @@
   "parameters": {
     "properties": {
       "pdfUrl": {
-        "description": "The URL of the PDF to analyze.",
+        "description": "Public HTTP/HTTPS URL to whitepaper PDF. Must be accessible and valid PDF format (not password-protected)",
         "type": "string"
       }
     },
@@ -43,15 +43,15 @@
   "result": {
     "properties": {
       "analysis": {
-        "description": "The analysis of the PDF content based on the guide.",
+        "description": "Structured analysis following guide template, including key findings, methodology, and conclusions",
         "type": "string"
       },
       "projectAndAuthors": {
-        "description": "The project name, company, and authors extracted from the PDF.",
+        "description": "Extracted metadata: project name, company/organization, author names, and affiliations",
         "type": "string"
       },
       "reviews": {
-        "description": "Reviews related to the project and authors.",
+        "description": "Related project/author reviews from academic sources and industry publications",
         "type": "string"
       }
     },

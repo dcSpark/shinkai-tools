@@ -18,19 +18,19 @@
     "properties": {
         "url": {
             "type": "string",
-            "description": "The URL to download for learning"
+            "description": "Public webpage URL to extract learning content from. Must be accessible and contain text content"
         },
         "action": {
             "type": "string",
-            "description": "The action to perform: 'learn', 'ask', or 'respond'"
+            "description": "Operation mode: learn (extract QA), ask (get question), respond (check answer). Required"
         },
         "questionId": {
             "type": "number",
-            "description": "The ID of the question being asked"
+            "description": "Numeric question identifier from previous ask action. Required for respond action"
         },
         "userResponse": {
             "type": "string",
-            "description": "The user's response to the current question"
+            "description": "User's answer text for evaluation. Required for respond action with questionId"
         }
     },
     "required": [
@@ -41,7 +41,7 @@
     "type": "object",
     "properties": {
         "message": {
-            "description": "The response message after processing the action",
+            "description": "Action result: learn (success/stats), ask (question text), respond (evaluation feedback)",
             "type": "string"
         }
     },

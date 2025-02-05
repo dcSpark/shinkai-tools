@@ -17,27 +17,27 @@
       "properties": {
         "name": {
           "type": "string",
-          "description": "The name of the Coinbase wallet"
+          "description": "Identifier name for the Coinbase wallet to send transaction from"
         },
         "privateKey": {
           "type": "string",
-          "description": "The private key of the Coinbase wallet"
+          "description": "Private key for wallet authentication. Must be a valid hex string"
         },
         "walletId": {
           "type": "string",
           "nullable": true,
-          "description": "Optional wallet ID for specific wallet selection"
+          "description": "Specific wallet ID to send from. If not provided, uses default wallet"
         },
         "seed": {
           "type": "string",
           "nullable": true,
-          "description": "Optional seed phrase for wallet recovery"
+          "description": "BIP39 seed phrase for wallet recovery. Optional, 12 or 24 words"
         },
         "useServerSigner": {
           "type": "string",
           "default": "false",
           "nullable": true,
-          "description": "Optional flag to use server-side signing"
+          "description": "Enable server-side signing for transactions. Set to 'true' or 'false'"
         }
       },
       "required": [
@@ -50,15 +50,15 @@
       "properties": {
         "recipient_address": {
           "type": "string",
-          "description": "The destination address for the transaction"
+          "description": "Valid Ethereum address to send tokens to. Must be a 42-character hex string starting with 0x"
         },
         "assetId": {
           "type": "string",
-          "description": "The ID of the asset/token to send"
+          "description": "Token identifier (e.g., 'ETH' for Ethereum, contract address for other tokens)"
         },
         "amount": {
           "type": "string",
-          "description": "The amount of tokens to send"
+          "description": "Amount of tokens to send in decimal format. Must be a valid number string"
         }
       },
       "required": [

@@ -228,6 +228,7 @@ export async function processToolsDirectory(): Promise<DirectoryEntry[]> {
         routerKey: generateToolRouterKey(author, toolName),
         dir: toolDir,
         name: toolName,
+        storeName: storeMetadata.name || toolName,
         author,
         keywords: metadata.keywords,
         type: "Tool", 

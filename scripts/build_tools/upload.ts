@@ -21,8 +21,9 @@ export async function uploadTools(tools: DirectoryEntry[]) {
   
     // Upload directory.json to Shinkai Store
     for (const entry of directory) {
-      let { dir, toolFile, isDefault, storeFile, ...store_entry } = entry;
+      let { dir, toolFile, isDefault, storeFile, storeName, ...store_entry } = entry;
       if (storeFile) store_entry.file = storeFile;
+      if (storeName) store_entry.name = storeName;
       let response = await fetch(`${store_addr}/store/products`, {
         method: "POST",
         headers: {

@@ -21,7 +21,7 @@
     "parameters": {
       "properties": {
         "url": {
-          "description": "The URL from which to download the PDF",
+          "description": "Public HTTP/HTTPS URL to PDF file. Must be accessible and valid PDF format (not password-protected)",
           "type": "string"
         }
       },
@@ -33,7 +33,7 @@
     "result": {
       "properties": {
         "text": {
-          "description": "The extracted and cleaned text from the PDF",
+          "description": "Plain text content from PDF with preserved paragraphs, cleaned formatting, and removed headers/footers",
           "type": "string"
         }
       },

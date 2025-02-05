@@ -6,7 +6,7 @@ interface Tool {
 
 import { join } from "@std/path/mod.ts";
 import { exists } from "@std/fs/mod.ts";
-import { encodeBase64 } from "@std/encoding/base64.ts";
+import { encodeBase64 } from "https://deno.land/std@0.224.0/encoding/base64.ts";
 import { generateToolRouterKey, systemTools, stripVersion, author, uploadAsset } from "./system.ts";
 import { getCategories } from "./fetch_categories.ts";
 
@@ -53,7 +53,7 @@ async function buildToolJson(
   }
 
   return { 
-    type: "Tool",
+    type: "Python",
     tool: {
       content: [
         {

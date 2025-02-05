@@ -53,7 +53,7 @@
 - [x] pdf-summarize-to-audio
 - [x] pdf-text-extractor
 - [x] pdf-whitepaper-analyzer
-- [ ] perplexity-api
+- [x] perplexity-api
 - [ ] perplexity
 - [ ] podcast-to-podcast
 - [ ] pubmed-search

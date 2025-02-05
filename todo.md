@@ -8,7 +8,7 @@
 - [x] chess-move
 - [x] coin-flip
 - [x] coinbase-call-faucet
-- [ ] coinbase-create-wallet
+- [x] coinbase-create-wallet
 - [ ] coinbase-get-balance
 - [ ] coinbase-get-my-address
 - [ ] coinbase-get-transactions

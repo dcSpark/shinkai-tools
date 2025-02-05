@@ -17,13 +17,16 @@
       "type": "object",
       "properties": {
         "name": {
-          "type": "string"
+          "type": "string",
+          "description": "Identifier name for the new Coinbase wallet to be created"
         },
         "privateKey": {
-          "type": "string"
+          "type": "string",
+          "description": "Private key for wallet creation. Must be a valid hex string"
         },
         "useServerSigner": {
           "type": "string",
+          "description": "Enable server-side signing for transactions. Default: false",
           "default": "false",
           "nullable": true
         }

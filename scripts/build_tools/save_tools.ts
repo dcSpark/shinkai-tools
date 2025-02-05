@@ -1,8 +1,12 @@
 import { DirectoryEntry, Metadata, StoreMetadata } from "./interfaces.ts";
 
-import { join } from "https://deno.land/std/path/mod.ts";
-import { exists } from "https://deno.land/std/fs/mod.ts";
-import { encodeBase64 } from "jsr:@std/encoding/base64";
+interface Tool {
+  dir: string;
+}
+
+import { join } from "https://deno.land/std@0.224.0/path/mod.ts";
+import { exists } from "https://deno.land/std@0.224.0/fs/mod.ts";
+import { encodeBase64 } from "https://deno.land/std@0.224.0/encoding/base64.ts";
 import { generateToolRouterKey, systemTools, stripVersion, author, uploadAsset } from "./system.ts";
 import { getCategories } from "./fetch_categories.ts";
 
@@ -26,7 +30,7 @@ async function buildToolJson(
   metadata: Metadata, 
   toolType: string, 
   assets: { file_name: string, data: string }[] | undefined,
-  tool: DirectoryEntry)
+  tool: Tool)
 {
   // Set GENERATE_RANDOM_NAME to true to generate a random name for the tool
   // So multiple tools with the same name can be uploaded into the node.

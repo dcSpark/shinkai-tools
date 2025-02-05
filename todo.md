@@ -24,7 +24,7 @@
 - [x] duckduckgo-search
 - [x] elevenlabs-isolate-voice
 - [x] elevenlabs-text-to-speech
-- [ ] email-imap-fetcher
+- [x] email-imap-fetcher
 - [ ] email-responder
 - [ ] email-sender
 - [ ] file-read

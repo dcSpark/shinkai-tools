@@ -18,7 +18,7 @@
     "properties": {
       "serverUrl": {
         "type": "string",
-        "description": "The ntfy server URL. Defaults to https://ntfy.sh if not provided."
+        "description": "HTTPS URL of ntfy server (e.g., https://ntfy.sh). Must be accessible. Default: https://ntfy.sh"
       }
     },
     "required": []
@@ -28,24 +28,24 @@
     "properties": {
       "topic": {
         "type": "string",
-        "description": "The topic/group to send the notification to. Acts as a channel for notifications."
+        "description": "Channel name for notifications. Use ASCII chars, no spaces. Acts as public subscription topic"
       },
       "message": {
         "type": "string",
-        "description": "The notification message content"
+        "description": "Main notification text content. Supports markdown formatting for rich text"
       },
       "title": {
         "type": "string",
-        "description": "Optional title for the notification"
+        "description": "Bold header text shown above message. Optional - uses topic name if not provided"
       },
       "priority": {
         "type": "string",
         "enum": ["min", "low", "default", "high", "urgent"],
-        "description": "Priority level of the notification. Affects how urgently the notification is delivered."
+        "description": "Delivery urgency: min (no alert), low (no sound), default, high (urgent), urgent (repeat)"
       },
       "tags": {
         "type": "string",
-        "description": "Comma-separated list of tags. Can include emoji shortcodes."
+        "description": "Tags with optional emoji (e.g., warning,:zap:). Format: tag1,tag2. Affects notification icon"
       }
     },
     "required": [
@@ -58,11 +58,11 @@
     "properties": {
       "success": {
         "type": "boolean",
-        "description": "Whether the notification was sent successfully"
+        "description": "True if notification delivered to ntfy server, false if server unreachable or error"
       },
       "message": {
         "type": "string",
-        "description": "Success message or error details"
+        "description": "Delivery confirmation or detailed error message if notification failed"
       }
     },
     "required": [

@@ -40,8 +40,8 @@
 - [x] macos-calendar
 - [x] macos-clipboard
 - [x] macos-finder
-- [ ] macos-iterm
-- [ ] macos-notifications
+- [x] macos-iterm
+- [x] macos-notifications
 - [ ] macos-say-text-to-audio
 - [ ] macos-system
 - [ ] math-exp

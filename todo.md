@@ -57,7 +57,7 @@
 - [x] perplexity
 - [x] podcast-to-podcast
 - [x] pubmed-search
-- [ ] shinkai-question-learner
+- [x] shinkai-question-learner
 - [ ] smart-search
 - [ ] stagehand-generic
 - [ ] stock-technical-analysis

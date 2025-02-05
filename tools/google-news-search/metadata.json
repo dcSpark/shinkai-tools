@@ -26,19 +26,19 @@
     "type": "object",
     "properties": {
       "query": {
-        "description": "The search query to look up in Google News",
+        "description": "Search terms to find news articles. Keywords separated by spaces, quotes for exact phrases",
         "type": "string"
       },
       "gl": {
-        "description": "Geolocation (country code). E.g. 'us', 'uk', 'au', ...",
+        "description": "Two-letter ISO country code for localized results (e.g., 'us', 'uk'). Default: based on IP",
         "type": "string"
       },
       "hl": {
-        "description": "Language code. E.g. 'en', 'zh', 'es', 'fr'...",
+        "description": "Two-letter ISO language code for result content (e.g., 'en', 'es'). Default: 'en'",
         "type": "string"
       },
       "num_results": {
-        "description": "Number of results to return",
+        "description": "Maximum number of news articles to return (1-100). Default: 10",
         "type": "number",
         "default": 10
       }
@@ -51,21 +51,36 @@
     "type": "object",
     "properties": {
       "results": {
-        "description": "List of search results",
+        "description": "Array of news articles matching search criteria, ordered by relevance",
         "type": "array",
         "items": {
           "type": "object",
           "properties": {
-            "title": { "type": "string" },
-            "link": { "type": "string" },
-            "source": { "type": "string" },
-            "snippet": { "type": "string" },
-            "date": { "type": "string" }
+            "title": { 
+              "type": "string",
+              "description": "Article headline text"
+            },
+            "link": { 
+              "type": "string",
+              "description": "URL to full article"
+            },
+            "source": { 
+              "type": "string",
+              "description": "Name of publishing news outlet"
+            },
+            "snippet": { 
+              "type": "string",
+              "description": "Brief excerpt or summary of article content"
+            },
+            "date": { 
+              "type": "string",
+              "description": "Publication date in ISO format"
+            }
           }
         }
       },
       "query": {
-        "description": "The original query string",
+        "description": "Search query that was used to find these results",
         "type": "string"
       }
     },
@@ -77,4 +92,4 @@
   "sqlTables": [],
   "sqlQueries": [],
   "tools": []
-} 
+}  

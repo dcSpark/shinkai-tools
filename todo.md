@@ -33,7 +33,7 @@
 - [x] game-crypto-2048
 - [x] google-news-search
 - [x] google-search
-- [ ] hacker-news
+- [x] hacker-news
 - [ ] iterm-control
 - [ ] iterm-read
 - [ ] iterm-write

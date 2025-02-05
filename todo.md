@@ -47,7 +47,7 @@
 - [x] math-exp
 - [x] meme-generator
 - [x] memory
-- [ ] mermaid
+- [x] mermaid
 - [ ] news-aggregator
 - [ ] ntfy-push
 - [ ] pdf-summarize-to-audio

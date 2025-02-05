@@ -53,6 +53,7 @@ async function buildToolJson(
   }
 
   return { 
+    type: "Tool",
     tool: {
       content: [
         {

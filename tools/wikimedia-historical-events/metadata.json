@@ -2,7 +2,7 @@
   "id": "wikimedia-historical-events",
   "version": "1.0.0",
   "name": "Wikimedia Historical Events",
-  "description": "Get historical events, births, deaths, and holidays for a specific date from Wikimedia",
+  "description": "Retrieves historical events, births, deaths, and holidays for any date from Wikimedia. Supports multiple languages",
   "author": "Shinkai",
   "keywords": [
     "wikimedia",
@@ -22,12 +22,12 @@
     "properties": {
       "project": {
         "type": "string",
-        "description": "Wikimedia project (e.g., wikipedia)",
+        "description": "Target Wikimedia project (wikipedia, wiktionary, etc). Default: wikipedia",
         "default": "wikipedia"
       },
       "language": {
         "type": "string",
-        "description": "Language code (e.g., en)",
+        "description": "Two-letter ISO language code (en, es, fr, etc). Must be supported by project. Default: en",
         "default": "en"
       }
     },
@@ -38,12 +38,12 @@
     "properties": {
       "date": {
         "type": "string",
-        "description": "Date in YYYY-MM-DD format (defaults to current date)",
+        "description": "Target date in YYYY-MM-DD format. Must be valid date. Default: current date",
         "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
       },
       "type": {
         "type": "string",
-        "description": "Type of historical events to fetch",
+        "description": "Event category to fetch: all, events, births, deaths, or holidays. Default: all",
         "enum": ["all", "events", "births", "deaths", "holidays"],
         "default": "all"
       }
@@ -56,21 +56,21 @@
       "events": {
         "type": "object",
         "properties": {
-          "selected_date": {"type": "string"},
+          "selected_date": {"type": "string", "description": "Date in YYYY-MM-DD format that was queried"},
           "events": {
             "type": "array",
             "items": {
               "type": "object",
               "properties": {
-                "text": {"type": "string"},
-                "year": {"type": "string"},
+                "text": {"type": "string", "description": "Description of the historical event"},
+                "year": {"type": "string", "description": "Year when the event occurred"},
                 "links": {
                   "type": "array",
                   "items": {
                     "type": "object",
                     "properties": {
-                      "title": {"type": "string"},
-                      "url": {"type": "string"}
+                      "title": {"type": "string", "description": "Title of related Wikimedia article"},
+                      "url": {"type": "string", "description": "Full URL to related article"}
                     },
                     "required": ["title", "url"]
                   }

@@ -17,7 +17,7 @@
 - [x] coingecko-get-historical-data
 - [x] dev-airtable
 - [x] dev-github
-- [ ] dev-gmail
+- [x] dev-gmail
 - [ ] dev-google-drive
 - [ ] dev-twitter
 - [ ] download-page

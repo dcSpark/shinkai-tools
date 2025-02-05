@@ -18,7 +18,7 @@
         "properties": {
             "ELEVENLABS_API_KEY": {
                 "type": "string",
-                "description": "The API key for accessing ElevenLabs services"
+                "description": "ElevenLabs API key for voice isolation. Required for authentication"
             }
         },
         "required": [
@@ -30,15 +30,15 @@
         "properties": {
             "audio_file": {
                 "type": "string",
-                "description": "The path to the local audio file to process"
+                "description": "Path to input audio file. Supports common formats (mp3, wav, etc)"
             },
             "youtube_url": {
                 "type": "string",
-                "description": "The URL of the YouTube video to download audio from"
+                "description": "Valid YouTube video URL to extract audio from. Must be public video"
             },
             "fileName": {
                 "type": "string",
-                "description": "The desired name for the output audio file"
+                "description": "Custom name for output audio file. If omitted, uses input filename or video title"
             }
         },
         "required": []
@@ -48,15 +48,15 @@
         "properties": {
             "audio_file": {
                 "type": "string",
-                "description": "The path to the output audio file"
+                "description": "Path to processed audio file with isolated voice content"
             },
             "characters_used": {
                 "type": "number",
-                "description": "The number of characters used in the ElevenLabs API"
+                "description": "Characters consumed from ElevenLabs API quota for this request"
             },
             "characters_remaining": {
                 "type": "number",
-                "description": "The number of characters remaining in the ElevenLabs API limit"
+                "description": "Remaining character quota in ElevenLabs API after this request"
             }
         },
         "required": [

@@ -32,7 +32,7 @@
 - [x] file-write
 - [x] game-crypto-2048
 - [x] google-news-search
-- [ ] google-search
+- [x] google-search
 - [ ] hacker-news
 - [ ] iterm-control
 - [ ] iterm-read

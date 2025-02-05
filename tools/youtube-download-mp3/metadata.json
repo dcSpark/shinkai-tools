@@ -1,6 +1,6 @@
 {
     "name": "Youtube Download MP3",
-    "description": "Downloads audio from a YouTube video and saves it as an MP3 file.",
+    "description": "Extracts audio from YouTube videos as MP3 files using RapidAPI. Supports custom filenames",
     "author": "Shinkai",
     "homepage": null,
     "keywords": [
@@ -16,7 +16,7 @@
   "configurations": {
         "properties": {
             "apiKey": {
-                "description": "The API key for accessing the RapidAPI service",
+                "description": "RapidAPI key for YouTube MP3 converter service access. Required for all operations",
                 "type": "string"
             }
         },
@@ -28,11 +28,11 @@
     "parameters": {
         "properties": {
             "fileName": {
-                "description": "Optional file name for the downloaded MP3",
+                "description": "Custom filename for output MP3 file. If omitted, uses sanitized video title",
                 "type": "string"
             },
             "youtubeUrl": {
-                "description": "The URL of the YouTube video to download",
+                "description": "Full YouTube video URL or video ID. Must be public video with available audio",
                 "type": "string"
             }
         },
@@ -44,15 +44,15 @@
     "result": {
         "properties": {
             "audiofile": {
-                "description": "The name of the MP3 file saved",
+                "description": "Final filename of saved MP3 file, including path if applicable",
                 "type": "string"
             },
             "error": {
-                "description": "Error message if the process fails",
+                "description": "Detailed error message if download/conversion fails. Null if successful",
                 "type": "string"
             },
             "rapidDownloadUrl": {
-                "description": "The URL from which the MP3 file was downloaded",
+                "description": "Direct download URL for the converted MP3 file from RapidAPI service",
                 "type": "string"
             }
         },

@@ -18,24 +18,24 @@
       "properties": {
         "smtp_server": {
           "type": "string",
-          "description": "The SMTP server address"
+          "description": "SMTP server hostname (e.g., 'smtp.gmail.com'). Must be valid SMTP server"
         },
         "port": {
           "type": "integer",
-          "description": "The SMTP server port",
+          "description": "SMTP server port number. Default: 465 for secure SMTPS connection",
           "default": 465
         },
         "sender_email": {
           "type": "string",
-          "description": "The sender's email address"
+          "description": "Email address to send from. Must match SMTP server authentication"
         },
         "sender_password": {
           "type": "string",
-          "description": "The sender's email password"
+          "description": "Password or app-specific password for SMTP authentication"
         },
         "ssl": {
           "type": "boolean",
-          "description": "Whether to use SSL for the SMTP connection (defaults to true)",
+          "description": "Use SSL/TLS for secure connection. Default: true (recommended)",
           "default": true
         }
       },
@@ -50,15 +50,15 @@
       "properties": {
         "recipient_email": {
           "type": "string",
-          "description": "The recipient's email address"
+          "description": "Email address to send to. Must be valid email format"
         },
         "subject": {
           "type": "string",
-          "description": "The email subject"
+          "description": "Subject line for the email. Required field"
         },
         "body": {
           "type": "string",
-          "description": "The email body"
+          "description": "Main content of the email. Supports plain text format"
         }
       },
       "required": [
@@ -72,11 +72,11 @@
       "properties": {
         "status": {
           "type": "string",
-          "description": "The status of the email sending operation ('success' or 'failed')"
+          "description": "Email sending status: 'success' or 'failed'"
         },
         "message": {
           "type": "string",
-          "description": "A message indicating the result of the operation"
+          "description": "Detailed result message, includes error details if failed"
         }
       },
       "required": [

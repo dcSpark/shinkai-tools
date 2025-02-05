@@ -1,5 +1,5 @@
 {
-    "name": "Google Drive Developer API",
+    "name": "Google Drive API Client",
     "homepage": "https://shinkai.com",
     "description": "Tool to make requests to the Google Drive Developer API using OAuth for authentication.",
     "author": "@@localhost.sep-shinkai",

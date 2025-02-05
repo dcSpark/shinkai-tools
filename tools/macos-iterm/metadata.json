@@ -1,6 +1,6 @@
 {
   "id": "macos-iterm",
-  "name": "macos-iterm",
+  "name": "macOS iTerm Controller",
   "version": "1.0.0",
   "description": "Control iTerm via AppleScript",
   "author": "Example",
@@ -53,4 +53,4 @@
     },
     "required": ["result"]
   }
-}  
+}    

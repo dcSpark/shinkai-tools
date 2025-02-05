@@ -1,5 +1,5 @@
 {
-  "name": "iterm-control",
+  "name": "iTerm Control Character Sender",
   "version": "1.0.0",
   "description": "Sends a control character (like Ctrl-C) to the active iTerm terminal session.",
   "author": "Shinkai",
@@ -39,4 +39,4 @@
   "sqlTables": [],
   "sqlQueries": [],
   "tools": []
-} 
+}  

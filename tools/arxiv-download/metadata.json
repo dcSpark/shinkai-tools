@@ -1,6 +1,6 @@
 {
   "id": "arxiv-download",
-  "name": "arxiv-download",
+  "name": "arXiv Paper Downloader",
   "version": "1.0.0",
   "description": "Download an arXiv paper PDF and optionally convert it to Markdown",
   "author": "Shinkai",
@@ -49,4 +49,4 @@
     },
     "required": ["status", "message"]
   }
-} 
+}  

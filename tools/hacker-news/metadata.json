@@ -1,6 +1,6 @@
 {
   "id": "hacker-news",
-  "name": "hacker-news",
+  "name": "Hacker News Top Stories",
   "version": "1.0.0",
   "description": "Fetches top tech stories from Hacker News",
   "author": "Shinkai",
@@ -57,4 +57,4 @@
     },
     "required": ["stories"]
   }
-} 
+}  

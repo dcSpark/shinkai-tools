@@ -1,5 +1,5 @@
 {
-    "name": "Update File with Prompt",
+    "name": "File Content Prompter",
     "homepage": "https://github.com/dcSpark/shinkai-tools/blob/main/tools/file-update/README.md",
     "version": "1.0.0",
     "description": "Applies a prompt to the file contents.",

@@ -1,6 +1,6 @@
 {
   "id": "news-aggregator",
-  "name": "News Aggregator",
+  "name": "Multi-Source News Aggregator",
   "version": "1.0.0",
   "description": "Aggregates latest news from multiple sources using newspaper3k, supporting parallel processing and category-based filtering",
   "author": "Shinkai",
@@ -111,4 +111,4 @@
     },
     "required": ["total_sources_processed", "total_articles_found", "failed_sources", "articles", "processing_time"]
   }
-}    
+}        

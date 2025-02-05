@@ -1,6 +1,6 @@
 {
   "id": "macos-system",
-  "name": "macos-system",
+  "name": "macOS System Controller",
   "version": "1.0.0",
   "description": "Control macOS system features via AppleScript",
   "author": "Example",
@@ -64,4 +64,4 @@
     },
     "required": ["result"]
   }
-}  
+}    

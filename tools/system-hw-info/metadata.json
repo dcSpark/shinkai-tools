@@ -1,5 +1,5 @@
 {
-  "name": "System Hardware Info",
+  "name": "System Hardware Monitor",
   "description": "Get detailed system hardware information including CPU, RAM, and disk details",
   "version": "1.0.0",
   "author": "Devin",

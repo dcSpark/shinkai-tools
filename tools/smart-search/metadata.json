@@ -1,5 +1,5 @@
 {
-  "name": "Smart Search Engine",
+  "name": "Question Answer Research",
   "homepage": "https://github.com/dcSpark/shinkai-tools/blob/main/tools/smart-search/README.md",
   "description": "This function takes a question as input and returns a comprehensive answer, along with the sources and statements used to generate the answer.",  
   "author": "Shinkai",

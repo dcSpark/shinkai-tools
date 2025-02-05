@@ -1,5 +1,5 @@
 {
-  "name": "Meme Generator",
+  "name": "Joke to Meme Generator",
   "homepage": "https://github.com/dcSpark/shinkai-tools/blob/main/tools/meme-generator/README.md",
   "description": "Generates a meme image based on a joke by selecting a template and splitting the joke into appropriate parts.",
   "author": "Shinkai",

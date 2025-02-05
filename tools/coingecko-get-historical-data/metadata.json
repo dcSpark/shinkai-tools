@@ -1,5 +1,5 @@
 {
-  "name": "coingecko-get-historical-data",
+  "name": "CoinGecko Historical Prices",
   "version": "1.0.0",
   "description": "Retrieves historical price, market-cap, and volume data for a coin over a date range (from_date to to_date).",
   "author": "Shinkai",
@@ -99,4 +99,4 @@
     },
     "required": ["from_date", "to_date", "data"]
   }
-} 
+}  

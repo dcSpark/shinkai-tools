@@ -1,6 +1,6 @@
 {
   "id": "chess-generate-image",
-  "name": "Chess Generate Image",
+  "name": "Chess Position Visualizer",
   "version": "1.0.0",
   "description": "Generate a PNG image of a chess position from FEN notation with optional last move highlighting",
   "author": "Example",
@@ -49,4 +49,4 @@
     },
     "required": ["image_path"]
   }
-}   
+}      

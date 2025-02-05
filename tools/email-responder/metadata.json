@@ -1,5 +1,5 @@
 {
-  "name": "Email Answerer",
+  "name": "Email Response Generator",
   "homepage": "https://github.com/dcSpark/shinkai-tools/blob/main/tools/email-responder/README.md",
   "description": "Generates responses to emails based on a given context and memory, and logs answered emails in a database.",
   "author": "Shinkai",

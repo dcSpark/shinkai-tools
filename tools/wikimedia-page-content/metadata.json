@@ -1,7 +1,7 @@
 {
   "id": "wikimedia-page-content",
   "version": "1.0.0",
-  "name": "Wikimedia Page Content",
+  "name": "Wikimedia Page HTML Fetcher",
   "description": "Fetch the full HTML content of a specific Wikimedia page",
   "author": "Shinkai",
   "keywords": [

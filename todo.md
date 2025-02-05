@@ -49,8 +49,8 @@
 - [x] memory
 - [x] mermaid
 - [x] news-aggregator
-- [ ] ntfy-push
-- [ ] pdf-summarize-to-audio
+- [x] ntfy-push
+- [x] pdf-summarize-to-audio
 - [ ] pdf-text-extractor
 - [ ] pdf-whitepaper-analyzer
 - [ ] perplexity-api

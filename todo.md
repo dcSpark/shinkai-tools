@@ -56,7 +56,7 @@
 - [x] perplexity-api
 - [x] perplexity
 - [x] podcast-to-podcast
-- [ ] pubmed-search
+- [x] pubmed-search
 - [ ] shinkai-question-learner
 - [ ] smart-search
 - [ ] stagehand-generic

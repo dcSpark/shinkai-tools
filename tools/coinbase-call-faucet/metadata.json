@@ -16,13 +16,16 @@
       "type": "object",
       "properties": {
         "name": {
-          "type": "string"
+          "type": "string",
+          "description": "Identifier name for the Coinbase account to use for faucet calls"
         },
         "privateKey": {
-          "type": "string"
+          "type": "string",
+          "description": "Private key for the Coinbase account. Must be a valid hex string"
         },
         "walletId": {
           "type": "string",
+          "description": "Optional Coinbase wallet ID to use for faucet calls. If not provided, uses default wallet",
           "nullable": true
         }
       },

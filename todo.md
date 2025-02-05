@@ -7,7 +7,7 @@
 - [x] chess-generate-image
 - [x] chess-move
 - [x] coin-flip
-- [ ] coinbase-call-faucet
+- [x] coinbase-call-faucet
 - [ ] coinbase-create-wallet
 - [ ] coinbase-get-balance
 - [ ] coinbase-get-my-address

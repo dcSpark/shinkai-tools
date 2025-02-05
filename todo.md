@@ -29,7 +29,7 @@
 - [x] email-sender
 - [x] file-read
 - [x] file-update
-- [ ] file-write
+- [x] file-write
 - [ ] game-crypto-2048
 - [ ] google-news-search
 - [ ] google-search

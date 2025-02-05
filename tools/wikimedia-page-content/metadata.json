@@ -2,7 +2,7 @@
   "id": "wikimedia-page-content",
   "version": "1.0.0",
   "name": "Wikimedia Page Content",
-  "description": "Fetch the full HTML content of a specific Wikimedia page",
+  "description": "Retrieves complete HTML content of any Wikimedia page by title. Supports multiple languages and projects",
   "author": "Shinkai",
   "keywords": [
     "wikimedia",
@@ -20,12 +20,12 @@
     "properties": {
       "project": {
         "type": "string",
-        "description": "Wikimedia project (e.g., wikipedia)",
+        "description": "Target Wikimedia project (wikipedia, wiktionary, etc). Default: wikipedia",
         "default": "wikipedia"
       },
       "language": {
         "type": "string",
-        "description": "Language code (e.g., en)",
+        "description": "Two-letter ISO language code (en, es, fr, etc). Must be supported by project. Default: en",
         "default": "en"
       }
     },
@@ -36,7 +36,7 @@
     "properties": {
       "title": {
         "type": "string",
-        "description": "Title of the page to fetch"
+        "description": "Exact page title to retrieve. Case-sensitive and must exist in selected project/language"
       }
     },
     "required": ["title"]
@@ -47,11 +47,11 @@
       "content": {
         "type": "object",
         "properties": {
-          "title": {"type": "string"},
-          "html": {"type": "string"},
-          "url": {"type": "string"},
-          "lastModified": {"type": "string"},
-          "language": {"type": "string"}
+          "title": {"type": "string", "description": "Normalized page title as returned by the API"},
+          "html": {"type": "string", "description": "Complete HTML content of the page"},
+          "url": {"type": "string", "description": "Full URL to view the page in a web browser"},
+          "lastModified": {"type": "string", "description": "Timestamp of last page modification (ISO format)"},
+          "language": {"type": "string", "description": "Language code of the retrieved content"}
         },
         "required": ["title", "html", "url", "lastModified", "language"]
       }

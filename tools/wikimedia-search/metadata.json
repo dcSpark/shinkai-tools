@@ -1,7 +1,7 @@
 {
   "id": "wikimedia-search",
   "version": "1.0.0",
-  "name": "Wikimedia Content Search",
+  "name": "Wikimedia Search",
   "description": "Search across Wikimedia page content with full-text search capabilities",
   "author": "Shinkai",
   "keywords": [

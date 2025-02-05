@@ -1,5 +1,5 @@
 {
-    "name": "Airtable API Client",
+    "name": "Airtable Developer API",
     "homepage": "",
     "description": "Tool to make requests to the Airtable Developer API using OAuth for authentication.",
     "author": "@@localhost.sep-shinkai",

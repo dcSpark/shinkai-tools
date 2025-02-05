@@ -1,6 +1,6 @@
 {
   "id": "mermaid",
-  "name": "Mermaid Diagram Generator",
+  "name": "mermaid",
   "version": "1.0.0",
   "description": "Generate diagrams and flowcharts using Mermaid syntax",
   "author": "Shinkai",

@@ -1,6 +1,6 @@
 {
     "version": "1.0.0",
-    "name": "Coinbase Wallet Address",
+    "name": "Coinbase My Address Getter",
     "homepage": "https://github.com/dcSpark/shinkai-tools/blob/main/tools/coinbase-get-my-address/README.md",
     "description": "Tool for getting the default address of a Coinbase wallet",
     "author": "Shinkai",

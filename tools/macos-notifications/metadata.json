@@ -1,6 +1,6 @@
 {
   "id": "macos-notifications",
-  "name": "macOS Notification Manager",
+  "name": "macos-notifications",
   "version": "1.0.0",
   "description": "Manage macOS notifications and Do Not Disturb via AppleScript",
   "author": "Example",
@@ -57,4 +57,4 @@
     },
     "required": ["result"]
   }
-}    
+}  

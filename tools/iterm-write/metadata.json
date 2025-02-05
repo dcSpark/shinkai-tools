@@ -1,5 +1,5 @@
 {
-  "name": "iTerm Terminal Writer",
+  "name": "iterm-write",
   "version": "1.0.0",
   "description": "Writes a command (or text) to the active iTerm terminal.",
   "author": "Shinkai",
@@ -48,4 +48,4 @@
   "sqlTables": [],
   "sqlQueries": [],
   "tools": []
-}  
+} 

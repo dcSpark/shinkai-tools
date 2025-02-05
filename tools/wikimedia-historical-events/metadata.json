@@ -1,7 +1,7 @@
 {
   "id": "wikimedia-historical-events",
   "version": "1.0.0",
-  "name": "Wikimedia On This Day Events",
+  "name": "Wikimedia Historical Events",
   "description": "Get historical events, births, deaths, and holidays for a specific date from Wikimedia",
   "author": "Shinkai",
   "keywords": [

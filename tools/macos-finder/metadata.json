@@ -1,6 +1,6 @@
 {
   "id": "macos-finder",
-  "name": "macOS Finder File Manager",
+  "name": "macos-finder",
   "version": "1.0.0",
   "description": "Manage files in Finder via AppleScript",
   "author": "Example",
@@ -58,4 +58,4 @@
     },
     "required": ["result"]
   }
-}    
+}  

@@ -1,6 +1,6 @@
 {
   "id": "macos-clipboard",
-  "name": "macOS Clipboard Manager",
+  "name": "macos-clipboard",
   "version": "1.0.0",
   "description": "Manage macOS clipboard via AppleScript",
   "author": "Example",
@@ -54,4 +54,4 @@
     },
     "required": ["result"]
   }
-}    
+}  

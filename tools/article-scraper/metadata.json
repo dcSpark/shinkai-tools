@@ -1,6 +1,6 @@
 {
   "id": "article-scraper",
-  "name": "Article Content Extractor",
+  "name": "Article Scraper",
   "version": "1.0.0",
   "description": "Extracts article text, authors, images, and metadata from a given URL or raw HTML using newspaper3k",
   "author": "Shinkai",
@@ -67,4 +67,4 @@
     },
     "required": ["title","authors","publish_date","summary","keywords","top_image","text"]
   }
-}  
+} 

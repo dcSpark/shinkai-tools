@@ -1,7 +1,7 @@
 {
   "id": "ntfy-push",
   "version": "1.0.0",
-  "name": "Ntfy Group Notifications",
+  "name": "Ntfy Push Notifications",
   "description": "Sends push notifications to specific groups using ntfy. Supports message priority, tags, and titles.",
   "author": "Shinkai",
   "keywords": [

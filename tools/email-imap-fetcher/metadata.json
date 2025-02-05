@@ -1,5 +1,5 @@
 {
-    "name": "IMAP Email Fetcher",
+    "name": "Email Fetcher",
     "homepage": "https://github.com/dcSpark/shinkai-tools/blob/main/tools/email-imap-fetcher/README.md",
     "version": "1.0.0",
     "description": "Fetches emails from an IMAP server and returns their subject, date, sender, and text content.",

@@ -18,7 +18,7 @@
     "properties": {
       "entrez_email": {
         "type": "string",
-        "description": "Email address for Entrez usage. If not provided, must be set in the environment variable ENTREZ_EMAIL."
+        "description": "Valid email for NCBI Entrez API rate limiting. Set in env ENTREZ_EMAIL if not provided here"
       }
     }
   },
@@ -27,11 +27,11 @@
     "properties": {
       "query": {
         "type": "string",
-        "description": "Search query for PubMed"
+        "description": "PubMed search query. Supports MeSH terms, Boolean operators (AND, OR, NOT), and field tags [Title]"
       },
       "max_results": {
         "type": "number",
-        "description": "Maximum results to fetch (1-15)",
+        "description": "Number of results to return (1-15). Higher values take longer. Default: 15",
         "default": 15
       }
     },
@@ -42,16 +42,34 @@
   "result": {
     "type": "object",
     "properties": {
-      "status": { "type": "string" },
-      "query": { "type": "string" },
-      "message": { "type": "string" },
-      "total_results": { "type": "number" },
-      "showing": { "type": "number" },
-      "records": { "type": "string" }
+      "status": { 
+        "type": "string",
+        "description": "Search status: success or error. Indicates if query executed successfully"
+      },
+      "query": { 
+        "type": "string",
+        "description": "Echo of executed search query for verification"
+      },
+      "message": { 
+        "type": "string",
+        "description": "Status message or error details if search failed"
+      },
+      "total_results": { 
+        "type": "number",
+        "description": "Total number of matching PubMed records found"
+      },
+      "showing": { 
+        "type": "number",
+        "description": "Number of records returned in this response (limited by max_results)"
+      },
+      "records": { 
+        "type": "string",
+        "description": "MEDLINE-formatted records of matching publications. Each record includes title, authors, abstract"
+      }
     },
     "required": [
       "status",
       "query"
     ]
   }
-} 
+}    

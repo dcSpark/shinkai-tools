@@ -39,7 +39,7 @@
 - [x] iterm-write
 - [x] macos-calendar
 - [x] macos-clipboard
-- [ ] macos-finder
+- [x] macos-finder
 - [ ] macos-iterm
 - [ ] macos-notifications
 - [ ] macos-say-text-to-audio

@@ -35,19 +35,19 @@
           "toggleDarkMode",
           "getBatteryStatus"
         ],
-        "description": "Command to execute: control system volume, app management, dark mode, or get battery status"
+        "description": "Action to perform: volume (set), apps (launch/quit/get), dark-mode (toggle), battery (status)"
       },
       "level": {
         "type": "number",
-        "description": "Volume level (0..100) for setVolume"
+        "description": "System audio volume percentage (0-100). Required for setVolume command"
       },
       "app_name": {
         "type": "string",
-        "description": "Application name (for launchApp/quitApp)"
+        "description": "Exact app name as shown in /Applications. Required for launch/quit commands"
       },
       "force": {
         "type": "boolean",
-        "description": "Force quit if true (for quitApp)"
+        "description": "Use force quit if app not responding. Default: false (graceful quit)"
       }
     },
     "required": [
@@ -59,9 +59,9 @@
     "properties": {
       "result": {
         "type": "string",
-        "description": "Message describing what happened"
+        "description": "Operation result: volume level, app state, dark mode status, battery info, or error if failed"
       }
     },
     "required": ["result"]
   }
-}  
+}    

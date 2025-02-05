@@ -9,7 +9,7 @@
 - [x] coin-flip
 - [x] coinbase-call-faucet
 - [x] coinbase-create-wallet
-- [ ] coinbase-get-balance
+- [x] coinbase-get-balance
 - [ ] coinbase-get-my-address
 - [ ] coinbase-get-transactions
 - [ ] coinbase-send-tx

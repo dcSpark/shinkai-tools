@@ -23,7 +23,7 @@
 - [x] download-page
 - [x] duckduckgo-search
 - [x] elevenlabs-isolate-voice
-- [ ] elevenlabs-text-to-speech
+- [x] elevenlabs-text-to-speech
 - [ ] email-imap-fetcher
 - [ ] email-responder
 - [ ] email-sender

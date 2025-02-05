@@ -24,29 +24,62 @@
     "properties": {
       "cpu_info": {
         "type": "object",
+        "description": "CPU specifications including core count, frequency, and architecture",
         "properties": {
-          "physical_cores": { "type": "integer" },
-          "logical_cores": { "type": "integer" },
-          "frequency_mhz": { "type": "number" },
-          "architecture": { "type": "string" }
+          "physical_cores": { 
+            "type": "integer",
+            "description": "Number of physical CPU cores (hardware threads)"
+          },
+          "logical_cores": { 
+            "type": "integer",
+            "description": "Total CPU threads including virtual cores (with hyperthreading)"
+          },
+          "frequency_mhz": { 
+            "type": "number",
+            "description": "Current CPU frequency in MHz (may vary with power state)"
+          },
+          "architecture": { 
+            "type": "string",
+            "description": "CPU architecture (e.g., x86_64, arm64, i386)"
+          }
         },
         "required": ["physical_cores", "logical_cores"]
       },
       "memory_info": {
         "type": "object",
+        "description": "System memory (RAM) usage statistics in bytes",
         "properties": {
-          "total_bytes": { "type": "integer" },
-          "available_bytes": { "type": "integer" },
-          "used_bytes": { "type": "integer" }
+          "total_bytes": { 
+            "type": "integer",
+            "description": "Total physical RAM installed in bytes"
+          },
+          "available_bytes": { 
+            "type": "integer",
+            "description": "Currently available RAM in bytes (free + cached)"
+          },
+          "used_bytes": { 
+            "type": "integer",
+            "description": "Currently used RAM in bytes (total - available)"
+          }
         },
         "required": ["total_bytes", "used_bytes", "available_bytes"]
       },
       "disk_info": {
         "type": "object",
+        "description": "Primary disk storage capacity and usage in bytes",
         "properties": {
-          "total_bytes": { "type": "integer" },
-          "used_bytes": { "type": "integer" },
-          "free_bytes": { "type": "integer" }
+          "total_bytes": { 
+            "type": "integer",
+            "description": "Total disk capacity in bytes"
+          },
+          "used_bytes": { 
+            "type": "integer",
+            "description": "Used disk space in bytes"
+          },
+          "free_bytes": { 
+            "type": "integer",
+            "description": "Available disk space in bytes"
+          }
         },
         "required": ["total_bytes", "used_bytes", "free_bytes"]
       }

@@ -58,7 +58,7 @@
 - [x] podcast-to-podcast
 - [x] pubmed-search
 - [x] shinkai-question-learner
-- [ ] smart-search
+- [x] smart-search
 - [ ] stagehand-generic
 - [ ] stock-technical-analysis
 - [ ] system-hw-info

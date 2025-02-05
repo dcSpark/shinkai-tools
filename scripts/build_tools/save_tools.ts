@@ -4,9 +4,9 @@ interface Tool {
   dir: string;
 }
 
-import { join } from "https://deno.land/std@0.224.0/path/mod.ts";
-import { exists } from "https://deno.land/std@0.224.0/fs/mod.ts";
-import { encodeBase64 } from "https://deno.land/std@0.224.0/encoding/base64.ts";
+import { join } from "@std/path/mod.ts";
+import { exists } from "@std/fs/mod.ts";
+import { encodeBase64 } from "@std/encoding/base64.ts";
 import { generateToolRouterKey, systemTools, stripVersion, author, uploadAsset } from "./system.ts";
 import { getCategories } from "./fetch_categories.ts";
 
@@ -35,17 +35,21 @@ async function buildToolJson(
   // Set GENERATE_RANDOM_NAME to true to generate a random name for the tool
   // So multiple tools with the same name can be uploaded into the node.
   const generate_random_name = !!Deno.env.get("GENERATE_RANDOM_NAME");
-  let name = metadata.name;
+  // Always use metadata.name for router key generation to maintain compatibility
+  const routerKeyName = metadata.name;
+  
+  // For display name, try to use store.json name if available
+  let displayName = metadata.name;
   try {
     const storeMetadata = JSON.parse(await Deno.readTextFile(join(tool.dir, "store.json")));
     if (storeMetadata.name) {
-      name = storeMetadata.name;
+      displayName = storeMetadata.name;
     }
   } catch (e) {
     // If store.json doesn't exist or doesn't have a name field, use metadata.name
   }
   if (generate_random_name) {
-    name = name + '_' + new Date().getTime();
+    displayName = displayName + '_' + new Date().getTime();
   }
 
   return { 
@@ -70,7 +74,7 @@ async function buildToolJson(
           description: metadata.description,
           input_args: metadata.parameters,
           keywords: metadata.keywords,
-          name: name,
+          name: displayName,
           result: metadata.result,
           sql_queries: metadata.sqlQueries,
           sql_tables: metadata.sqlTables,
@@ -238,9 +242,9 @@ export async function processToolsDirectory(): Promise<DirectoryEntry[]> {
       }
 
       tools.push({
-        routerKey: generateToolRouterKey(author, toolName),
+        routerKey: generateToolRouterKey(author, metadata.name),
         dir: toolDir,
-        name: toolName,
+        name: metadata.name,
         author,
         keywords: metadata.keywords,
         type: "Tool", 
@@ -263,7 +267,7 @@ export async function processToolsDirectory(): Promise<DirectoryEntry[]> {
     while(allTools.length > 0) {
       const tool = allTools.shift();
       if (!tool) break;
-      const currentTools = [...systemTools, ...orderedTools.map(t => generateToolRouterKey(author, t.name))];
+      const currentTools = [...systemTools, ...orderedTools.map(t => t.routerKey)];
       const expectedTools = tool.dependencies?.map((t: string) => stripVersion(t)) ?? [];
       if (expectedTools.every(e => currentTools.includes(e))) {
         orderedTools.push(tool);

@@ -27,23 +27,23 @@
           "addEvent",
           "listToday"
         ],
-        "description": "Command to execute: addEvent to create new event, listToday to show today's events"
+        "description": "Action to perform: 'addEvent' creates calendar event, 'listToday' shows all events for current day"
       },
       "title": {
         "type": "string",
-        "description": "Title of the event"
+        "description": "Display name for calendar event. Required for addEvent command"
       },
       "start_date": {
         "type": "string",
-        "description": "Event start date/time in 'YYYY-MM-DD HH:mm:ss'"
+        "description": "Start time in 'YYYY-MM-DD HH:mm:ss' format (e.g., '2024-01-31 09:00:00'). Required for addEvent"
       },
       "end_date": {
         "type": "string",
-        "description": "Event end date/time in 'YYYY-MM-DD HH:mm:ss'"
+        "description": "End time in 'YYYY-MM-DD HH:mm:ss' format (e.g., '2024-01-31 10:00:00'). Required for addEvent"
       },
       "calendar_name": {
         "type": "string",
-        "description": "Name of the calendar to add the event to (default 'Calendar')"
+        "description": "Target calendar name. Must exist in macOS Calendar app. Default: 'Calendar'"
       }
     },
     "required": [
@@ -55,9 +55,9 @@
     "properties": {
       "result": {
         "type": "string",
-        "description": "Message describing what happened"
+        "description": "Operation result details, includes error message if command failed"
       }
     },
     "required": ["result"]
   }
-}  
+}    

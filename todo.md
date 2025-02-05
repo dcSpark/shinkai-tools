@@ -42,8 +42,8 @@
 - [x] macos-finder
 - [x] macos-iterm
 - [x] macos-notifications
-- [ ] macos-say-text-to-audio
-- [ ] macos-system
+- [x] macos-say-text-to-audio
+- [x] macos-system
 - [ ] math-exp
 - [ ] meme-generator
 - [ ] memory

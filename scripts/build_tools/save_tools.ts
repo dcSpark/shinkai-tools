@@ -25,7 +25,8 @@ async function buildToolJson(
   toolContent: string, 
   metadata: Metadata, 
   toolType: string, 
-  assets: { file_name: string, data: string }[] | undefined)
+  assets: { file_name: string, data: string }[] | undefined,
+  tool: DirectoryEntry)
 {
   // Set GENERATE_RANDOM_NAME to true to generate a random name for the tool
   // So multiple tools with the same name can be uploaded into the node.
@@ -305,7 +306,7 @@ export async function saveToolsInNode(toolsOriginal: DirectoryEntry[]): Promise<
       }
 
       // Build tool JSON
-      const toolJson = await buildToolJson(toolContent, metadata, toolType, assets);
+      const toolJson = await buildToolJson(toolContent, metadata, toolType, assets, tool);
 
       // Send to Shinkai node
       const response = await fetch(`${Deno.env.get("SHINKAI_NODE_ADDR")}/v2/add_shinkai_tool`, {

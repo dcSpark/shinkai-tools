@@ -12,7 +12,7 @@
     "properties": {
       "use_applescript": {
         "type": "boolean",
-        "description": "Use AppleScript for text input (macOS only, more reliable). Default: true",
+        "description": "Whether to use AppleScript to write text to iTerm",
         "default": true
       }
     }
@@ -22,7 +22,7 @@
     "properties": {
       "command": {
         "type": "string",
-        "description": "Text to write to active terminal. Enter key not sent unless text ends with newline"
+        "description": "The command or text to write into the active iTerm session"
       }
     },
     "required": ["command"]
@@ -32,15 +32,15 @@
     "properties": {
       "lines_output": {
         "type": "number",
-        "description": "Count of new lines that appeared in terminal after writing text"
+        "description": "Number of new lines that appeared in iTerm after the command"
       },
       "success": {
         "type": "boolean",
-        "description": "True if text was written to active terminal session, false if no session or write failed"
+        "description": "Whether the command was successfully written"
       },
       "message": {
         "type": "string",
-        "description": "Details about write operation result, includes error message if failed"
+        "description": "Success or error message"
       }
     },
     "required": ["lines_output", "success", "message"]
@@ -48,4 +48,4 @@
   "sqlTables": [],
   "sqlQueries": [],
   "tools": []
-}   
+}     

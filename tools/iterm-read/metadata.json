@@ -16,7 +16,7 @@
     "properties": {
       "lines_of_output": {
         "type": "number",
-        "description": "Number of most recent terminal lines to fetch (1-1000). Default: 25",
+        "description": "Number of lines of terminal output to fetch",
         "default": 25
       }
     }
@@ -26,15 +26,15 @@
     "properties": {
       "terminal_output": {
         "type": "string",
-        "description": "Raw text of last N lines from active terminal session, includes ANSI escape codes"
+        "description": "The last N lines of terminal output"
       },
       "success": {
         "type": "boolean",
-        "description": "True if terminal output was read successfully, false if no active session or read failed"
+        "description": "Whether the read operation was successful"
       },
       "message": {
         "type": "string",
-        "description": "Details about read operation result, includes error message if failed"
+        "description": "Success or error message"
       }
     },
     "required": ["terminal_output", "success", "message"]
@@ -42,4 +42,4 @@
   "sqlTables": [],
   "sqlQueries": [],
   "tools": []
-}  
+}    

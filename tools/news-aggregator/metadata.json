@@ -64,7 +64,7 @@
           "description": "Article category filter: general (all), tech (technology), or business",
           "enum": ["general", "tech", "business"]
         },
-        "description": "Filter articles by categories. Uses built-in sources if no providers specified",
+        "description": "Filter articles by categories. Uses built-in sources if no providers specified"
       }
     },
     "required": ["providers"]
@@ -74,11 +74,11 @@
     "properties": {
       "total_sources_processed": {
         "type": "integer",
-        "description": "Count of successfully processed news sources out of total attempted sources",
+        "description": "Count of successfully processed news sources out of total attempted sources"
       },
       "total_articles_found": {
         "type": "integer",
-        "description": "Total articles found and processed across all successful sources",
+        "description": "Total articles found and processed across all successful sources"
       },
       "failed_sources": {
         "type": "array",
@@ -133,4 +133,4 @@
     },
     "required": ["total_sources_processed", "total_articles_found", "failed_sources", "articles", "processing_time"]
   }
-}                
+}                        

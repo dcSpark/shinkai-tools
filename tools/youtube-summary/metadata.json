@@ -1,7 +1,7 @@
 {
   "name": "Youtube Transcript Summarizer",
   "homepage": "https://github.com/dcSpark/shinkai-tools/blob/main/tools/youtube-summary/README.md",
-  "description": "Creates concise summaries of YouTube videos using their transcripts and LLM processing. Supports multiple languages",
+  "description": "Fetches the transcript of a YouTube video and generates a formatted summary using an LLM.",
   "author": "@@eduardosotomontaner.arb-sep-shinkai",
   "version": "1.0.0",
   "keywords": [
@@ -24,11 +24,11 @@
     "properties": {
       "url": {
         "type": "string",
-        "description": "Full YouTube video URL or ID. Must be public video with available transcript"
+        "description": "The URL of the YouTube video"
       },
       "lang": {
         "type": "string",
-        "description": "Two-letter language code for transcript (en, es, etc). Default: auto-detect from video"
+        "description": "The language for the transcript (optional)"
       }
     },
     "required": [

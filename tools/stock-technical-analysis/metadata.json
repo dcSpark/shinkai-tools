@@ -2,7 +2,7 @@
   "name": "Stock Technical Analysis",
   "version": "1.0.0",
   "id": "stock-technical-analysis",
-  "description": "Fetches historical stock data from Tiingo and calculates basic technical indicators (SMA, RSI, MACD, ATR, etc.), then returns a structured analysis of the trend.",
+  "description": "Analyzes stock trends using Tiingo data. Calculates technical indicators (SMA, RSI, MACD, ATR)",
   "author": "Shinkai",
   "keywords": ["stock", "analysis", "technical-indicators", "tiingo"],
   "runner": "any",
@@ -60,4 +60,4 @@
   "sqlTables": [],
   "sqlQueries": [],
   "tools": []
-}  
+}    

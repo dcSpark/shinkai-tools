@@ -59,18 +59,18 @@
 - [x] pubmed-search
 - [x] shinkai-question-learner
 - [x] smart-search
-- [ ] stagehand-generic
-- [ ] stock-technical-analysis
-- [ ] system-hw-info
-- [ ] text-to-audio-kokoro
-- [ ] twitter-post
-- [ ] webcam-capture
-- [ ] wikimedia-featured-content
-- [ ] wikimedia-historical-events
-- [ ] wikimedia-page-content
-- [ ] wikimedia-search-titles
-- [ ] wikimedia-search
-- [ ] x-twitter-search
-- [ ] youtube-download-mp3
-- [ ] youtube-search
-- [ ] youtube-summary
+- [x] stagehand-generic
+- [x] stock-technical-analysis
+- [x] system-hw-info
+- [x] text-to-audio-kokoro
+- [x] twitter-post
+- [x] webcam-capture
+- [x] wikimedia-featured-content
+- [x] wikimedia-historical-events
+- [x] wikimedia-page-content
+- [x] wikimedia-search-titles
+- [x] wikimedia-search
+- [x] x-twitter-search
+- [x] youtube-download-mp3
+- [x] youtube-search
+- [x] youtube-summary

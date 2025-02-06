@@ -21,19 +21,19 @@
     "type": "object",
     "properties": {
       "search_query": {
-        "description": "Search terms to find YouTube videos. Supports quotes for exact matches"
+        "description": "Search terms to find YouTube videos. Supports quotes for exact matches",
         "type": "string"
       },
       "gl": {
-        "description": "Two-letter country code for regional results (us, uk, etc). Default: us"
+        "description": "Two-letter country code for regional results (us, uk, etc). Default: us",
         "type": "string"
       },
       "hl": {
-        "description": "Two-letter language code for result text (en, es, etc). Default: en"
+        "description": "Two-letter language code for result text (en, es, etc). Default: en",
         "type": "string"
       },
       "max_results": {
-        "description": "Maximum number of video results to return. Range: 1-100. Default: 10"
+        "description": "Maximum number of video results to return. Range: 1-100. Default: 10",
         "type": "number",
         "default": 10
       }
@@ -44,7 +44,7 @@
     "type": "object",
     "properties": {
       "results": {
-        "description": "Array of matching YouTube videos with metadata. Sorted by relevance"
+        "description": "Array of matching YouTube videos with metadata. Sorted by relevance",
         "type": "array",
         "items": {
           "type": "object",
@@ -59,7 +59,7 @@
         }
       },
       "query": {
-        "description": "Search query string that was used to find videos"
+        "description": "Search query string that was used to find videos",
         "type": "string"
       }
     },

@@ -152,7 +152,7 @@ async function generateToolImages(toolPath: string, metadata: ToolMetadata): Pro
 
     if (missingFiles.includes('icon.png')) {
       const iconPrompt = 
-        `Create a simple, memorable icon for '${metadata.name}'. The icon should represent ` +
+        `Create a simple, memorable icon for '${metadata.name}'. The icon should represent the tool's function, which is: ` +
         `${metadata.description}. Use a minimal design with clear shapes and limited colors. ` +
         "Make it recognizable at small sizes and suitable for a developer tool. " +
         "The icon should work well as an app icon or menu item.";

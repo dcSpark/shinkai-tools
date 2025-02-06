@@ -40,7 +40,7 @@
     "properties": {
       "summary": {
         "type": "string",
-        "description": "LLM-generated summary of video content, structured with key points and main topics"
+        "description": "The generated summary of the video"
       }
     },
     "required": [

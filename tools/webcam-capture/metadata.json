@@ -23,7 +23,7 @@
       },
       "format": {
         "type": "string",
-        "description": "Output image format: png (lossless) or jpeg (compressed). Default: png"
+        "description": "Output image format: png (lossless) or jpeg (compressed). Default: png",
         "default": "png"
       }
     },
@@ -34,12 +34,12 @@
     "properties": {
       "width": {
         "type": "number",
-        "description": "Desired image width in pixels. May be adjusted to match camera capabilities. Default: 640"
+        "description": "Desired image width in pixels. May be adjusted to match camera capabilities. Default: 640",
         "default": 640
       },
       "height": {
         "type": "number",
-        "description": "Desired image height in pixels. May be adjusted to match camera capabilities. Default: 480"
+        "description": "Desired image height in pixels. May be adjusted to match camera capabilities. Default: 480",
         "default": 480
       }
     },
@@ -67,4 +67,4 @@
       "height"
     ]
   }
-}  
+}    

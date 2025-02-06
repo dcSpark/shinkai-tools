@@ -39,7 +39,7 @@
       "properties": {
         "response": {
           "type": "string",
-          "description": "AI-generated answer combining web search results with analysis. May include citations"
+          "description": "The search results and analysis from Perplexity"
         }
       },
       "required": [

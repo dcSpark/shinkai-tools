@@ -28,6 +28,7 @@
                 "description": "The subreddit to scrape"
             },
             "get_by": {
+                "description": "",
                 "type": "string",
                 "enum": [
                     "hot",
@@ -37,6 +38,7 @@
                 ]
             },
             "top_time": {
+                "description": "",
                 "type": "string",
                 "enum": [
                     "day",

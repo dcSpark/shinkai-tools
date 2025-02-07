@@ -1,0 +1,83 @@
+{
+  "author": "@@official.shinkai",
+  "runner": "any",
+  "operating_system": ["linux", "macos", "windows"],
+  "tool_set": "",
+  "configurations": {
+    "properties": {
+      "wallet_sk": {
+        "description": "EVM Wallet Private Key",
+        "type": "string"
+      }
+    },
+    "required": [],
+    "type": "object"
+  },
+  "description": "Automates web interactions and extracts data using Stagehand.",
+  "homepage": null,
+  "keywords": [
+    "stagehand",
+    "web automation",
+    "data extraction"
+  ],
+  "name": "Stagehand Runner",
+  "oauth": [],
+  "parameters": {
+    "properties": {
+      "commands": {
+        "description": "List of commands to execute",
+        "items": {
+          "description": "",
+          "properties": {
+            "action": {
+              "description": "Type of action to perform: 'goto' | 'wait' | 'extract' | 'act' | 'goto-stage' | 'observe'",
+              "type": "string"
+            },
+            "id": {
+              "description": "index of the command (1, 2, 3, ...)",
+              "type": "number"
+            },
+            "jsonSchema": {
+              "description": "Optional JSON Schema for extract format",
+              "type": "object"
+            },
+            "payload": {
+              "description": "Action Payload: goto=>url, wait=>ms, extract=>text-prompt, act=>text-prompt, goto-stage=>stage-id, observe=>text-prompt",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "type": "array"
+      }
+    },
+    "required": [
+      "commands"
+    ],
+    "type": "object"
+  },
+  "result": {
+    "properties": {
+      "data": {
+        "description": "Extracted data from executed commands",
+        "items": {},
+        "type": "array"
+      },
+      "message": {
+        "description": "The success message",
+        "type": "string"
+      }
+    },
+    "required": [
+      "message",
+      "data"
+    ],
+    "type": "object"
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": [
+    "local:::__official_shinkai:::shinkai_typescript_unsafe_processor"
+  ],
+  "version": "1"
+}

@@ -1,0 +1,59 @@
+{
+  "name": "System Hardware Info",
+  "description": "Get detailed system hardware information including CPU, RAM, and disk details",
+  "version": "1.0.0",
+  "author": "Devin",
+  "keywords": [
+    "system",
+    "hardware",
+    "cpu",
+    "memory",
+    "disk",
+    "diagnostics"
+  ],
+  "runner": "any",
+  "operating_system": ["linux", "macos", "windows"],
+  "tool_set": "",
+  "configurations": [],
+  "parameters": {
+    "properties": {},
+    "type": "object"
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "cpu_info": {
+        "type": "object",
+        "properties": {
+          "physical_cores": { "type": "integer" },
+          "logical_cores": { "type": "integer" },
+          "frequency_mhz": { "type": "number" },
+          "architecture": { "type": "string" }
+        },
+        "required": ["physical_cores", "logical_cores"]
+      },
+      "memory_info": {
+        "type": "object",
+        "properties": {
+          "total_bytes": { "type": "integer" },
+          "available_bytes": { "type": "integer" },
+          "used_bytes": { "type": "integer" }
+        },
+        "required": ["total_bytes", "used_bytes", "available_bytes"]
+      },
+      "disk_info": {
+        "type": "object",
+        "properties": {
+          "total_bytes": { "type": "integer" },
+          "used_bytes": { "type": "integer" },
+          "free_bytes": { "type": "integer" }
+        },
+        "required": ["total_bytes", "used_bytes", "free_bytes"]
+      }
+    },
+    "required": ["cpu_info", "memory_info", "disk_info"]
+  },
+  "sqlTables": [],
+  "sqlQueries": [],
+  "tools": []
+}

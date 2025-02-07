@@ -1,0 +1,51 @@
+{
+  "name": "iterm-write",
+  "version": "1.0.0",
+  "description": "Writes a command (or text) to the active iTerm terminal.",
+  "author": "Shinkai",
+  "keywords": ["iterm", "terminal", "automation", "shinkai"],
+  "runner": "any",
+  "operating_system": ["linux", "macos", "windows"],
+  "tool_set": "",
+  "configurations": {
+    "type": "object",
+    "properties": {
+      "use_applescript": {
+        "type": "boolean",
+        "description": "Whether to use AppleScript to write text to iTerm",
+        "default": true
+      }
+    }
+  },
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "command": {
+        "type": "string",
+        "description": "The command or text to write into the active iTerm session"
+      }
+    },
+    "required": ["command"]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "lines_output": {
+        "type": "number",
+        "description": "Number of new lines that appeared in iTerm after the command"
+      },
+      "success": {
+        "type": "boolean",
+        "description": "Whether the command was successfully written"
+      },
+      "message": {
+        "type": "string",
+        "description": "Success or error message"
+      }
+    },
+    "required": ["lines_output", "success", "message"]
+  },
+  "sqlTables": [],
+  "sqlQueries": [],
+  "tools": []
+} 

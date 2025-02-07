@@ -1,0 +1,68 @@
+{
+  "name": "YouTube Search",
+  "description": "Searches YouTube for videos via SerpAPI. Requires SERP_API_KEY in configuration.",
+  "version": "1.0.0",
+  "author": "Devin",
+  "keywords": ["youtube", "serpapi", "video", "search"],
+  "runner": "any",
+  "operating_system": ["linux", "macos", "windows"],
+  "tool_set": "",
+  "configurations": {
+    "type": "object",
+    "properties": {
+      "SERP_API_KEY": {
+        "type": "string",
+        "description": "Your SerpAPI key for authentication"
+      }
+    },
+    "required": ["SERP_API_KEY"]
+  },
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "search_query": {
+        "description": "The search query for YouTube videos",
+        "type": "string"
+      },
+      "gl": {
+        "description": "Geolocation (country code). E.g. 'us', 'uk'",
+        "type": "string"
+      },
+      "hl": {
+        "description": "Language code. E.g. 'en', 'es'",
+        "type": "string"
+      },
+      "max_results": {
+        "description": "Maximum number of results to return",
+        "type": "number",
+        "default": 10
+      }
+    },
+    "required": ["search_query"]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "results": {
+        "description": "List of video search results",
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "title": { "type": "string" },
+            "link": { "type": "string" },
+            "thumbnail": { "type": "string" },
+            "channel": { "type": "string" },
+            "views": { "type": "string" },
+            "duration": { "type": "string" }
+          }
+        }
+      },
+      "query": {
+        "description": "The original search query",
+        "type": "string"
+      }
+    },
+    "required": ["results", "query"]
+  }
+}

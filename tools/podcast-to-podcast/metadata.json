@@ -1,0 +1,54 @@
+{
+    "author": "@@localhost.arb-sep-shinkai",
+    "runner": "any",
+  "operating_system": ["linux", "macos", "windows"],
+  "tool_set": "",
+  "configurations": {
+      "properties": {},
+      "required": [],
+      "type": "object"
+    },
+    "description": "Converts a YouTube video transcript into a podcast using LLM processing.",
+    "homepage": null,
+    "keywords": [
+      "YouTube",
+      "transcript",
+      "podcast",
+      "converter",
+      "shinkai"
+    ],
+    "name": "Podcast to Podcast",
+    "oauth": [],
+    "parameters": {
+      "properties": {
+        "youtubeUrlOrId": {
+          "description": "The YouTube URL or video ID",
+          "type": "string"
+        }
+      },
+      "required": [
+        "youtubeUrlOrId"
+      ],
+      "type": "object"
+    },
+    "result": {
+      "properties": {
+        "podcast": {
+          "description": "The generated podcast content in Buffer format",
+          "nullable": true,
+          "type": "string"
+        }
+      },
+      "required": [
+        "podcast"
+      ],
+      "type": "object"
+    },
+    "sqlQueries": [],
+    "sqlTables": [],
+    "tools": [
+      "local:::__official_shinkai:::shinkai_llm_prompt_processor",
+      "local:::__official_shinkai:::eleven_labs_text_to_speech"
+    ],
+    "version": "1.0.0"
+  }

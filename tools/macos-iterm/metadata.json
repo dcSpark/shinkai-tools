@@ -1,0 +1,56 @@
+{
+  "id": "macos-iterm",
+  "name": "macos-iterm",
+  "version": "1.0.0",
+  "description": "Control iTerm via AppleScript",
+  "author": "Example",
+  "keywords": [
+    "macos",
+    "iterm",
+    "terminal",
+    "automation",
+    "applescript"
+  ],
+  "runner": "any",
+  "operating_system": ["linux", "macos", "windows"],
+  "tool_set": "",
+  "configurations": {
+    "type": "object",
+    "properties": {},
+    "required": []
+  },
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "command": {
+        "type": "string",
+        "enum": [
+          "pasteClipboard",
+          "runCommand"
+        ],
+        "description": "Command to execute: pasteClipboard to paste clipboard content, runCommand to execute shell command"
+      },
+      "cmd": {
+        "type": "string",
+        "description": "Command to run if using runCommand"
+      },
+      "new_window": {
+        "type": "boolean",
+        "description": "Whether to run command in a new window (default false)"
+      }
+    },
+    "required": [
+      "command"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "result": {
+        "type": "string",
+        "description": "Message describing what happened"
+      }
+    },
+    "required": ["result"]
+  }
+}  

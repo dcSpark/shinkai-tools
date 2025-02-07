@@ -277,8 +277,8 @@ export async function saveToolsInNode(toolsOriginal: DirectoryEntry[]): Promise<
   const tools: DirectoryEntry[] = JSON.parse(JSON.stringify(toolsOriginal));
   const toolsSaved: DirectoryEntry[] = [];
   for (const tool of tools) {
-      // Wait 250ms between tool uploads
-      await new Promise(resolve => setTimeout(resolve, 250));
+      // Wait 50ms between tool uploads
+      await new Promise(resolve => setTimeout(resolve, 50));
 
       // Read files
       const metadata: Metadata = JSON.parse(await Deno.readTextFile(join(tool.dir, "metadata.json")));
@@ -353,12 +353,6 @@ export async function saveToolsInNode(toolsOriginal: DirectoryEntry[]): Promise<
           args: [zipPath, '-d', zipPathFiles],
         });
         await unzip.output();
-        
-        // Enable flag to update reference files
-        // copy the unzipped __tool.json to the tool directory as .tool-dump.test.json
-        if (Deno.env.get("UPDATE_DUMP_FILES")) {
-          await Deno.copyFile(join(zipPathFiles, "__tool.json"), join(tool.dir, ".tool-dump.test.json"));
-        }
 
       } catch {
         console.error(`Error: Invalid zip file downloaded for ${tool.name}`);

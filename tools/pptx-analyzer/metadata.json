@@ -66,5 +66,8 @@
   "sqlQueries": [],
   "sqlTables": [],
   "tool_set": "",
+  "tools": [
+    "local:::__official_shinkai:::shinkai_llm_prompt_processor"
+  ],
   "version": "1.0.0"
 }

@@ -1,0 +1,83 @@
+{
+    "name": "Reddit Blog Post Generator",
+    "author": "Shinkai",
+    "homePage": "",
+    "description": "Generates a blog post about Reddit posts based on user input.",
+    "version": "1.0.0",
+    "keywords": [
+        "Reddit",
+        "Blog Post Generator"
+    ],
+    "configurations": {
+        "type": "object",
+        "properties": {
+            "post_guidelines": {
+                "type": "string",
+                "description": "The guidelines for the blog post like strucutre, tone, etc"
+            }
+        },
+        "required": [
+            "post_guidelines"
+        ]
+    },
+    "parameters": {
+        "type": "object",
+        "properties": {
+            "subreddit": {
+                "type": "string",
+                "description": "The subreddit to scrape"
+            },
+            "get_by": {
+                "type": "string",
+                "enum": [
+                    "hot",
+                    "new",
+                    "top",
+                    "rising"
+                ]
+            },
+            "top_time": {
+                "type": "string",
+                "enum": [
+                    "day",
+                    "week",
+                    "month",
+                    "year",
+                    "all"
+                ]
+            }
+        },
+        "required": [
+            "subreddit"
+        ]
+    },
+    "result": {
+        "type": "object",
+        "properties": {
+            "post_title": {
+                "type": "string"
+            },
+            "post_content": {
+                "type": "string"
+            }
+        },
+        "required": [
+            "post_title",
+            "post_content"
+        ]
+    },
+    "sqlTables": [],
+    "sqlQueries": [],
+    "oauth": [],
+    "runner": "any",
+    "operating_system": [
+        "linux",
+        "macos",
+        "windows"
+    ],
+    "tool_set": "reddit",
+    "tools": [
+        "local:::__official_shinkai:::reddit_scraper",
+        "local:::__official_shinkai:::shinkai_llm_prompt_processor"
+    ]
+}

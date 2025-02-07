@@ -13,7 +13,7 @@
         "properties": {
             "post_guidelines": {
                 "type": "string",
-                "description": "The guidelines for the blog post like strucutre, tone, etc"
+                "description": "The guidelines for the blog post like structure, tone, etc"
             }
         },
         "required": [
@@ -25,10 +25,10 @@
         "properties": {
             "subreddit": {
                 "type": "string",
-                "description": "The subreddit to scrape"
+                "description": "The subreddit name to scrape posts from"
             },
             "get_by": {
-                "description": "",
+                "description": "The method to sort and retrieve Reddit posts",
                 "type": "string",
                 "enum": [
                     "hot",
@@ -38,7 +38,7 @@
                 ]
             },
             "top_time": {
-                "description": "",
+                "description": "The time period to filter top posts when get_by is set to 'top'",
                 "type": "string",
                 "enum": [
                     "day",
@@ -57,10 +57,12 @@
         "type": "object",
         "properties": {
             "post_title": {
-                "type": "string"
+                "type": "string",
+                "description": "The generated title for the blog post"
             },
             "post_content": {
-                "type": "string"
+                "type": "string",
+                "description": "The generated content/body of the blog post"
             }
         },
         "required": [

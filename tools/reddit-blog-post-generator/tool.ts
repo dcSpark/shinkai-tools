@@ -44,13 +44,16 @@ export const run = async (config: Configurations, inputs: Inputs) => {
     ${config.post_guidelines}
     </guidelines>
     You must output the post title and the post content wrapped in <post_title> and <post_content> tags respectively.
-    You must write the post content in HTML format.
     `,
     format: 'text',
   });
   const post_title = llmResponse.message.match(/<post_title>(.*?)<\/post_title>/)?.[1] || '';
   let post_content = llmResponse.message.match(/<post_content>(.*?)<\/post_content>/)?.[1] || '';
   if (!post_content) post_content = llmResponse.message.split('<post_content>')[1]
+  post_content = post_content
+    .replace(/<br>/g, '\n')
+    .replace(/\\n/g, '\n')
+    .replace(/<\/post_content>/g, '')
   return {
     post_title,
     post_content

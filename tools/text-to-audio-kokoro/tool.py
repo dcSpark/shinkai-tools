@@ -24,8 +24,8 @@ from shinkai_local_support import get_home_path
 config.MAX_PHONEME_LENGTH = 128
 
 # URLs from the official kokoro-onnx repository
-MODEL_URL = "https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files/kokoro-v0_19.onnx"
-VOICES_URL = "https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files/voices.bin"
+MODEL_URL = "https://github.com/thewh1teagle/kokoro-onnx/releases/download/v1.0/kokoro-v1_0.onnx"
+VOICES_URL = "https://github.com/thewh1teagle/kokoro-onnx/releases/download/v1.0/voices.bin"
 
 def download_file(url: str, local_path: str) -> None:
     print(f"Downloading {url}...")
@@ -49,7 +49,7 @@ def download_file(url: str, local_path: str) -> None:
     print("\nDownload complete!")
 
 class CONFIG:
-    model_path: str = "kokoro-v0_19.onnx"
+    model_path: str = "kokoro-v1_0.onnx"
     voices_path: str = "voices.bin"
     providers: Optional[List[str]] = None  # ONNX providers (e.g. ["CPUExecutionProvider", "CUDAExecutionProvider"])
 
@@ -136,4 +136,4 @@ async def run(c: CONFIG, p: INPUTS) -> OUTPUT:
     output.sample_rate = sample_rate
     output.chars_per_second = chars_per_second
     
-    return output 
+    return output  

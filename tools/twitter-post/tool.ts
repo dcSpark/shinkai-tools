@@ -14,11 +14,13 @@ async function uploadMedia(bearerToken: string, imagePath: string): Promise<stri
     const imageData = await Deno.readFile(imagePath);
     const formData = new FormData();
     formData.append('media', new Blob([imageData]));
-
-    const response = await fetch('https://upload.twitter.com/1.1/media/upload.json', {
+    formData.append('media_category', 'tweet_image');
+    const url = 'https://upload.twitter.com/1.1/media/upload.json?media_category=tweet_image';
+    const response = await fetch(url, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${bearerToken}`
+        'Authorization': `Bearer ${bearerToken}`,
+        'Content-Type': 'multipart/form-data'
       },
       body: formData
     });

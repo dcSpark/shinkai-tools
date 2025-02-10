@@ -25,11 +25,6 @@
         "text": {
           "type": "string",
           "description": "Message to post"
-        },
-        "imagePath": {
-          "type": "string",
-          "description": "Optional path to an image file to attach to the tweet",
-          "optional": true
         }
       },
       "required": []

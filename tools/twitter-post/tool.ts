@@ -1,59 +1,24 @@
-/// <reference lib="deno.ns" />
 import { getAccessToken } from './shinkai-local-support.ts';
 
 type CONFIG = {};
 type INPUTS = {
     text: string;
-    imagePath?: string;
 };
 type OUTPUT = {
-    data: any;
 };
 
-async function uploadMedia(bearerToken: string, imagePath: string): Promise<string> {
-  try {
-    const imageData = await Deno.readFile(imagePath);
-    const formData = new FormData();
-    formData.append('media', new Blob([imageData]));
-
-    const response = await fetch('https://upload.twitter.com/1.1/media/upload.json', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${bearerToken}`
-      },
-      body: formData
-    });
-
-    if (!response.ok) {
-      throw new Error(`Media upload failed: ${response.status} : ${response.statusText}`);
-    }
-
-    const data = await response.json();
-    return data.media_id_string;
-  } catch (error) {
-    console.error('Error uploading media:', error);
-    throw error;
-  }
-}
-
-async function postTweet(bearerToken: string, text: string, mediaId?: string) {
+async function postTweet(bearerToken: string, text: string) {
   try {
     const url = 'https://api.x.com/2/tweets';
-    const tweetBody: any = { text };
-    
-    if (mediaId) {
-      tweetBody.media = {
-        media_ids: [mediaId]
-      };
-    }
-
     const response = await fetch(url, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${bearerToken}`,
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(tweetBody)
+      body: JSON.stringify({
+        text
+      })
     });
 
     if (!response.ok) {
@@ -71,11 +36,6 @@ async function postTweet(bearerToken: string, text: string, mediaId?: string) {
 
 export async function run(config: CONFIG, inputs: INPUTS): Promise<OUTPUT> {
     const accessToken = await getAccessToken("twitter");
-    let mediaId: string | undefined;
+    return await postTweet(accessToken, inputs.text)    
     
-    if (inputs.imagePath) {
-      mediaId = await uploadMedia(accessToken, inputs.imagePath);
-    }
-    
-    return { data: await postTweet(accessToken, inputs.text, mediaId) };
 }

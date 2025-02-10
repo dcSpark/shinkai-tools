@@ -1,4 +1,9 @@
-import { googleSearch, shinkaiLlmPromptProcessor, downloadPages } from './shinkai-local-tools.ts';
+import {
+  googleSearch,
+  duckDuckgoSearch,
+  shinkaiLlmPromptProcessor,
+  downloadPages,
+} from './shinkai-local-tools.ts';
 
 type CONFIG = {
   searchEngineApiKey?: string;
@@ -13,7 +18,7 @@ type OUTPUT =  {
   sources: SmartSearchSourcePage[];
   statements: SmartSearchStatement[];
 }
-type PREFFERED_SOURCES = 'WIKIPEDIA'|'WOLFRAMALPHA'|'OTHER';
+type PREFFERED_SOURCES = 'WIKIPEDIA'|'WOLFRAMALPHA'|'WEB_SEARCH';
 
 type SearchQueryConversion = {
   "origin_question": string;
@@ -350,8 +355,10 @@ async function extractSourcesFromSearchEngine(
 			const results = await googleSearch({ query: searchQuery });
 			return results.results;
 		}
-    case 'DUCKDUCKGO':
-      throw new Error('DuckDuckGo is not supported yet');
+    case 'DUCKDUCKGO': {
+      const results = await duckDuckgoSearch({ query: searchQuery });
+      return results.results;
+    }
     case 'BRAVE': 
       throw new Error('Brave is not supported yet');
     default:
@@ -390,8 +397,13 @@ export async function run(
         }
         case 'WOLFRAMALPHA':
           throw new Error('WOLFRAMALPHA is not supported yet');
-        case 'OTHER':
+        case 'WEB_SEARCH': {
+          const searchEngineQuery = searchQuery.search_query.trim();
+          const searchEngine = config.searchEngine || 'GOOGLE';
+          const sourcesSearchResults: SearchResult[] = await extractSourcesFromSearchEngine(searchEngineQuery, searchEngine, config.searchEngineApiKey);
+          sources.push(...sourcesSearchResults);
           break;
+        }
         default:
           throw new Error('Invalid source');
       }
@@ -409,6 +421,7 @@ export async function run(
     const statements: SmartSearchStatement[] = []
     // Step 3: Extract statements from sources
     for (const smartSearchSource of smartSearchSouces) {
+      // TODO use map reduce to extract statements
       const statementString = await shinkaiLlmPromptProcessor({ format: 'text', prompt: statementExtract(question, smartSearchSource) });
       const cleanStatementString = tryToExtractJSON(statementString.message)
       try { 

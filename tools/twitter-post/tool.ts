@@ -1,3 +1,4 @@
+/// <reference lib="deno.ns" />
 import { getAccessToken } from './shinkai-local-support.ts';
 
 type CONFIG = {};

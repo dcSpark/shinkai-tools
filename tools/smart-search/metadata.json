@@ -99,7 +99,9 @@
   "sqlQueries": [],
   "tools": [
     "local:::__official_shinkai:::google_search:::1.0.0",
+    "local:::__official_shinkai:::duckduckgo_search:::1.0.0",
     "local:::__official_shinkai:::shinkai_llm_prompt_processor:::1.0.0",
+    "local:::__official_shinkai:::shinkai_llm_map_reduce_processor:::1.0.0",
     "local:::__official_shinkai:::download_pages:::1.0.0"
   ]
 }

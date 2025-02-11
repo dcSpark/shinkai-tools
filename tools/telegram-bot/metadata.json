@@ -1,5 +1,6 @@
 {
     "name": "Telegram Bot",
+    "author": "@@official.shinkai",
     "configurations": {
       "properties": {
         "BOT_TOKEN": {

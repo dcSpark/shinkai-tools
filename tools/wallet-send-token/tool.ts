@@ -1,9 +1,9 @@
+
 import { 
   createPublicClient, 
   createWalletClient,
   http,
   formatEther,
-  encodeFunctionData,
   type Address,
   type PublicClient,
   type WalletClient,
@@ -36,9 +36,9 @@ interface CONFIG {
 }
 
 type INPUTS = {
-  to_address: `0x${string}`;
-  tokenAddress: `0x${string}`;
-  amount: string | number | bigint;
+  toAddress: `0x${string}`;
+  contractAddress: `0x${string}`;
+  amount: number;
 }
 
 type OUTPUT = {
@@ -55,13 +55,13 @@ type OUTPUT = {
 
 export class WalletManager {
   private publicClient: PublicClient;
-  private account: PrivateKeyAccount;
+  private walletAddress: Address;
   private chain: Chain;
-  private address: Address;
+  private account: PrivateKeyAccount;
 
   constructor({ rpcUrl, chain, privateKey }: WalletConfig) {
     this.account = privateKeyToAccount(privateKey);
-    this.address = this.account.address;
+    this.walletAddress = this.account.address;
     this.chain = chain;
     this.publicClient = createPublicClient({
       chain,
@@ -72,26 +72,26 @@ export class WalletManager {
   private createWalletClient(): WalletClient {
     return createWalletClient({
       chain: this.chain,
-      transport: http(this.publicClient.transport.url), // Use same RPC URL
+      transport: http(), // Use same RPC URL
       account: this.account
     });
   }
 
-  async getETHBalance(address: Address=this.address): Promise<string> {
-    const balance = await this.publicClient.getBalance({ address });
+  async getETHBalance(walletAddress: Address=this.walletAddress): Promise<string> {
+    const balance = await this.publicClient.getBalance({ address: walletAddress });
     return formatEther(balance);
   }
 
-  async getTokenBalance(tokenAddress: Address, walletAddress: Address=this.address): Promise<string> {
+  async getTokenBalance(contractAddress: Address, walletAddress: Address=this.walletAddress): Promise<string> {
     const [balance, decimals] = await Promise.all([
       this.publicClient.readContract({
-        address: tokenAddress,
+        address: contractAddress,
         abi: erc20Abi,
         functionName: 'balanceOf',
         args: [walletAddress]
       }),
       this.publicClient.readContract({
-        address: tokenAddress,
+        address: contractAddress,
         abi: erc20Abi,
         functionName: 'decimals'
       })
@@ -100,9 +100,9 @@ export class WalletManager {
     return (balance / 10n ** BigInt(decimals)).toString();
   }
 
-  private async getTokenValue(tokenAddress: Address, amount: string | number | bigint): Promise<bigint> {
+  private async getTokenValue(contractAddress: Address, amount: string | number | bigint): Promise<bigint> {
     const decimals = await this.publicClient.readContract({
-      address: tokenAddress,
+      address: contractAddress,
       abi: erc20Abi,
       functionName: 'decimals'
     });
@@ -110,13 +110,13 @@ export class WalletManager {
   }
 
   async estimateGas(
-    tokenAddress: Address, 
+    contractAddress: Address, 
     toAddress: Address, 
     amount: string | number | bigint
   ): Promise<bigint> {
-    const value = await this.getTokenValue(tokenAddress, amount);
+    const value = await this.getTokenValue(contractAddress, amount);
     return await this.publicClient.estimateContractGas({
-      address: tokenAddress,
+      address: contractAddress,
       abi: erc20Abi,
       functionName: 'transfer',
       args: [toAddress, value],
@@ -124,50 +124,48 @@ export class WalletManager {
     });
   }
   async sendTokens(
-    tokenAddress: Address,
+    contractAddress: Address,
     toAddress: Address,
-    amount: string | number | bigint
+    amount: bigint
   ): Promise<TransactionReceipt> {
-    const value = await this.getTokenValue(tokenAddress, amount);
+    const value = await this.getTokenValue(contractAddress, amount);
     const walletClient = this.createWalletClient();
-    const data = encodeFunctionData({
-      abi: erc20Abi,
-      functionName: 'transfer',
-      args: [toAddress, value]
+    const { request } = await this.publicClient.simulateContract({
+        address: contractAddress,
+        abi: erc20Abi,
+        functionName: 'transfer',
+        args: [toAddress, value],
+        account: this.account
     });
-    const gasEstimate = await this.estimateGas(tokenAddress, toAddress, amount);
-    /*const request = await walletClient.prepareTransactionRequest({
-      to: tokenAddress,
-      account: this.account.address,
+    console.log("Simulation");
+    console.log(JSON.stringify(request, (key, value) =>
+            typeof value === 'bigint'
+                ? value.toString()
+                : value
+        , 2));
+    const hash = await walletClient.writeContract(request);
+    
+    /*{
+      to: contractAddress,
+      account: this.walletAddress,
       abi: erc20Abi,
       chain: this.chain,
       gas: gasEstimate,
       data,
     });*/
-    const tx = await walletClient.signTransaction({
-      to: tokenAddress,
-      account: this.account.address,
-      abi: erc20Abi,
-      chain: this.chain,
-      gas: gasEstimate,
-      data,
-    });
-    const hash = await this.publicClient.sendRawTransaction({
-      serializedTransaction: tx
-    });
+   // const hash = await this.publicClient.sendRawTransaction({
+    //  serializedTransaction: tx
+    //});
     return await this.publicClient.waitForTransactionReceipt({ hash });
   }
 }
-
-const TOKENSEND_ERROR = 'TOKENSEND_ERROR';
 
 export async function run(
   config: CONFIG,
   inputs: INPUTS
 ): Promise<OUTPUT> {
-  try {
-    const { tokenAddress, to_address: toAddress, amount } = inputs;
-    if (!tokenAddress || !toAddress || !amount) {
+    const { contractAddress, toAddress, amount } = inputs;
+    if (!contractAddress || !toAddress || !amount) {
       throw new Error('Token address, to address, and amount are required in inputs');
     }
     const walletManager = new WalletManager({
@@ -175,7 +173,15 @@ export async function run(
       chain: chainsDict[config.chain],
       privateKey: config.privateKey
     });
-    const receipt = await walletManager.sendTokens(tokenAddress, toAddress, amount);
+    const b_amount = BigInt(amount);
+    let receipt = await walletManager.sendTokens(contractAddress, toAddress, b_amount);
+    
+    receipt = JSON.parse(JSON.stringify(receipt, (key, value) =>
+            typeof value === 'bigint'
+                ? value.toString()
+                : value // return everything else unchanged
+        , 2));
+    
     return { receipt: {
       transactionHash: receipt.transactionHash,
       status: receipt.status,
@@ -184,7 +190,5 @@ export async function run(
       from: receipt.from,
       to: receipt.to ?? '',
     } };
-  } catch (error) {
-      throw new Error(TOKENSEND_ERROR, { cause: error });
-  }
-}
+};
+

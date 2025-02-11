@@ -1,0 +1,74 @@
+{
+  "name": "Wallet Balance Checker",
+  "author": "Shinkai",
+  "homePage": "",
+  "description": "Tool for checking the ETH and token balances of a specified wallet address.",
+  "version": "1.0.0",
+  "keywords": [
+    "wallet",
+    "balance",
+    "ETH",
+    "token"
+  ],
+  "configurations": {
+    "type": "object",
+    "properties": {
+      "rpcURL": {
+        "type": "string",
+        "description": "The RPC URL for the blockchain network."
+      },
+      "chain": {
+        "type": "string",
+        "description": "The blockchain network."
+      },
+      "privateKey": {
+        "type": "string",
+        "description": "The private key of the wallet."
+      }
+    },
+    "required": [
+      "rpcURL",
+      "chain",
+      "privateKey"
+    ]
+  },
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "address": {
+        "type": "string",
+        "description": "The wallet address to check the balance for."
+      }
+    },
+    "required": [
+      "address"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "ethBalance": {
+        "type": "string",
+        "description": "The ETH balance of the specified address."
+      },
+      "tokenBalance": {
+        "type": "string",
+        "description": "The token balance of the specified address."
+      }
+    },
+    "required": [
+      "ethBalance",
+      "tokenBalance"
+    ]
+  },
+  "sqlTables": [],
+  "sqlQueries": [],
+  "oauth": [],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": ""
+}

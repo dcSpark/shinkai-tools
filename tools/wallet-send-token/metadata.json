@@ -1,54 +1,61 @@
 {
-  "name": "WalletManager",
-  "description": "Manages operations related to a cryptocurrency wallet including sending tokens and checking balances.",
-  "author": "@@eduardosotomontaner.arb-sep-shinkai",
+  "name": "Send ERC20 Tokens",
+  "homePage": "",
+  "description": "Sends ERC20 tokens.",
+  "version": "1.0.0",
   "keywords": [
     "wallet",
-    "cryptocurrency",
     "tokens",
-    "ethereum"
+    "erc20",
+    "blockchain"
   ],
   "configurations": {
     "type": "object",
     "properties": {
-      "rpcUrl": {
-        "type": "string",
-        "description": "The RPC URL to connect to the blockchain"
-      },
       "chain": {
         "type": "string",
-        "description": "The blockchain chain to interact with"
+        "description": "The blockchain network",
+        "order": 1
       },
       "privateKey": {
         "type": "string",
-        "description": "The private key associated with the wallet"
+        "description": "The private key of the wallet",
+        "order": 2
+      },
+      "rpcURL": {
+        "type": "string",
+        "description": "The RPC URL of the blockchain",
+        "order": 3
       }
     },
     "required": [
-      "rpcUrl",
       "chain",
-      "privateKey"
+      "privateKey",
+      "rpcURL"
     ]
   },
   "parameters": {
     "type": "object",
     "properties": {
-      "to_address": {
+      "toAddress": {
         "type": "string",
-        "description": "The address to which tokens are sent"
+        "description": "The address to send tokens to",
+        "order": 1
       },
-      "tokenAddress": {
+      "contractAddress": {
         "type": "string",
-        "description": "The address of the token contract"
+        "description": "The contract address of the token",
+        "order": 2
       },
       "amount": {
-        "type": "string",
-        "description": "The amount of tokens to send"
+        "type": "number",
+        "description": "The amount of tokens to send",
+        "order": 3
       }
     },
     "required": [
-      "to_address",
-      "tokenAddress",
+      "toAddress",
+      "contractAddress",
       "amount"
     ]
   },
@@ -60,27 +67,33 @@
         "properties": {
           "transactionHash": {
             "type": "string",
-            "description": "The hash of the transaction"
+            "description": "Transaction hash of the executed transaction",
+            "order": 1
           },
           "status": {
             "type": "string",
-            "description": "The status of the transaction"
+            "description": "Status of the transaction",
+            "order": 2
           },
           "gasUsed": {
-            "type": "integer",
-            "description": "The amount of gas used for the transaction"
+            "type": "number",
+            "description": "Amount of gas used for the transaction",
+            "order": 3
           },
           "gasPrice": {
-            "type": "integer",
-            "description": "The gas price at which the transaction was executed"
+            "type": "number",
+            "description": "Gas price at the transaction time",
+            "order": 4
           },
           "from": {
             "type": "string",
-            "description": "The address of the sender"
+            "description": "Sender's address",
+            "order": 5
           },
           "to": {
             "type": "string",
-            "description": "The address of the receiver"
+            "description": "Receiver's address",
+            "order": 6
           }
         },
         "required": [
@@ -88,8 +101,7 @@
           "status",
           "gasUsed",
           "gasPrice",
-          "from",
-          "to"
+          "from"
         ]
       }
     },
@@ -99,6 +111,12 @@
   },
   "sqlTables": [],
   "sqlQueries": [],
-  "tools": [],
-  "oauth": []
+  "oauth": [],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": ""
 }

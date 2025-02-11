@@ -81,7 +81,7 @@
     ],
     "tool_set": "reddit",
     "tools": [
-        "local:::__official_shinkai:::reddit_scraper",
+        "local:::__official_shinkai:::reddit_scrape",
         "local:::__official_shinkai:::shinkai_llm_prompt_processor"
     ]
 }

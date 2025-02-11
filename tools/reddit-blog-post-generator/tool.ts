@@ -1,4 +1,4 @@
-import { shinkaiLlmPromptProcessor, redditScraper } from './shinkai-local-tools.ts'
+import { shinkaiLlmPromptProcessor, redditScrape } from './shinkai-local-tools.ts'
 
 type Configurations = {
   post_guidelines: string;
@@ -16,7 +16,7 @@ type Output = {
 }
 
 export const run = async (config: Configurations, inputs: Inputs) => {
-  const {subreddit} = await redditScraper({
+  const {subreddit} = await redditScrape({
     action: 'subreddit',
     subreddit: inputs.subreddit,
     get_by: inputs.get_by,
@@ -25,7 +25,7 @@ export const run = async (config: Configurations, inputs: Inputs) => {
   const posts = subreddit?.posts || [];
   const postContexts: string[] = []
   for (const post of posts.slice(0,4)) {
-    const postContext = await redditScraper({
+    const postContext = await redditScrape({
       action: 'post',
       post_url: post.url
     });

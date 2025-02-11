@@ -1,0 +1,75 @@
+{
+    "name": "Ghost Post Blog",
+    "homePage": "",
+    "description": "Creates an article in a Ghost CMS using Ghost Admin API.",
+    "operating_system": ["linux", "macos", "windows"],
+    "tool_set": "ghost-cms",
+    "version": "1.0.0",
+    "runner": "any",
+    "author": "Shinkai",
+    "keywords": [
+        "ghost",
+        "api",
+        "article",
+        "cms"
+    ],
+    "configurations": {
+        "type": "object",
+        "properties": {
+            "apiKey": {
+                "type": "string",
+                "description": "The API key for Ghost Admin API."
+            },
+            "ghostUrl": {
+                "type": "string",
+                "description": "The URL for the Ghost Admin API."
+            }
+        },
+        "required": [
+            "apiKey",
+            "ghostUrl"
+        ]
+    },
+    "parameters": {
+        "type": "object",
+        "properties": {
+            "title": {
+                "type": "string",
+                "description": "The title of the article."
+            },
+            "body": {
+                "type": "string",
+                "description": "The body content of the article."
+            },
+            "publish": {
+                "type": "boolean",
+                "description": "Whether to publish the article."
+            }
+        },
+        "required": [
+            "title",
+            "body"
+        ]
+    },
+    "result": {
+        "type": "object",
+        "properties": {
+            "id": {
+                "type": "string",
+                "description": "The ID of the created article."
+            },
+            "url": {
+                "type": "string",
+                "description": "The URL of the created article."
+            }
+        },
+        "required": [
+            "id",
+            "url"
+        ]
+    },
+    "tools": [],
+    "sqlTables": [],
+    "sqlQueries": [],
+    "oauth": []
+}

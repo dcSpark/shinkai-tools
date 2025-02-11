@@ -11,7 +11,10 @@
       "post",
       "social media"
     ],
-    "configurations": {
+    "runner": "any",
+  "operating_system": ["linux", "macos", "windows"],
+  "tool_set": "",
+  "configurations": {
       "type": "object",
       "properties": {},
       "required": []
@@ -22,6 +25,10 @@
         "text": {
           "type": "string",
           "description": "Message to post"
+        },
+        "imagePath": {
+          "type": "string",
+          "description": "Path to the image to post"
         }
       },
       "required": []

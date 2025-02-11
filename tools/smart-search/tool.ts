@@ -1,4 +1,10 @@
-import { googleSearch, shinkaiLlmPromptProcessor, downloadPages } from './shinkai-local-tools.ts';
+import {
+  googleSearch,
+  duckduckgoSearch,
+  shinkaiLlmPromptProcessor,
+  shinkaiLlmMapReduceProcessor,
+  downloadPages,
+} from './shinkai-local-tools.ts';
 
 type CONFIG = {
   searchEngineApiKey?: string;
@@ -13,7 +19,7 @@ type OUTPUT =  {
   sources: SmartSearchSourcePage[];
   statements: SmartSearchStatement[];
 }
-type PREFFERED_SOURCES = 'WIKIPEDIA'|'WOLFRAMALPHA'|'OTHER';
+type PREFFERED_SOURCES = 'WIKIPEDIA'|'WEB_SEARCH';
 
 type SearchQueryConversion = {
   "origin_question": string;
@@ -28,7 +34,7 @@ type SearchResult = {
 }
 
 type SmartSearchSource = SearchResult | string;
-type SearchEngine = 'DUCKDUCKGO' | 'GOOGLE' | 'BRAVE';
+export type SearchEngine = 'DUCKDUCKGO' | 'GOOGLE' | 'BRAVE';
 
 export interface SmartSearchSourcePage {
   id: number;
@@ -169,9 +175,8 @@ const searchEngineQueryGenerator = (query: string) => {
 You are an expert at transforming natural language questions into precise search queries and selecting the most appropriate information source.
 
 ## Source Selection Guidelines:
+- WEB_SEARCH: General web search for current events, recent developments, practical information
 - WIKIPEDIA: Best for general knowledge, scientific explanations, historical information
-- WOLFRAMALPHA: Ideal for mathematical, statistical, computational queries, scientific calculations
-- OTHER: General web search for current events, recent developments, practical information
 
 ## Output Requirements:
 - Provide a JSON response with three key fields
@@ -182,15 +187,6 @@ You are an expert at transforming natural language questions into precise search
 ## Examples:
 
 ### Example 1
-- User Query: "What is the speed of light?"
-- Output:
-{
-"origin_question": "What is the speed of light?",
-"preferred_sources": ["WOLFRAMALPHA"],
-"search_query": "speed of light exact value meters per second"
-}
-
-### Example 2
 - User Query: "Who was Marie Curie?"
 - Output:
 {
@@ -199,21 +195,21 @@ You are an expert at transforming natural language questions into precise search
 "search_query": "Marie Curie biography scientific achievements"
 }
 
-### Example 3
+### Example 2
 - User Query: "Best restaurants in New York City"
 - Output:
 {
 "origin_question": "Best restaurants in New York City",
-"preferred_sources": ["OTHER"],
+"preferred_sources": ["WEB_SEARCH"],
 "search_query": "top rated restaurants NYC 2024 dining"
 }
 
-### Example 4
+### Example 3
 - User Query: "How do solar panels work?"
 - Output:
 {
 "origin_question": "How do solar panels work?",
-"preferred_sources": ["WIKIPEDIA", "OTHER"],
+"preferred_sources": ["WIKIPEDIA", "WEB_SEARCH"],
 "search_query": "solar panel photovoltaic technology mechanism"
 }
 
@@ -222,6 +218,8 @@ You are an expert at transforming natural language questions into precise search
 - Select the MOST APPROPRIATE source(s)
 - Create a targeted search query
 - Return ONLY the JSON without additional text
+- Regarding things like new technologies like blockchain or artifical intelligence or recent scientific discoveries you should always use WEB_SEARCH
+- Regarding things like historical events or consolidated scientific knowledge you should always use WIKIPEDIA
 
 User Query: ${query}
 `
@@ -229,22 +227,20 @@ User Query: ${query}
 }
 
 const statementExtract = (originalQuestion: string, source: SmartSearchSourcePage): string => `
+You're an expert at extracting facts from a source page. It has been commended to you to extract facts from the source page that are helpful to answer the original question.
+Original Question: ${originalQuestion}
+You will be given a source with the following fields:
+- id: number - Unique identifier for the source
+- url: string - URL of the source page
+- title: string - Title of the source page
+- markdown: string - Full text content of the source page
+
+${JSON.stringify(source)}
 
 # Fact Extraction Instructions
 
-## Input JSON Structure
-\`\`\`json
-{
-  "originalQuestion": "string - The user's original question",
-  "source": {
-    "id": "number - Unique identifier for the source",
-    "url": "string - URL of the source page",
-    "title": "string - Title of the source page",
-    "markdown": "string - Full text content of the source page"
-  }
-}
-\`\`\`
-
+You will be given the contents of the provided source page. Your job is to extract the facts that are helpful to answer the original question.
+Please format the facts that will be extracted in an array of objects with the following JSON structure.
 ## Output JSON Structure
 \`\`\`json
 {
@@ -285,17 +281,17 @@ const statementExtract = (originalQuestion: string, source: SmartSearchSourcePag
   - Completely unrelated information
 
 
-  ## Extraction Guidelines:
-  1. Read the entire source document carefully
-  2. Extract EXACT quotes that:
-     - Are actually helpful answering the provided question
-     - Are stated verbatim from the source or are rephrased in such a way that doesn't distort the meaning in the original source
-     - Represent complete thoughts or meaningful segments
-  3. Classify each extracted fact with its relevance level
-  4. Preserve original context and nuance
+## Extraction Guidelines:
+1. Read the entire source document carefully
+2. Extract EXACT quotes that:
+  - Are actually helpful answering the provided question
+  - Are stated verbatim from the source or are rephrased in such a way that doesn't distort the meaning in the original source
+  - Represent complete thoughts or meaningful segments
+3. Classify each extracted fact with its relevance level
+4. Preserve original context and nuance
 
 ## Critical Rules:
-- try NOT to paraphrase or modify the original text
+- try NOT to paraphrase or modify the original text. If you can't find a direct quote or you think the found quote is too long, you can paraphrase it.
 - Avoid any text in the "statement" field that is not helpful answering the provided question like javascript, URLs, HTML, and other non-textual content
 - Extract statements as they appear in the source and ONLY if they are helpful answering the provided question
 - Include full sentences or meaningful text segments
@@ -308,16 +304,14 @@ const statementExtract = (originalQuestion: string, source: SmartSearchSourcePag
 - Be comprehensive in fact extraction
 - Err on the side of inclusion when in doubt
 - Focus on factual, informative statements
-
-==BEGIN INPUT==
-Original Question: ${originalQuestion}
-
-Source:
-${JSON.stringify(source)}
-==END INPUT==
-
 `
 const debug = []
+const randomTimeout = () => {
+  const random = (1000 + Math.random() * 2000)|0;
+  console.log(`Waiting for ${random}ms`)
+  return new Promise(resolve => setTimeout(resolve, random));
+}
+
 function tryToExtractJSON(text: string): string {
   const regex = /```(?:json)?\n([\s\S]+?)\n```/;
   const match = text.match(regex);
@@ -335,6 +329,10 @@ async function conversionToSearchQuery(question: string): Promise<SearchQueryCon
     const result = JSON.parse(optimizedQueryResult.message.trim()) as SearchQueryConversion;
     return result;
   } catch (error) {
+    console.error(error)
+    if (typeof error === 'object') {
+      console.log(JSON.stringify(error, null, 2))
+    }
     throw new Error(ProcessQuestionError('question processing in optimizequery', new Error(String(error))));
   }
 }
@@ -350,8 +348,11 @@ async function extractSourcesFromSearchEngine(
 			const results = await googleSearch({ query: searchQuery });
 			return results.results;
 		}
-    case 'DUCKDUCKGO':
-      throw new Error('DuckDuckGo is not supported yet');
+    case 'DUCKDUCKGO': {
+      const results = await duckduckgoSearch({ message: searchQuery });
+      if (results.message) return JSON.parse(results.message);
+      return [];
+    }
     case 'BRAVE': 
       throw new Error('Brave is not supported yet');
     default:
@@ -380,37 +381,58 @@ export async function run(
           const searchEngine = config.searchEngine || 'GOOGLE';
           const sourcesSearchResults: SearchResult[] = await extractSourcesFromSearchEngine(searchEngineQuery, searchEngine, config.searchEngineApiKey);
           try {
-            const maxSources = config.maxSources ?? 3;
-            sources.push(...(sourcesSearchResults.slice(0, Number(maxSources)) as SearchResult[]));
+            sources.push(...(sourcesSearchResults as SearchResult[]));
           } catch (error) {
             console.error('Failed to process search results', error);
             throw new Error('Failed to process search results');
           }
           break;
         }
-        case 'WOLFRAMALPHA':
-          throw new Error('WOLFRAMALPHA is not supported yet');
-        case 'OTHER':
+        case 'WEB_SEARCH': {
+          const searchEngineQuery = searchQuery.search_query.trim();
+          const searchEngine = config.searchEngine || 'GOOGLE';
+          const sourcesSearchResults: SearchResult[] = await extractSourcesFromSearchEngine(searchEngineQuery, searchEngine, config.searchEngineApiKey);
+          sources.push(...(sourcesSearchResults as SearchResult[]));
           break;
+        }
         default:
           throw new Error('Invalid source');
       }
     }
     const smartSearchSouces: SmartSearchSourcePage[] = []
     let id = 1;
-    for (const source of sources) {
+    while (smartSearchSouces.length < Number(config.maxSources ?? 3)) {
+      const source = sources.shift();
+      if (!source) break;
       if (typeof source === 'string') throw new Error('Invalid source');
-      const searchResult = await downloadPages({ url: source.url });
-      smartSearchSouces.push({
-        id: id++, url: source.url, title: source.title,
-        markdown: searchResult.markdown ?? '',
-      });
+      console.log('+++++++++');
+      console.log(`${id} Downloading source ${source.url}`)
+      console.log('+++++++++');
+      try {
+        const searchResult = await downloadPages({ url: source.url });
+        smartSearchSouces.push({
+          id: id, url: source.url, title: source.title,
+          markdown: searchResult.markdown ?? '',
+        });
+      } catch (error) {
+        console.error('Failed to process source', source.url, error);
+      }
+      id++;
+      await randomTimeout();
     }
+    console.log('Finished downloading sources');
     const statements: SmartSearchStatement[] = []
     // Step 3: Extract statements from sources
     for (const smartSearchSource of smartSearchSouces) {
-      const statementString = await shinkaiLlmPromptProcessor({ format: 'text', prompt: statementExtract(question, smartSearchSource) });
-      const cleanStatementString = tryToExtractJSON(statementString.message)
+      // TODO use map reduce to extract statements
+      const source = smartSearchSource.markdown;
+      const sourceData = {
+        title: smartSearchSource.title,
+        url: smartSearchSource.url,
+        id: smartSearchSource.id,
+      }
+      const statementString = await shinkaiLlmMapReduceProcessor({ prompt: statementExtract(question, sourceData), data: source as string });
+      const cleanStatementString = tryToExtractJSON(statementString.response)
       try { 
         const statement = JSON.parse(cleanStatementString) as SmartSearchStatement;
         statements.push(statement);

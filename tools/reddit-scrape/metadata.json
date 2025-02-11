@@ -1,0 +1,93 @@
+{
+    "name": "Reddit Scrape",
+    "homePage": "",
+    "author": "Shinkai",
+    "description": "A tool to scrape Reddit content using Puppeteer. Pass action as 'subreddit' to scrape a subreddit or 'post' to scrape a post. Pass the \"subreddit\" name or \"post_url\" as a string. Pass \"get_by\" as 'hot', 'new', 'top', or 'rising'. Pass \"top_time\" as 'day', 'week', 'month', 'year', or 'all'.",
+    "version": "1.0.0",
+    "keywords": [
+      "Reddit",
+      "Scraping"
+    ],
+    "configurations": {
+      "type": "object",
+      "properties": {
+        "chromePath": {
+          "type": "string",
+          "description": "The path to the Chrome executable"
+        }
+      },
+      "required": [
+      ]
+    },
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "action": {
+          "type": "string",
+          "enum": [
+            "subreddit",
+            "post"
+          ],
+          "description": "The action to perform (subreddit or post)"
+        },
+        "subreddit": {
+          "type": "string",
+          "description": "The subreddit to scrape. Required if action is 'subreddit'"
+        },
+        "get_by": {
+          "type": "string",
+          "enum": [
+            "hot",
+            "new",
+            "top",
+            "rising"
+          ],
+          "description": "The way to get the posts (hot, new, top, rising)"
+        },
+        "top_time": {
+          "type": "string",
+          "enum": [
+            "day",
+            "week",
+            "month",
+            "year",
+            "all"
+          ],
+          "description": "The time period for the top posts"
+        },
+        "post_url": {
+          "type": "string",
+          "description": "The URL of the post to scrape. Required if action is 'post'"
+        }
+      },
+      "required": [
+        "action"
+      ]
+    },
+    "result": {
+      "type": "object",
+      "properties": {
+        "subreddit": {
+          "type": "object",
+          "description": "The scraped subreddit"
+        },
+        "post": {
+          "type": "object",
+          "description": "The scraped post"
+        }
+      },
+      "required": [
+        "subreddit",
+        "post"
+      ]
+    },
+    "sqlTables": [],
+    "sqlQueries": [],
+    "oauth": [],
+    "runner": "any",
+    "operating_system": [
+      "macos",
+      "windows"
+    ],
+    "tool_set": "reddit"
+  }

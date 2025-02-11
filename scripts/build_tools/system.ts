@@ -4,9 +4,11 @@ export const author = "@@official.shinkai";
 
 export const systemTools = [
     "local:::__official_shinkai:::shinkai_llm_prompt_processor",
+    "local:::__official_shinkai:::shinkai_llm_map_reduce_processor",
     "local:::__official_shinkai:::shinkai_sqlite_query_executor",
     "local:::__official_shinkai:::shinkai_process_embeddings",
     "local:::__official_shinkai:::shinkai_tool_config_updater",
+    "local:::__official_shinkai:::shinkai_typescript_unsafe_processor",
   ];
 
 export function generateToolRouterKey(author: string, name: string): string {

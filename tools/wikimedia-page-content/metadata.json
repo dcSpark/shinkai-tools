@@ -1,0 +1,61 @@
+{
+  "id": "wikimedia-page-content",
+  "version": "1.0.0",
+  "name": "Wikimedia Page Content",
+  "description": "Fetch the full HTML content of a specific Wikimedia page",
+  "author": "Shinkai",
+  "keywords": [
+    "wikimedia",
+    "content",
+    "wikipedia",
+    "page",
+    "html",
+    "article"
+  ],
+  "runner": "any",
+  "operating_system": ["linux", "macos", "windows"],
+  "tool_set": "",
+  "configurations": {
+    "type": "object",
+    "properties": {
+      "project": {
+        "type": "string",
+        "description": "Wikimedia project (e.g., wikipedia)",
+        "default": "wikipedia"
+      },
+      "language": {
+        "type": "string",
+        "description": "Language code (e.g., en)",
+        "default": "en"
+      }
+    },
+    "required": []
+  },
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "title": {
+        "type": "string",
+        "description": "Title of the page to fetch"
+      }
+    },
+    "required": ["title"]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "content": {
+        "type": "object",
+        "properties": {
+          "title": {"type": "string"},
+          "html": {"type": "string"},
+          "url": {"type": "string"},
+          "lastModified": {"type": "string"},
+          "language": {"type": "string"}
+        },
+        "required": ["title", "html", "url", "lastModified", "language"]
+      }
+    },
+    "required": ["content"]
+  }
+}

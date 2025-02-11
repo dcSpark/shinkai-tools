@@ -1,0 +1,52 @@
+{
+  "id": "arxiv-download",
+  "name": "arxiv-download",
+  "version": "1.0.0",
+  "description": "Download an arXiv paper PDF and optionally convert it to Markdown",
+  "author": "Shinkai",
+  "keywords": [
+    "arxiv",
+    "pdf",
+    "download",
+    "markdown",
+    "research",
+    "paper"
+  ],
+  "runner": "any",
+  "operating_system": ["linux", "macos", "windows"],
+  "tool_set": "",
+  "configurations": {
+    "type": "object",
+    "properties": {
+      "storage_folder": {
+        "type": "string",
+        "description": "Where to store PDFs/MD outputs",
+        "default": "arxiv_papers"
+      }
+    }
+  },
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "paper_id": {
+        "type": "string",
+        "description": "ArXiv paper ID to download"
+      },
+      "convert_to_md": {
+        "type": "boolean",
+        "description": "Whether to convert the downloaded PDF to .md",
+        "default": true
+      }
+    },
+    "required": ["paper_id"]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "status": { "type": "string" },
+      "message": { "type": "string" },
+      "md_file": { "type": "string" }
+    },
+    "required": ["status", "message"]
+  }
+} 

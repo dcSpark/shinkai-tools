@@ -1,4 +1,4 @@
-import { assertEquals } from "jsr:@std/assert";
+import { assertEquals, equal } from "jsr:@std/assert";
 import { getMetadata, processToolsDirectory, saveToolsInNode } from "./build_tools/save_tools.ts";
 import { join } from "https://deno.land/std/path/mod.ts";
 import { exists } from "https://deno.land/std/fs/mod.ts";
@@ -53,9 +53,21 @@ Deno.test("Compare shinkai-node generated ZIP __tool.json vs .tool-dump.test.jso
     // Embeddings might change.
     zipToolData.content[0].embedding = [];
     toolDumpData.content[0].embedding = [];
-    assertEquals(zipToolData, toolDumpData);
+
+    // Enable flag to update reference files
+    // copy the unzipped __tool.json to the tool directory as .tool-dump.test.json
+    if (Deno.env.get("UPDATE_DUMP_FILES")) {
+      if (!equal(zipToolData, toolDumpData)) {
+        console.log('Updating reference file:', entryx.name);
+        await Deno.copyFile(join(zipDir, "__tool.json"), join(toolDir, ".tool-dump.test.json"));
+      }
+    } else {
+      assertEquals(zipToolData, toolDumpData);
+    }
   }
-    
 });
 
 
+// Deno.test("Check if memory is working", async () => {
+//   await memoryTest();
+// });

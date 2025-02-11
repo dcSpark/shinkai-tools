@@ -1,0 +1,87 @@
+{
+    "name": "Reddit Blog Post Generator",
+    "author": "Shinkai",
+    "homePage": "",
+    "description": "Generates a blog post about Reddit posts based on user input.",
+    "version": "1.0.0",
+    "keywords": [
+        "Reddit",
+        "Blog Post Generator"
+    ],
+    "configurations": {
+        "type": "object",
+        "properties": {
+            "post_guidelines": {
+                "type": "string",
+                "description": "The guidelines for the blog post like structure, tone, etc"
+            }
+        },
+        "required": [
+            "post_guidelines"
+        ]
+    },
+    "parameters": {
+        "type": "object",
+        "properties": {
+            "subreddit": {
+                "type": "string",
+                "description": "The subreddit name to scrape posts from"
+            },
+            "get_by": {
+                "description": "The method to sort and retrieve Reddit posts",
+                "type": "string",
+                "enum": [
+                    "hot",
+                    "new",
+                    "top",
+                    "rising"
+                ]
+            },
+            "top_time": {
+                "description": "The time period to filter top posts when get_by is set to 'top'",
+                "type": "string",
+                "enum": [
+                    "day",
+                    "week",
+                    "month",
+                    "year",
+                    "all"
+                ]
+            }
+        },
+        "required": [
+            "subreddit"
+        ]
+    },
+    "result": {
+        "type": "object",
+        "properties": {
+            "post_title": {
+                "type": "string",
+                "description": "The generated title for the blog post"
+            },
+            "post_content": {
+                "type": "string",
+                "description": "The generated content/body of the blog post"
+            }
+        },
+        "required": [
+            "post_title",
+            "post_content"
+        ]
+    },
+    "sqlTables": [],
+    "sqlQueries": [],
+    "oauth": [],
+    "runner": "any",
+    "operating_system": [
+        "linux",
+        "macos",
+        "windows"
+    ],
+    "tool_set": "reddit",
+    "tools": [
+        "local:::__official_shinkai:::reddit_scrape",
+        "local:::__official_shinkai:::shinkai_llm_prompt_processor"
+    ]
+}

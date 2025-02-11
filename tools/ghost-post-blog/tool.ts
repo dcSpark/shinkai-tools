@@ -35,18 +35,14 @@ const getApi = (API_URL: string, API_KEY: string) => {
     title: string,
     body: string
   ): Promise<{ id: string; url: string }> {
-    const children = body.split(/\n+/).map(line => ({
-      "type":"markdown",
-      "version":1,
-      "markdown":line
-    }));
     const lexical = {
       "root":{
-        "children":children,
+        "children":[
+          {"type":"markdown","version":1,"markdown":body.replace(/\\n/g,'\n')}
+        ],
         "direction":null,
         "format":"",
-        "indent":0,
-        "version":1
+        "indent":0,"type":"root","version":1
       }
     }
     try {

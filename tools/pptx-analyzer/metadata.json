@@ -13,6 +13,7 @@
     "file processing"
   ],
   "name": "PPTX File Processor",
+  "author": "Shinkai",
   "oauth": [],
   "operating_system": [
     "linux",

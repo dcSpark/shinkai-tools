@@ -1,0 +1,125 @@
+{
+    "name": "Deep Research Engine",
+    "homepage": "https://github.com/dcSpark/shinkai-tools/blob/main/tools/deepresearch-engine/README.md",
+    "description": "This function takes a question as input and returns a comprehensive answer, along with the sources and statements used to generate the answer.",
+    "author": "Shinkai",
+    "version": "1.0.0",
+    "keywords": [
+      "search",
+      "answer generation",
+      "fact extraction",
+      "wikipedia",
+      "google"
+    ],
+    "runner": "any",
+    "operating_system": [
+      "linux",
+      "macos",
+      "windows"
+    ],
+    "tool_set": "",
+    "configurations": {
+      "type": "object",
+      "properties": {
+        "searchEngine": {
+          "type": "string",
+          "description": "The search engine to use",
+          "default": "google"
+        },
+        "searchEngineApiKey": {
+          "type": "string",
+          "description": "The API key for the search engine",
+          "default": ""
+        },
+        "maxSources": {
+          "type": "number",
+          "description": "The maximum number of sources to return",
+          "default": 10
+        }
+      },
+      "required": []
+    },
+    "parameters": {
+      "properties": {
+        "question": {
+          "description": "The question to answer",
+          "type": "string"
+        }
+      },
+      "required": [
+        "question"
+      ],
+      "type": "object"
+    },
+    "result": {
+      "properties": {
+        "response": {
+          "description": "The generated answer",
+          "type": "string"
+        },
+        "sources": {
+          "description": "The sources used to generate the answer",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "number"
+              },
+              "url": {
+                "type": "string"
+              },
+              "title": {
+                "type": "string"
+              }
+            }
+          },
+          "type": "array"
+        },
+        "statements": {
+          "description": "The statements extracted from the sources",
+          "items": {
+            "type": "object",
+            "properties": {
+              "sourceId": {
+                "type": "number"
+              },
+              "sourceTitle": {
+                "type": "string"
+              },
+              "extractedFacts": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "statement": {
+                      "type": "string"
+                    },
+                    "relevance": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "response",
+        "sources",
+        "statements"
+      ],
+      "type": "object"
+    },
+    "sqlTables": [],
+    "sqlQueries": [],
+    "tools": [
+      "local:::__official_shinkai:::google_search",
+      "local:::__official_shinkai:::duckduckgo_search",
+      "local:::__official_shinkai:::shinkai_llm_prompt_processor",
+      "local:::__official_shinkai:::shinkai_llm_map_reduce_processor",
+      "local:::__official_shinkai:::download_pages",
+      "local:::__official_shinkai:::shinkai_sqlite_query_executor"
+    ]
+  }

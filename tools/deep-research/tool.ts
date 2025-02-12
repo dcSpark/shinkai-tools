@@ -70,7 +70,7 @@ import {
   type SessionState = 'new' | 'feedback' | `stage-${number}` | 'finished';
   
   interface Session {
-    id: number;
+    session_uuid: string;
     question: string;
     state: SessionState;
     depth: number;
@@ -432,7 +432,7 @@ import {
         .replace('###REPLACE-D###', JSON.stringify(source));
     }
   
-    private async randomTimeout() {
+    private randomTimeout(): Promise<void> {
       const random = (1000 + Math.random() * 2000) | 0;
       console.log(`Waiting for ${random}ms`)
       return new Promise(resolve => setTimeout(resolve, random));
@@ -530,14 +530,11 @@ import {
       Logger.log('Enhancing search query');
       const enhancedQuestion = await shinkaiLlmPromptProcessor({
         format: 'text',
-        prompt: `Combine this question: "${session.question}" with the following context:
-                  ${JSON.stringify(contextResult.result)}
-                  
-                  ${previousSearchContext ? `Consider these previous search results:` : ''}
-                  ${previousSearchContext}
-                  
-                  Create a detailed search query that incorporates all this information and explores new aspects 
-                  not covered in previous results.`
+        prompt: await enhancedQueryGenerator(
+          session.question,
+          JSON.stringify(contextResult.result),
+          previousSearchContext
+        )
       });
       Logger.log(`Enhanced query: ${enhancedQuestion.message}`);
   
@@ -553,9 +550,7 @@ import {
         await db.updateSessionState(session.session_uuid, `stage-${currentStage + 1}`);
   
         Logger.log('Analyzing for additional topics');
-        const topicsPrompt = `Based on these search results, what additional topics should we explore to enhance our understanding? Format response as JSON array of topics.
-                  ${searchResult.response}`;
-  
+        const topicsPrompt = await topicsGenerator(searchResult.response);
         const topicsResponse = await shinkaiLlmPromptProcessor({
           format: 'text',
           prompt: topicsPrompt
@@ -572,11 +567,13 @@ import {
   
         Logger.log('Combining all results');
         const allResults = await db.readAllSessionResults(session.session_uuid);
+        const finalPrompt = await finalResponseGenerator(
+          allResults.result.map((r: { response: string }) => r.response).join('\n\n')
+        );
   
         const finalResponse = await shinkaiLlmPromptProcessor({
           format: 'text',
-          prompt: `Synthesize these search results into a comprehensive answer:
-                      ${allResults.result.map((r: { response: string }) => r.response).join('\n\n')}`
+          prompt: finalPrompt
         });
         Logger.log(`Generated final response`);
   
@@ -595,4 +592,45 @@ import {
   // Add this helper function at the top level
   function getTimestamp(): string {
     return new Date().toISOString();
+  }
+  
+  // Add these new methods
+  async function topicsGenerator(searchResults: string): Promise<string> {
+    const assets = await getAssetPaths();
+    const topicsGeneratorPath = assets.find(asset => asset.endsWith('topics_generator.txt'));
+    if (!topicsGeneratorPath) {
+      throw new Error('Topics generator asset not found');
+    }
+    return Deno
+      .readTextFileSync(topicsGeneratorPath)
+      .replace('###REPLACE-F###', searchResults);
+  }
+  
+  async function finalResponseGenerator(results: string): Promise<string> {
+    const assets = await getAssetPaths();
+    const finalResponseGeneratorPath = assets.find(asset => asset.endsWith('final_response_generator.txt'));
+    if (!finalResponseGeneratorPath) {
+      throw new Error('Final response generator asset not found');
+    }
+    return Deno
+      .readTextFileSync(finalResponseGeneratorPath)
+      .replace('###REPLACE-G###', results);
+  }
+  async function enhancedQueryGenerator(
+    question: string,
+    context: string,
+    previousResults: string
+  ): Promise<string> {
+    const assets = await getAssetPaths();
+    const enhancedQueryGeneratorPath = assets.find(asset => asset.endsWith('enhanced_query_generator.txt'));
+    if (!enhancedQueryGeneratorPath) {
+      throw new Error('Enhanced query generator asset not found');
+    }
+  
+    return Deno
+      .readTextFileSync(enhancedQueryGeneratorPath)
+      .replace('###REPLACE-H###', question)
+      .replace('###REPLACE-I###', context)
+      .replace('###REPLACE-J###', previousResults ? '' : '// ')
+      .replace('###REPLACE-K###', previousResults || '');
   }

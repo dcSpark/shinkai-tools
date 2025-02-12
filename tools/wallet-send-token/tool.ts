@@ -3,7 +3,6 @@ import {
   createPublicClient, 
   createWalletClient,
   http,
-  formatEther,
   type Address,
   type PublicClient,
   type WalletClient,
@@ -14,30 +13,17 @@ import {
 } from 'npm:viem'
 import { privateKeyToAccount, type PrivateKeyAccount } from 'npm:viem/accounts'
 
-import { arbitrumSepolia, arbitrumNova, base, baseSepolia } from 'npm:viem/chains'
-
-interface WalletConfig {
-  rpcUrl: string;
-  chain: Chain;
-  privateKey: Hex;
-}
-
-const chainsDict = {
-  ARBITRUM_SEPOLIA : arbitrumSepolia,
-  ARBITRUM_NOVA : arbitrumNova,
-  BASE : base,
-  BASE_SEPOLIA : baseSepolia,
-}
+import * as chains from 'npm:viem/chains'
 
 interface CONFIG {
-  chain: keyof typeof chainsDict;
   privateKey: `0x${string}`;
-  rpcURL: string;
 }
 
 type INPUTS = {
-  toAddress: `0x${string}`;
+  rpcURL: string;
+  chain: keyof typeof chains;
   contractAddress: `0x${string}`;
+  toAddress: `0x${string}`;
   amount: number;
 }
 
@@ -55,49 +41,24 @@ type OUTPUT = {
 
 export class WalletManager {
   private publicClient: PublicClient;
-  private walletAddress: Address;
-  private chain: Chain;
+  private walletClient: WalletClient;
   private account: PrivateKeyAccount;
-
-  constructor({ rpcUrl, chain, privateKey }: WalletConfig) {
+  private chain: Chain;
+  private walletAddress: Address;
+  
+  constructor(privateKey: Hex, chain: Chain, rpcURL: string | undefined) {
     this.account = privateKeyToAccount(privateKey);
     this.walletAddress = this.account.address;
     this.chain = chain;
     this.publicClient = createPublicClient({
       chain,
-      transport: http(rpcUrl)
+      transport: http(rpcURL)
     });
-  }
-
-  private createWalletClient(): WalletClient {
-    return createWalletClient({
+    this.walletClient = createWalletClient({
       chain: this.chain,
-      transport: http(), // Use same RPC URL
+      transport: http(this.publicClient.transport.url), // Use same RPC URL
       account: this.account
     });
-  }
-
-  async getETHBalance(walletAddress: Address=this.walletAddress): Promise<string> {
-    const balance = await this.publicClient.getBalance({ address: walletAddress });
-    return formatEther(balance);
-  }
-
-  async getTokenBalance(contractAddress: Address, walletAddress: Address=this.walletAddress): Promise<string> {
-    const [balance, decimals] = await Promise.all([
-      this.publicClient.readContract({
-        address: contractAddress,
-        abi: erc20Abi,
-        functionName: 'balanceOf',
-        args: [walletAddress]
-      }),
-      this.publicClient.readContract({
-        address: contractAddress,
-        abi: erc20Abi,
-        functionName: 'decimals'
-      })
-    ]);
-
-    return (balance / 10n ** BigInt(decimals)).toString();
   }
 
   private async getTokenValue(contractAddress: Address, amount: string | number | bigint): Promise<bigint> {
@@ -108,28 +69,13 @@ export class WalletManager {
     });
     return BigInt(amount) * (10n ** BigInt(decimals));
   }
-
-  async estimateGas(
-    contractAddress: Address, 
-    toAddress: Address, 
-    amount: string | number | bigint
-  ): Promise<bigint> {
-    const value = await this.getTokenValue(contractAddress, amount);
-    return await this.publicClient.estimateContractGas({
-      address: contractAddress,
-      abi: erc20Abi,
-      functionName: 'transfer',
-      args: [toAddress, value],
-      account: this.account.address
-    });
-  }
+  
   async sendTokens(
     contractAddress: Address,
     toAddress: Address,
-    amount: bigint
+    amount: string,
   ): Promise<TransactionReceipt> {
     const value = await this.getTokenValue(contractAddress, amount);
-    const walletClient = this.createWalletClient();
     const { request } = await this.publicClient.simulateContract({
         address: contractAddress,
         abi: erc20Abi,
@@ -137,25 +83,7 @@ export class WalletManager {
         args: [toAddress, value],
         account: this.account
     });
-    console.log("Simulation");
-    console.log(JSON.stringify(request, (key, value) =>
-            typeof value === 'bigint'
-                ? value.toString()
-                : value
-        , 2));
-    const hash = await walletClient.writeContract(request);
-    
-    /*{
-      to: contractAddress,
-      account: this.walletAddress,
-      abi: erc20Abi,
-      chain: this.chain,
-      gas: gasEstimate,
-      data,
-    });*/
-   // const hash = await this.publicClient.sendRawTransaction({
-    //  serializedTransaction: tx
-    //});
+    const hash = await this.walletClient.writeContract(request);
     return await this.publicClient.waitForTransactionReceipt({ hash });
   }
 }
@@ -164,31 +92,47 @@ export async function run(
   config: CONFIG,
   inputs: INPUTS
 ): Promise<OUTPUT> {
-    const { contractAddress, toAddress, amount } = inputs;
+    const { privateKey } = config;
+    if (!privateKey) {
+      throw new Error('Private key is required in config');
+    }
+    const { chain, rpcURL, contractAddress, toAddress, amount } = inputs;
     if (!contractAddress || !toAddress || !amount) {
       throw new Error('Token address, to address, and amount are required in inputs');
     }
-    const walletManager = new WalletManager({
-      rpcUrl: config.rpcURL,
-      chain: chainsDict[config.chain],
-      privateKey: config.privateKey
-    });
-    const b_amount = BigInt(amount);
-    let receipt = await walletManager.sendTokens(contractAddress, toAddress, b_amount);
+
+    let selectedChain: Chain = chains.baseSepolia;
     
-    receipt = JSON.parse(JSON.stringify(receipt, (key, value) =>
+    if (chain) {
+      selectedChain = chains[chain as keyof typeof chains] as Chain;
+      if (!selectedChain) {
+        throw new Error(`Chain ${chain as string} not found`);
+      }
+    }
+    const walletManager = new WalletManager(
+      privateKey, selectedChain, rpcURL
+    );
+
+    let receipt = await walletManager.sendTokens(contractAddress, toAddress, String(amount));
+    
+    // Convert bigint to string, next step needs be a serialiable Json.
+    receipt = JSON.parse(JSON.stringify(receipt, (_, value) =>
             typeof value === 'bigint'
                 ? value.toString()
-                : value // return everything else unchanged
-        , 2));
+                : value
+    , 2));
     
-    return { receipt: {
-      transactionHash: receipt.transactionHash,
-      status: receipt.status,
-      gasUsed: receipt.gasUsed,
-      gasPrice: receipt.effectiveGasPrice,
-      from: receipt.from,
-      to: receipt.to ?? '',
-    } };
+    return { 
+      receipt: {
+        transactionHash: receipt.transactionHash,
+        status: receipt.status,
+        gasUsed: receipt.gasUsed,
+        gasPrice: receipt.effectiveGasPrice,
+        from: receipt.from,
+        to: receipt.to ?? '',
+      },
+      amount: amount,
+      chain: selectedChain.name,
+    };
 };
 

@@ -3,83 +3,66 @@ import {
   createWalletClient,
   http,
   formatEther,
-  encodeFunctionData,
   type Address,
   type PublicClient,
   type WalletClient,
   type Chain,
   type Hex,
-  type TransactionReceipt,
   erc20Abi
 } from 'npm:viem'
 import { privateKeyToAccount, type PrivateKeyAccount } from 'npm:viem/accounts'
 
-import { arbitrumSepolia, arbitrumNova, base, baseSepolia } from 'npm:viem/chains'
+import * as chains from 'npm:viem/chains'
 
-interface WalletConfig {
-  rpcUrl: string;
-  chain: Chain;
-  privateKey: Hex;
-}
-
-const chainsDict = {
-  ARBITRUM_SEPOLIA : arbitrumSepolia,
-  ARBITRUM_NOVA : arbitrumNova,
-  BASE : base,
-  BASE_SEPOLIA : baseSepolia,
-}
-
-interface CONFIG {
-  chain: keyof typeof chainsDict;
+type CONFIG = {
   privateKey: `0x${string}`;
-  rpcURL: string;
 }
 
 type INPUTS = {
-  address: `0x${string}`;
+  rpcURL: string;
+  chain: keyof typeof chains;
+  contractAddress: `0x${string}`;
 }
 
 type OUTPUT = {
   ethBalance: string;
-  tokenBalance: string;
+  tokenBalance: string | undefined;
 }
 
 export class WalletManager {
   private publicClient: PublicClient;
+  private walletClient: WalletClient;
   private account: PrivateKeyAccount;
   private chain: Chain;
   private walletAddress: Address;
-
-  constructor({ rpcUrl, chain, privateKey }: WalletConfig) {
+  
+  constructor(privateKey: Hex, chain: Chain, rpcURL: string | undefined) {
     this.account = privateKeyToAccount(privateKey);
     this.walletAddress = this.account.address;
     this.chain = chain;
     this.publicClient = createPublicClient({
       chain,
-      transport: http(rpcUrl)
+      transport: http(rpcURL)
     });
-  }
-
-  private createWalletClient(): WalletClient {
-    return createWalletClient({
+    this.walletClient = createWalletClient({
       chain: this.chain,
       transport: http(this.publicClient.transport.url), // Use same RPC URL
       account: this.account
     });
   }
 
-  async getETHBalance(walletAddress: Address=this.walletAddress): Promise<string> {
-    const balance = await this.publicClient.getBalance({ address: walletAddress });
+  async getETHBalance(): Promise<string> {
+    const balance = await this.publicClient.getBalance({ address: this.walletAddress });
     return formatEther(balance);
   }
 
-  async getTokenBalance(contractAddress: Address, walletAddress: Address=this.walletAddress): Promise<string> {
+  async getTokenBalance(contractAddress: Address): Promise<string> {
     const [balance, decimals] = await Promise.all([
       this.publicClient.readContract({
         address: contractAddress,
         abi: erc20Abi,
         functionName: 'balanceOf',
-        args: [walletAddress]
+        args: [this.walletAddress]
       }),
       this.publicClient.readContract({
         address: contractAddress,
@@ -92,26 +75,34 @@ export class WalletManager {
   }
 }
 
-const ETHBALANCE_ERROR = 'ETHBALANCE_ERROR';
-
 export async function run(
   config: CONFIG,
   inputs: INPUTS
 ): Promise<OUTPUT> {
-
-    const { address } = inputs;
-    const contractAddress = address;
-    if (! contractAddress) {
-      throw new Error('Address is required in inputs');
+    const { privateKey } = config;
+    if (!privateKey) {
+      throw new Error('Private key is required in config');
     }
+    const { chain, rpcURL, contractAddress } = inputs;
 
-    const walletManager = new WalletManager({
-      rpcUrl: config.rpcURL,
-      chain: chainsDict[config.chain],
-      privateKey: config.privateKey
-    });
+    let selectedChain: Chain = chains.baseSepolia;
+    
+    if (chain) {
+      selectedChain = chains[chain as keyof typeof chains] as Chain;
+      if (!selectedChain) {
+        throw new Error(`Chain ${chain as string} not found`);
+      }
+    }
+    const walletManager = new WalletManager(
+      privateKey, selectedChain, rpcURL
+    );
+
     const ethBalance = await walletManager.getETHBalance();
-    const tokenBalance = await walletManager.getTokenBalance(contractAddress);
+    
+    let tokenBalance: string | undefined;
+    if (contractAddress) {
+      tokenBalance = await walletManager.getTokenBalance(contractAddress);
+    }
+    
     return { ethBalance, tokenBalance };
-
 }

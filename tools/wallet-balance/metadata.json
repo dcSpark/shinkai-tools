@@ -1,47 +1,45 @@
 {
-  "name": "Wallet Balance Checker",
+  "name": "Wallet Balance",
   "author": "Shinkai",
   "homePage": "",
-  "description": "Tool for checking the ETH and token balances of a specified wallet address.",
+  "description": "Tool for checking the ETH and ERC20 tokens balances of a specified wallet address.",
   "version": "1.0.0",
   "keywords": [
     "wallet",
     "balance",
     "ETH",
+    "ERC20",
     "token"
   ],
   "configurations": {
     "type": "object",
     "properties": {
-      "rpcURL": {
-        "type": "string",
-        "description": "The RPC URL for the blockchain network."
-      },
-      "chain": {
-        "type": "string",
-        "description": "The blockchain network."
-      },
       "privateKey": {
         "type": "string",
         "description": "The private key of the wallet."
       }
     },
     "required": [
-      "rpcURL",
-      "chain",
       "privateKey"
     ]
   },
   "parameters": {
     "type": "object",
     "properties": {
-      "address": {
+      "contractAddress": {
         "type": "string",
-        "description": "The wallet address to check the balance for."
+        "description": "Token ERC20 Contract Address (0x1234...)"
+      },
+      "rpcURL": {
+        "type": "string",
+        "description": "Optional RPC URL for the blockchain network."
+      },
+      "chain": {
+        "type": "string",
+        "description": "Default: baseSepolia. Valid names from https://github.com/wevm/viem/blob/main/src/chains/index.ts"
       }
     },
     "required": [
-      "address"
     ]
   },
   "result": {
@@ -57,8 +55,7 @@
       }
     },
     "required": [
-      "ethBalance",
-      "tokenBalance"
+      "ethBalance"
     ]
   },
   "sqlTables": [],
@@ -70,5 +67,6 @@
     "macos",
     "windows"
   ],
-  "tool_set": ""
+  "tool_set": "",
+  "tools": []
 }

@@ -1,0 +1,111 @@
+{
+    "name": "Telegram Bot",
+    "author": "@@official.shinkai",
+    "configurations": {
+      "properties": {
+        "BOT_TOKEN": {
+          "description": "The token for the Telegram Bot",
+          "type": "string"
+        }
+      },
+      "required": [
+        "BOT_TOKEN"
+      ],
+      "type": "object"
+    },
+    "description": "Manages a Telegram bot to fetch messages and respond to users based on chat history.",
+    "homepage": null,
+    "keywords": [
+      "telegram",
+      "bot",
+      "chat",
+      "sqlite"
+    ],
+    "oauth": [],
+    "operating_system": [
+      "linux",
+      "macos",
+      "windows"
+    ],
+    "parameters": {
+      "properties": {},
+      "required": [],
+      "type": "object"
+    },
+    "result": {
+      "properties": {
+        "messages": {
+          "items": {
+            "properties": {
+              "chatId": {
+                "description": "The ID of the chat",
+                "type": "number"
+              },
+              "date": {
+                "description": "The date and time the message was sent",
+                "format": "date-time",
+                "type": "string"
+              },
+              "first_name": {
+                "description": "The first name of the message sender",
+                "type": "string"
+              },
+              "is_bot": {
+                "description": "Indicates if the user is a bot",
+                "type": "boolean"
+              },
+              "text": {
+                "description": "The text content of the message",
+                "type": "string"
+              },
+              "username": {
+                "description": "The username of the message sender",
+                "type": "string"
+              }
+            },
+            "required": [
+              "chatId",
+              "text",
+              "is_bot",
+              "username",
+              "first_name",
+              "date"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "messages"
+      ],
+      "type": "object"
+    },
+    "runner": "any",
+    "sqlQueries": [
+      {
+        "name": "Get last update ID",
+        "query": "SELECT last_update_id FROM bot_state WHERE id = 1;"
+      },
+      {
+        "name": "Get chat history by username",
+        "query": "SELECT timestamp, is_bot, message FROM chat_history WHERE username = ? ORDER BY timestamp DESC LIMIT 50"
+      }
+    ],
+    "sqlTables": [
+      {
+        "definition": "CREATE TABLE IF NOT EXISTS bot_state (id INTEGER PRIMARY KEY CHECK (id = 1), last_update_id TEXT NOT NULL DEFAULT '0')",
+        "name": "bot_state"
+      },
+      {
+        "definition": "CREATE TABLE IF NOT EXISTS chat_history (id INTEGER PRIMARY KEY AUTOINCREMENT, timestamp TEXT DEFAULT (datetime('now')), username TEXT NOT NULL, message TEXT NOT NULL, is_bot TEXT NOT NULL)",
+        "name": "chat_history"
+      }
+    ],
+    "tool_set": "",
+    "version": "1.0.0",
+    "tools": [
+        "local:::__official_shinkai:::shinkai_llm_prompt_processor",
+        "local:::__official_shinkai:::shinkai_sqlite_query_executor"
+    ]
+  }

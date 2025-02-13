@@ -25,6 +25,10 @@
         "text": {
           "type": "string",
           "description": "Message to post"
+        },
+        "imagePath": {
+          "type": "string",
+          "description": "Path to the image to post"
         }
       },
       "required": []

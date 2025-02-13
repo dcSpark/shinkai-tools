@@ -1,0 +1,74 @@
+{
+  "configurations": {
+    "properties": {},
+    "required": [],
+    "type": "object"
+  },
+  "description": "Processes and analyzes PowerPoint files, allowing for reading, retrieving content, analyzing data, and updating slides.",
+  "homePage": "",
+  "keywords": [
+    "pptx",
+    "presentation",
+    "analyze",
+    "file processing"
+  ],
+  "name": "PPTX File Processor",
+  "author": "Shinkai",
+  "oauth": [],
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "parameters": {
+    "properties": {
+      "file_path": {
+        "description": "The path or URL to the PPTX file. If no file path is provided, it will use the in-memory file.",
+        "type": "string"
+      },
+      "operation": {
+        "description": "The operation to perform on the PPTX file: READ | RETRIEVE | ANALYZE | UPDATE",
+        "type": "string"
+      },
+      "prompt": {
+        "description": "Prompt to apply for ANALYZE or UPDATE operations.",
+        "nullable": true,
+        "type": "string"
+      }
+    },
+    "required": ["operation"],
+    "type": "object"
+  },
+  "result": {
+    "properties": {
+      "analysis": {
+        "description": "Analysis result of the PPTX content",
+        "nullable": true,
+        "type": "string"
+      },
+      "content": {
+        "description": "Extracted content from the PPTX slides",
+        "items": {
+          "type": "string"
+        },
+        "nullable": true,
+        "type": "array"
+      },
+      "status": {
+        "description": "Operation status (success/error)",
+        "nullable": true,
+        "type": "string"
+      }
+    },
+    "required": [],
+    "type": "object"
+  },
+  "runner": "any",
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tool_set": "",
+  "tools": [
+    "local:::__official_shinkai:::shinkai_llm_prompt_processor"
+  ],
+  "version": "1.0.0"
+}

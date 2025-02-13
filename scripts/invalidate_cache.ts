@@ -7,7 +7,6 @@ interface DirectoryEntry {
 
 const CLOUDFLARE_ZONE = Deno.env.get("CLOUDFLARE_ZONE");
 const CLOUDFLARE_TOKEN = Deno.env.get("CLOUDFLARE_TOKEN");
-const DOWNLOAD_PREFIX = Deno.env.get("DOWNLOAD_PREFIX");
 
 if (!CLOUDFLARE_TOKEN) {
   console.error("CLOUDFLARE_TOKEN environment variable is required");
@@ -19,7 +18,7 @@ try {
   const directory: DirectoryEntry[] = JSON.parse(directoryContent);
   
   const files = directory.map(entry => entry.file);
-  files.push(`${DOWNLOAD_PREFIX}/directory.json`);
+  files.push(`${Deno.env.get("DOWNLOAD_PREFIX")}${Deno.env.get("NODE_VERSION")?.replace(/^v/, '')}/directory.json`);
   console.log(`URLs to invalidate: ${JSON.stringify(files, null, 2)}`);
   
   const response = await fetch(

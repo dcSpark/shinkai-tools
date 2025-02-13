@@ -74,5 +74,5 @@ export interface DirectoryEntry {
   categoryId?: string;
   dependencies?: string[];
   icon_url?: string;
-  banner_url?: string;
+  banner_url?: string[];
 }

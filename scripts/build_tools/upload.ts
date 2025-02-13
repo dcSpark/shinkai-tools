@@ -37,7 +37,7 @@ export async function uploadTools(tools: DirectoryEntry[]) {
         // Upload tool assets to store
         console.log(`Uploading tool assets for ${entry.name}...`);
         store_entry.icon_url = await uploadAsset(entry.routerKey, join(entry.dir, "icon.png"), 'icon', `${entry.name}_icon.png`);
-        store_entry.banner_url = await uploadAsset(entry.routerKey, join(entry.dir, "banner.png"), 'banner', `${entry.name}_banner.png`);
+        store_entry.banner_url = [await uploadAsset(entry.routerKey, join(entry.dir, "banner.png"), 'banner', `${entry.name}_banner.png`)];
         store_entry.file = await uploadAsset(entry.routerKey, join("packages", `${entry.name}.zip`.toLowerCase().replace(/[^a-z0-9_.-]/g, '_')), 'tool', `${entry.hash}.zip`);
         console.log(`Tool assets for ${entry.name} uploaded`);
 

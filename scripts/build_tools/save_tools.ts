@@ -108,7 +108,7 @@ async function processAgentsDirectory() {
       version: agentContent.version,
       description: agentContent.ui_description,
       hash: blake3Hash,
-      file: `${Deno.env.get("DOWNLOAD_PREFIX")}/${agentId}.zip`,
+      file: `${Deno.env.get("DOWNLOAD_PREFIX")}${Deno.env.get("NODE_VERSION")?.replace(/^v/, '')}/${agentId}.zip`,
       agent_id: agentId,
       routerKey: '',
     });
@@ -149,7 +149,7 @@ async function processCronsDirectory() {
       version: cronContent.version,
       description: cronContent.description,
       hash: blake3Hash,
-      file: `${Deno.env.get("DOWNLOAD_PREFIX")}/${cronId}.zip`,
+      file: `${Deno.env.get("DOWNLOAD_PREFIX")}${Deno.env.get("NODE_VERSION")?.replace(/^v/, '')}/${cronId}.zip`,
       routerKey: '',
     });
   }
@@ -237,7 +237,7 @@ export async function processToolsDirectory(): Promise<DirectoryEntry[]> {
         description: metadata.description,
         hash: '',
         toolFile,
-        file: `${Deno.env.get("DOWNLOAD_PREFIX")}/${toolName.toLowerCase().replace(/[^a-z0-9_.-]/g, '_')}.zip`,
+        file: `${Deno.env.get("DOWNLOAD_PREFIX")}${Deno.env.get("NODE_VERSION")?.replace(/^v/, '')}/${toolName.toLowerCase().replace(/[^a-z0-9_.-]/g, '_')}.zip`,
         price_usd: metadata.price_usd || 0.00,
         categoryId: storeMetadata.categoryId,
         dependencies,

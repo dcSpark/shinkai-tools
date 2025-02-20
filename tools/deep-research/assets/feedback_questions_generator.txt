@@ -1,0 +1,9 @@
+Given the following question: "###REPLACE-E###"
+    
+Generate 2-3 follow-up questions that would help clarify or better understand the user's needs. Guidelines:
+- Questions should be specific and focused
+- Avoid yes/no questions
+- Ask about context, scope, or specific requirements
+- Each question should provide valuable information for the search
+
+Format the response as a markdown list of questions only the questions. 

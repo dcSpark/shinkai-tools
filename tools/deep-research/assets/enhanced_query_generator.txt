@@ -1,0 +1,7 @@
+Combine this question: "###REPLACE-H###" with the following context:
+###REPLACE-I###
+
+###REPLACE-J###Consider these previous search results:###REPLACE-K###
+
+Create a detailed search query that incorporates all this information and explores new aspects 
+not covered in previous results. 

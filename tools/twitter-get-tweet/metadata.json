@@ -1,0 +1,76 @@
+{
+  "name": "X/Twitter Get Tweet",
+  "homepage": "https://github.com/dcSpark/shinkai-tools/blob/main/tools/twitter-get-tweet/README.md",
+  "description": "Function to fetch a tweet from Twitter by its ID.",
+  "author": "Shinkai",
+  "homePage": "",
+  "configurations": {
+    "type": "object",
+    "properties": {
+      "apiKey": {
+        "type": "string",
+        "description": "The API key for accessing the Twttr API"
+      }
+    },
+    "required": [
+      "apiKey"
+    ]
+  },
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "tweetId": {
+        "type": "string",
+        "description": "The ID of the tweet to fetch"
+      }
+    },
+    "required": [
+      "tweetId"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "data": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The ID of the tweet"
+          },
+          "text": {
+            "type": "string",
+            "description": "The text content of the tweet"
+          }
+        },
+        "required": [
+          "id",
+          "text"
+        ]
+      },
+      "error": {
+        "type": "string",
+        "description": "Error message if fetching tweet fails"
+      }
+    },
+    "required": []
+  },
+  "sqlTables": [],
+  "sqlQueries": [],
+  "oauth": [],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": "",
+  "keywords": [
+    "twitter",
+    "tweet",
+    "api",
+    "twttr",
+    "X"
+  ],
+  "version": "1.0.0"
+}

@@ -4,9 +4,10 @@ type CONFIG = {};
 type INPUTS = {
     text: string;
     imagePath?: string;
+    draft?: boolean;
 };
 type OUTPUT = {
-    data: any;
+    data: object;
 };
 
 async function uploadMedia(bearerToken: string, imagePath: string): Promise<string> {
@@ -70,7 +71,11 @@ async function postTweet(bearerToken: string, text: string, mediaId?: string) {
   }
 }
 
-export async function run(config: CONFIG, inputs: INPUTS): Promise<OUTPUT> {
+export async function run(_config: CONFIG, inputs: INPUTS): Promise<OUTPUT> {
+    if (inputs.draft) {
+      return { data: { id: "draft-tweet", text: inputs.text } };
+    }
+    
     const accessToken = await getAccessToken("twitter");
     let mediaId: string | undefined;
     

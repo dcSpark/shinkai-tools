@@ -20,7 +20,7 @@ export async function run(config: CONFIG, inputs: INPUTS): Promise<OUTPUT> {
     try {
       const twttr = new TwttrApi.default(apiKey);
       const response = await twttr.getUser(username);
-      if (response.error) throw new Error(`Error fetching tweet: ${response.error}`);
+      if (response.error) throw new Error(`Error fetching user: ${response.error}`);
       return { data: response };
     } catch(e: any) {
        return { error: e.message };

@@ -1,0 +1,86 @@
+{
+    "name": "X/Twitter Get User Followers",
+    "homepage": "https://github.com/dcSpark/shinkai-tools/blob/main/tools/twitter-get-user-followers/README.md",
+    "description": "Function to fetch the list of users who follow a specific Twitter user.",
+    "author": "Shinkai",
+    "homePage": "",
+    "configurations": {
+      "type": "object",
+      "properties": {
+        "apiKey": {
+          "type": "string",
+          "description": "The API key for authenticating with Twitter"
+        }
+      },
+      "required": [
+        "apiKey"
+      ]
+    },
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string",
+          "description": "The Twitter username of the user whose followers are to be fetched"
+        }
+      },
+      "required": [
+        "username"
+      ]
+    },
+    "result": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "array",
+          "description": "List of followers of the specified user",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "The ID of the user"
+              },
+              "username": {
+                "type": "string",
+                "description": "The username of the user"
+              },
+              "name": {
+                "type": "string",
+                "description": "The name of the user"
+              }
+            },
+            "required": [
+              "id",
+              "username",
+              "name"
+            ]
+          }
+        },
+        "error": {
+          "type": "string",
+          "description": "Error message if any occurred during fetching"
+        }
+      },
+      "required": []
+    },
+    "sqlTables": [],
+    "sqlQueries": [],
+    "oauth": [],
+    "runner": "any",
+    "operating_system": [
+      "linux",
+      "macos",
+      "windows"
+    ],
+    "tool_set": "",
+    "keywords": [
+      "twitter",
+      "followers",
+      "api",
+      "users",
+      "X"
+    ],
+    "version": "1.0.0"
+  }
+  

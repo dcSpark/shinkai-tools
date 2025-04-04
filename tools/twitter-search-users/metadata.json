@@ -1,0 +1,80 @@
+{
+  "name": "X/Twitter Search Users",
+  "homepage": "https://github.com/dcSpark/shinkai-tools/blob/main/tools/twitter-search-users/README.md",
+  "description": "Function to search for Twitter users based on a query string.",
+  "author": "Shinkai",
+  "homePage": "",
+  "configurations": {
+    "type": "object",
+    "properties": {
+      "apiKey": {
+        "type": "string",
+        "description": "The API key for Twitter API"
+      }
+    },
+    "required": [
+      "apiKey"
+    ]
+  },
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "query": {
+        "type": "string",
+        "description": "The search query for users"
+      }
+    },
+    "required": [
+      "query"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "data": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "description": "The unique identifier for the user"
+            },
+            "name": {
+              "type": "string",
+              "description": "The name of the user"
+            },
+            "username": {
+              "type": "string",
+              "description": "The username of the user"
+            }
+          }
+        },
+        "description": "List of user data"
+      },
+      "error": {
+        "type": "string",
+        "description": "Error message if any occurs"
+      }
+    },
+    "required": []
+  },
+  "sqlTables": [],
+  "sqlQueries": [],
+  "oauth": [],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": "",
+  "keywords": [
+    "twitter",
+    "user search",
+    "api",
+    "users",
+    "X"
+  ],
+  "version": "1.0.0"
+}

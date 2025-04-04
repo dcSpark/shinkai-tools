@@ -70,7 +70,7 @@ async function postTweet(bearerToken: string, text: string, mediaId?: string) {
   }
 }
 
-export async function run(config: CONFIG, inputs: INPUTS): Promise<OUTPUT> {    
+export async function run(config: CONFIG, inputs: INPUTS): Promise<OUTPUT> {
     const accessToken = await getAccessToken("twitter");
     let mediaId: string | undefined;
     

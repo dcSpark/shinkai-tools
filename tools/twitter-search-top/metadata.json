@@ -1,0 +1,89 @@
+{
+  "name": "X/Twitter Search Top",
+  "homepage": "https://github.com/dcSpark/shinkai-tools/blob/main/tools/twitter-search-top/README.md",
+  "description": "Function to search for top tweets on Twitter based on a query string.",
+  "author": "Shinkai",
+  "homePage": "",
+  "configurations": {
+    "type": "object",
+    "properties": {
+      "apiKey": {
+        "type": "string",
+        "description": "The API key for the Twitter API."
+      }
+    },
+    "required": [
+      "apiKey"
+    ]
+  },
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "query": {
+        "type": "string",
+        "description": "The search query for fetching tweets."
+      }
+    },
+    "required": [
+      "query"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "data": {
+        "type": "array",
+        "description": "Array of Tweet objects returned from the API.",
+        "items": {
+          "type": "object",
+          "properties": {
+            "text": {
+              "type": "string",
+              "description": "The text content of the tweet."
+            },
+            "user": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "The name of the user who posted the tweet."
+                },
+                "handle": {
+                  "type": "string",
+                  "description": "The Twitter handle of the user."
+                }
+              }
+            },
+            "createdAt": {
+              "type": "string",
+              "description": "The timestamp of when the tweet was created."
+            }
+          }
+        }
+      },
+      "error": {
+        "type": "string",
+        "description": "Error message if the fetching failed."
+      }
+    },
+    "required": []
+  },
+  "sqlTables": [],
+  "sqlQueries": [],
+  "oauth": [],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": "",
+  "keywords": [
+    "twitter",
+    "search",
+    "tweets",
+    "top",
+    "X"
+  ],
+  "version": "1.0.0"
+}

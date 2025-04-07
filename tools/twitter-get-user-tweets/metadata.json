@@ -1,0 +1,77 @@
+{
+  "name": "X/Twitter Get User Tweets",
+  "homepage": "https://github.com/dcSpark/shinkai-tools/blob/main/tools/twitter-get-user-tweets/README.md",
+  "description": "Function to fetch tweets from a specific Twitter user by username.",
+  "author": "Shinkai",
+  "homePage": "",
+  "configurations": {
+    "type": "object",
+    "properties": {
+      "apiKey": {
+        "type": "string",
+        "description": "The API key required to authenticate with the Twitter API"
+      }
+    },
+    "required": [
+      "apiKey"
+    ]
+  },
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "username": {
+        "type": "string",
+        "description": "The Twitter username of the account to fetch tweets from."
+      }
+    },
+    "required": [
+      "username"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "data": {
+        "type": "array",
+        "description": "List of tweets fetched from the user's account.",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "text": {
+              "type": "string"
+            },
+            "created_at": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "error": {
+        "type": "string",
+        "description": "Error message if there was an issue fetching the tweets."
+      }
+    },
+    "required": []
+  },
+  "sqlTables": [],
+  "sqlQueries": [],
+  "oauth": [],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": "",
+  "keywords": [
+    "twitter",
+    "tweets",
+    "api",
+    "user",
+    "X"
+  ],
+  "version": "1.0.0"
+}

@@ -1,0 +1,80 @@
+{
+  "name": "X/Twitter Get User Replies",
+  "homepage": "https://github.com/dcSpark/shinkai-tools/blob/main/tools/twitter-get-user-replies/README.md",
+  "description": "Function to fetch reply tweets made by a specific Twitter user.",
+  "author": "Shinkai",
+  "homePage": "",
+  "configurations": {
+    "type": "object",
+    "properties": {
+      "apiKey": {
+        "type": "string",
+        "description": "The API key for Twitter API access"
+      }
+    },
+    "required": [
+      "apiKey"
+    ]
+  },
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "username": {
+        "type": "string",
+        "description": "The Twitter username to fetch replies for"
+      }
+    },
+    "required": [
+      "username"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "data": {
+        "type": "array",
+        "description": "Array of tweet replies",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "description": "The ID of the tweet"
+            },
+            "text": {
+              "type": "string",
+              "description": "The text content of the tweet"
+            }
+          },
+          "required": [
+            "id",
+            "text"
+          ]
+        }
+      },
+      "error": {
+        "type": "string",
+        "description": "Error message if any error occurs"
+      }
+    },
+    "required": []
+  },
+  "sqlTables": [],
+  "sqlQueries": [],
+  "oauth": [],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": "",
+  "keywords": [
+    "twitter",
+    "api",
+    "replies",
+    "conversation",
+    "X"
+  ],
+  "version": "1.0.0"
+}

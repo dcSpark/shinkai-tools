@@ -1,0 +1,66 @@
+{
+  "name": "X/Twitter Get User Media",
+  "homepage": "https://github.com/dcSpark/shinkai-tools/blob/main/tools/twitter-get-user-media/README.md",
+  "description": "Function to fetch media content posted by a specific Twitter user.",
+  "author": "Shinkai",
+  "homePage": "",
+  "configurations": {
+    "type": "object",
+    "properties": {
+      "apiKey": {
+        "type": "string",
+        "description": "The API key for Twitter API access"
+      }
+    },
+    "required": [
+      "apiKey"
+    ]
+  },
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "username": {
+        "type": "string",
+        "description": "The username of the Twitter account to fetch media from"
+      }
+    },
+    "required": [
+      "username"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "data": {
+        "type": "array",
+        "description": "List of media objects fetched from Twitter",
+        "items": {
+          "type": "object"
+        }
+      },
+      "error": {
+        "type": "string",
+        "description": "Error message if the fetch fails"
+      }
+    },
+    "required": []
+  },
+  "sqlTables": [],
+  "sqlQueries": [],
+  "oauth": [],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": "",
+  "keywords": [
+    "twitter",
+    "media",
+    "fetch",
+    "images",
+    "X"
+  ],
+  "version": "1.0.0"
+}

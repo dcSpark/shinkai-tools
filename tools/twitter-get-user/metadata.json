@@ -1,0 +1,76 @@
+{
+  "name": "X/Twitter Get User",
+  "homepage": "https://github.com/dcSpark/shinkai-tools/blob/main/tools/twitter-get-user/README.md",
+  "description": "Function to fetch Twitter user information by username.",
+  "author": "Shinkai",
+  "homePage": "",
+  "configurations": {
+    "type": "object",
+    "properties": {
+      "apiKey": {
+        "type": "string",
+        "description": "The API key for accessing Twitter data"
+      }
+    },
+    "required": [
+      "apiKey"
+    ]
+  },
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "username": {
+        "type": "string",
+        "description": "The Twitter username to fetch data for"
+      }
+    },
+    "required": [
+      "username"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "data": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "description": "The Twitter username"
+          },
+          "followers_count": {
+            "type": "number",
+            "description": "The number of followers the user has"
+          },
+          "tweets_count": {
+            "type": "number",
+            "description": "The total number of tweets by the user"
+          }
+        }
+      },
+      "error": {
+        "type": "string",
+        "description": "Error message if the API call fails"
+      }
+    },
+    "required": []
+  },
+  "sqlTables": [],
+  "sqlQueries": [],
+  "oauth": [],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": "",
+  "keywords": [
+    "Twitter",
+    "API",
+    "User",
+    "TwttrApi",
+    "X"
+  ],
+  "version": "1.0.0"
+}

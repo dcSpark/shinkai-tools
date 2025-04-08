@@ -42,17 +42,6 @@ export async function run(config: CONFIG, inputs: INPUTS): Promise<OUTPUT> {
   const maxRetries = config.maxRetries ?? 5;
 
   /**
-   * Helper: build the JSON payload Kroki expects to attempt rendering a Mermaid PNG.
-   */
-  function buildKrokiPayload(mermaidSource: string) {
-    return {
-      diagram_source: mermaidSource,
-      diagram_type: 'mermaid',
-      output_format: 'png',
-    };
-  }
-
-  /**
    * Attempt to render with Kroki. On success: return { ok: true, data: Buffer }.
    * On failure: return { ok: false, error: string }.
    */
@@ -153,10 +142,10 @@ export async function run(config: CONFIG, inputs: INPUTS): Promise<OUTPUT> {
     const nodeLines = lines.slice(1);
     for (const line of nodeLines) {
       console.log('Checking node line:', { line });
-      // More lenient regex that allows various amounts of whitespace
-      if (!line.match(/^[A-Za-z0-9]+(?:\[[^\]]+\])?\s*(?:-->|---|==>)\s*[A-Za-z0-9]+(?:\[[^\]]+\])?$/)) {
-        console.log('Validation failed: Invalid node definition:', { line });
-        return { isValid: false, error: `Invalid node definition: ${line}` };
+      // More lenient regex allowing (), {}, [], optional ;, and underscores in IDs
+      if (!line.match(/^[A-Za-z0-9_]+(?:\[[^\]]+\]|\([^)]+\)|\{[^}]+\})?\s*(?:-->|---|==>)\s*[A-Za-z0-9_]+(?:\[[^\]]+\]|\([^)]+\)|\{[^}]+\})?\s*;?\s*$/)) {
+        console.log('Validation failed: Invalid node definition or link syntax:', { line });
+        return { isValid: false, error: `Invalid node definition or link syntax: ${line}` };
       }
     }
 
@@ -246,8 +235,32 @@ graph TD
       console.log('Successfully rendered diagram');
       // Convert Uint8Array to base64 string
       const pngBase64 = encodeBase64(renderResult.data);
-
-      await Deno.writeFile(await getHomePath() + '/mermaid.png', renderResult.data);
+      // Ensure data is not empty before writing to file
+      if (renderResult.data.length > 0) {
+        console.log(`Writing ${renderResult.data.length} bytes to file`);
+        // Debug the data before writing
+        console.log('Data type:', renderResult.data.constructor.name);
+        console.log('First few bytes:', Array.from(renderResult.data.slice(0, 10)));
+        
+        try {
+          const filePath = await getHomePath() + '/mermaid.png';
+          await Deno.writeFile(filePath, renderResult.data);
+          
+          // Verify the file was written correctly
+          const fileInfo = await Deno.stat(filePath);
+          console.log(`File written successfully. Size: ${fileInfo.size} bytes`);
+          
+          if (fileInfo.size === 0) {
+            console.error('Warning: File was created but is empty');
+          }
+        } catch (err: any) {
+          console.error('Error writing file:', err);
+          throw new Error(`Failed to write PNG file: ${err.message}`);
+        }
+      } else {
+        console.error('Error: Received 0 bytes data from Kroki');
+        throw new Error('Received empty image data from Kroki');
+      }
 
       return {
         pngBase64,

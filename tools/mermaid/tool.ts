@@ -42,17 +42,6 @@ export async function run(config: CONFIG, inputs: INPUTS): Promise<OUTPUT> {
   const maxRetries = config.maxRetries ?? 5;
 
   /**
-   * Helper: build the JSON payload Kroki expects to attempt rendering a Mermaid PNG.
-   */
-  function buildKrokiPayload(mermaidSource: string) {
-    return {
-      diagram_source: mermaidSource,
-      diagram_type: 'mermaid',
-      output_format: 'png',
-    };
-  }
-
-  /**
    * Attempt to render with Kroki. On success: return { ok: true, data: Buffer }.
    * On failure: return { ok: false, error: string }.
    */

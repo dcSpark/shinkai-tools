@@ -2,7 +2,7 @@
   "id": "mermaid",
   "name": "mermaid",
   "version": "1.0.0",
-  "description": "Generate diagrams and flowcharts using Mermaid syntax",
+  "description": "Generate diagrams and flowcharts using Mermaid syntax, it receives a natural language description and returns a PNG image and the final Mermaid code",
   "author": "Shinkai",
   "keywords": [
     "mermaid",
@@ -16,37 +16,37 @@
   "tool_set": "",
   "configurations": {
     "type": "object",
-    "properties": {},
+    "properties": {
+      "maxRetries": {
+        "type": "number",
+        "description": "Maximum number of retries for the tool",
+        "default": 5
+      }
+    },
     "required": []
   },
   "parameters": {
     "type": "object",
     "properties": {
-      "code": {
+      "description": {
         "type": "string",
         "description": "Mermaid diagram code"
-      },
-      "format": {
-        "type": "string",
-        "enum": ["svg", "png"],
-        "default": "svg",
-        "description": "Output format for the diagram"
       }
     },
-    "required": ["code"]
+    "required": ["description"]
   },
   "result": {
     "type": "object",
     "properties": {
-      "image": {
+      "pngBase64": {
         "type": "string",
         "description": "Base64 encoded image data"
       },
-      "format": {
+      "finalMermaid": {
         "type": "string",
-        "description": "Format of the generated image (svg or png)"
+        "description": "Final Mermaid code"
       }
     },
-    "required": ["image", "format"]
+    "required": ["pngBase64", "finalMermaid"]
   }
 }

@@ -43,6 +43,7 @@ Currently available tools include:
 ### Media & Content
 - **Meme Generator**: Create custom meme images
 - **Text-to-Audio Kokoro**: Convert text to audio using Kokoro
+- **Mermaid**: Create PNG Mermaid diagrams based on a prompt description
 
 ## Tool Structure and Required Files
 

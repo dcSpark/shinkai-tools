@@ -13,6 +13,7 @@ from tenacity import retry, stop_after_attempt, wait_exponential
 
 class CONFIG:
     api_key: Optional[str]
+    mock_values: bool
 
 class INPUTS:
     id: str
@@ -159,6 +160,34 @@ async def run(config: CONFIG, inputs: INPUTS) -> OUTPUT:
     if api_key:
         headers['X-Cg-Pro-Api-Key'] = api_key
 
+    if config.mock_values:
+        # For testing, return mock data
+        mock_point1 = PricePoint()
+        mock_point1.timestamp = 1704088800000  # Jan 1, 2024
+        mock_point1.datetime = "2024-01-01 00:00:00 UTC"
+        mock_point1.price_usd = 42000.0
+        mock_point1.market_cap_usd = 820000000000.0
+        mock_point1.volume_usd = 25000000000.0
+
+        mock_point2 = PricePoint()
+        mock_point2.timestamp = 1704175200000  # Jan 2, 2024
+        mock_point2.datetime = "2024-01-02 00:00:00 UTC"
+        mock_point2.price_usd = 43000.0
+        mock_point2.market_cap_usd = 830000000000.0
+        mock_point2.volume_usd = 26000000000.0
+
+        data_points = [mock_point1, mock_point2]
+        
+        output = OUTPUT()
+        output.from_date = inputs.from_date
+        output.to_date = inputs.to_date
+        output.interval = inputs.interval if hasattr(inputs, 'interval') else None
+        output.currency = inputs.vs_currency
+        output.coin_id = inputs.id
+        output.data_points = data_points
+        output.summary = calculate_summary(data_points)
+        return output
+
     try:
         # Make API request with retry logic
         data = make_coingecko_request(url, params, headers)
@@ -195,32 +224,5 @@ async def run(config: CONFIG, inputs: INPUTS) -> OUTPUT:
         return output
 
     except Exception as e:
-        if "401 Client Error" in str(e):
-            # For testing, return mock data
-            mock_point1 = PricePoint()
-            mock_point1.timestamp = 1704088800000  # Jan 1, 2024
-            mock_point1.datetime = "2024-01-01 00:00:00 UTC"
-            mock_point1.price_usd = 42000.0
-            mock_point1.market_cap_usd = 820000000000.0
-            mock_point1.volume_usd = 25000000000.0
-
-            mock_point2 = PricePoint()
-            mock_point2.timestamp = 1704175200000  # Jan 2, 2024
-            mock_point2.datetime = "2024-01-02 00:00:00 UTC"
-            mock_point2.price_usd = 43000.0
-            mock_point2.market_cap_usd = 830000000000.0
-            mock_point2.volume_usd = 26000000000.0
-
-            data_points = [mock_point1, mock_point2]
-            
-            output = OUTPUT()
-            output.from_date = inputs.from_date
-            output.to_date = inputs.to_date
-            output.interval = inputs.interval if hasattr(inputs, 'interval') else None
-            output.currency = inputs.vs_currency
-            output.coin_id = inputs.id
-            output.data_points = data_points
-            output.summary = calculate_summary(data_points)
-            return output
-            
-        raise Exception(f"CoinGecko API request failed: {str(e)}") 
+        # Return the exception with the error message for any exception
+        return Exception(f"CoinGecko API request failed: {str(e)}") 

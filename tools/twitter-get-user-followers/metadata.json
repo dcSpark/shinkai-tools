@@ -9,7 +9,7 @@
       "properties": {
         "apiKey": {
           "type": "string",
-          "description": "The API key for authenticating with Twitter"
+          "description": "This is the equivalent of the X-RapidAPI-Key header required to authenticate with the Twitter API. More information can be found here: https://rapidapi.com/twttrapi-twttrapi-default/api/twttrapi"
         }
       },
       "required": [

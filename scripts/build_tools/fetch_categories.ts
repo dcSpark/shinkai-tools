@@ -7,7 +7,7 @@ export interface Category {
   examples: string;
 }
 
-const STORE_CATEGORIES_ENDPOINT = "https://shinkai-store-302883622007.us-central1.run.app/store/categories";
+const STORE_CATEGORIES_ENDPOINT = "https://store-api.shinkai.com/store/categories";
 
 export async function fetchCategoriesFromStore(): Promise<Category[]> {
   try {

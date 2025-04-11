@@ -1,4 +1,4 @@
-import { Media, TwttrApi } from "npm:twttrapi-middleware@1.0.8"
+import { Media, TwttrApi } from "npm:twttrapi-middleware@1.0.9"
 
 export type CONFIG = {
     apiKey: string;

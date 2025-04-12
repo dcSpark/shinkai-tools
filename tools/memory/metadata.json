@@ -17,7 +17,12 @@
   "tool_set": "",
   "configurations": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "database_name": {
+          "description": "By default, the database name is the app_id. You can specify a different name to share the same database in multiple contexts.",
+          "type": "string"
+        }
+      },
       "required": []
     },
     "parameters": {

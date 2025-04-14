@@ -1,0 +1,92 @@
+{
+  "id": "wikimedia-featured-content",
+  "version": "1.0.0",
+  "name": "Wikimedia Featured Content",
+  "description": "Get featured content including article, image, and news from Wikimedia",
+  "author": "Shinkai",
+  "keywords": [
+    "wikimedia",
+    "featured",
+    "wikipedia",
+    "content",
+    "articles",
+    "images",
+    "news"
+  ],
+  "runner": "any",
+  "operating_system": ["linux", "macos", "windows"],
+  "tool_set": "",
+  "configurations": {
+    "type": "object",
+    "properties": {
+      "project": {
+        "type": "string",
+        "description": "Wikimedia project (e.g., wikipedia)",
+        "default": "wikipedia"
+      },
+      "language": {
+        "type": "string",
+        "description": "Language code (e.g., en)",
+        "default": "en"
+      }
+    },
+    "required": []
+  },
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "date": {
+        "type": "string",
+        "description": "Date in YYYY-MM-DD format (defaults to current date)",
+        "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+      }
+    }
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "featured": {
+        "type": "object",
+        "properties": {
+          "tfa": {
+            "type": "object",
+            "properties": {
+              "title": {"type": "string"},
+              "extract": {"type": "string"},
+              "url": {"type": "string"}
+            }
+          },
+          "image": {
+            "type": "object",
+            "properties": {
+              "title": {"type": "string"},
+              "description": {"type": "string"},
+              "url": {"type": "string"}
+            }
+          },
+          "news": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "story": {"type": "string"},
+                "links": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "title": {"type": "string"},
+                      "url": {"type": "string"}
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "required": ["tfa", "image", "news"]
+      }
+    },
+    "required": ["featured"]
+  }
+}

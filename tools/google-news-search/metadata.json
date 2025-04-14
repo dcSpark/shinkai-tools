@@ -1,0 +1,80 @@
+{
+  "name": "Google News Search",
+  "description": "Searches Google News for headlines and articles via SerpAPI. Requires SERP_API_KEY in configuration.",
+  "version": "1.0.0",
+  "author": "YourTeam",
+  "keywords": [
+    "google-news",
+    "serpapi",
+    "news",
+    "search"
+  ],
+  "runner": "any",
+  "operating_system": ["linux", "macos", "windows"],
+  "tool_set": "",
+  "configurations": {
+    "type": "object",
+    "properties": {
+      "SERP_API_KEY": {
+        "type": "string",
+        "description": "Your SerpAPI key for authentication"
+      }
+    },
+    "required": ["SERP_API_KEY"]
+  },
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "query": {
+        "description": "The search query to look up in Google News",
+        "type": "string"
+      },
+      "gl": {
+        "description": "Geolocation (country code). E.g. 'us', 'uk', 'au', ...",
+        "type": "string"
+      },
+      "hl": {
+        "description": "Language code. E.g. 'en', 'zh', 'es', 'fr'...",
+        "type": "string"
+      },
+      "num_results": {
+        "description": "Number of results to return",
+        "type": "number",
+        "default": 10
+      }
+    },
+    "required": [
+      "query"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "results": {
+        "description": "List of search results",
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "title": { "type": "string" },
+            "link": { "type": "string" },
+            "source": { "type": "string" },
+            "snippet": { "type": "string" },
+            "date": { "type": "string" }
+          }
+        }
+      },
+      "query": {
+        "description": "The original query string",
+        "type": "string"
+      }
+    },
+    "required": [
+      "results",
+      "query"
+    ]
+  },
+  "sqlTables": [],
+  "sqlQueries": [],
+  "tools": []
+} 

@@ -1,4 +1,4 @@
-import { DirectoryEntry, Metadata } from "./interfaces.ts";
+import { DirectoryEntry, Metadata, StoreMetadata } from "./interfaces.ts";
 
 import { join } from "https://deno.land/std/path/mod.ts";
 import { exists } from "https://deno.land/std/fs/mod.ts";
@@ -63,7 +63,10 @@ async function buildToolJson(
           sql_tables: metadata.sqlTables,
           tools: metadata.tools,
           version: metadata.version,
-          [toolType === "Python" ? "py_code" : "js_code"]: toolContent
+          [toolType === "Python" ? "py_code" : "js_code"]: toolContent,
+          runner: metadata.runner,
+          operating_system: metadata.operating_system,
+          tool_set: metadata.tool_set,
         }, 
         false
       ], 
@@ -105,7 +108,7 @@ async function processAgentsDirectory() {
       version: agentContent.version,
       description: agentContent.ui_description,
       hash: blake3Hash,
-      file: `${Deno.env.get("DOWNLOAD_PREFIX")}/${agentId}.zip`,
+      file: `${Deno.env.get("DOWNLOAD_PREFIX")}${Deno.env.get("NODE_VERSION")?.replace(/^v/, '')}/${agentId}.zip`,
       agent_id: agentId,
       routerKey: '',
     });
@@ -146,7 +149,7 @@ async function processCronsDirectory() {
       version: cronContent.version,
       description: cronContent.description,
       hash: blake3Hash,
-      file: `${Deno.env.get("DOWNLOAD_PREFIX")}/${cronId}.zip`,
+      file: `${Deno.env.get("DOWNLOAD_PREFIX")}${Deno.env.get("NODE_VERSION")?.replace(/^v/, '')}/${cronId}.zip`,
       routerKey: '',
     });
   }
@@ -157,10 +160,8 @@ async function processCronsDirectory() {
 export async function processToolsDirectory(): Promise<DirectoryEntry[]> {
     const tools: DirectoryEntry[] = [];
     
-    // Fetch store categories and read tool categories mapping
+    // Fetch store categories
     const storeCategories = await getCategories();
-    const toolCategoriesPath = join("tools", "tool_categories.json");
-    const toolCategories = JSON.parse(await Deno.readTextFile(toolCategoriesPath));
   
     // Process tools
     for await (const entry of Deno.readDir("tools")) {
@@ -182,20 +183,19 @@ export async function processToolsDirectory(): Promise<DirectoryEntry[]> {
   
       // Read files
       const metadata: Metadata = JSON.parse(await Deno.readTextFile(join(toolDir, "metadata.json")));
+      const storeMetadata: StoreMetadata = JSON.parse(await Deno.readTextFile(join(toolDir, "store.json")));
       const toolType = await getToolType(toolFile);
       const toolName = metadata.name;
       console.log(`Processing ${toolName}...`);
 
       // Validate tool has a category mapping
-      const routerKey = generateToolRouterKey(author, toolName);
-      const localEntry = toolCategories.find((tc: { routerKey: string; categoryId: string }) => tc.routerKey === routerKey);
-      if (!localEntry) {
-        throw new Error(`No category mapping found for tool ${toolName}. Please add a mapping in tool_categories.json.`);
+      if (!storeMetadata.categoryId) {
+        throw new Error(`No categoryId found for tool ${toolName}. Please add a categoryId in store.json.`);
       }
 
       // Validate category exists in store
-      if (!storeCategories.some(sc => sc.id === localEntry.categoryId)) {
-        throw new Error(`Invalid categoryId ${localEntry.categoryId} for tool ${toolName}. Category not found in store endpoint.`);
+      if (!storeCategories.some(sc => sc.id === storeMetadata.categoryId)) {
+        throw new Error(`Invalid categoryId ${storeMetadata.categoryId} for tool ${toolName}. Category not found in store endpoint.`);
       }
     
       if (!metadata.author) {
@@ -228,6 +228,7 @@ export async function processToolsDirectory(): Promise<DirectoryEntry[]> {
         routerKey: generateToolRouterKey(author, toolName),
         dir: toolDir,
         name: toolName,
+        storeName: storeMetadata.name || toolName,
         author,
         keywords: metadata.keywords,
         type: "Tool", 
@@ -236,9 +237,9 @@ export async function processToolsDirectory(): Promise<DirectoryEntry[]> {
         description: metadata.description,
         hash: '',
         toolFile,
-        file: `${Deno.env.get("DOWNLOAD_PREFIX")}/${toolName.toLowerCase().replace(/[^a-z0-9_.-]/g, '_')}.zip`,
+        file: `${Deno.env.get("DOWNLOAD_PREFIX")}${Deno.env.get("NODE_VERSION")?.replace(/^v/, '')}/${toolName.toLowerCase().replace(/[^a-z0-9_.-]/g, '_')}.zip`,
         price_usd: metadata.price_usd || 0.00,
-        categoryId: localEntry.categoryId,
+        categoryId: storeMetadata.categoryId,
         dependencies,
       });
     }
@@ -276,6 +277,8 @@ export async function saveToolsInNode(toolsOriginal: DirectoryEntry[]): Promise<
   const tools: DirectoryEntry[] = JSON.parse(JSON.stringify(toolsOriginal));
   const toolsSaved: DirectoryEntry[] = [];
   for (const tool of tools) {
+      // Wait 50ms between tool uploads
+      await new Promise(resolve => setTimeout(resolve, 50));
 
       // Read files
       const metadata: Metadata = JSON.parse(await Deno.readTextFile(join(tool.dir, "metadata.json")));
@@ -350,12 +353,6 @@ export async function saveToolsInNode(toolsOriginal: DirectoryEntry[]): Promise<
           args: [zipPath, '-d', zipPathFiles],
         });
         await unzip.output();
-        
-        // Enable flag to update reference files
-        // copy the unzipped __tool.json to the tool directory as .tool-dump.test.json
-        if (Deno.env.get("UPDATE_DUMP_FILES")) {
-          await Deno.copyFile(join(zipPathFiles, "__tool.json"), join(tool.dir, ".tool-dump.test.json"));
-        }
 
       } catch {
         console.error(`Error: Invalid zip file downloaded for ${tool.name}`);

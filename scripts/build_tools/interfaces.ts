@@ -41,6 +41,15 @@ export interface Metadata {
     query: string;
   }[];
   oauth: Record<string, string>[] | null;
+  runner: string;
+  operating_system: string[];
+  tool_set: string;
+}
+
+export interface StoreMetadata {
+  categoryId: string;
+  node_version: string;
+  name?: string;
 }
 
 export interface DirectoryEntry {
@@ -48,6 +57,7 @@ export interface DirectoryEntry {
   routerKey: string;
   isDefault?: boolean;
   name: string;
+  storeName?: string;
   author: string;
   keywords: string[];
   type: "Tool" | "Agent" | "Scheduled Task";
@@ -64,5 +74,5 @@ export interface DirectoryEntry {
   categoryId?: string;
   dependencies?: string[];
   icon_url?: string;
-  banner_url?: string;
+  banner_url?: string[];
 }

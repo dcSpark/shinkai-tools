@@ -10,14 +10,19 @@ on:
   workflow_dispatch:
     inputs:
       node_version:
-        description: 'Shinkai Node version to use (e.g. 0.9.7)'
+        description: 'Shinkai Node version to use (e.g. 0.9.8)'
         required: true
         type: string
-        default: "0.9.7"
+        default: "0.9.8"
+      environment:
+        description: 'Environment to use (e.g. development or production)'
+        type: environment
+        default: "development"
 
 jobs:
   run_tests:
     runs-on: ubuntu-latest
+    environment: ${{ inputs.environment || 'development' }}
     permissions:
       contents: write
     
@@ -55,12 +60,11 @@ jobs:
           SHINKAI_NODE_ADDR: "http://localhost:9550"
           BEARER_TOKEN: ${{ secrets.API_V2_KEY }}
           INITIALIZATION_DATA: ${{ secrets.INITIALIZATION_DATA }}
-          DOWNLOAD_PREFIX: ${{ inputs.use_dev_prefix && 'https://download.shinkai.com/dev-tools-' || 'https://download.shinkai.com/tools-' }}${{ inputs.node_version }}
           SKIP_IMPORT_FROM_DIRECTORY: true
-          SHINKAI_STORE_ADDR: "https://shinkai-store-302883622007.us-central1.run.app"
+          SHINKAI_STORE_ADDR: ${{ vars.SHINKAI_STORE_ADDR }}
           SHINKAI_STORE_TOKEN: ${{ secrets.SHINKAI_STORE_TOKEN }}
           USE_DOCKER: true
-          SHINKAI_NODE_IMAGE: "dcsparkdevops/shinkai-node:${{ inputs.node_version || 'latest' }}"
+          SHINKAI_NODE_IMAGE: "dcspark/shinkai-node:${{ inputs.node_version || 'release-latest' }}"
         run: |
           ./scripts/run_node.sh &
           timeout 60 bash -c 'until curl -s --location "$SHINKAI_NODE_ADDR/v2/health_check" | jq -e ".status == \"ok\"" > /dev/null; do sleep 1; done'

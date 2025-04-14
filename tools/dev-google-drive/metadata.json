@@ -1,0 +1,73 @@
+{
+    "name": "Google Drive Developer API",
+    "homepage": "https://shinkai.com",
+    "description": "Tool to make requests to the Google Drive Developer API using OAuth for authentication.",
+    "author": "@@localhost.sep-shinkai",
+    "version": "1.0.0",
+    "keywords": [
+        "google",
+        "drive",
+        "documents",
+        "api",
+        "request",
+        "oauth"
+    ],
+    "runner": "any",
+  "operating_system": ["linux", "macos", "windows"],
+  "tool_set": "",
+  "configurations": {
+        "type": "object",
+        "properties": {},
+        "required": []
+    },
+    "parameters": {
+        "type": "object",
+        "properties": {
+            "url": { "type": "string", "description": "The API endpoint URL" },
+            "method": { "type": "string", "description": "HTTP method (GET, POST, PUT, DELETE)" },
+            "body": { "type": "string", "description": "Request body (if applicable)", "nullable": true },
+            "query_params": { "type": "string", "description": "Query parameters to append to the URL", "nullable": true },
+            "headers": { "type": "string", "description": "Additional headers as newline-separated key:value pairs", "nullable": true }
+        },
+        "required": [
+            "url",
+            "method"
+        ]
+    },
+    "result": {
+        "type": "object",
+        "properties": {
+            "status": { "type": "number", "description": "HTTP response status code" },
+            "statusText": { "type": "string", "description": "HTTP response status text" },
+            "data": { "type": "any", "description": "Response data in JSON format" }
+        },
+        "required": [
+            "status",
+            "statusText",
+            "data"
+        ]
+    },
+    "sqlTables": [],
+    "sqlQueries": [],
+    "tools": [],
+    "oauth": [
+        {
+            "name": "GoogleDrive",
+            "version": "2.0",
+            "authorizationUrl": "https://accounts.google.com/o/oauth2/v2/auth",
+            "redirectUrl": "https://secrets.shinkai.com/redirect",
+            "tokenUrl": "https://oauth2.googleapis.com/token",
+            "clientId": "",
+            "clientSecret": "",
+            "scopes": [
+              "https://www.googleapis.com/auth/documents",
+              "https://www.googleapis.com/auth/drive"
+            ],
+            "responseType": "code",
+            "refreshToken": "",
+            "pkceType": "",
+            "request_token_auth_header": "",
+            "request_token_content_type": ""
+          }
+    ]
+}

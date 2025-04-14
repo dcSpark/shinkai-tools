@@ -1,0 +1,102 @@
+{
+  "name": "coingecko-get-historical-data",
+  "version": "1.0.0",
+  "description": "Retrieves historical price, market-cap, and volume data for a coin over a date range (from_date to to_date).",
+  "author": "Shinkai",
+  "keywords": [
+    "coingecko",
+    "cryptocurrency",
+    "historical",
+    "shinkai"
+  ],
+  "runner": "any",
+  "operating_system": ["linux", "macos", "windows"],
+  "tool_set": "",
+  "configurations": {
+    "type": "object",
+    "properties": {
+      "api_key": {
+        "type": "string",
+        "description": "Optional. If provided, uses pro-api.coingecko.com for requests."
+      }
+    }
+  },
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "id": {
+        "type": "string",
+        "description": "Coin ID from CoinGecko, e.g. 'bitcoin'"
+      },
+      "vs_currency": {
+        "type": "string",
+        "description": "Fiat or crypto currency symbol, e.g. 'usd'"
+      },
+      "from_date": {
+        "type": "string",
+        "description": "Start date in YYYY-MM-DD format"
+      },
+      "to_date": {
+        "type": "string",
+        "description": "End date in YYYY-MM-DD format"
+      },
+      "interval": {
+        "type": "string",
+        "description": "Optional. '5m', 'hourly', or 'daily'. Controls the data granularity.",
+        "enum": ["5m", "hourly", "daily"]
+      }
+    },
+    "required": ["id", "vs_currency", "from_date", "to_date"]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "from_date": { "type": "string" },
+      "to_date": { "type": "string" },
+      "interval": { "type": "string" },
+      "data": {
+        "type": "object",
+        "properties": {
+          "prices": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": [
+                { "type": "number" },
+                { "type": "number" }
+              ],
+              "minItems": 2,
+              "maxItems": 2
+            }
+          },
+          "market_caps": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": [
+                { "type": "number" },
+                { "type": "number" }
+              ],
+              "minItems": 2,
+              "maxItems": 2
+            }
+          },
+          "total_volumes": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": [
+                { "type": "number" },
+                { "type": "number" }
+              ],
+              "minItems": 2,
+              "maxItems": 2
+            }
+          }
+        },
+        "required": ["prices", "market_caps", "total_volumes"]
+      }
+    },
+    "required": ["from_date", "to_date", "data"]
+  }
+} 

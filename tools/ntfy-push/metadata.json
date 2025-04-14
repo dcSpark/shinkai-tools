@@ -1,0 +1,73 @@
+{
+  "id": "ntfy-push",
+  "version": "1.0.0",
+  "name": "Ntfy Push Notifications",
+  "description": "Sends push notifications to specific groups using ntfy. Supports message priority, tags, and titles.",
+  "author": "Shinkai",
+  "keywords": [
+    "ntfy",
+    "notifications",
+    "push",
+    "shinkai"
+  ],
+  "runner": "any",
+  "operating_system": ["linux", "macos", "windows"],
+  "tool_set": "",
+  "configurations": {
+    "type": "object",
+    "properties": {
+      "serverUrl": {
+        "type": "string",
+        "description": "The ntfy server URL. Defaults to https://ntfy.sh if not provided."
+      }
+    },
+    "required": []
+  },
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "topic": {
+        "type": "string",
+        "description": "The topic/group to send the notification to. Acts as a channel for notifications."
+      },
+      "message": {
+        "type": "string",
+        "description": "The notification message content"
+      },
+      "title": {
+        "type": "string",
+        "description": "Optional title for the notification"
+      },
+      "priority": {
+        "type": "string",
+        "enum": ["min", "low", "default", "high", "urgent"],
+        "description": "Priority level of the notification. Affects how urgently the notification is delivered."
+      },
+      "tags": {
+        "type": "string",
+        "description": "Comma-separated list of tags. Can include emoji shortcodes."
+      }
+    },
+    "required": [
+      "topic",
+      "message"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "success": {
+        "type": "boolean",
+        "description": "Whether the notification was sent successfully"
+      },
+      "message": {
+        "type": "string",
+        "description": "Success message or error details"
+      }
+    },
+    "required": [
+      "success",
+      "message"
+    ]
+  }
+}

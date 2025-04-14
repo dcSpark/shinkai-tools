@@ -1,0 +1,72 @@
+{
+  "name": "Wallet Balance",
+  "author": "Shinkai",
+  "homePage": "",
+  "description": "Tool for checking the ETH and ERC20 tokens balances of a specified wallet address.",
+  "version": "1.0.0",
+  "keywords": [
+    "wallet",
+    "balance",
+    "ETH",
+    "ERC20",
+    "token"
+  ],
+  "configurations": {
+    "type": "object",
+    "properties": {
+      "privateKey": {
+        "type": "string",
+        "description": "The private key of the wallet."
+      }
+    },
+    "required": [
+      "privateKey"
+    ]
+  },
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "contractAddress": {
+        "type": "string",
+        "description": "Token ERC20 Contract Address (0x1234...)"
+      },
+      "rpcURL": {
+        "type": "string",
+        "description": "Optional RPC URL for the blockchain network."
+      },
+      "chain": {
+        "type": "string",
+        "description": "Default: baseSepolia. Valid names from https://github.com/wevm/viem/blob/main/src/chains/index.ts"
+      }
+    },
+    "required": [
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "ethBalance": {
+        "type": "string",
+        "description": "The ETH balance of the specified address."
+      },
+      "tokenBalance": {
+        "type": "string",
+        "description": "The token balance of the specified address."
+      }
+    },
+    "required": [
+      "ethBalance"
+    ]
+  },
+  "sqlTables": [],
+  "sqlQueries": [],
+  "oauth": [],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": "",
+  "tools": []
+}

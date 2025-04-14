@@ -59,10 +59,14 @@ export const run: Run<Configurations, Parameters, Result> = async (
   await browser.close();
 
   console.log('Saving HTML to file...');
-  Deno.writeTextFileSync(await getHomePath() + '/download-page.html', html);
+  const safeFileName = parameters.url.replace(/\./g, '_').replace(/[^a-zA-Z0-9_-]/g, '');
+  const safeDate = new Date().toISOString().replace(/[:.]/g, '-');
+  Deno.writeTextFileSync(await getHomePath() + `/raw.${safeFileName}.${safeDate}.html`, html);
 
   console.log('Converting HTML to Markdown...');
   const turndownService = new TurndownService();
-  const markdown = turndownService.turndown(html);
+  const markdown = turndownService
+    .remove(['script', 'style', 'title'])
+    .turndown(html);
   return Promise.resolve({ markdown });
 };

@@ -4,29 +4,29 @@ on:
   workflow_dispatch:
     inputs:
       node_version:
-        description: 'Shinkai Node version to use (e.g. 0.9.7)'
+        description: 'Shinkai Node version to use (e.g. v0.9.8)'
         required: true
         type: string
-        default: "0.9.7"
-      use_dev_prefix:
-        description: 'Use dev prefix for download URL (e.g. https://download.shinkai.com/dev-tools-0.9.7)'
-        required: true
-        type: boolean
-        default: true
-      have_run_tests:
-        description: 'Have you run tests successfully?'
-        required: true
-        type: boolean
-        default: false
+        default: "v0.9.8"
+      environment:
+        type: environment
+        default: "development"
 
 jobs:
   build_tools:
     runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
     permissions:
       contents: write
     
     steps:
-      - uses: actions/checkout@v3
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y curl jq zip unzip coreutils
+
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
       - name: Install Rust
         uses: actions-rs/toolchain@v1
@@ -42,11 +42,6 @@ jobs:
         with:
           deno-version: v2.x
 
-      - name: Install dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y curl jq zip unzip coreutils
-
       - name: Run node in background
         id: run_node
         env:
@@ -59,12 +54,13 @@ jobs:
           SHINKAI_NODE_ADDR: "http://localhost:9550"
           BEARER_TOKEN: ${{ secrets.API_V2_KEY }}
           INITIALIZATION_DATA: ${{ secrets.INITIALIZATION_DATA }}
-          DOWNLOAD_PREFIX: ${{ inputs.use_dev_prefix && 'https://download.shinkai.com/dev-tools-' || 'https://download.shinkai.com/tools-' }}${{ inputs.node_version }}
+          DOWNLOAD_PREFIX: ${{ vars.DOWNLOAD_PREFIX }}
+          NODE_VERSION: ${{ inputs.node_version }}
           SKIP_IMPORT_FROM_DIRECTORY: true
-          SHINKAI_STORE_ADDR: "https://shinkai-store-302883622007.us-central1.run.app"
+          SHINKAI_STORE_ADDR: ${{ vars.SHINKAI_STORE_ADDR }}
           SHINKAI_STORE_TOKEN: ${{ secrets.SHINKAI_STORE_TOKEN }}
           USE_DOCKER: true
-          SHINKAI_NODE_IMAGE: "dcsparkdevops/shinkai-node:${{ inputs.node_version }}"
+          SHINKAI_NODE_IMAGE: "dcspark/shinkai-node:${{ inputs.node_version }}"
         run: |
           ./scripts/run_node.sh &
           timeout 60 bash -c 'until curl -s --location "$SHINKAI_NODE_ADDR/v2/health_check" | jq -e ".status == \"ok\"" > /dev/null; do sleep 1; done'
@@ -92,14 +88,15 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           CLOUDFLARE_ZONE: ${{ secrets.CLOUDFLARE_ZONE }}
           CLOUDFLARE_TOKEN: ${{ secrets.CLOUDFLARE_CACHE_INVALIDATION_TOKEN }}
-          DOWNLOAD_PREFIX: ${{ inputs.use_dev_prefix && 'https://download.shinkai.com/dev-tools-' || 'https://download.shinkai.com/tools-' }}${{ inputs.node_version }}
+          DOWNLOAD_PREFIX: ${{ vars.DOWNLOAD_PREFIX }}
+          NODE_VERSION: ${{ inputs.node_version }}
         run: |
           export AWS_ACCESS_KEY_ID=${R2_ACCESS_KEY_ID}
           export AWS_SECRET_ACCESS_KEY=${R2_SECRET_ACCESS_KEY}
           export AWS_ENDPOINT_URL=https://${CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com
-          UPLOAD_PATH=${{ inputs.use_dev_prefix && format('dev-tools-{0}', inputs.node_version) || format('tools-{0}', inputs.node_version) }}
+          export UPLOAD_PATH=$([ "${{ inputs.environment }}" = "development" ] && echo "dev-tools-" || echo "tools-")${NODE_VERSION#v}
           aws configure set default.s3.max_concurrent_requests 1
           aws s3 sync ./packages/ s3://${R2_BUCKET}/${UPLOAD_PATH}/ --exclude "*" --include "*.zip" --include "directory.json" \
             --endpoint-url https://${CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com
-          deno run --allow-read --allow-env --allow-net scripts/invalidate_cache.ts
+          deno run --allow-read --allow-env --allow-net scripts/invalidate_cache.ts || true
 

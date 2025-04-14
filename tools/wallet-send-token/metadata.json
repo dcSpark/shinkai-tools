@@ -1,0 +1,112 @@
+{
+  "name": "Transfer ERC20 Tokens",
+  "author": "Shinkai",
+  "homePage": "",
+  "description": "Sending ERC20 tokens specified address.",
+  "version": "1.0.0",
+  "keywords": [
+    "wallet",
+    "token",
+    "transfer",
+    "crypto",
+    "erc20"
+  ],
+  "configurations": {
+    "type": "object",
+    "properties": {
+      "privateKey": {
+        "type": "string",
+        "description": "The private key of the wallet."
+      }
+    },
+    "required": [
+      "privateKey"
+    ]
+  },
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "rpcURL": {
+        "type": "string",
+        "description": "Optional RPC URL for the blockchain network."
+      },
+      "chain": {
+        "type": "string",
+        "description": "Default: baseSepolia. Valid names from https://github.com/wevm/viem/blob/main/src/chains/index.ts"
+      },
+      "contractAddress": {
+        "type": "string",
+        "description": "Token ERC20 Contract Address (0x1234...)"
+      },
+      "toAddress": {
+        "type": "string",
+        "description": "The wallet address to send tokens to. (0x1234...)"
+      },
+      "amount": {
+        "type": "number",
+        "description": "The amount of tokens to send. In native token units."
+      }
+    },
+    "required": [
+      "contractAddress",
+      "toAddress",
+      "amount"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "receipt": {
+        "type": "object",
+        "properties": {
+          "transactionHash": {
+            "type": "string",
+            "description": "The hash of the transaction."
+          },
+          "status": {
+            "type": "string",
+            "description": "The status of the transaction."
+          },
+          "gasUsed": {
+            "type": "bigint",
+            "description": "The gas used for the transaction."
+          },
+          "gasPrice": {
+            "type": "bigint",
+            "description": "The gas price for the transaction."
+          },
+          "from": {
+            "type": "string",
+            "description": "The address that sent the tokens."
+          },
+          "to": {
+            "type": "string",
+            "description": "The address that received the tokens."
+          }
+        },
+        "required": [
+          "transactionHash",
+          "status",
+          "gasUsed",
+          "gasPrice",
+          "from",
+          "to"
+        ]
+      }
+    },
+    "required": [
+      "receipt"
+    ]
+  },
+  "sqlTables": [],
+  "sqlQueries": [],
+  "oauth": [],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": "",
+  "tools": []
+}

@@ -1,0 +1,57 @@
+{
+  "id": "pubmed-search",
+  "version": "1.0.0",
+  "name": "PubMed Search",
+  "description": "Search PubMed for scientific/medical literature and return MEDLINE records.",
+  "author": "Shinkai",
+  "keywords": [
+    "pubmed",
+    "literature",
+    "medical",
+    "shinkai"
+  ],
+  "runner": "any",
+  "operating_system": ["linux", "macos", "windows"],
+  "tool_set": "",
+  "configurations": {
+    "type": "object",
+    "properties": {
+      "entrez_email": {
+        "type": "string",
+        "description": "Email address for Entrez usage. If not provided, must be set in the environment variable ENTREZ_EMAIL."
+      }
+    }
+  },
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "query": {
+        "type": "string",
+        "description": "Search query for PubMed"
+      },
+      "max_results": {
+        "type": "number",
+        "description": "Maximum results to fetch (1-15)",
+        "default": 15
+      }
+    },
+    "required": [
+      "query"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "status": { "type": "string" },
+      "query": { "type": "string" },
+      "message": { "type": "string" },
+      "total_results": { "type": "number" },
+      "showing": { "type": "number" },
+      "records": { "type": "string" }
+    },
+    "required": [
+      "status",
+      "query"
+    ]
+  }
+} 

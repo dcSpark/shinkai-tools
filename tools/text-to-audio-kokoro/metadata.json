@@ -11,7 +11,10 @@
         "text",
         "markdown"
     ],
-    "configurations": {
+    "runner": "any",
+  "operating_system": ["linux", "macos", "windows"],
+  "tool_set": "",
+  "configurations": {
         "properties": {
             "model_path": {
                 "description": "Path to the Kokoro model file",
@@ -29,8 +32,8 @@
     },
     "parameters": {
         "properties": {
-            "input_file": {
-                "description": "Path to the input text file (.txt or .md)",
+            "text": {
+                "description": "text to convert to audio",
                 "type": "string"
             },
             "voice": {
@@ -58,7 +61,7 @@
             }
         },
         "required": [
-            "input_file"
+            "text"
         ],
         "type": "object"
     },

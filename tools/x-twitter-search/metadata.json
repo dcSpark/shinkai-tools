@@ -3,6 +3,9 @@
   "homepage": "https://github.com/dcSpark/shinkai-tools/blob/main/tools/x-twitter-search/README.md",
   "version": "1.0.0",
   "author": "Shinkai",
+  "runner": "any",
+  "operating_system": ["linux", "macos", "windows"],
+  "tool_set": "",
   "configurations": {
     "properties": {
       "apiKey": {

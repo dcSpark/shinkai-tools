@@ -3,11 +3,6 @@ name: Build Shinkai Tools
 on:
   workflow_dispatch:
     inputs:
-      node_version:
-        description: 'Shinkai Node version to use (e.g. v0.9.8)'
-        required: true
-        type: string
-        default: "v0.9.8"
       environment:
         type: environment
         default: "development"
@@ -55,12 +50,11 @@ jobs:
           BEARER_TOKEN: ${{ secrets.API_V2_KEY }}
           INITIALIZATION_DATA: ${{ secrets.INITIALIZATION_DATA }}
           DOWNLOAD_PREFIX: ${{ vars.DOWNLOAD_PREFIX }}
-          NODE_VERSION: ${{ inputs.node_version }}
           SKIP_IMPORT_FROM_DIRECTORY: true
           SHINKAI_STORE_ADDR: ${{ vars.SHINKAI_STORE_ADDR }}
           SHINKAI_STORE_TOKEN: ${{ secrets.SHINKAI_STORE_TOKEN }}
           USE_DOCKER: true
-          SHINKAI_NODE_IMAGE: "dcspark/shinkai-node:${{ inputs.node_version }}"
+          SHINKAI_NODE_IMAGE: "dcspark/shinkai-node:release-latest"
         run: |
           ./scripts/run_node.sh &
           timeout 60 bash -c 'until curl -s --location "$SHINKAI_NODE_ADDR/v2/health_check" | jq -e ".status == \"ok\"" > /dev/null; do sleep 1; done'
@@ -68,6 +62,9 @@ jobs:
             --header 'Content-Type: application/json; charset=utf-8' \
             --data "$INITIALIZATION_DATA"
           rm -rf ./packages && mkdir ./packages
+          sleep 60
+          export NODE_VERSION=$(curl -s "${SHINKAI_NODE_ADDR}/v2/health_check" | jq -r '.version')
+          echo "NODE_VERSION=$NODE_VERSION" >> $GITHUB_ENV
           deno run --allow-read --allow-write --allow-env --allow-net --allow-run scripts/build_tools.ts
 
       - name: Install AWS CLI v2 (R2 compatible version)
@@ -89,7 +86,7 @@ jobs:
           CLOUDFLARE_ZONE: ${{ secrets.CLOUDFLARE_ZONE }}
           CLOUDFLARE_TOKEN: ${{ secrets.CLOUDFLARE_CACHE_INVALIDATION_TOKEN }}
           DOWNLOAD_PREFIX: ${{ vars.DOWNLOAD_PREFIX }}
-          NODE_VERSION: ${{ inputs.node_version }}
+          NODE_VERSION: ${{ env.NODE_VERSION }}
           SHINKAI_STORE_ADDR: ${{ vars.SHINKAI_STORE_ADDR }}
           SHINKAI_STORE_TOKEN: ${{ secrets.SHINKAI_STORE_TOKEN }}          
         run: |
@@ -101,4 +98,4 @@ jobs:
           aws s3 sync ./packages/ s3://${R2_BUCKET}/${UPLOAD_PATH}/ --exclude "*" --include "*.zip" --include "directory.json" \
             --endpoint-url https://${CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com
           deno run --allow-read --allow-env --allow-net scripts/invalidate_cache.ts || true
-          curl -X DELETE "https://${SHINKAI_STORE_ADDR}/store/defaults/cache" --header "Authorization: Bearer ${SHINKAI_STORE_TOKEN}"
+          curl -X DELETE "${SHINKAI_STORE_ADDR}/store/defaults/cache" --header "Authorization: Bearer ${SHINKAI_STORE_TOKEN}" || true

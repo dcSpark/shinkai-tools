@@ -4,16 +4,15 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'tools/**'
   pull_request:
     branches:
       - main
+    paths:
+      - 'tools/**'
   workflow_dispatch:
     inputs:
-      node_version:
-        description: 'Shinkai Node version to use (e.g. 0.9.8)'
-        required: true
-        type: string
-        default: "0.9.8"
       environment:
         description: 'Environment to use (e.g. development or production)'
         type: environment
@@ -64,7 +63,7 @@ jobs:
           SHINKAI_STORE_ADDR: ${{ vars.SHINKAI_STORE_ADDR }}
           SHINKAI_STORE_TOKEN: ${{ secrets.SHINKAI_STORE_TOKEN }}
           USE_DOCKER: true
-          SHINKAI_NODE_IMAGE: "dcspark/shinkai-node:${{ inputs.node_version || 'release-latest' }}"
+          SHINKAI_NODE_IMAGE: "dcspark/shinkai-node:release-latest"
         run: |
           ./scripts/run_node.sh &
           timeout 60 bash -c 'until curl -s --location "$SHINKAI_NODE_ADDR/v2/health_check" | jq -e ".status == \"ok\"" > /dev/null; do sleep 1; done'
@@ -72,6 +71,7 @@ jobs:
             --header 'Content-Type: application/json; charset=utf-8' \
             --data "$INITIALIZATION_DATA"
           rm -rf ./packages && mkdir ./packages
+          sleep 60
           deno test --allow-read --allow-write --allow-env --allow-net --allow-run scripts/
           rm -rf ./shinkai-node/storage
   

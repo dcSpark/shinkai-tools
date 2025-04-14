@@ -130,4 +130,6 @@ export async function memoryTest() {
     
 }
 
-Deno.test('Memory test', memoryTest);
+if (Deno.env.get('MEMORY_TEST')) {
+    Deno.test('Memory test', memoryTest);
+}

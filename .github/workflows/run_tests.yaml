@@ -71,6 +71,7 @@ jobs:
             --header 'Content-Type: application/json; charset=utf-8' \
             --data "$INITIALIZATION_DATA"
           rm -rf ./packages && mkdir ./packages
+          sleep 60
           deno test --allow-read --allow-write --allow-env --allow-net --allow-run scripts/
           rm -rf ./shinkai-node/storage
   

@@ -83,19 +83,41 @@ const generatePrompt = async (
   general_prompt: string,
   data: string
 ): Promise<string> => {
-  let generalPrompt = `
-* You must generate memories, so we can recall new and past interactions.
-* Retrive past memories if there are any, and merge them with the new data.
+  let prompt = `
+There are two actions you can perform, depending on the "input" tag contents type:
+1. It's new information to remember.
+2. It's an imperative instruction.
+
+Depending on the "input" tag you must decide what action to perform.
+If it's imperative, then follow the action-receive-imperative-instruction tag.
+
+<action-receive-information>
+* You must update your own memories, so we can recall new and past interactions.
+* You have access to your own memories, and you can merge them with the new information.
 * We should merge new and past interactions, into a single memory.
 * We can restructure the memory to make it consistent and ordered.
 * Keep the most important information only.
 * Based on the rules tag, you must generate the output.
+</action-receive-information>
 
+<action-receive-imperative-instruction>
+If you receive an imperative instruction as:
+* clear all memories
+* forget something specific
+* update a specific memory
+You must apply them to your memories.
+</action-receive-imperative-instruction>
+
+<formatting>
 Use "##" to write and identify main topics
 Use "#" to identify titles of definitions
 
 Only output the new memory, without comments, suggestions or how it was generated.
+Everything you output will replace the previous memory.
+So if you remove information from the output, it will be forgotten.
+</formatting>
 
+<memory-example>
 This is an example on how to structure the memory, not the fields you must use.
 \`\`\`
 # Location
@@ -109,30 +131,33 @@ This is an example on how to structure the memory, not the fields you must use.
 ## Peter: is from Europe.
 - John and Jane are friends 
 \`\`\`
+</memory-example>
 
+<sections>
 These are some sections you must understand:
   * rules tag: has the rules you must follow to generate the output.\n`;
-  if (previousMemory)
-    generalPrompt += `. * previous_interactions tag: has entire previous interaction memory\n`;
-  generalPrompt += `. * input tag: has the new data to for creating new memories.
+  if (previousMemory) prompt += '  * previous_interactions tag: has entire previous interaction memory\n';
+
+  prompt += `  * input tag: has the new data or imperative instructions.;
+</sections>
 
 <rules>
   ${general_prompt}
 </rules>
     `;
   if (previousMemory)
-    generalPrompt += `
+    prompt += `
 <previous_interactions>
   ${previousMemory.memory}
 </previous_interactions>
       `;
 
-  generalPrompt += `
+      prompt += `
 <input>
   ${data}
 </input>
     `;
-  return generalPrompt;
+  return prompt;
 };
 
 export async function run(config: CONFIG, inputs: INPUTS): Promise<OUTPUT> {

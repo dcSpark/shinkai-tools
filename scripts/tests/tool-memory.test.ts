@@ -98,5 +98,36 @@ export async function memoryTest() {
     const dataG = await runCommandTest(parametersG);
     // console.log('================================\nExpected: None\n', dataG.specificMemory);
     expect(dataG.specificMemory === '' || dataG.specificMemory === null, '11. Empty memory', JSON.stringify(dataG));
+
+    const parametersH: INPUTS = {
+        data: 'Forget everything and clear all memories.',
+    }
+    const dataH= await runCommandTest(parametersH);
+    // console.log('================================\nExpected: Chile\n', dataA.generalMemory);
+    expect(
+        dataH.generalMemory.match(/Chile/i) === null && 
+        dataH.generalMemory.match(/Argentina/i) === null &&
+        dataH.generalMemory.match(/Spain/i) === null &&
+        dataH.generalMemory.match(/France/i) === null, 
+        '12. Clear general memory', 
+        JSON.stringify(dataH)
+    );
+
+    const parametersI: INPUTS = {
+        data: 'Replace every instance of the word "France" with "Chile", and "French" with "Chilean", and any similar compound words as French Guiana to Chilean Guiana.',
+        key: 'france'
+    }
+    const dataI= await runCommandTest(parametersI);
+    // console.log('================================\nExpected: Chile\n', dataA.generalMemory);
+    expect(
+        dataI.specificMemory.match(/France/i) === null &&
+        dataI.specificMemory.match(/French/i) === null &&
+        dataI.specificMemory.match(/Chile/i) !== null &&
+        dataI.specificMemory.match(/Chilean/i) !== null,
+        '13. Update specific memory', 
+        JSON.stringify(dataI)
+    );
+    
 }
 
+Deno.test('Memory test', memoryTest);

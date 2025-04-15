@@ -1,14 +1,13 @@
-# Key-Value Memory Management
+# Memory Insight Management
 
 ## Name & Description
 A tool that handles memory storage and retrieval using a SQLite database. It manages both general and specific memories, allowing for intelligent memory updates based on new data.
 
 ## Usage Example
-Use Memory Manager, with data: [YOUR_MEMORY_DATA], and memory_key: [MEMORY_KEY]
+Use Memory Manager, with data: [YOUR_MEMORY_DATA], general_prompt: [GENERAL_PROMPT], specific_prompt: [SPECIFIC_PROMPT], and key: [MEMORY_KEY]
 
 ## Parameters/Inputs
 The following parameters are available (all optional):
-- `action` 'upsert' or 'retrive'
 - `data` (string, optional): The data to process for memory management. If not provided, the tool will return existing memories
 - `memory_key` (string, optional): The key for specific memory retrieval
 

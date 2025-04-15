@@ -1,6 +1,12 @@
 const code = Deno.readTextFileSync(import.meta.dirname + '/../../tools/download-page/tool.ts');
 const metadata = JSON.parse(Deno.readTextFileSync(import.meta.dirname + '/../../tools/download-page/metadata.json'));
 
+const TOOL_TESTS = !!Deno.env.get("TOOL_TESTS");
+if (!TOOL_TESTS) {
+    console.log('Skipping tool download-page test');
+    Deno.exit(0);
+}
+
 type INPUTS = {
     url: string;
 };

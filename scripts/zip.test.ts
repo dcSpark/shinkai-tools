@@ -3,10 +3,6 @@ import { getMetadata, processToolsDirectory, saveToolsInNode } from "./build_too
 import { join } from "https://deno.land/std/path/mod.ts";
 import { exists } from "https://deno.land/std/fs/mod.ts";
 import { stripVersion, systemTools } from "./build_tools/system.ts";
-import { memoryTest } from "./tests/tool-memory.test.ts";
-import { downloadPageTest } from "./tests/download-page.test.ts";
-
-const TOOL_TESTS = !!Deno.env.get("TOOL_TESTS");
 
 Deno.test("Check if related tools exist", async () => {
   const tools_raw = await processToolsDirectory();
@@ -30,7 +26,7 @@ Deno.test("Compare shinkai-node generated ZIP __tool.json vs .tool-dump.test.jso
 
   // Expect the number of tools saved to be the same as the number of tools raw
   assertEquals(tools_saved.map(tool => tool.name).sort(), tools_raw.map(tool => tool.name).sort());
-  
+
   // Search for tools with .tool-dump.test.json
   for await (const entryx of Deno.readDir("tools")) {
     if (!entryx.isDirectory) continue;
@@ -70,13 +66,3 @@ Deno.test("Compare shinkai-node generated ZIP __tool.json vs .tool-dump.test.jso
     }
   }
 });
-
-
-if (TOOL_TESTS) {
-  Deno.test("Check if memory is working", async () => {
-    await memoryTest();
-  });
-  Deno.test("Check if download-page is working", async () => {
-    await downloadPageTest();
-  });
-}

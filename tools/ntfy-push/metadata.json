@@ -1,73 +1,78 @@
 {
   "id": "ntfy-push",
-  "version": "1.0.0",
   "name": "Ntfy Push Notifications",
-  "description": "Sends push notifications to specific groups using ntfy. Supports message priority, tags, and titles.",
+  "description": "Sends push notifications to specific groups using ntfy. Supports message priority, tags, and titles. Download the Apps and learn more here: http://nfty.sh",
   "author": "Shinkai",
-  "keywords": [
-    "ntfy",
-    "notifications",
-    "push",
-    "shinkai"
-  ],
-  "runner": "any",
-  "operating_system": ["linux", "macos", "windows"],
-  "tool_set": "",
+  "homePage": "",
   "configurations": {
     "type": "object",
     "properties": {
       "serverUrl": {
-        "type": "string",
-        "description": "The ntfy server URL. Defaults to https://ntfy.sh if not provided."
+        "description": "The server URL to send notifications. Defaults to https://ntfy.sh if not provided.",
+        "type": "string"
+      },
+      "topic": {
+        "description": "The topic to send the notification to. You want it to be hard to guess e.g. nico_051490 or whatever you want.",
+        "type": "string"
       }
     },
-    "required": []
+    "required": [
+      "topic"
+    ]
   },
   "parameters": {
     "type": "object",
     "properties": {
-      "topic": {
-        "type": "string",
-        "description": "The topic/group to send the notification to. Acts as a channel for notifications."
-      },
       "message": {
-        "type": "string",
-        "description": "The notification message content"
-      },
-      "title": {
-        "type": "string",
-        "description": "Optional title for the notification"
+        "description": "The message to be sent",
+        "type": "string"
       },
       "priority": {
-        "type": "string",
-        "enum": ["min", "low", "default", "high", "urgent"],
-        "description": "Priority level of the notification. Affects how urgently the notification is delivered."
+        "description": "The priority of the notification",
+        "type": "string"
       },
       "tags": {
-        "type": "string",
-        "description": "Comma-separated list of tags. Can include emoji shortcodes."
+        "description": "Tags associated with the notification",
+        "type": "string"
+      },
+      "title": {
+        "description": "The title of the notification",
+        "type": "string"
       }
     },
     "required": [
-      "topic",
       "message"
     ]
   },
   "result": {
     "type": "object",
     "properties": {
-      "success": {
-        "type": "boolean",
-        "description": "Whether the notification was sent successfully"
-      },
       "message": {
-        "type": "string",
-        "description": "Success message or error details"
+        "description": "Response message indicating the result of the operation",
+        "type": "string"
+      },
+      "success": {
+        "description": "Indicates if the notification was sent successfully",
+        "type": "boolean"
       }
     },
-    "required": [
-      "success",
-      "message"
-    ]
-  }
+    "required": []
+  },
+  "sqlTables": [],
+  "sqlQueries": [],
+  "oauth": [],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": "",
+  "keywords": [
+    "notification",
+    "ntfy",
+    "http api",
+    "message sender"
+  ],
+  "version": "1.1.0"
 }

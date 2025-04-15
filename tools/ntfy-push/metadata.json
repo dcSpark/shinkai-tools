@@ -1,18 +1,18 @@
 {
   "id": "ntfy-push",
   "name": "Ntfy Push Notifications",
-  "description": "Sends push notifications to specific groups using ntfy. Supports message priority, tags, and titles.",
+  "description": "Sends push notifications to specific groups using ntfy. Supports message priority, tags, and titles. Download the Apps and learn more here: http://nfty.sh",
   "author": "Shinkai",
   "homePage": "",
   "configurations": {
     "type": "object",
     "properties": {
       "serverUrl": {
-        "description": "The server URL to send notifications",
+        "description": "The server URL to send notifications. Defaults to https://ntfy.sh if not provided.",
         "type": "string"
       },
       "topic": {
-        "description": "The topic to send the notification to",
+        "description": "The topic to send the notification to. You want it to be hard to guess e.g. nico_051490 or whatever you want.",
         "type": "string"
       }
     },

@@ -19,6 +19,7 @@ type INPUTS = {
 
 type OUTPUT = {
   memory?: string;
+  all_memories?: { key: string; memory: string }[];
 };
 
 const shinkaiSqliteQueryExecutor = (params: {
@@ -46,6 +47,20 @@ const createTable = async (
     query: createTableQuery,
     ...(database_name && { database_name }),
   });
+};
+
+const getAllMemories = async (
+  database_name: string | undefined
+): Promise<TableRow[]> => {
+  const fetchAllMemoriesQuery = `
+    SELECT id, key, memory
+      FROM memory_table
+  `;
+  const fetchAllMemories = await shinkaiSqliteQueryExecutor({
+    query: fetchAllMemoriesQuery,
+    ...(database_name && { database_name }),
+  });
+  return fetchAllMemories.result;
 };
 
 const getMemory = async (
@@ -76,10 +91,6 @@ export async function run(config: CONFIG, inputs: INPUTS): Promise<OUTPUT> {
     memory_key,
   } = inputs;
 
-  if (!memory_key) {
-    throw new Error("memory_key is required");
-  }
-
   let _action: 'retrieve' | 'upsert';
   switch ((action || '').toLowerCase()) {
     case 'insert':
@@ -104,13 +115,24 @@ export async function run(config: CONFIG, inputs: INPUTS): Promise<OUTPUT> {
 
   // If no data provided, just return existing memories
   if (_action === 'retrieve') {
-    const existingMemory = await getMemory(database_name, memory_key);
-    return {
-      memory: existingMemory?.memory || "",
-    };
+    if (!memory_key) {
+      const allMemories = await getAllMemories(database_name);
+      return {
+        all_memories: allMemories.map(m => ({ key: m.key, memory: m.memory })),
+      };
+    } else {
+      const existingMemory = await getMemory(database_name, memory_key.toLocaleLowerCase());
+      return {
+        memory: existingMemory?.memory || "",
+      };
+    }
   }
 
   // Upsert
+  if (!memory_key) {
+    throw new Error("Memory key is required for upsert");
+  }
+
   const query = `
     INSERT INTO memory_table (key, memory)
     VALUES (?, ?)
@@ -118,7 +140,7 @@ export async function run(config: CONFIG, inputs: INPUTS): Promise<OUTPUT> {
   `;
   await shinkaiSqliteQueryExecutor({
     query,
-    params: [memory_key, data || ''],
+    params: [memory_key.toLocaleLowerCase(), data || ''],
     ...(database_name && { database_name }),
   });
 

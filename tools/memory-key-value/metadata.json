@@ -47,12 +47,11 @@
       },
       "memory_key": {
         "type": "string",
-        "description": "The key to associate with the memory. Used for both storing and retrieving memories."
+        "description": "The key to associate with the memory. For 'upsert' used as key for the storage. For 'retrieve' used as key to retrieve the memory, if not provided, all memories will be retrieved."
       }
     },
     "required": [
-      "action",
-      "memory_key"
+      "action"
     ]
   },
   "result": {
@@ -61,6 +60,23 @@
       "memory": {
         "type": "string",
         "description": "The memory content when retrieving, or the stored data when upserting"
+      },
+      "all_memories": {
+        "type": "array",
+        "description": "An array of all memories",
+        "items": {
+          "type": "object",
+          "properties": {
+            "key": {
+              "type": "string",
+              "description": "The key of the memory"
+            },
+            "memory": {
+              "type": "string",
+              "description": "The memory content"
+            }
+          }
+        }
       }
     },
     "required": []
@@ -75,6 +91,10 @@
     {
       "name": "Get memory by key",
       "query": "SELECT id, key, memory FROM memory_table WHERE key = ?"
+    },
+    {
+      "name": "Get all memories",
+      "query": "SELECT id, key, memory FROM memory_table"
     },
     {
       "name": "Update memory",

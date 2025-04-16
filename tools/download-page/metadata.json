@@ -1,50 +1,46 @@
 {
-    "version": "1.0.0",
-    "name": "Download Pages",
-    "homepage": "https://github.com/dcSpark/shinkai-tools/blob/main/tools/download-page/README.md",
-    "description": "Downloads a URL and converts its HTML content to Markdown",
-    "author": "Shinkai",
-    "keywords": [
-      "HTML to Markdown",
-      "web page downloader",
-      "content conversion",
-      "URL to Markdown"
-    ],
-    "runner": "any",
+  "version": "1.0.1",
+  "name": "Download Pages",
+  "homepage": "https://github.com/dcSpark/shinkai-tools/blob/main/tools/download-page/README.md",
+  "description": "Downloads a URL and converts its HTML content to Markdown",
+  "author": "Shinkai",
+  "keywords": [
+    "HTML to Markdown",
+    "web page downloader",
+    "content conversion",
+    "URL to Markdown"
+  ],
+  "runner": "any",
   "operating_system": ["linux", "macos", "windows"],
   "tool_set": "",
   "configurations": {
-      "type": "object",
-      "properties": {
-        "chromePath": {
-          "type": "string",
-          "description": "The path to the Chrome executable"
-        }
-      },
-      "required": []
+    "type": "object",
+    "properties": {
+      "chromePath": {
+        "type": "string",
+        "description": "The path to the Chrome executable"
+      }
     },
-    "parameters": {
-      "type": "object",
-      "properties": {
-        "url": {
-          "type": "string",
-          "description": "A URL of a web page to download"
-        }
-      },
-      "required": [
-        "url"
-      ]
+    "required": []
+  },
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "url": {
+        "type": "string",
+        "description": "A URL of a web page to download"
+      }
     },
-    "result": {
-      "type": "object",
-      "properties": {
-        "markdown": {
-          "type": "string",
-          "description": "The Markdown content converted from the web page"
-        }
-      },
-      "required": [
-        "markdown"
-      ]
-    }
+    "required": ["url"]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "markdown": {
+        "type": "string",
+        "description": "The Markdown content converted from the web page"
+      }
+    },
+    "required": ["markdown"]
   }
+}

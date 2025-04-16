@@ -1,4 +1,4 @@
-import { assertEquals } from "https://deno.land/std@0.220.1/assert/mod.ts";
+import { assertEquals, assert } from "https://deno.land/std@0.220.1/assert/mod.ts";
 
 const X_SHINKAI_TOOL_ID = `example-${Math.random().toString(36).substring(2, 15)}`;
 const X_SHINKAI_APP_ID = `run-${Math.random().toString(36).substring(2, 15)}`;
@@ -13,8 +13,8 @@ if (!TOOL_TESTS) {
     Deno.exit(0);
 }
 
-const code = Deno.readTextFileSync(import.meta.dirname + '/../../tools/memory/tool.ts');
-const metadata = JSON.parse(Deno.readTextFileSync(import.meta.dirname + '/../../tools/memory/metadata.json'));
+const code = Deno.readTextFileSync(import.meta.dirname + '/../../tools/memory-key-value/tool.ts');
+const metadata = JSON.parse(Deno.readTextFileSync(import.meta.dirname + '/../../tools/memory-key-value/metadata.json'));
 if (!code || !metadata) {
     throw new Error('Cannot find tool code or metadata');
 }
@@ -25,10 +25,11 @@ type CONFIG = {
 type INPUTS = {
     action: 'upsert' | 'retrieve';
     data?: string;
-    memory_key: string;
+    memory_key?: string;
 };
 type OUTPUT = {
     memory?: string;
+    all_memories?: { key: string; memory: string }[];
 };
 
 async function runCommandTest(parameters: INPUTS, config?: CONFIG): Promise<OUTPUT> {
@@ -121,6 +122,25 @@ Deno.test('Memory test', async (t) => {
         });
         assertEquals(result.memory, 'HELLO', 'Memory should still be HELLO');
     });
+
+    // Test 8: Retrieve all memories
+    await t.step('Retrieve all memories', async () => {
+        const result = await runCommandTest({
+            action: 'retrieve'
+        });
+        assert(result.all_memories !== undefined, 'all_memories should be defined');
+        assert(result.all_memories!.length >= 1, 'Should have at least one memory');
+
+        // Check if WORLD and MUNDO are in the results
+        const worldMemory = result.all_memories!.find(m => m.key === 'world');
+        const mundoMemory = result.all_memories!.find(m => m.key === 'mundo');
+
+        assert(worldMemory !== undefined, 'WORLD memory should be in results');
+        assert(mundoMemory !== undefined, 'MUNDO memory should be in results');
+
+        assertEquals(worldMemory!.memory, 'HELLO', 'WORLD memory should be HELLO');
+        assertEquals(mundoMemory!.memory, '', 'MUNDO memory should be empty');
+    });
 });
 
 // Add a new test for database name configuration
@@ -162,5 +182,21 @@ Deno.test('Memory test with custom database name', async (t) => {
             memory_key: 'WORLD'
         });
         assertEquals(result.memory, 'HELLO', 'Memory should still be HELLO in default database');
+    });
+
+    // Test 5: Retrieve all memories from custom database
+    await t.step('Retrieve all memories from custom database', async () => {
+        const result = await runCommandTest({
+            action: 'retrieve'
+        }, { database_name: customDbName });
+
+        assert(result.all_memories !== undefined, 'all_memories should be defined');
+        assert(result.all_memories!.length >= 1, 'Should have at least one memory');
+
+        // Check if TEST is in the results
+        const testMemory = result.all_memories!.find(m => m.key === 'test');
+
+        assert(testMemory !== undefined, 'TEST memory should be in results');
+        assertEquals(testMemory!.memory, 'CUSTOM', 'TEST memory should be CUSTOM');
     });
 });

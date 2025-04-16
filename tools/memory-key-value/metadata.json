@@ -1,0 +1,108 @@
+{
+  "name": "Key-Value Memory Management",
+  "homepage": "https://github.com/dcSpark/shinkai-tools/blob/main/tools/memory/README.md",
+  "description": "Handles key-value memory storage and retrieval using a database. It stores memories with associated keys and can retrieve them by key.",
+  "author": "Shinkai",
+  "version": "2.0.0",
+  "keywords": [
+    "memory",
+    "remember",
+    "management",
+    "recall",
+    "smart",
+    "agent"
+  ],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": "",
+  "configurations": {
+    "type": "object",
+    "properties": {
+      "database_name": {
+        "description": "By default, the database name is the app_id. You can specify a different name to share the same database in multiple contexts.",
+        "type": "string"
+      }
+    },
+    "required": []
+  },
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "action": {
+        "type": "string",
+        "description": "The action to perform: 'upsert' to store or update memory, 'retrieve' to get memory",
+        "enum": [
+          "upsert",
+          "retrieve"
+        ]
+      },
+      "data": {
+        "type": "string",
+        "description": "The data to store in memory when using 'upsert' action",
+        "nullable": true
+      },
+      "memory_key": {
+        "type": "string",
+        "description": "The key to associate with the memory. For 'upsert' used as key for the storage. For 'retrieve' used as key to retrieve the memory, if not provided, all memories will be retrieved."
+      }
+    },
+    "required": [
+      "action"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "memory": {
+        "type": "string",
+        "description": "The memory content when retrieving, or the stored data when upserting"
+      },
+      "all_memories": {
+        "type": "array",
+        "description": "An array of all memories",
+        "items": {
+          "type": "object",
+          "properties": {
+            "key": {
+              "type": "string",
+              "description": "The key of the memory"
+            },
+            "memory": {
+              "type": "string",
+              "description": "The memory content"
+            }
+          }
+        }
+      }
+    },
+    "required": []
+  },
+  "sqlTables": [
+    {
+      "name": "memory_table",
+      "definition": "CREATE TABLE IF NOT EXISTS memory_table (id INTEGER PRIMARY KEY AUTOINCREMENT, date DATETIME DEFAULT CURRENT_TIMESTAMP, key TEXT UNIQUE, memory TEXT)"
+    }
+  ],
+  "sqlQueries": [
+    {
+      "name": "Get memory by key",
+      "query": "SELECT id, key, memory FROM memory_table WHERE key = ?"
+    },
+    {
+      "name": "Get all memories",
+      "query": "SELECT id, key, memory FROM memory_table"
+    },
+    {
+      "name": "Update memory",
+      "query": "INSERT INTO memory_table (key, memory) VALUES (?, ?) ON CONFLICT(key) DO UPDATE SET memory = excluded.memory"
+    }
+  ],
+  "tools": [
+    "local:::__official_shinkai:::shinkai_sqlite_query_executor"
+  ],
+  "oauth": null
+}

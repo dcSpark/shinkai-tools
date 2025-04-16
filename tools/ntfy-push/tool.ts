@@ -2,10 +2,10 @@ import axios from 'npm:axios@1.7.7';
 
 type Configurations = {
   serverUrl?: string;
+  topic: string;
 };
 
 type Parameters = {
-  topic: string;
   message: string;
   title?: string;
   priority?: 'min' | 'low' | 'default' | 'high' | 'urgent';
@@ -27,8 +27,9 @@ export const run: Run<Configurations, Parameters, Result> = async (
   params: Parameters
 ): Promise<Result> => {
   try {
-    const serverUrl = configurations?.serverUrl || 'https://ntfy.sh';
-    const { topic, message, title, priority, tags } = params;
+    const serverUrl = configurations.serverUrl || 'https://ntfy.sh';
+    const { topic } = configurations; // Accessing topic from configurations
+    const { message, title, priority, tags } = params;
 
     // Build request headers
     const headers: Record<string, string> = {

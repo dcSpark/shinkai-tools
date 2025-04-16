@@ -1,36 +1,51 @@
 import { shinkaiSqliteQueryExecutor as shinkaiSqliteQueryExecutor_ } from "./shinkai-local-tools.ts";
 import { shinkaiLlmPromptProcessor } from "./shinkai-local-tools.ts";
 
-const shinkaiSqliteQueryExecutor = (params: any) => {
-  console.log("shinkaiSqliteQueryExecutor", params);
-  return shinkaiSqliteQueryExecutor_(params);
+type TableRow = {
+  id: number;
+  date: string;
+  key: string;
+  memory: string;
 };
 
 type CONFIG = {
   database_name?: string;
-};
-type INPUTS = {
-  data?: string;
   general_prompt?: string;
   specific_prompt?: string;
-  key?: string;
 };
+
+type INPUTS = {
+  data?: string;
+  memory_key?: string;
+};
+
 type OUTPUT = {
-  generalMemory: string;
-  specificMemory: string;
+  action: string;
+  general_memory?: string;
+  specific_memory?: string;
 };
+
+const shinkaiSqliteQueryExecutor = (params: {
+  query: string;
+  params?: string[];
+  database_name?: string;
+}): Promise<{ result: TableRow[] }> => {
+  console.log("[SQL]", JSON.stringify(params));
+  return shinkaiSqliteQueryExecutor_(params);
+};
+
 
 const createTable = async (
   database_name: string | undefined
 ): Promise<void> => {
   // Create table if not exists
   const createTableQuery = `
-        CREATE TABLE IF NOT EXISTS memory_table (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            date DATETIME DEFAULT CURRENT_TIMESTAMP,
-            key TEXT,
-            memory TEXT
-        );
+    CREATE TABLE IF NOT EXISTS memory_insights_table (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      date DATETIME DEFAULT CURRENT_TIMESTAMP,
+      key TEXT,
+      memory TEXT
+    );
     `;
   await shinkaiSqliteQueryExecutor({
     query: createTableQuery,
@@ -40,10 +55,10 @@ const createTable = async (
 
 const getGeneralMemory = async (
   database_name: string | undefined
-): Promise<null | { id: number; key: string; memory: string }> => {
+): Promise<null | TableRow> => {
   const fetchGeneralMemoryQuery = `
-      SELECT id, key, memory
-      FROM memory_table
+    SELECT id, key, memory
+      FROM memory_insights_table
       where key is null
     `;
   const fetchGeneralMemory = await shinkaiSqliteQueryExecutor({
@@ -60,10 +75,10 @@ const getGeneralMemory = async (
 const getSpecificMemory = async (
   database_name: string | undefined,
   key: string
-): Promise<null | { id: number; key: string; memory: string }> => {
+): Promise<null | TableRow> => {
   const fetchSpecificMemoryQuery = `
-      SELECT id, key, memory
-      FROM memory_table
+    SELECT id, key, memory
+      FROM memory_insights_table
       where key = ?
     `;
   const fetchSpecificMemory = await shinkaiSqliteQueryExecutor({
@@ -79,7 +94,7 @@ const getSpecificMemory = async (
 };
 
 const generatePrompt = async (
-  previousMemory: null | { id: number; key: string; memory: string },
+  previousMemory: null | TableRow,
   general_prompt: string,
   data: string
 ): Promise<string> => {
@@ -152,7 +167,7 @@ These are some sections you must understand:
 </previous_interactions>
       `;
 
-      prompt += `
+  prompt += `
 <input>
   ${data}
 </input>
@@ -163,26 +178,37 @@ These are some sections you must understand:
 export async function run(config: CONFIG, inputs: INPUTS): Promise<OUTPUT> {
   const {
     data,
+    memory_key,
+  } = inputs;
+  const {
+    database_name,
     general_prompt = "Synthesize important information to remember from this interaction",
     specific_prompt = "Synthesize important information to remember from this interaction",
-    key,
-  } = inputs;
+  } = config;
 
   await createTable(config.database_name);
   // If no data provided, just return existing memories
   if (!data) {
-    const existingGeneralMemory = await getGeneralMemory(config.database_name);
-    const existingSpecificMemory = key
-      ? await getSpecificMemory(config.database_name, key)
-      : null;
+    const general_memory = (await getGeneralMemory(config.database_name))?.memory || '';
+    const specific_memory = memory_key
+      ? (await getSpecificMemory(database_name, memory_key))?.memory || ''
+      : '';
 
-    return {
-      generalMemory: existingGeneralMemory?.memory || "",
-      specificMemory: existingSpecificMemory?.memory || "",
-    };
+    if (memory_key) {
+      return {
+        action: `retrieved general and specific memory key: [${memory_key}]`,
+        general_memory,
+        specific_memory,
+      };
+    } else {
+      return {
+        action: 'retrieved general memory',
+        general_memory,
+      };
+    }
   }
 
-  if (!key) {
+  if (!memory_key) {
     // Update General Memory
     const previousGeneralMemory = await getGeneralMemory(config.database_name);
     const generalPrompt = await generatePrompt(
@@ -190,7 +216,7 @@ export async function run(config: CONFIG, inputs: INPUTS): Promise<OUTPUT> {
       general_prompt,
       data
     );
-    const generalResponse = await shinkaiLlmPromptProcessor({
+    const generalResponse: { message: string } = await shinkaiLlmPromptProcessor({
       format: "text",
       prompt: generalPrompt,
     });
@@ -198,7 +224,7 @@ export async function run(config: CONFIG, inputs: INPUTS): Promise<OUTPUT> {
 
     if (previousGeneralMemory) {
       const generalUpdateQuery = `
-              UPDATE memory_table SET memory = ?
+              UPDATE memory_insights_table SET memory = ?
               WHERE id = ?
           `;
       await shinkaiSqliteQueryExecutor({
@@ -208,7 +234,7 @@ export async function run(config: CONFIG, inputs: INPUTS): Promise<OUTPUT> {
       });
     } else {
       const generalInsertQuery = `
-            INSERT INTO memory_table (memory)
+            INSERT INTO memory_insights_table (memory)
             VALUES (?);
         `;
       await shinkaiSqliteQueryExecutor({
@@ -217,12 +243,15 @@ export async function run(config: CONFIG, inputs: INPUTS): Promise<OUTPUT> {
         ...(config.database_name && { database_name: config.database_name }),
       });
     }
-    return { generalMemory, specificMemory: "" };
+    return {
+      action: 'updated general memory',
+      general_memory: generalMemory
+    };
   } else {
     // Update specific memory
     const previousSpecificMemory = await getSpecificMemory(
-      config.database_name,
-      key
+      database_name,
+      memory_key
     );
     const specificPrompt = await generatePrompt(
       previousSpecificMemory,
@@ -237,7 +266,7 @@ export async function run(config: CONFIG, inputs: INPUTS): Promise<OUTPUT> {
 
     if (previousSpecificMemory) {
       const specificUpdateQuery = `
-            UPDATE memory_table SET memory = ?
+            UPDATE memory_insights_table SET memory = ?
             WHERE id = ?
         `;
       await shinkaiSqliteQueryExecutor({
@@ -247,15 +276,19 @@ export async function run(config: CONFIG, inputs: INPUTS): Promise<OUTPUT> {
       });
     } else {
       const specificInsertQuery = `
-            INSERT INTO memory_table (key, memory)
+            INSERT INTO memory_insights_table (key, memory)
             VALUES (?, ?);
         `;
       await shinkaiSqliteQueryExecutor({
         query: specificInsertQuery,
-        params: [key, specificMemory],
+        params: [memory_key, specificMemory],
         ...(config.database_name && { database_name: config.database_name }),
       });
     }
-    return { generalMemory: "", specificMemory };
+
+    return {
+      action: `updated specific memory key: [${memory_key}]`,
+      specific_memory: specificMemory
+    };
   }
 }

@@ -1,0 +1,103 @@
+{
+  "name": "Memory Insights Management",
+  "homepage": "https://github.com/dcSpark/shinkai-tools/blob/main/tools/memory-insights /README.md",
+  "description": "Handles memory insights. Can store and retrive insights. It has two types of insights: GENERAL and SPECIFIC. GENERAL is to store any context data or that is not related to a specific user or identifier. SPECIFIC is to store insights related to a specific user or element identifier.",
+  "author": "Shinkai",
+  "version": "1.0.0",
+  "keywords": [
+    "memory",
+    "remember",
+    "insights",
+    "management",
+    "recall",
+    "smart",
+    "agent"
+  ],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": "",
+  "configurations": {
+    "type": "object",
+    "properties": {
+      "database_name": {
+        "description": "By default, the database name is the app_id. You can specify a different name to share the same database in multiple contexts.",
+        "type": "string"
+      },
+      "general_prompt": {
+        "type": "string",
+        "description": "Optional. The general prompt for generating memories. Default: 'Synthesize important information to remember from this interaction'",
+        "nullable": true
+      },
+      "specific_prompt": {
+        "type": "string",
+        "description": "Optional. The specific prompt for generating memories. Default: 'Synthesize important information to remember from this interaction'",
+        "nullable": true
+      }
+    },
+    "required": []
+  },
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "data": {
+        "type": "string",
+        "description": "The data to process for memory insights management, if not provided, the tool will return existing insights"
+      },
+      "memory_key": {
+        "type": "string",
+        "description": "Optional. The Hashmap 'key' for specific memory retrieval. Must a unique identifier for the memory, for example a user-name or email.",
+        "nullable": true
+      }
+    },
+    "required": []
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "action": {
+        "type": "string",
+        "description": "The action performed by the tool"
+      },
+      "general_memory": {
+        "type": "string",
+        "description": "The retrived or updated general memory",
+        "nullable": true
+      },
+      "specific_memory": {
+        "type": "string",
+        "description": "The retrived or updated specific memory",
+        "nullable": true
+      }
+    },
+    "required": []
+  },
+  "sqlTables": [
+    {
+      "name": "memory_insights_table",
+      "definition": "CREATE TABLE IF NOT EXISTS memory_insights_table (id INTEGER PRIMARY KEY AUTOINCREMENT, date DATETIME DEFAULT CURRENT_TIMESTAMP, key TEXT, memory TEXT)"
+    }
+  ],
+  "sqlQueries": [
+    {
+      "name": "Get general memory",
+      "query": "SELECT id, key, memory FROM memory_insights_table WHERE key IS NULL"
+    },
+    {
+      "name": "Get specific memory",
+      "query": "SELECT id, key, memory FROM memory_insights_table WHERE key = ?"
+    },
+    {
+      "name": "Update memory",
+      "query": "UPDATE memory_insights_table SET memory = ? WHERE id = ?"
+    }
+  ],
+  "tools": [
+    "local:::__official_shinkai:::shinkai_sqlite_query_executor",
+    "local:::__official_shinkai:::shinkai_llm_prompt_processor"
+  ],
+  "oauth": null
+}

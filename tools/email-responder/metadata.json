@@ -11,7 +11,11 @@
     "shinkai"
   ],
   "runner": "any",
-  "operating_system": ["linux", "macos", "windows"],
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
   "tool_set": "",
   "configurations": {
     "type": "object",
@@ -95,7 +99,7 @@
     "local:::__official_shinkai:::send_email",
     "local:::__official_shinkai:::shinkai_sqlite_query_executor",
     "local:::__official_shinkai:::shinkai_llm_prompt_processor",
-    "local:::__official_shinkai:::memory_management"
+    "local:::__official_shinkai:::memory_insights_management"
   ],
   "oauth": null
 }

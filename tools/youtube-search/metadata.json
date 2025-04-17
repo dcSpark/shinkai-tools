@@ -12,7 +12,7 @@
     "properties": {
       "SERP_API_KEY": {
         "type": "string",
-        "description": "Your SerpAPI key for authentication"
+        "description": "Your SerpAPI key for authentication. You can obtain an API key by signing up at <https://serpapi.com/manage-api-key>"
       }
     },
     "required": ["SERP_API_KEY"]

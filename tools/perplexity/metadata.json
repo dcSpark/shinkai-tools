@@ -17,7 +17,7 @@
         "chromePath": {
           "type": "string",
           "nullable": true,
-          "description": "Optional path to Chrome executable for browser automation"
+          "description": "Optional path to Chrome executable for browser automation. If not provided, the tool will attempt to use the default Chrome installation. For more information on Chrome paths, see <https://www.chromium.org/developers/how-tos/run-chromium-with-flags/>"
         }
       },
       "required": []

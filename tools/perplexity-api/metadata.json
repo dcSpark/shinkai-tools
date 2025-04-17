@@ -17,7 +17,7 @@
       "properties": {
         "apiKey": {
           "type": "string",
-          "description": "API key for accessing the Perplexity API"
+          "description": "API key for accessing the Perplexity API. For more information you can visit Perplexity's API reference at <https://docs.perplexity.ai/api-reference/chat-completions>"
         }
       },
       "required": [

@@ -16,7 +16,12 @@
   "tool_set": "",
   "configurations": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "note": {
+          "type": "string",
+          "description": "This tool uses OAuth for authentication rather than API keys. For more information on X/Twitter OAuth, visit <https://developer.twitter.com/en/docs/authentication/oauth-2-0>"
+        }
+      },
       "required": []
     },
     "parameters": {

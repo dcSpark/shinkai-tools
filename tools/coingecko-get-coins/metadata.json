@@ -17,7 +17,7 @@
     "properties": {
       "api_key": {
         "type": "string",
-        "description": "Optional. If provided, uses pro-api.coingecko.com. Otherwise uses the free public endpoints."
+        "description": "Optional. If provided, uses pro-api.coingecko.com. Otherwise uses the free public endpoints. You can obtain an API key by subscribing to CoinGecko Pro at <https://www.coingecko.com/en/api/pricing>"
       }
     }
   },
@@ -62,4 +62,4 @@
       "page_size"
     ]
   }
-} 
+}  

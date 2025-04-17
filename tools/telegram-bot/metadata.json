@@ -4,7 +4,7 @@
     "configurations": {
       "properties": {
         "BOT_TOKEN": {
-          "description": "The token for the Telegram Bot",
+          "description": "The token for the Telegram Bot. You can obtain a token by creating a bot through BotFather. For more information, visit <https://core.telegram.org/bots/tutorial>",
           "type": "string"
         }
       },

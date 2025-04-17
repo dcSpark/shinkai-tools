@@ -19,7 +19,7 @@
     "properties": {
       "maxRetries": {
         "type": "number",
-        "description": "Maximum number of retries for the tool",
+        "description": "Maximum number of retries for the tool when generating diagrams. Helpful when dealing with complex diagrams that might fail on first attempt. For more information about Mermaid diagrams, visit <https://mermaid.js.org/intro/>",
         "default": 5
       }
     },

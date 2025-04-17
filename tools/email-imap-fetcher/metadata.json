@@ -18,24 +18,24 @@
       "properties": {
         "imap_server": {
           "type": "string",
-          "description": "The IMAP server address"
+          "description": "The IMAP server address (e.g., 'imap.gmail.com' for Gmail). For a list of common IMAP servers, see <https://www.systoolsgroup.com/imap/>"
         },
         "username": {
           "type": "string",
-          "description": "The username for the IMAP account"
+          "description": "The username for the IMAP account (typically your email address)"
         },
         "password": {
           "type": "string",
-          "description": "The password for the IMAP account"
+          "description": "The password for the IMAP account. For services like Gmail, you might need to use an app password instead of your regular password. Learn more at <https://support.google.com/accounts/answer/185833>"
         },
         "port": {
           "type": "integer",
-          "description": "The port number for the IMAP server (defaults to 993 for IMAPS)",
+          "description": "The port number for the IMAP server. The default is 993 for IMAPS (IMAP over SSL), while standard IMAP uses port 143",
           "default": 993
         },
         "ssl": {
           "type": "boolean",
-          "description": "Whether to use SSL for the IMAP connection (defaults to true)",
+          "description": "Whether to use SSL for the IMAP connection. Most modern IMAP servers require SSL for security",
           "default": true
         }
       },

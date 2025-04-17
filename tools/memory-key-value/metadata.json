@@ -23,7 +23,7 @@
     "type": "object",
     "properties": {
       "database_name": {
-        "description": "By default, the database name is the app_id. You can specify a different name to share the same database in multiple contexts.",
+        "description": "By default, the database name is the app_id. You can specify a different name to share the same database in multiple contexts. This allows for memory persistence across different sessions or applications. For more information on SQLite databases used for memory storage, visit <https://www.sqlite.org/docs.html>",
         "type": "string"
       }
     },

@@ -18,11 +18,11 @@
         "properties": {
             "apiKey": {
                 "type": "string",
-                "description": "The API key for Ghost Admin API."
+                "description": "The API key for Ghost Admin API. You can create an API key in your Ghost admin settings under 'Integrations'. For more information, visit <https://ghost.org/docs/admin-api/>"
             },
             "ghostUrl": {
                 "type": "string",
-                "description": "The URL for the Ghost Admin API."
+                "description": "The URL for the Ghost Admin API. This should be your Ghost site URL followed by '/ghost/api/admin'. For more information, visit <https://ghost.org/docs/admin-api/#authentication>"
             }
         },
         "required": [

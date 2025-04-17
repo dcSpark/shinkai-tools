@@ -9,7 +9,7 @@
   "configurations": {
     "properties": {
       "apiKey": {
-        "description": "Get your API Key from https://rapidapi.com/twttrapi-twttrapi-default/api/twttrapi",
+        "description": "Get your API Key from RapidAPI's Twitter API service at <https://rapidapi.com/twttrapi-twttrapi-default/api/twttrapi>. This allows access to X/Twitter data without requiring direct X/Twitter API credentials",
         "type": "string"
       }
     },

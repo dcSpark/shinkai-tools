@@ -13,7 +13,7 @@
         "properties": {
             "post_guidelines": {
                 "type": "string",
-                "description": "The guidelines for the blog post like structure, tone, etc"
+                "description": "The guidelines for the blog post including structure, tone, style, and formatting preferences. These guidelines help shape the generated content to match your desired output. For more information on content guidelines, see <https://www.reddit.com/wiki/markdown/>"
             }
         },
         "required": [

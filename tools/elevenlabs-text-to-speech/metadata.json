@@ -6,11 +6,11 @@
   "configurations": {
       "properties": {
         "ELEVENLABS_API_KEY": {
-          "description": "API key for Eleven Labs",
+          "description": "API key for Eleven Labs text-to-speech service. You can obtain an API key by creating an account at <https://elevenlabs.io/app/speech-synthesis>",
           "type": "string"
         },
         "voice": {
-          "description": "The voice used for text-to-speech, options include: Aria, Roger, Sarah, Laura, Charlie, George, Callum, River, Liam, Charlotte, Alice, Matilda, Will, Jessica, Eric, Chris, Brian, Daniel, Lily, Bill",
+          "description": "The voice used for text-to-speech, options include: Aria, Roger, Sarah, Laura, Charlie, George, Callum, River, Liam, Charlotte, Alice, Matilda, Will, Jessica, Eric, Chris, Brian, Daniel, Lily, Bill. For voice samples, visit <https://elevenlabs.io/voice-library>",
           "type": "string"
         }
       },

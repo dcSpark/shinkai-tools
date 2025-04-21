@@ -3,7 +3,7 @@
   "homepage": "https://github.com/dcSpark/shinkai-tools/blob/main/tools/meme-generator/README.md",
   "description": "Generates a meme image based on a joke by selecting a template and splitting the joke into appropriate parts.",
   "author": "Shinkai",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "keywords": [
     "meme",
     "generator",
@@ -11,23 +11,31 @@
     "image"
   ],
   "runner": "any",
-  "operating_system": ["linux", "macos", "windows"],
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
   "tool_set": "",
   "configurations": {
     "type": "object",
     "properties": {
-      "username": {
+      "IMGFLIP_USERNAME": {
         "type": "string",
         "description": "The username for the Imgflip API"
       },
-      "password": {
-          "type": "string",
-          "description": "The password for the Imgflip API"
+      "IMGFLIP_PASSWORD": {
+        "type": "string",
+        "description": "The password for the Imgflip API"
+      },
+      "PERPLEXITY_API_KEY": {
+        "type": "string",
+        "description": "The API key for the Perplexity API"
       }
     },
     "required": [
-      "username",
-      "password"
+      "IMGFLIP_USERNAME",
+      "IMGFLIP_PASSWORD"
     ]
   },
   "parameters": {
@@ -57,8 +65,7 @@
   "sqlTables": [],
   "sqlQueries": [],
   "tools": [
-    "local:::__official_shinkai:::shinkai_llm_prompt_processor",
-    "local:::__official_shinkai:::smart_search_engine"
+    "local:::__official_shinkai:::shinkai_llm_prompt_processor"
   ],
   "oauth": null
 }

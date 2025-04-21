@@ -90,7 +90,7 @@ def make_coingecko_request(url: str, params: Dict[str, Any], headers: Dict[str, 
         ping_url = url.split('/coins')[0] + '/ping'
         ping_response = requests.get(ping_url, headers=headers)
         if ping_response.status_code != 200:
-            raise Exception("CoinGecko API is not available")
+            raise Exception(f"CoinGecko API is not available. Status code: {ping_response.status_code}")
             
         response = requests.get(url, params=params, headers=headers)
         
@@ -104,22 +104,22 @@ def make_coingecko_request(url: str, params: Dict[str, Any], headers: Dict[str, 
         return response.json()
     except requests.exceptions.RequestException as e:
         if e.response is not None:
+            error_message = f"API Error: {str(e)}"
+            try:
+                error_json = e.response.json()
+                if 'error' in error_json:
+                    error_message = f"API Error: {error_json['error']}"
+            except:
+                pass
             if e.response.status_code == 401:
-                # For testing purposes, we'll return mock data if unauthorized
-                if params.get('vs_currency') == 'usd' and 'market_chart/range' in url:
-                    mock_timestamps = [1704088800000, 1704175200000]  # Jan 1 and Jan 2, 2024
-                    return {
-                        'prices': [[ts, 42000.0 + i * 1000] for i, ts in enumerate(mock_timestamps)],
-                        'market_caps': [[ts, 820000000000.0 + i * 10000000000] for i, ts in enumerate(mock_timestamps)],
-                        'total_volumes': [[ts, 25000000000.0 + i * 1000000000] for i, ts in enumerate(mock_timestamps)]
-                    }
+                raise Exception(f"{error_message} (Status code: {e.response.status_code})")
             elif e.response.status_code == 429:
-                raise Exception("Rate limit exceeded. Please use an API key or wait before retrying.")
+                raise Exception(f"{error_message} (Status code: {e.response.status_code})")
             elif e.response.status_code == 403:
-                raise Exception("API key is invalid or missing required permissions.")
+                raise Exception(f"{error_message} (Status code: {e.response.status_code})")
             elif e.response.status_code >= 500:
-                raise Exception("CoinGecko server error. Please try again later.")
-        raise
+                raise Exception(f"{error_message} (Status code: {e.response.status_code})")
+        raise Exception(f"Request failed: {str(e)}")
 
 async def run(config: CONFIG, inputs: INPUTS) -> OUTPUT:
     # Validate required inputs
@@ -196,4 +196,6 @@ async def run(config: CONFIG, inputs: INPUTS) -> OUTPUT:
 
     except Exception as e:
         # Return the exception with the error message for any exception
-        return Exception(f"CoinGecko API request failed: {str(e)}") 
+        output = OUTPUT()
+        output.error = str(e)
+        return output

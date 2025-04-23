@@ -16,12 +16,12 @@ describe('Mermaid Diagram Tool', () => {
     // Execute tool
     const response = await client.executeToolFromFile(toolPath, { description: testDescription }, {}, ['local:::__official_shinkai:::shinkai_llm_prompt_processor']);
     // Expect the result to contain our output fields
-    expect(response).toHaveProperty('pngBase64');
+    expect(response).toHaveProperty('filePath');
     expect(response).toHaveProperty('finalMermaid');
 
     // Validate some minimal checks
-    expect(typeof response.pngBase64).toBe('string');
-    expect(response.pngBase64.length).toBeGreaterThan(0);
+    expect(typeof response.filePath).toBe('string');
+    expect(response.filePath.length).toBeGreaterThan(0);
 
     // We can also do a minimal check of whether finalMermaid contains "graph" or something relevant
     expect(response.finalMermaid).toMatch(/graph/i);
@@ -37,7 +37,7 @@ describe('Mermaid Diagram Tool', () => {
         description: invalidDescription
       }, {}, ['local:::__official_shinkai:::shinkai_llm_prompt_processor']);
       // We expect it might still succeed or might fail. Adjust as needed for your logic.
-      expect(response).toHaveProperty('pngBase64');
+      expect(response).toHaveProperty('filePath');
       expect(response).toHaveProperty('finalMermaid');
     } catch (err: any) {
       // If your code throws an error after the maximum attempts, we check that logic here.

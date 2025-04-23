@@ -12,7 +12,11 @@
     "markdown"
   ],
   "runner": "any",
-  "operating_system": ["linux", "macos", "windows"],
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
   "tool_set": "",
   "configurations": {
     "type": "object",
@@ -33,20 +37,25 @@
         "description": "Mermaid diagram code"
       }
     },
-    "required": ["description"]
+    "required": [
+      "description"
+    ]
   },
   "result": {
     "type": "object",
     "properties": {
-      "pngBase64": {
+      "filePath": {
         "type": "string",
-        "description": "Base64 encoded image data"
+        "description": "Path to the PNG image"
       },
       "finalMermaid": {
         "type": "string",
         "description": "Final Mermaid code"
       }
     },
-    "required": ["pngBase64", "finalMermaid"]
+    "required": [
+      "filePath",
+      "finalMermaid"
+    ]
   }
 }

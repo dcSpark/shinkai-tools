@@ -211,7 +211,7 @@ graph TD
   console.log('Starting Mermaid diagram generation for description:', { description });
   let currentMermaid = await requestMermaid(description, undefined, undefined);
   console.log('Initial Mermaid code generated:', { currentMermaid });
-
+  let filePath = '';
   for (let attempt = 0; attempt < maxRetries; attempt++) {
     console.log(`Attempt ${attempt + 1}/${maxRetries}`);
     
@@ -233,17 +233,15 @@ graph TD
     const renderResult = await tryKrokiRender(currentMermaid);
     if (renderResult.ok && renderResult.data) {
       console.log('Successfully rendered diagram');
-      // Convert Uint8Array to base64 string
-      const pngBase64 = encodeBase64(renderResult.data);
+
       // Ensure data is not empty before writing to file
       if (renderResult.data.length > 0) {
         console.log(`Writing ${renderResult.data.length} bytes to file`);
         // Debug the data before writing
         console.log('Data type:', renderResult.data.constructor.name);
         console.log('First few bytes:', Array.from(renderResult.data.slice(0, 10)));
-        
         try {
-          const filePath = await getHomePath() + '/mermaid.png';
+          filePath = await getHomePath() + '/mermaid.png';
           await Deno.writeFile(filePath, renderResult.data);
           
           // Verify the file was written correctly

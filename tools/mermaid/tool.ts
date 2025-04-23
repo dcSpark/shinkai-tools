@@ -26,7 +26,7 @@ type INPUTS = {
  * - The final (valid) Mermaid code that was successfully parsed.
  */
 type OUTPUT = {
-  pngBase64: string;
+  filePath: string;
   finalMermaid: string;
 };
 
@@ -263,7 +263,7 @@ graph TD
       }
 
       return {
-        pngBase64,
+        filePath,
         finalMermaid: currentMermaid,
       };
     } else {

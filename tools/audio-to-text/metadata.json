@@ -1,15 +1,52 @@
 {
-  "name": "Text to Audio Transcription",
-  "homepage": "https://github.com/dcSpark/shinkai-tools/blob/main/tools/text-to-audio/README.md",
-  "description": "This function transcribes audio files to text using the faster-whisper model.",
-  "author": "Shinkai",
-  "version": "1.0.0",
-  "keywords": [
-    "audio",
-    "transcription",
-    "whisper",
-    "speech-to-text"
-  ],
+  "name": "Audio to Text Transcription",
+  "description": "This tool transcribes audio files to text using the faster-whisper model.",
+  "homePage": "",
+  "configurations": {
+    "type": "object",
+    "properties": {
+      "compute_type": {
+        "description": "The compute type to use for the model",
+        "type": "string"
+      },
+      "device": {
+        "description": "The device to run the model on",
+        "type": "string"
+      },
+      "model_name": {
+        "description": "The size of the Whisper model to use",
+        "type": "string"
+      }
+    },
+    "required": []
+  },
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "audio_file_path": {
+        "description": "Path to the audio file to transcribe",
+        "type": "string"
+      }
+    },
+    "required": [
+      "audio_file_path"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "transcript": {
+        "description": "The transcription text of the audio",
+        "type": "string"
+      }
+    },
+    "required": [
+      "transcript"
+    ]
+  },
+  "sqlTables": [],
+  "sqlQueries": [],
+  "oauth": [],
   "runner": "any",
   "operating_system": [
     "linux",
@@ -17,65 +54,12 @@
     "windows"
   ],
   "tool_set": "",
-  "configurations": [
-    {
-      "name": "model_name",
-      "description": "The size of the Whisper model to use",
-      "type": "string",
-      "default": "base",
-      "enum": [
-        "base",
-        "large-v3",
-        "distil-large"
-      ]
-    },
-    {
-      "name": "device",
-      "description": "The device to run the model on",
-      "type": "string",
-      "default": "cpu",
-      "enum": [
-        "cpu",
-        "cuda"
-      ]
-    },
-    {
-      "name": "compute_type",
-      "description": "The compute type to use for the model",
-      "type": "string",
-      "default": "int8",
-      "enum": [
-        "int8",
-        "float16",
-        "float32"
-      ]
-    }
+  "keywords": [
+    "audio",
+    "transcription",
+    "whisper",
+    "faster-whisper",
+    "speech-to-text"
   ],
-  "parameters": {
-    "properties": {
-      "audio_file_path": {
-        "description": "The path to the audio file to transcribe",
-        "type": "string"
-      }
-    },
-    "required": [
-      "audio_file_path"
-    ],
-    "type": "object"
-  },
-  "result": {
-    "properties": {
-      "transcript": {
-        "description": "The transcribed text from the audio file",
-        "type": "string"
-      }
-    },
-    "required": [
-      "transcript"
-    ],
-    "type": "object"
-  },
-  "sqlTables": [],
-  "sqlQueries": [],
-  "tools": []
+  "version": "1.0.0"
 }

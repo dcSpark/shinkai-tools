@@ -7,3 +7,4 @@ shinkai-node**
 deno.lock
 *_local.sh
 tmp
+__pycache__

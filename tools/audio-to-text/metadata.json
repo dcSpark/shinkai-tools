@@ -1,0 +1,65 @@
+{
+  "name": "Audio to Text Transcription",
+  "description": "This tool transcribes audio files to text using the faster-whisper model.",
+  "homePage": "",
+  "configurations": {
+    "type": "object",
+    "properties": {
+      "compute_type": {
+        "description": "The compute type to use for the model",
+        "type": "string"
+      },
+      "device": {
+        "description": "The device to run the model on",
+        "type": "string"
+      },
+      "model_name": {
+        "description": "The size of the Whisper model to use",
+        "type": "string"
+      }
+    },
+    "required": []
+  },
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "audio_file_path": {
+        "description": "Path to the audio file to transcribe",
+        "type": "string"
+      }
+    },
+    "required": [
+      "audio_file_path"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "transcript": {
+        "description": "The transcription text of the audio",
+        "type": "string"
+      }
+    },
+    "required": [
+      "transcript"
+    ]
+  },
+  "sqlTables": [],
+  "sqlQueries": [],
+  "oauth": [],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": "",
+  "keywords": [
+    "audio",
+    "transcription",
+    "whisper",
+    "faster-whisper",
+    "speech-to-text"
+  ],
+  "version": "1.0.0"
+}

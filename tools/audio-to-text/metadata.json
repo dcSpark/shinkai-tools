@@ -1,5 +1,6 @@
 {
   "name": "Audio to Text Transcription",
+  "author": "Shinkai",
   "description": "This tool transcribes audio files to text using the faster-whisper model.",
   "homePage": "",
   "configurations": {

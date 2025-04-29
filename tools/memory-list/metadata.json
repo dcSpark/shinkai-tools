@@ -1,0 +1,127 @@
+{
+  "name": "List Memory Management",
+  "homepage": "https://github.com/dcSpark/shinkai-tools/blob/main/tools/memory/README.md",
+  "description": "Handles list memory storage and retrieval using a database. It stores memories with associated IDs and can retrieve them by ID or get all memories.",
+  "author": "Shinkai",
+  "version": "2.0.0",
+  "keywords": [
+    "memory",
+    "remember",
+    "management",
+    "recall",
+    "smart",
+    "agent"
+  ],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": "",
+  "configurations": {
+    "type": "object",
+    "properties": {
+      "database_name": {
+        "description": "By default, the database name is the app_id. You can specify a different name to share the same database in multiple contexts.",
+        "type": "string"
+      }
+    },
+    "required": []
+  },
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "action": {
+        "type": "string",
+        "description": "The action to perform: 'insert' to create new memory, 'update' to modify existing memory, 'retrieve' to get memory by ID, 'retrieve_all' to get all memories, or 'delete' to remove a memory",
+        "enum": [
+          "insert",
+          "update",
+          "retrieve",
+          "retrieve_all",
+          "delete"
+        ]
+      },
+      "data": {
+        "type": "string",
+        "description": "The data to store in memory when using 'insert' or 'update' actions",
+        "nullable": true
+      },
+      "memory_id": {
+        "type": "number",
+        "description": "The ID of the memory to retrieve, update, or delete. Required for update and delete actions."
+      }
+    },
+    "required": [
+      "action"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "memory": {
+        "type": "string",
+        "description": "The memory content when retrieving a specific memory"
+      },
+      "all_memories": {
+        "type": "array",
+        "description": "An array of all memories",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "number",
+              "description": "The ID of the memory"
+            },
+            "memory": {
+              "type": "string",
+              "description": "The memory content"
+            }
+          }
+        }
+      },
+      "id": {
+        "type": "number",
+        "description": "The ID of the memory when inserting, updating or deleting"
+      }
+    },
+    "required": []
+  },
+  "sqlTables": [
+    {
+      "name": "memory_list_table",
+      "definition": "CREATE TABLE IF NOT EXISTS memory_list_table (id INTEGER PRIMARY KEY AUTOINCREMENT, date DATETIME DEFAULT CURRENT_TIMESTAMP, memory TEXT)"
+    }
+  ],
+  "sqlQueries": [
+    {
+      "name": "Get memory by ID",
+      "query": "SELECT memory FROM memory_list_table WHERE id = ?"
+    },
+    {
+      "name": "Get all memories",
+      "query": "SELECT id, memory FROM memory_list_table"
+    },
+    {
+      "name": "Delete memory",
+      "query": "DELETE FROM memory_list_table WHERE id = ?"
+    },
+    {
+      "name": "Insert memory",
+      "query": "INSERT INTO memory_list_table (memory) VALUES (?)"
+    },
+    {
+      "name": "Update memory",
+      "query": "UPDATE memory_list_table SET memory = ? WHERE id = ?"
+    },
+    {
+      "name": "Get latest ID",
+      "query": "SELECT id FROM memory_list_table ORDER BY id DESC LIMIT 1"
+    }
+  ],
+  "tools": [
+    "local:::__official_shinkai:::shinkai_sqlite_query_executor"
+  ],
+  "oauth": null
+}

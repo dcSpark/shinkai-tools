@@ -1,3 +1,5 @@
+import { assertEquals } from "https://deno.land/std@0.220.1/assert/assert_equals.ts";
+
 const code = Deno.readTextFileSync(
   import.meta.dirname + "/../../tools/download-page/tool.ts"
 );
@@ -6,13 +8,16 @@ const metadata = JSON.parse(
     import.meta.dirname + "/../../tools/download-page/metadata.json"
   )
 );
+const TOOL_TESTS = !!Deno.env.get("TOOL_TESTS");
 
 type INPUTS = {
   url: string;
 };
+
 const X_SHINKAI_TOOL_ID = `example-${Math.random()
   .toString(36)
   .substring(2, 15)}`;
+
 const X_SHINKAI_APP_ID = `run-${Math.random().toString(36).substring(2, 15)}`;
 
 const base_url = Deno.env.get("SHINKAI_NODE_ADDR") ?? "http://localhost:9950";
@@ -43,26 +48,19 @@ async function runCommandTest(parameters: INPUTS) {
   return data;
 }
 
-export async function downloadPageTest() {
-  const expect = (
-    data: any,
-    message: string | undefined,
-    errorStr: string | undefined
-  ) => {
-    if (!data)
-      throw Error("[Check failed] " + (message ?? "") + " " + (errorStr ?? ""));
-    else console.log("[Check passed] " + (message ?? ""));
-  };
+Deno.test({
+  name: "Memory test",
+  ignore: !TOOL_TESTS,
+  fn: async () => {
 
-  const parametersA: INPUTS = {
-    url: "https://shinkai.com",
-  };
-  const dataA = await runCommandTest(parametersA);
-  expect(
-    dataA.markdown.match(/open.source/i),
-    "Page should mention open source",
-    `Missing text on ${dataA.markdown.substring(0, 100)}...`
-  );
-}
-
-// downloadPageTest().then(console.log).catch(console.error);
+    const parametersA: INPUTS = {
+      url: "https://shinkai.com",
+    };
+    const dataA = await runCommandTest(parametersA);
+    assertEquals(
+      dataA.markdown.match(/open.source/gi).length > 0,
+      true,
+      "Page should mention open source"
+    );
+  },
+});

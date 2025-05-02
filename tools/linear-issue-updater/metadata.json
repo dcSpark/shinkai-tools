@@ -1,0 +1,140 @@
+{
+    "name": "Linear Issue Updater",
+    "author": "Shinkai",
+    "description": "Updates an issue in Linear using the provided issue ID and optional fields.",
+    "version": "1.0.0",
+    "assets": [],
+    "config": [
+        {
+            "BasicConfig": {
+                "description": "API key for Linear.",
+                "key_name": "LINEAR_API_KEY",
+                "required": true,
+                "type": "string"
+            }
+        }
+    ],
+    "configurations": {
+        "properties": {
+            "LINEAR_API_KEY": {
+                "description": "API key for Linear.",
+                "type": "string"
+            }
+        },
+        "required": [
+            "LINEAR_API_KEY"
+        ],
+        "type": "object"
+    },
+    "file_inbox": null,
+    "homepage": null,
+    "parameters": {
+        "properties": {
+            "assigneeId": {
+                "description": "The new assignee UUID of the issue. Get this from the fetch organization tool",
+                "type": "string"
+            },
+            "description": {
+                "description": "The new description of the issue.",
+                "type": "string"
+            },
+            "id": {
+                "description": "The ID (UUID) of the issue to update.",
+                "type": "string"
+            },
+            "priority": {
+                "description": "The new priority of the issue. 0:No priority, 1:Urgent, 2:High, 3:Medium, 4: Low",
+                "type": "number"
+            },
+            "status": {
+                "description": "The new status UUID of the issue. Get this from the fetch workflow states tool",
+                "type": "string"
+            },
+            "title": {
+                "description": "The new title of the issue.",
+                "type": "string"
+            }
+        },
+        "required": [
+            "id"
+        ],
+        "type": "object"
+    },
+    "keywords": [
+        "linear",
+        "issue",
+        "updater",
+        "api"
+    ],
+    "oauth": [],
+    "operating_system": [
+        "linux",
+        "macos",
+        "windows"
+    ],
+    "output_arg": {
+        "json": ""
+    },
+    "result": {
+        "properties": {
+            "_issue": {
+                "properties": {
+                    "description": {
+                        "description": "The description of the issue",
+                        "type": "string"
+                    },
+                    "id": {
+                        "description": "The ID of the issue",
+                        "type": "string"
+                    },
+                    "identifier": {
+                        "description": "The identifier of the issue",
+                        "type": "string"
+                    },
+                    "priority": {
+                        "description": "The priority of the issue",
+                        "type": "number"
+                    },
+                    "status": {
+                        "description": "The status of the issue",
+                        "type": "string"
+                    },
+                    "title": {
+                        "description": "The title of the issue",
+                        "type": "string"
+                    },
+                    "url": {
+                        "description": "The URL of the issue",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "id",
+                    "identifier",
+                    "title",
+                    "url"
+                ],
+                "type": "object"
+            },
+            "lastSyncId": {
+                "description": "The last sync ID of the issue",
+                "type": "number"
+            },
+            "success": {
+                "description": "Whether the operation was successful",
+                "type": "boolean"
+            }
+        },
+        "required": [
+            "_issue",
+            "lastSyncId",
+            "success"
+        ],
+        "type": "object"
+    },
+    "runner": "any",
+    "sql_queries": [],
+    "sql_tables": [],
+    "tool_set": "linear_app",
+    "tools": []
+}

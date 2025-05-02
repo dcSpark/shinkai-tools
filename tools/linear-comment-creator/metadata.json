@@ -1,0 +1,144 @@
+{
+    "name": "Linear Comment Creator",
+    "version": "1.0.0",
+    "description": "Creates comments on Linear issues and returns the comment and issue details.",
+    "author": "Shinkai",
+    "assets": [],
+    "config": [
+        {
+            "BasicConfig": {
+                "description": "The API key for Linear",
+                "key_name": "LINEAR_API_KEY",
+                "required": true,
+                "type": "string"
+            }
+        }
+    ],
+    "configurations": {
+        "properties": {
+            "LINEAR_API_KEY": {
+                "description": "The API key for Linear",
+                "type": "string"
+            }
+        },
+        "required": [
+            "LINEAR_API_KEY"
+        ],
+        "type": "object"
+    },
+    "file_inbox": null,
+    "homepage": null,
+    "parameters": {
+        "properties": {
+            "body": {
+                "description": "The body of the comment",
+                "type": "string"
+            },
+            "createAsUser": {
+                "description": "User ID to create the comment as",
+                "type": "string"
+            },
+            "displayIconUrl": {
+                "description": "URL of the icon to display with the comment",
+                "type": "string"
+            },
+            "issueId": {
+                "description": "The ID of the issue to comment on",
+                "type": "string"
+            }
+        },
+        "required": [
+            "issueId",
+            "body"
+        ],
+        "type": "object"
+    },
+    "keywords": [
+        "linear",
+        "comments",
+        "issues",
+        "api"
+    ],
+    "oauth": [],
+    "operating_system": [
+        "linux",
+        "macos",
+        "windows"
+    ],
+    "output_arg": {
+        "json": ""
+    },
+    "result": {
+        "properties": {
+            "comment": {
+                "properties": {
+                    "body": {
+                        "description": "The body of the created comment",
+                        "type": "string"
+                    },
+                    "id": {
+                        "description": "The ID of the created comment",
+                        "type": "string"
+                    },
+                    "url": {
+                        "description": "The URL of the created comment",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "id",
+                    "body",
+                    "url"
+                ],
+                "type": "object"
+            },
+            "issue": {
+                "properties": {
+                    "id": {
+                        "description": "The ID of the issue",
+                        "type": "string"
+                    },
+                    "identifier": {
+                        "description": "The identifier of the issue",
+                        "type": "string"
+                    },
+                    "title": {
+                        "description": "The title of the issue",
+                        "type": "string"
+                    },
+                    "url": {
+                        "description": "The URL of the issue",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "id",
+                    "identifier",
+                    "title",
+                    "url"
+                ],
+                "type": "object"
+            },
+            "lastSyncId": {
+                "description": "Timestamp of the last sync",
+                "type": "number"
+            },
+            "success": {
+                "description": "Indicates if the operation was successful",
+                "type": "boolean"
+            }
+        },
+        "required": [
+            "comment",
+            "issue",
+            "lastSyncId",
+            "success"
+        ],
+        "type": "object"
+    },
+    "runner": "any",
+    "sql_queries": [],
+    "sql_tables": [],
+    "tool_set": "linear_app",
+    "tools": []
+}

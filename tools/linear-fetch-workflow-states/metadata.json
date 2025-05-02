@@ -1,0 +1,120 @@
+{
+    "activated": false,
+    "assets": [],
+    "author": "Shinkai",
+    "name": "Linear Fetch Workflow States",
+    "description": "Fetches workflow states for all Teams or for a specific team using Linear API.",
+    "version": "1.0.0",
+    "config": [
+        {
+            "BasicConfig": {
+                "description": "The API key for Linear",
+                "key_name": "LINEAR_API_KEY",
+                "required": true,
+                "type": "string"
+            }
+        }
+    ],
+    "configurations": {
+        "properties": {
+            "LINEAR_API_KEY": {
+                "description": "The API key for Linear",
+                "type": "string"
+            }
+        },
+        "required": [
+            "LINEAR_API_KEY"
+        ],
+        "type": "object"
+    },
+    "file_inbox": null,
+    "homepage": null,
+    "parameters": {
+        "properties": {
+            "teamId": {
+                "description": "Optional team ID to filter workflow states",
+                "type": "string"
+            }
+        },
+        "required": [],
+        "type": "object"
+    },
+    "keywords": [
+        "linear",
+        "workflow",
+        "API",
+        "fetch"
+    ],
+    "oauth": [],
+    "operating_system": [
+        "linux",
+        "macos",
+        "windows"
+    ],
+    "output_arg": {
+        "json": ""
+    },
+    "result": {
+        "properties": {
+            "lastSyncId": {
+                "description": "The timestamp of the last sync",
+                "type": "number"
+            },
+            "success": {
+                "description": "Indicates if the fetching was successful",
+                "type": "boolean"
+            },
+            "workflowStates": {
+                "description": "The list of workflow states",
+                "items": {
+                    "properties": {
+                        "id": {
+                            "description": "The ID of the workflow state",
+                            "type": "string"
+                        },
+                        "name": {
+                            "description": "The name of the workflow state",
+                            "type": "string"
+                        },
+                        "team": {
+                            "properties": {
+                                "id": {
+                                    "description": "The ID of the team",
+                                    "type": "string"
+                                },
+                                "name": {
+                                    "description": "The name of the team",
+                                    "type": "string"
+                                }
+                            },
+                            "required": [],
+                            "type": "object"
+                        },
+                        "type": {
+                            "description": "The type of the workflow state",
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "id",
+                        "name",
+                        "type"
+                    ],
+                    "type": "object"
+                },
+                "type": "array"
+            }
+        },
+        "required": [
+            "workflowStates",
+            "lastSyncId",
+            "success"
+        ],
+        "type": "object"
+    },
+    "runner": "any",
+    "sql_queries": [],
+    "sql_tables": [],
+    "tool_set": "linear_app",
+    "tools": []
+}

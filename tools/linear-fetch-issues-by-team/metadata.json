@@ -1,0 +1,126 @@
+{
+    "activated": false,
+    "assets": [],
+    "author": "Shinkai",
+    "name": "Linear Fetch Issues By Team",
+    "description": "Fetches open issues from a Linear team. It implements pagination",
+    "version": "1.0.0",
+    "config": [
+        {
+            "BasicConfig": {
+                "description": "The API key for accessing the Linear API",
+                "key_name": "LINEAR_API_KEY",
+                "required": true,
+                "type": "string"
+            }
+        }
+    ],
+    "configurations": {
+        "properties": {
+            "LINEAR_API_KEY": {
+                "description": "The API key for accessing the Linear API",
+                "type": "string"
+            }
+        },
+        "required": [
+            "LINEAR_API_KEY"
+        ],
+        "type": "object"
+    },
+    "file_inbox": null,
+    "homepage": null,
+    "input_args": {
+        "properties": {
+            "assigneeId": {
+                "description": "The ID of the assignee (optional). Its a UUID, you can find it using the linear organization fetcher tool",
+                "type": "string"
+            },
+            "first": {
+                "description": "The number of issues to fetch (default 50)",
+                "type": "number"
+            },
+            "after": {
+                "description": "The cursor of the last issue (optional). Use the endCursor from each result as the after parameter for the next request",
+                "type": "string"
+            },
+            "teamId": {
+                "description": "The ID of the Linear team. Its a UUID, you can find it using the linear organization fetcher tool",
+                "type": "string"
+            }
+        },
+        "required": [],
+        "type": "object"
+    },
+    "keywords": [
+        "linear",
+        "issues",
+        "fetch",
+        "sdk"
+    ],
+    "oauth": [],
+    "operating_system": [
+        "linux",
+        "macos",
+        "windows"
+    ],
+    "output_arg": {
+        "json": ""
+    },
+    "result": {
+        "properties": {
+            "issues": {
+                "description": "The list of fetched issues",
+                "items": {
+                    "properties": {
+                        "description": {
+                            "description": "The description of the issue",
+                            "type": "string"
+                        },
+                        "id": {
+                            "description": "The unique identifier of the issue",
+                            "type": "string"
+                        },
+                        "title": {
+                            "description": "The title of the issue",
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "id",
+                        "title"
+                    ],
+                    "type": "object"
+                },
+                "type": "array"
+            },
+            "pageInfo": {
+                "description": "The pagination information",
+                "type": "object",
+                "properties": {
+                    "hasNextPage": {
+                        "description": "Whether there is a next page",
+                        "type": "boolean"
+                    },
+                    "endCursor": {
+                        "description": "The cursor of the last issue",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "hasNextPage",
+                    "endCursor"
+                ]
+            }
+        },
+        "required": [
+            "issues",
+            "pageInfo"
+        ],
+        "type": "object"
+    },
+    "runner": "any",
+    "sql_queries": [],
+    "sql_tables": [],
+    "tool_set": "linear_app",
+    "tools": []
+}

@@ -1,0 +1,132 @@
+{
+    "author": "Shinkai",
+    "name": "Linear Fetch Issues By User",
+    "description": "Fetches issues assigned to a user from Linear using an API key.",
+    "assets": [],
+    "config": [
+        {
+            "BasicConfig": {
+                "description": "API key for Linear authentication",
+                "key_name": "LINEAR_API_KEY",
+                "required": true,
+                "type": "string"
+            }
+        }
+    ],
+    "configurations": {
+        "properties": {
+            "LINEAR_API_KEY": {
+                "description": "API key for Linear authentication",
+                "type": "string"
+            }
+        },
+        "required": [
+            "LINEAR_API_KEY"
+        ],
+        "type": "object"
+    },
+    "file_inbox": null,
+    "homepage": null,
+    "input_args": {
+        "properties": {
+            "includeArchived": {
+                "description": "Flag to include archived issues",
+                "type": "boolean"
+            },
+            "limit": {
+                "description": "Limit the number of issues retrieved",
+                "type": "number"
+            },
+            "userId": {
+                "description": "The ID of the user for whom to fetch assigned issues",
+                "type": "string"
+            }
+        },
+        "required": [],
+        "type": "object"
+    },
+    "keywords": [
+        "linear",
+        "API",
+        "issues",
+        "user",
+        "fetcher"
+    ],
+    "oauth": [],
+    "operating_system": [
+        "linux",
+        "macos",
+        "windows"
+    ],
+    "output_arg": {
+        "json": ""
+    },
+    "result": {
+        "properties": {
+            "issues": {
+                "description": "List of issues assigned to the user",
+                "items": {
+                    "properties": {
+                        "description": {
+                            "description": "Description of the issue",
+                            "type": "string"
+                        },
+                        "id": {
+                            "description": "Unique identifier for the issue",
+                            "type": "string"
+                        },
+                        "identifier": {
+                            "description": "Issue identifier",
+                            "type": "string"
+                        },
+                        "priority": {
+                            "description": "Priority level of the issue",
+                            "type": "number"
+                        },
+                        "stateName": {
+                            "description": "Current state of the issue",
+                            "type": "string"
+                        },
+                        "title": {
+                            "description": "Title of the issue",
+                            "type": "string"
+                        },
+                        "url": {
+                            "description": "URL to the issue in Linear",
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "id",
+                        "identifier",
+                        "title",
+                        "stateName",
+                        "url"
+                    ],
+                    "type": "object"
+                },
+                "type": "array"
+            },
+            "lastSyncId": {
+                "description": "Timestamp of the last sync",
+                "type": "number"
+            },
+            "success": {
+                "description": "Indicates if the fetching was successful",
+                "type": "boolean"
+            }
+        },
+        "required": [
+            "issues",
+            "lastSyncId",
+            "success"
+        ],
+        "type": "object"
+    },
+    "runner": "any",
+    "sql_queries": [],
+    "sql_tables": [],
+    "tool_set": "linear_app",
+    "tools": [],
+    "version": "1.0.0"
+}

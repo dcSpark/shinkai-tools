@@ -1,0 +1,146 @@
+{
+    "name": "Linear Create Issue",
+    "author": "Shinkai",
+    "description": "Creates a new issue in Linear using the Linear API.",
+    "version": "1.0.0",
+    "assets": [],
+    "config": [
+        {
+            "BasicConfig": {
+                "description": "The API key for accessing Linear.",
+                "key_name": "LINEAR_API_KEY",
+                "required": true,
+                "type": "string"
+            }
+        }
+    ],
+    "configurations": {
+        "properties": {
+            "LINEAR_API_KEY": {
+                "description": "The API key for accessing Linear.",
+                "type": "string"
+            }
+        },
+        "required": [
+            "LINEAR_API_KEY"
+        ],
+        "type": "object"
+    },
+    "file_inbox": null,
+    "homepage": null,
+    "input_args": {
+        "properties": {
+            "assigneeId": {
+                "description": "The ID of the user assigned to the issue.",
+                "type": "string"
+            },
+            "description": {
+                "description": "A detailed description of the issue.",
+                "type": "string"
+            },
+            "labelIds": {
+                "description": "A list of label IDs to apply to the issue.",
+                "items": {
+                    "description": "A label UUID.",
+                    "type": "string"
+                },
+                "type": "array"
+            },
+            "priority": {
+                "description": "The priority of the issue. 0:No priority, 1:Urgent, 2:High, 3:Medium, 4:Low",
+                "type": "number"
+            },
+            "teamId": {
+                "description": "The ID of the team the issue belongs to.",
+                "type": "string"
+            },
+            "title": {
+                "description": "The title of the new Linear issue.",
+                "type": "string"
+            }
+        },
+        "required": [
+            "title",
+            "teamId"
+        ],
+        "type": "object"
+    },
+    "keywords": [
+        "Linear",
+        "issue",
+        "create",
+        "task management"
+    ],
+    "oauth": [],
+    "operating_system": [
+        "linux",
+        "macos",
+        "windows"
+    ],
+    "output_arg": {
+        "json": ""
+    },
+    "result": {
+        "properties": {
+            "_issue": {
+                "description": "Details of the created Linear issue.",
+                "properties": {
+                    "description": {
+                        "description": "The description of the issue.",
+                        "type": "string"
+                    },
+                    "id": {
+                        "description": "The unique ID of the issue.",
+                        "type": "string"
+                    },
+                    "identifier": {
+                        "description": "The human-readable identifier of the issue (e.g., 'ENG-123').",
+                        "type": "string"
+                    },
+                    "priority": {
+                        "description": "The priority of the issue.",
+                        "type": "number"
+                    },
+                    "status": {
+                        "description": "The current status of the issue.",
+                        "type": "string"
+                    },
+                    "title": {
+                        "description": "The title of the issue.",
+                        "type": "string"
+                    },
+                    "url": {
+                        "description": "The URL to view the issue in Linear.",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "id",
+                    "identifier",
+                    "title",
+                    "url"
+                ],
+                "type": "object"
+            },
+            "lastSyncId": {
+                "description": "A timestamp or identifier for the last synchronization.",
+                "type": "number"
+            },
+            "success": {
+                "description": "Indicates whether the issue creation was successful.",
+                "type": "boolean"
+            }
+        },
+        "required": [
+            "_issue",
+            "lastSyncId",
+            "success"
+        ],
+        "type": "object"
+    },
+    "runner": "any",
+    "sql_queries": [],
+    "sql_tables": [],
+    "tool_set": "linear_app",
+    "tools": []
+}

@@ -1,0 +1,188 @@
+{
+    "author": "Shinkai",
+    "name": "Linear Organization Fetcher",
+    "description": "Fetches organization details including teams, labels and users from Linear API.",
+    "assets": [],
+    "config": [
+        {
+            "BasicConfig": {
+                "description": "The API key for accessing the Linear API",
+                "key_name": "LINEAR_API_KEY",
+                "required": true,
+                "type": "string"
+            }
+        }
+    ],
+    "configurations": {
+        "properties": {
+            "LINEAR_API_KEY": {
+                "description": "The API key for accessing the Linear API",
+                "type": "string"
+            }
+        },
+        "required": [
+            "LINEAR_API_KEY"
+        ],
+        "type": "object"
+    },
+    "file_inbox": null,
+    "homepage": null,
+    "input_args": {
+        "properties": {},
+        "required": [],
+        "type": "object"
+    },
+    "keywords": [
+        "linear",
+        "API",
+        "organization",
+        "teams",
+        "users"
+    ],
+    "oauth": [],
+    "operating_system": [
+        "linux",
+        "macos",
+        "windows"
+    ],
+    "output_arg": {
+        "json": ""
+    },
+    "result": {
+        "properties": {
+            "issueLabels": {
+                "items": {
+                    "properties": {
+                        "color": {
+                            "description": "The label's color in hex representation",
+                            "type": "string"
+                        },
+                        "id": {
+                            "description": "The label UUID to be used for tagging issues",
+                            "type": "string"
+                        },
+                        "name": {
+                            "description": "The label's name that is shown in the UI",
+                            "type": "string"
+                        }
+                    },
+                    "type": "object"
+                },
+                "type": "array"
+            },
+            "lastSyncId": {
+                "type": "number"
+            },
+            "organization": {
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "teams": {
+                        "items": {
+                            "properties": {
+                                "id": {
+                                    "type": "string"
+                                },
+                                "key": {
+                                    "type": "string"
+                                },
+                                "name": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "id",
+                                "name",
+                                "key"
+                            ],
+                            "type": "object"
+                        },
+                        "type": "array"
+                    },
+                    "urlKey": {
+                        "type": "string"
+                    },
+                    "users": {
+                        "items": {
+                            "properties": {
+                                "active": {
+                                    "type": "boolean"
+                                },
+                                "admin": {
+                                    "type": "boolean"
+                                },
+                                "email": {
+                                    "type": "string"
+                                },
+                                "id": {
+                                    "type": "string"
+                                },
+                                "name": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "id",
+                                "name",
+                                "email",
+                                "admin",
+                                "active"
+                            ],
+                            "type": "object"
+                        },
+                        "type": "array"
+                    },
+                    "issueLabels": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "color": {
+                                    "type": "string"
+                                },
+                                "id": {
+                                    "type": "string"
+                                },
+                                "name": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "id",
+                                "name",
+                                "color"
+                            ]
+                        }
+                    },
+                    "required": [
+                        "id",
+                        "name",
+                        "urlKey",
+                        "teams",
+                        "users"
+                    ],
+                    "type": "object"
+                },
+                "success": {
+                    "type": "boolean"
+                }
+            },
+            "required": [
+                "organization",
+                "lastSyncId",
+                "success"
+            ],
+            "type": "object"
+        },
+        "runner": "any",
+        "sql_queries": [],
+        "sql_tables": [],
+        "tool_set": "",
+        "tools": [],
+        "version": "1.0.0"
+    }
+}

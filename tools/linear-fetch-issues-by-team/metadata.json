@@ -29,7 +29,7 @@
     },
     "file_inbox": null,
     "homepage": null,
-    "input_args": {
+    "parameters": {
         "properties": {
             "assigneeId": {
                 "description": "The ID of the assignee (optional). Its a UUID, you can find it using the linear organization fetcher tool",
@@ -44,7 +44,7 @@
                 "type": "string"
             },
             "teamId": {
-                "description": "The ID of the Linear team. Its a UUID, you can find it using the linear organization fetcher tool",
+                "description": "The ID of the Linear team. Its a UUID, you can find it using the linear organization fetcher tool. If not provided, all issues will be fetched",
                 "type": "string"
             }
         },

@@ -29,7 +29,7 @@
     },
     "file_inbox": null,
     "homepage": null,
-    "input_args": {
+    "parameters": {
         "properties": {
             "teamId": {
                 "description": "Optional team ID to filter workflow states",

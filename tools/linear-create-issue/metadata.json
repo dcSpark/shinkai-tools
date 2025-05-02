@@ -28,7 +28,7 @@
     },
     "file_inbox": null,
     "homepage": null,
-    "input_args": {
+    "parameters": {
         "properties": {
             "assigneeId": {
                 "description": "The ID of the user assigned to the issue.",

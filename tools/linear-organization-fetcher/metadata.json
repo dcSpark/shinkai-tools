@@ -1,6 +1,7 @@
 {
     "author": "Shinkai",
     "name": "Linear Organization Fetcher",
+    "version": "1.0.0",
     "description": "Fetches organization details including teams, labels and users from Linear API.",
     "assets": [],
     "config": [
@@ -27,7 +28,7 @@
     },
     "file_inbox": null,
     "homepage": null,
-    "input_args": {
+    "parameters": {
         "properties": {},
         "required": [],
         "type": "object"
@@ -166,23 +167,23 @@
                         "users"
                     ],
                     "type": "object"
-                },
-                "success": {
-                    "type": "boolean"
                 }
             },
-            "required": [
-                "organization",
-                "lastSyncId",
-                "success"
-            ],
-            "type": "object"
+            "success": {
+                "type": "boolean",
+                "description": "Whether the operation was successful"
+            }
         },
-        "runner": "any",
-        "sql_queries": [],
-        "sql_tables": [],
-        "tool_set": "",
-        "tools": [],
-        "version": "1.0.0"
-    }
+        "required": [
+            "organization",
+            "lastSyncId",
+            "success"
+        ],
+        "type": "object"
+    },
+    "runner": "any",
+    "sql_queries": [],
+    "sql_tables": [],
+    "tool_set": "",
+    "tools": []
 }

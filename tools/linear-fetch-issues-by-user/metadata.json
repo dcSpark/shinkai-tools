@@ -27,7 +27,7 @@
     },
     "file_inbox": null,
     "homepage": null,
-    "input_args": {
+    "parameters": {
         "properties": {
             "includeArchived": {
                 "description": "Flag to include archived issues",

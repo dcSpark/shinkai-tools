@@ -1,13 +1,13 @@
 {
-    "name": "Linear Issue Updater",
-    "author": "Shinkai",
-    "description": "Updates an issue in Linear using the provided issue ID and optional fields.",
+    "name": "Linear Comment Creator",
     "version": "1.0.0",
+    "description": "Creates comments on Linear issues and returns the comment and issue details.",
+    "author": "Shinkai",
     "assets": [],
     "config": [
         {
             "BasicConfig": {
-                "description": "API key for Linear.",
+                "description": "The API key for Linear",
                 "key_name": "LINEAR_API_KEY",
                 "required": true,
                 "type": "string"
@@ -17,7 +17,7 @@
     "configurations": {
         "properties": {
             "LINEAR_API_KEY": {
-                "description": "API key for Linear.",
+                "description": "The API key for Linear",
                 "type": "string"
             }
         },
@@ -30,40 +30,33 @@
     "homepage": null,
     "parameters": {
         "properties": {
-            "assigneeId": {
-                "description": "The new assignee UUID of the issue. Get this from the fetch organization tool",
+            "body": {
+                "description": "The body of the comment",
                 "type": "string"
             },
-            "description": {
-                "description": "The new description of the issue.",
+            "createAsUser": {
+                "description": "User ID to create the comment as",
                 "type": "string"
             },
-            "id": {
-                "description": "The ID (UUID) of the issue to update.",
+            "displayIconUrl": {
+                "description": "URL of the icon to display with the comment",
                 "type": "string"
             },
-            "priority": {
-                "description": "The new priority of the issue. 0:No priority, 1:Urgent, 2:High, 3:Medium, 4: Low",
-                "type": "number"
-            },
-            "status": {
-                "description": "The new status UUID of the issue. Get this from the fetch workflow states tool",
-                "type": "string"
-            },
-            "title": {
-                "description": "The new title of the issue.",
+            "issueId": {
+                "description": "The ID of the issue to comment on",
                 "type": "string"
             }
         },
         "required": [
-            "id"
+            "issueId",
+            "body"
         ],
         "type": "object"
     },
     "keywords": [
         "linear",
-        "issue",
-        "updater",
+        "comments",
+        "issues",
         "api"
     ],
     "oauth": [],
@@ -77,26 +70,36 @@
     },
     "result": {
         "properties": {
-            "_issue": {
+            "comment": {
                 "properties": {
-                    "description": {
-                        "description": "The description of the issue",
+                    "body": {
+                        "description": "The body of the created comment",
                         "type": "string"
                     },
+                    "id": {
+                        "description": "The ID of the created comment",
+                        "type": "string"
+                    },
+                    "url": {
+                        "description": "The URL of the created comment",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "id",
+                    "body",
+                    "url"
+                ],
+                "type": "object"
+            },
+            "issue": {
+                "properties": {
                     "id": {
                         "description": "The ID of the issue",
                         "type": "string"
                     },
                     "identifier": {
                         "description": "The identifier of the issue",
-                        "type": "string"
-                    },
-                    "priority": {
-                        "description": "The priority of the issue",
-                        "type": "number"
-                    },
-                    "status": {
-                        "description": "The status of the issue",
                         "type": "string"
                     },
                     "title": {
@@ -117,16 +120,17 @@
                 "type": "object"
             },
             "lastSyncId": {
-                "description": "The last sync ID of the issue",
+                "description": "Timestamp of the last sync",
                 "type": "number"
             },
             "success": {
-                "description": "Whether the operation was successful",
+                "description": "Indicates if the operation was successful",
                 "type": "boolean"
             }
         },
         "required": [
-            "_issue",
+            "comment",
+            "issue",
             "lastSyncId",
             "success"
         ],

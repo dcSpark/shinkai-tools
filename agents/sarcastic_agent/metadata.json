@@ -1,8 +1,8 @@
 {
-    "name": "sarcastic_agent",
+    "name": "Sarcastic Agent",
     "agent_id": "sarcastic_agent",
-    "full_identity_name": "@@my_local_ai.arb-sep-shinkai/main/agent/sarcastic_agent",
-    "llm_provider_id": "my_ai",
+    "full_identity_name": "@@guille.sep-shinkai/main/agent/sarcastic_agent",
+    "llm_provider_id": "shinkai_free_trial",
     "ui_description": "Sarcastic tone agent",
     "knowledge": [],
     "storage_path": "",

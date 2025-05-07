@@ -8,7 +8,7 @@ interface ConfigurationArray {
   type: 'array';
   items: Configuration;
   description?: string;
-} 
+}
 
 interface ConfigurationObject {
   type: 'object';
@@ -22,6 +22,7 @@ type Configuration = ConfigurationBasicType | ConfigurationArray | Configuration
 export interface Metadata {
   name: string;
   description: string;
+  ui_description: string;
   author: string;
   version: string;
   keywords: string[];
@@ -46,9 +47,40 @@ export interface Metadata {
   tool_set: string;
 }
 
+export interface AgentMetadata {
+  name: string;
+  agent_id: string;
+  full_identity_name: string;
+  llm_provider_id: string;
+  ui_description: string;
+  knowledge: string[];
+  storage_path: string;
+  tools: string[];
+  debug_mode: boolean;
+  config: {
+    custom_system_prompt: string;
+    custom_prompt: string;
+    temperature: number;
+    max_tokens: number | null;
+    seed: number | null;
+    top_k: number;
+    top_p: number;
+    stream: boolean;
+    other_model_params: Record<string, unknown>;
+    use_tools: boolean | null;
+  };
+  price_usd?: number; // to-do: add to metadata.json
+  stripeProductId?: string; // to-do: add to metadata.json
+  categoryId?: string; // to-do: add to metadata.json
+}
+
 export interface StoreMetadata {
+  author?: string;
+  keywords?: string[];
+  description?: string;
+  version?: string;
   categoryId: string;
-  node_version: string;
+  node_version?: string;
   name?: string;
 }
 

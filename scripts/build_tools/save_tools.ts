@@ -410,6 +410,19 @@ export async function saveToolsInNode(toolsOriginal: DirectoryEntry[]): Promise<
   return toolsSaved;
 }
 
+// Helper function to recursively walk the knowledge directory
+async function* walkKnowledge(dir: string, base: string): AsyncGenerator<{ filePath: string, fileName: string, relDir: string }, void, unknown> {
+  for await (const entry of Deno.readDir(dir)) {
+    const entryPath = join(dir, entry.name);
+    const relDir = base === '' ? '' : base;
+    if (entry.isFile) {
+      yield { filePath: entryPath, fileName: entry.name, relDir };
+    } else if (entry.isDirectory) {
+      yield* walkKnowledge(entryPath, join(relDir, entry.name));
+    }
+  }
+}
+
 export async function saveAgentsInNode(agentsOriginal: DirectoryEntry[]): Promise<DirectoryEntry[]> {
   const agents: DirectoryEntry[] = JSON.parse(JSON.stringify(agentsOriginal));
   const agentsAdded = [];
@@ -423,17 +436,28 @@ export async function saveAgentsInNode(agentsOriginal: DirectoryEntry[]): Promis
     // Read files
     const metadata: AgentMetadata = JSON.parse(await Deno.readTextFile(join(agent.dir, "metadata.json")));
 
-    // TO-DO: Upload assets to Shinkai node
-    // let assets: { file_name: string, data: string }[] | undefined = undefined;
-    // if (await exists(join(tool.dir, "assets"))) {
-    //   assets = [];
-    //   for await (const entry of Deno.readDir(join(tool.dir, "assets"))) {
-    //     assets.push({
-    //       file_name: entry.name,
-    //       data: encodeBase64(await Deno.readFile(join(tool.dir, "assets", entry.name))),
-    //     });
-    //   }
-    // }
+    // Upload knowledge files to Shinkai node
+    if (await exists(join(agent.dir, "knowledge"))) {
+      for await (const { filePath, fileName, relDir } of walkKnowledge(join(agent.dir, "knowledge"), '')) {
+        const fileData = await Deno.readFile(filePath);
+        const path = relDir === '' ? '/' : `/${relDir}/`;
+        const formData = new FormData();
+        formData.append('file_data', new Blob([fileData]));
+        formData.append('filename', fileName);
+        formData.append('path', path);
+        const response = await fetch(`${Deno.env.get("SHINKAI_NODE_ADDR")}/v2/upload_file_to_folder`, {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${Deno.env.get("BEARER_TOKEN")}`,
+          },
+          body: formData,
+        });
+        if (!response.ok) {
+          console.error(`Failed to upload knowledge file ${fileName} for agent ${agent.name}`);
+          throw Error(`Failed to upload knowledge file ${fileName} for agent ${agent.name}`);
+        }
+      }
+    }
 
     // Send to Shinkai node
     const response = await fetch(`${Deno.env.get("SHINKAI_NODE_ADDR")}/v2/add_agent`, {

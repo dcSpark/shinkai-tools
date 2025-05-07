@@ -1,7 +1,7 @@
 {
     "name": "Agent with Knowledge",
     "agent_id": "agent_with_knowledge",
-    "full_identity_name": "@@guille.sep-shinkai/main/agent/agent_with_knowledge",
+    "full_identity_name": "@@official.shinkai/main/agent/agent_with_knowledge",
     "llm_provider_id": "shinkai_free_trial",
     "ui_description": "Agent with knowledge test",
     "knowledge": [],

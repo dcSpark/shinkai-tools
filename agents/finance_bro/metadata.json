@@ -1,7 +1,7 @@
 {
     "name": "Finance Bro",
     "agent_id": "finance_bro",
-    "full_identity_name": "@@guille.sep-shinkai/main/agent/finance_bro",
+    "full_identity_name": "@@official.shinkai/main/agent/finance_bro",
     "llm_provider_id": "shinkai_free_trial",
     "ui_description": "Patagonia Jacket Guy giving financial advice",
     "knowledge": [],

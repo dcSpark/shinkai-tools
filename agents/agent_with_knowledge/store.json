@@ -3,7 +3,7 @@
   "name": "Agent with Knowledge",
   "description": "An agent that can be used to generate knowledge to a given input.",
   "version": "1.0.0",
-  "author": "guille.sep-shinkai",
+  "author": "official.shinkai",
   "keywords": [
     "knowledge",
     "agent"

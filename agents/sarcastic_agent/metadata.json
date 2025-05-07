@@ -1,7 +1,7 @@
 {
     "name": "Sarcastic Agent",
     "agent_id": "sarcastic_agent",
-    "full_identity_name": "@@guille.sep-shinkai/main/agent/sarcastic_agent",
+    "full_identity_name": "@@official.shinkai/main/agent/sarcastic_agent",
     "llm_provider_id": "shinkai_free_trial",
     "ui_description": "Sarcastic tone agent",
     "knowledge": [],

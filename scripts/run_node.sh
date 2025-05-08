@@ -7,16 +7,11 @@ export NODE_WS_PORT="9551"
 export NODE_PORT="9552"
 export NODE_HTTPS_PORT="9553"
 export PING_INTERVAL_SECS="0"
-export GLOBAL_IDENTITY_NAME="@@official.arb-sep-shinkai"
 export RUST_LOG=debug,error,info
 export STARTING_NUM_QR_PROFILES="1"
 export STARTING_NUM_QR_DEVICES="1"
 export FIRST_DEVICE_NEEDS_REGISTRATION_CODE="false"
 export LOG_SIMPLE="true"
-export NO_SECRET_FILE="true"
-export PROXY_IDENTITY="@@relayer_pub_01.arb-sep-shinkai"
-export SHINKAI_TOOLS_RUNNER_DENO_BINARY_PATH="./shinkai-tools-runner-resources/deno"
-export SHINKAI_TOOLS_RUNNER_UV_BINARY_PATH="./shinkai-tools-runner-resources/uv"
 export SKIP_IMPORT_FROM_DIRECTORY="true"
 
 # Add these lines to enable all log options

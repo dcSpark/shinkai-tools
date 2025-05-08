@@ -10,7 +10,7 @@ on:
 jobs:
   build_tools:
     runs-on: ubuntu-latest
-    environment: ${{ inputs.environment }}
+    environment: ${{ inputs.environment || 'development' }}
     permissions:
       contents: write
 
@@ -44,6 +44,9 @@ jobs:
           INITIAL_AGENT_URLS: ${{ secrets.INITIAL_AGENT_URLS }}
           INITIAL_AGENT_MODELS: ${{ secrets.INITIAL_AGENT_MODELS }}
           INITIAL_AGENT_API_KEYS: ${{ secrets.INITIAL_AGENT_API_KEYS }}
+          IDENTITY_SECRET_KEY: ${{ secrets.IDENTITY_SECRET_KEY }}
+          ENCRYPTION_SECRET_KEY: ${{ secrets.ENCRYPTION_SECRET_KEY }}
+          GLOBAL_IDENTITY_NAME: ${{ vars.GLOBAL_IDENTITY_NAME }}
           API_V2_KEY: ${{ secrets.API_V2_KEY }}
           EMBEDDINGS_SERVER_URL: ${{ secrets.EMBEDDINGS_SERVER_URL }}
           SHINKAI_NODE_ADDR: "http://localhost:9550"

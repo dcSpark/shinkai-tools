@@ -1,21 +1,21 @@
 import { config as dotenvConfig } from "https://deno.land/x/dotenv@v3.2.2/mod.ts";
 import { join, dirname, fromFileUrl } from "https://deno.land/std@0.210.0/path/mod.ts";
 import { existsSync } from "https://deno.land/std@0.210.0/fs/mod.ts";
-import { createCanvas, loadImage } from "https://deno.land/x/canvas/mod.ts";
 import axios from "npm:axios@1.6.2";
 
 // Load environment variables
 dotenvConfig();
-
-const BANNER_WIDTH = 1280;
-const BANNER_HEIGHT = 640;
-const ICON_SIZE = 256;
 const BFL_API_URL = 'https://api.us1.bfl.ai/v1';
 const BFL_API_KEY = Deno.env.get("BFL_API_KEY");
 
 interface ToolMetadata {
   name: string;
   description: string;
+}
+
+interface AgentMetadata {
+  name: string;
+  ui_description: string;
 }
 
 interface GenerateImageOptions {
@@ -114,7 +114,7 @@ async function copyPlaceholderImages(scriptDir: string, toolPath: string, missin
   }
 }
 
-async function generateToolImages(toolPath: string, metadata: ToolMetadata): Promise<void> {
+async function generateToolImages(toolPath: string, rawMetadata: ToolMetadata | AgentMetadata): Promise<void> {
   const bannerPath = join(toolPath, 'banner_background.png');
   const iconPath = join(toolPath, 'icon.png');
   const missingFiles: string[] = [];
@@ -129,9 +129,21 @@ async function generateToolImages(toolPath: string, metadata: ToolMetadata): Pro
 
   console.log(`Generating missing images: ${missingFiles.join(', ')}`);
 
+
+  let metadata: ToolMetadata;
+
+  if ('name' in rawMetadata && 'description' in rawMetadata) {
+    metadata = rawMetadata as ToolMetadata;
+  } else {
+    metadata = {
+      name: rawMetadata.name,
+      description: rawMetadata.ui_description
+    } as ToolMetadata;
+  }
+
   try {
     if (missingFiles.includes('banner_background.png')) {
-      const bannerPrompt = 
+      const bannerPrompt =
         `Create a professional banner image for a software tool named '${metadata.name}'. ` +
         `The tool description is: ${metadata.description}. Use a modern, minimalist style with subtle tech elements. ` +
         "Make it suitable for a developer tool interface. Use a cohesive color scheme, dark colors, allowing for white text to be readable on the image. " +
@@ -151,7 +163,7 @@ async function generateToolImages(toolPath: string, metadata: ToolMetadata): Pro
     }
 
     if (missingFiles.includes('icon.png')) {
-      const iconPrompt = 
+      const iconPrompt =
         `Create a simple, memorable icon for '${metadata.name}'. The icon should represent the tool's function, which is: ` +
         `${metadata.description}. Use a minimal design with clear shapes and limited colors. ` +
         "Make it recognizable at small sizes and suitable for a developer tool. " +
@@ -166,7 +178,7 @@ async function generateToolImages(toolPath: string, metadata: ToolMetadata): Pro
       });
 
       const response = await axios.get(iconUrl, { responseType: 'arraybuffer' });
-      await Deno.writeFile(join(toolPath, 'icon.png'), new Uint8Array(response.data));      
+      await Deno.writeFile(join(toolPath, 'icon.png'), new Uint8Array(response.data));
     }
 
     console.log("Successfully generated missing images");
@@ -184,6 +196,7 @@ async function main() {
 
   const __dirname = dirname(fromFileUrl(import.meta.url));
   const toolsDir = join(__dirname, '..', 'tools');
+  const agentsDir = join(__dirname, '..', 'agents');
   const scriptDir = __dirname;
 
   // Get all tool directories
@@ -191,10 +204,13 @@ async function main() {
     .filter(item => item.isDirectory)
     .map(item => item.name);
 
-  for (const tool of tools) {
-    const toolPath = join(toolsDir, tool);
-    console.log(`\nProcessing tool: ${tool}`);
+  const agents = Array.from(Deno.readDirSync(agentsDir))
+    .filter(item => item.isDirectory)
+    .map(item => item.name);
 
+  console.log(`Processing ${tools.length} tools and ${agents.length} agents`);
+
+  async function process(toolPath: string, tool: string) {
     try {
       const metadata = await readToolMetadata(toolPath);
       await generateToolImages(toolPath, metadata);
@@ -209,6 +225,9 @@ async function main() {
       }
     }
   }
+
+  await Promise.all(tools.map(tool => process(join(toolsDir, tool), tool)));
+  await Promise.all(agents.map(agent => process(join(agentsDir, agent), agent)));
 }
 
 // Run if called directly
@@ -219,4 +238,5 @@ if (import.meta.main) {
   });
 }
 
-export { generateImage, GenerateImageOptions }; 
+export { generateImage };
+export type { GenerateImageOptions };

@@ -1,7 +1,7 @@
 {
   "name": "Linear Agent",
   "agent_id": "linear_agent",
-  "full_identity_name": "@@my_local_ai.sep-shinkai/main/agent/linear_agent",
+  "full_identity_name": "@@official.sep-shinkai/main/agent/linear_agent",
   "llm_provider_id": "shinkai_free_trial",
   "ui_description": "https://linear.app/ task manager.",
   "knowledge": [],

@@ -1,7 +1,7 @@
 {
   "name": "Smart Search Engine",
   "homepage": "https://github.com/dcSpark/shinkai-tools/blob/main/tools/smart-search/README.md",
-  "description": "This function takes a question as input and returns a comprehensive answer, along with the sources and statements used to generate the answer.",  
+  "description": "This function takes a question as input and returns a comprehensive answer, along with the sources and statements used to generate the answer.",
   "author": "Shinkai",
   "version": "1.0.0",
   "keywords": [
@@ -12,7 +12,11 @@
     "google"
   ],
   "runner": "any",
-  "operating_system": ["linux", "macos", "windows"],
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
   "tool_set": "",
   "configurations": {
     "type": "object",
@@ -33,8 +37,7 @@
         "default": 10
       }
     },
-    "required": [
-    ]
+    "required": []
   },
   "parameters": {
     "properties": {
@@ -59,9 +62,15 @@
         "items": {
           "type": "object",
           "properties": {
-            "id": {"type": "number"},
-            "url": {"type": "string"},
-            "title": {"type": "string"}
+            "id": {
+              "type": "number"
+            },
+            "url": {
+              "type": "string"
+            },
+            "title": {
+              "type": "string"
+            }
           }
         },
         "type": "array"
@@ -71,15 +80,23 @@
         "items": {
           "type": "object",
           "properties": {
-            "sourceId": {"type": "number"},
-            "sourceTitle": {"type": "string"},
+            "sourceId": {
+              "type": "number"
+            },
+            "sourceTitle": {
+              "type": "string"
+            },
             "extractedFacts": {
               "type": "array",
               "items": {
                 "type": "object",
                 "properties": {
-                  "statement": {"type": "string"},
-                  "relevance": {"type": "string"}
+                  "statement": {
+                    "type": "string"
+                  },
+                  "relevance": {
+                    "type": "string"
+                  }
                 }
               }
             }
@@ -95,13 +112,13 @@
     ],
     "type": "object"
   },
-  "sqlTables": [],  
+  "sqlTables": [],
   "sqlQueries": [],
   "tools": [
     "local:::__official_shinkai:::google_search:::1.0.0",
     "local:::__official_shinkai:::duckduckgo_search:::1.0.0",
     "local:::__official_shinkai:::shinkai_llm_prompt_processor:::1.0.0",
     "local:::__official_shinkai:::shinkai_llm_map_reduce_processor:::1.0.0",
-    "local:::__official_shinkai:::download_pages:::1.0.0"
+    "local:::__official_shinkai:::download_pages:::1.0.1"
   ]
 }

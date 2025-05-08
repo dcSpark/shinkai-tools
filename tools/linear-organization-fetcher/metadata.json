@@ -184,6 +184,6 @@
     "runner": "any",
     "sql_queries": [],
     "sql_tables": [],
-    "tool_set": "",
+    "tool_set": "linear_app",
     "tools": []
 }

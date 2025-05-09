@@ -10,7 +10,11 @@
     "search"
   ],
   "runner": "any",
-  "operating_system": ["linux", "macos", "windows"],
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
   "tool_set": "",
   "configurations": {
     "type": "object",
@@ -20,7 +24,9 @@
         "description": "Your SerpAPI key for authentication"
       }
     },
-    "required": ["SERP_API_KEY"]
+    "required": [
+      "SERP_API_KEY"
+    ]
   },
   "parameters": {
     "type": "object",
@@ -40,7 +46,7 @@
       "num_results": {
         "description": "Number of results to return",
         "type": "number",
-        "default": 10
+        "default": "10"
       }
     },
     "required": [
@@ -56,11 +62,21 @@
         "items": {
           "type": "object",
           "properties": {
-            "title": { "type": "string" },
-            "link": { "type": "string" },
-            "source": { "type": "string" },
-            "snippet": { "type": "string" },
-            "date": { "type": "string" }
+            "title": {
+              "type": "string"
+            },
+            "link": {
+              "type": "string"
+            },
+            "source": {
+              "type": "string"
+            },
+            "snippet": {
+              "type": "string"
+            },
+            "date": {
+              "type": "string"
+            }
           }
         }
       },
@@ -77,4 +93,4 @@
   "sqlTables": [],
   "sqlQueries": [],
   "tools": []
-} 
+}

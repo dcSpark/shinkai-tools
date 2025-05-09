@@ -12,7 +12,11 @@
     "stories"
   ],
   "runner": "any",
-  "operating_system": ["linux", "macos", "windows"],
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
   "tool_set": "",
   "configurations": {
     "type": "object",
@@ -20,7 +24,7 @@
       "limit": {
         "type": "number",
         "description": "Number of stories to fetch (default: 10)",
-        "default": 10
+        "default": "10"
       }
     },
     "required": []
@@ -51,10 +55,16 @@
               "description": "URL of the story or HN discussion if no URL provided"
             }
           },
-          "required": ["title", "author", "url"]
+          "required": [
+            "title",
+            "author",
+            "url"
+          ]
         }
       }
     },
-    "required": ["stories"]
+    "required": [
+      "stories"
+    ]
   }
-} 
+}

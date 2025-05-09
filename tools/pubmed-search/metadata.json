@@ -11,7 +11,11 @@
     "shinkai"
   ],
   "runner": "any",
-  "operating_system": ["linux", "macos", "windows"],
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
   "tool_set": "",
   "configurations": {
     "type": "object",
@@ -32,7 +36,7 @@
       "max_results": {
         "type": "number",
         "description": "Maximum results to fetch (1-15)",
-        "default": 15
+        "default": "15"
       }
     },
     "required": [
@@ -42,16 +46,28 @@
   "result": {
     "type": "object",
     "properties": {
-      "status": { "type": "string" },
-      "query": { "type": "string" },
-      "message": { "type": "string" },
-      "total_results": { "type": "number" },
-      "showing": { "type": "number" },
-      "records": { "type": "string" }
+      "status": {
+        "type": "string"
+      },
+      "query": {
+        "type": "string"
+      },
+      "message": {
+        "type": "string"
+      },
+      "total_results": {
+        "type": "number"
+      },
+      "showing": {
+        "type": "number"
+      },
+      "records": {
+        "type": "string"
+      }
     },
     "required": [
       "status",
       "query"
     ]
   }
-} 
+}

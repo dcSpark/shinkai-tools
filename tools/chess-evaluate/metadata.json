@@ -13,7 +13,11 @@
     "position"
   ],
   "runner": "any",
-  "operating_system": ["linux", "macos", "windows"],
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
   "tool_set": "",
   "configurations": {
     "type": "object",
@@ -30,15 +34,17 @@
       "depth": {
         "type": "number",
         "description": "Depth for the engine search",
-        "default": 15
+        "default": "15"
       },
       "time_limit_ms": {
         "type": "number",
         "description": "Time limit in milliseconds if depth is small",
-        "default": 1000
+        "default": "1000"
       }
     },
-    "required": ["fen"]
+    "required": [
+      "fen"
+    ]
   },
   "result": {
     "type": "object",
@@ -47,6 +53,8 @@
         "type": "string"
       }
     },
-    "required": ["message"]
+    "required": [
+      "message"
+    ]
   }
-}   
+}

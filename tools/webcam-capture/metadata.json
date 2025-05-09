@@ -12,7 +12,11 @@
     "tools"
   ],
   "runner": "any",
-  "operating_system": ["linux", "macos", "windows"],
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
   "tool_set": "",
   "configurations": {
     "type": "object",
@@ -35,12 +39,12 @@
       "width": {
         "type": "number",
         "description": "Requested width of the capture in pixels",
-        "default": 640
+        "default": "640"
       },
       "height": {
         "type": "number",
         "description": "Requested height of the capture in pixels",
-        "default": 480
+        "default": "480"
       }
     },
     "required": []
@@ -67,4 +71,4 @@
       "height"
     ]
   }
-} 
+}

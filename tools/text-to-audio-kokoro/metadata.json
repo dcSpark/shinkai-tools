@@ -12,9 +12,13 @@
         "markdown"
     ],
     "runner": "any",
-  "operating_system": ["linux", "macos", "windows"],
-  "tool_set": "",
-  "configurations": {
+    "operating_system": [
+        "linux",
+        "macos",
+        "windows"
+    ],
+    "tool_set": "",
+    "configurations": {
         "properties": {
             "model_path": {
                 "description": "Path to the Kokoro model file",
@@ -49,7 +53,7 @@
             "speed": {
                 "description": "Speech speed multiplier (0.5 to 2.0)",
                 "type": "number",
-                "default": 1.0,
+                "default": "1.0",
                 "minimum": 0.5,
                 "maximum": 2.0
             },
@@ -57,7 +61,9 @@
                 "description": "Output audio format",
                 "type": "string",
                 "default": "wav",
-                "enum": ["wav"]
+                "enum": [
+                    "wav"
+                ]
             }
         },
         "required": [
@@ -90,4 +96,4 @@
     "sqlTables": [],
     "sqlQueries": [],
     "tools": []
-} 
+}

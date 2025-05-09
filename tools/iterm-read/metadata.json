@@ -3,9 +3,19 @@
   "version": "1.0.0",
   "description": "Reads output from the active iTerm terminal.",
   "author": "Shinkai",
-  "keywords": ["iterm", "terminal", "read", "automation", "shinkai"],
+  "keywords": [
+    "iterm",
+    "terminal",
+    "read",
+    "automation",
+    "shinkai"
+  ],
   "runner": "any",
-  "operating_system": ["linux", "macos", "windows"],
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
   "tool_set": "",
   "configurations": {
     "type": "object",
@@ -17,7 +27,7 @@
       "lines_of_output": {
         "type": "number",
         "description": "Number of lines of terminal output to fetch",
-        "default": 25
+        "default": "25"
       }
     }
   },
@@ -37,9 +47,13 @@
         "description": "Success or error message"
       }
     },
-    "required": ["terminal_output", "success", "message"]
+    "required": [
+      "terminal_output",
+      "success",
+      "message"
+    ]
   },
   "sqlTables": [],
   "sqlQueries": [],
   "tools": []
-} 
+}

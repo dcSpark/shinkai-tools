@@ -4,9 +4,18 @@
   "id": "stock-technical-analysis",
   "description": "Fetches historical stock data from Tiingo and calculates basic technical indicators (SMA, RSI, MACD, ATR, etc.), then returns a structured analysis of the trend.",
   "author": "Shinkai",
-  "keywords": ["stock", "analysis", "technical-indicators", "tiingo"],
+  "keywords": [
+    "stock",
+    "analysis",
+    "technical-indicators",
+    "tiingo"
+  ],
   "runner": "any",
-  "operating_system": ["linux", "macos", "windows"],
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
   "tool_set": "",
   "configurations": {
     "type": "object",
@@ -28,10 +37,12 @@
       "lookback_days": {
         "type": "number",
         "description": "How many days of historical data to fetch.",
-        "default": 365
+        "default": "365"
       }
     },
-    "required": ["symbol"]
+    "required": [
+      "symbol"
+    ]
   },
   "result": {
     "type": "object",
@@ -40,24 +51,50 @@
         "type": "object",
         "description": "Contains various technical analysis indicators and booleans describing the trend.",
         "properties": {
-          "latestClose": { "type": "number" },
-          "aboveSma20": { "type": "boolean" },
-          "aboveSma50": { "type": "boolean" },
-          "aboveSma200": { "type": "boolean" },
-          "sma20OverSma50": { "type": "boolean" },
-          "sma50OverSma200": { "type": "boolean" },
-          "rsi": { "type": "number" },
-          "macdBullish": { "type": "boolean" },
-          "atr": { "type": "number" },
-          "adrPercent": { "type": "number" },
-          "avg20dVolume": { "type": "number" }
+          "latestClose": {
+            "type": "number"
+          },
+          "aboveSma20": {
+            "type": "boolean"
+          },
+          "aboveSma50": {
+            "type": "boolean"
+          },
+          "aboveSma200": {
+            "type": "boolean"
+          },
+          "sma20OverSma50": {
+            "type": "boolean"
+          },
+          "sma50OverSma200": {
+            "type": "boolean"
+          },
+          "rsi": {
+            "type": "number"
+          },
+          "macdBullish": {
+            "type": "boolean"
+          },
+          "atr": {
+            "type": "number"
+          },
+          "adrPercent": {
+            "type": "number"
+          },
+          "avg20dVolume": {
+            "type": "number"
+          }
         },
-        "required": ["latestClose"]
+        "required": [
+          "latestClose"
+        ]
       }
     },
-    "required": ["analysis"]
+    "required": [
+      "analysis"
+    ]
   },
   "sqlTables": [],
   "sqlQueries": [],
   "tools": []
-} 
+}

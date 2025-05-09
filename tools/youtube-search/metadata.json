@@ -3,9 +3,18 @@
   "description": "Searches YouTube for videos via SerpAPI. Requires SERP_API_KEY in configuration.",
   "version": "1.0.0",
   "author": "Devin",
-  "keywords": ["youtube", "serpapi", "video", "search"],
+  "keywords": [
+    "youtube",
+    "serpapi",
+    "video",
+    "search"
+  ],
   "runner": "any",
-  "operating_system": ["linux", "macos", "windows"],
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
   "tool_set": "",
   "configurations": {
     "type": "object",
@@ -15,7 +24,9 @@
         "description": "Your SerpAPI key for authentication"
       }
     },
-    "required": ["SERP_API_KEY"]
+    "required": [
+      "SERP_API_KEY"
+    ]
   },
   "parameters": {
     "type": "object",
@@ -35,10 +46,12 @@
       "max_results": {
         "description": "Maximum number of results to return",
         "type": "number",
-        "default": 10
+        "default": "10"
       }
     },
-    "required": ["search_query"]
+    "required": [
+      "search_query"
+    ]
   },
   "result": {
     "type": "object",
@@ -49,12 +62,24 @@
         "items": {
           "type": "object",
           "properties": {
-            "title": { "type": "string" },
-            "link": { "type": "string" },
-            "thumbnail": { "type": "string" },
-            "channel": { "type": "string" },
-            "views": { "type": "string" },
-            "duration": { "type": "string" }
+            "title": {
+              "type": "string"
+            },
+            "link": {
+              "type": "string"
+            },
+            "thumbnail": {
+              "type": "string"
+            },
+            "channel": {
+              "type": "string"
+            },
+            "views": {
+              "type": "string"
+            },
+            "duration": {
+              "type": "string"
+            }
           }
         }
       },
@@ -63,6 +88,9 @@
         "type": "string"
       }
     },
-    "required": ["results", "query"]
+    "required": [
+      "results",
+      "query"
+    ]
   }
 }

@@ -1,90 +1,94 @@
 {
-    "name": "Send Email",
-    "homepage": "https://github.com/dcSpark/shinkai-tools/blob/main/tools/email-sender/README.md",
-    "version": "1.0.0",
-    "description": "Sends an email using SMTP.",
-    "author": "Shinkai",
-    "keywords": [
-      "email",
-      "smtp",
-      "send",
-      "notification"
-    ],
-    "runner": "any",
-  "operating_system": ["linux", "macos", "windows"],
+  "name": "Send Email",
+  "homepage": "https://github.com/dcSpark/shinkai-tools/blob/main/tools/email-sender/README.md",
+  "version": "1.0.0",
+  "description": "Sends an email using SMTP.",
+  "author": "Shinkai",
+  "keywords": [
+    "email",
+    "smtp",
+    "send",
+    "notification"
+  ],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
   "tool_set": "",
   "configurations": {
-      "type": "object",
-      "properties": {
-        "smtp_server": {
-          "type": "string",
-          "description": "The SMTP server address"
-        },
-        "port": {
-          "type": "integer",
-          "description": "The SMTP server port",
-          "default": 465
-        },
-        "sender_email": {
-          "type": "string",
-          "description": "The sender's email address"
-        },
-        "sender_password": {
-          "type": "string",
-          "description": "The sender's email password"
-        },
-        "ssl": {
-          "type": "boolean",
-          "description": "Whether to use SSL for the SMTP connection (defaults to true)",
-          "default": true
-        }
+    "type": "object",
+    "properties": {
+      "smtp_server": {
+        "type": "string",
+        "description": "The SMTP server address"
       },
-      "required": [
-        "smtp_server",
-        "sender_email",
-        "sender_password"
-      ]
-    },
-    "parameters": {
-      "type": "object",
-      "properties": {
-        "recipient_email": {
-          "type": "string",
-          "description": "The recipient's email address"
-        },
-        "subject": {
-          "type": "string",
-          "description": "The email subject"
-        },
-        "body": {
-          "type": "string",
-          "description": "The email body"
-        }
+      "port": {
+        "type": "integer",
+        "description": "The SMTP server port",
+        "default": "465"
       },
-      "required": [
-        "recipient_email",
-        "subject",
-        "body"
-      ]
-    },
-    "result": {
-      "type": "object",
-      "properties": {
-        "status": {
-          "type": "string",
-          "description": "The status of the email sending operation ('success' or 'failed')"
-        },
-        "message": {
-          "type": "string",
-          "description": "A message indicating the result of the operation"
-        }
+      "sender_email": {
+        "type": "string",
+        "description": "The sender's email address"
       },
-      "required": [
-        "status",
-        "message"
-      ]
+      "sender_password": {
+        "type": "string",
+        "description": "The sender's email password"
+      },
+      "ssl": {
+        "type": "boolean",
+        "description": "Whether to use SSL for the SMTP connection (defaults to true)",
+        "default": "true"
+      }
     },
-    "sqlTables": [],
-    "sqlQueries": [],
-    "tools": []
-  }
+    "required": [
+      "smtp_server",
+      "sender_email",
+      "sender_password"
+    ]
+  },
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "recipient_email": {
+        "type": "string",
+        "description": "The recipient's email address"
+      },
+      "subject": {
+        "type": "string",
+        "description": "The email subject"
+      },
+      "body": {
+        "type": "string",
+        "description": "The email body"
+      }
+    },
+    "required": [
+      "recipient_email",
+      "subject",
+      "body"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "status": {
+        "type": "string",
+        "description": "The status of the email sending operation ('success' or 'failed')"
+      },
+      "message": {
+        "type": "string",
+        "description": "A message indicating the result of the operation"
+      }
+    },
+    "required": [
+      "status",
+      "message"
+    ]
+  },
+  "sqlTables": [],
+  "sqlQueries": [],
+  "tools": []
+}

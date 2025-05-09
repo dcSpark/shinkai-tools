@@ -29,7 +29,9 @@
     "use_tools": true
   },
   "scope": {
-    "vector_fs_items": [],
+    "vector_fs_items": [
+      "Guide to Using Linear with Available Tools.md"
+    ],
     "vector_fs_folders": [],
     "vector_search_mode": "FillUpTo25k"
   },

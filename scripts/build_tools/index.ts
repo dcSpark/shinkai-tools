@@ -18,10 +18,6 @@ export async function start() {
   const tools_saved = await saveToolsInNode(tools_raw);
   console.log(`Successfully processed ${tools_saved.length} tools`);
 
-  console.log("\nUploading tools to Shinkai Store...");
-  await uploadTools(tools_saved);
-  console.log("Tool uploading complete!");
-
   // Process agents
   console.log("\nProcessing agents directory...");
   const agents_raw = await processAgentsDirectory();
@@ -30,6 +26,11 @@ export async function start() {
   console.log("\nSaving agents to node and generating zip files...");
   const agents_saved = await saveAgentsInNode(agents_raw);
   console.log(`Successfully processed ${agents_saved.length} agents`);
+
+  // Upload tools and agents to Shinkai Store
+  console.log("\nUploading tools to Shinkai Store...");
+  await uploadTools(tools_saved);
+  console.log("Tool uploading complete!");
 
   console.log("\nUploading agents to Shinkai Store...");
   await uploadTools(agents_saved);

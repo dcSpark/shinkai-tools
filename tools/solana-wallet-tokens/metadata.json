@@ -1,0 +1,113 @@
+{
+  "activated": false,
+  "assets": [],
+  "author": "@@my_local_ai.sep-shinkai",
+  "config": [
+    {
+      "BasicConfig": {
+        "description": "The Helius API key",
+        "key_name": "SOLANA_PRIVATE_KEY",
+        "key_value": null,
+        "required": true,
+        "type": "string"
+      }
+    },
+    {
+      "BasicConfig": {
+        "description": "The Solana private key in base58 format",
+        "key_name": "HELIUS_API_KEY",
+        "key_value": null,
+        "required": true,
+        "type": "string"
+      }
+    }
+  ],
+  "configFormData": {
+    "HELIUS_API_KEY": null,
+    "SOLANA_PRIVATE_KEY": null
+  },
+  "configurations": {
+    "properties": {
+      "HELIUS_API_KEY": {
+        "description": "The Solana private key in base58 format",
+        "type": "string"
+      },
+      "SOLANA_PRIVATE_KEY": {
+        "description": "The Helius API key",
+        "type": "string"
+      }
+    },
+    "required": [
+      "SOLANA_PRIVATE_KEY",
+      "HELIUS_API_KEY"
+    ],
+    "type": "object"
+  },
+  "description": "Fetches and returns the tokens from a Solana wallet using the Helius API",
+  "file_inbox": null,
+  "homepage": null,
+  "input_args": {
+    "properties": {},
+    "required": [],
+    "type": "object"
+  },
+  "keywords": [
+    "solana",
+    "wallet",
+    "tokens",
+    "helius",
+    "blockchain"
+  ],
+  "mcp_enabled": false,
+  "name": "Solana Tokens in Wallet",
+  "oauth": [],
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "output_arg": {
+    "json": ""
+  },
+  "result": {
+    "properties": {
+      "tokens": {
+        "description": "List of tokens in the wallet",
+        "items": {
+          "properties": {
+            "balance": {
+              "description": "The token balance",
+              "type": "number"
+            },
+            "mintAddress": {
+              "description": "The token mint address",
+              "type": "string"
+            },
+            "symbol": {
+              "description": "The token symbol",
+              "type": "string"
+            }
+          },
+          "required": [
+            "symbol",
+            "balance",
+            "mintAddress"
+          ],
+          "type": "object"
+        },
+        "type": "array"
+      }
+    },
+    "required": [
+      "tokens"
+    ],
+    "type": "object"
+  },
+  "runner": "any",
+  "sql_queries": [],
+  "sql_tables": [],
+  "tool_router_key": "local:::__official_shinkai:::solana_tokens_in_wallet",
+  "tool_set": "",
+  "tools": [],
+  "version": "1.0.0"
+}

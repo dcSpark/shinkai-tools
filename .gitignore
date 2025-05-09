@@ -8,3 +8,5 @@ deno.lock
 *_local.sh
 tmp
 __pycache__
+node_modules/.deno
+node_modules

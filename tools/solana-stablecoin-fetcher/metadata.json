@@ -1,0 +1,102 @@
+{
+    "activated": false,
+    "assets": [],
+    "author": "@@official.shinkai",
+    "config": [],
+    "configFormData": {},
+    "configurations": {
+      "properties": {},
+      "required": [],
+      "type": "object"
+    },
+    "description": "Fetches a list of stablecoins from the Solana blockchain",
+    "file_inbox": null,
+    "homepage": null,
+    "input_args": {
+      "properties": {},
+      "required": [],
+      "type": "object"
+    },
+    "keywords": [
+      "stablecoin",
+      "fetch",
+      "API",
+      "cryptocurrency",
+      "solana"
+    ],
+    "mcp_enabled": false,
+    "name": "Solana Stablecoin Fetcher",
+    "oauth": [],
+    "operating_system": [
+      "linux",
+      "macos",
+      "windows"
+    ],
+    "output_arg": {
+      "json": ""
+    },
+    "result": {
+      "properties": {
+        "stableCoins": {
+          "description": "List of stablecoins fetched from the API",
+          "items": {
+            "properties": {
+              "address": {
+                "description": "The blockchain address of the stablecoin",
+                "type": "string"
+              },
+              "coinmarketcap_name": {
+                "description": "The CoinMarketCap name for the stablecoin",
+                "type": "string"
+              },
+              "daily_volume_march_snapshot": {
+                "description": "The daily volume snapshot for March",
+                "type": "number"
+              },
+              "decimals": {
+                "description": "The number of decimal places for the stablecoin",
+                "type": "number"
+              },
+              "name": {
+                "description": "The name of the stablecoin",
+                "type": "string"
+              },
+              "symbol": {
+                "description": "The symbol of the stablecoin",
+                "type": "string"
+              },
+              "tags": {
+                "description": "Tags associated with the stablecoin",
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              }
+            },
+            "required": [
+              "name",
+              "symbol",
+              "address",
+              "decimals",
+              "coinmarketcap_name",
+              "daily_volume_march_snapshot",
+              "tags"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "stableCoins"
+      ],
+      "type": "object"
+    },
+    "runner": "any",
+    "sql_queries": [],
+    "sql_tables": [],
+    "tool_router_key": "local:::__official_shinkai:::solana_stablecoin_fetcher",
+    "tool_set": "",
+    "tools": [],
+    "version": "1.0.0"
+  }

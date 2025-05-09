@@ -1,0 +1,164 @@
+{
+  "activated": false,
+  "assets": [],
+  "author": "@@official.shinkai",
+  "config": [
+    {
+      "BasicConfig": {
+        "description": "The private key for the Solana wallet",
+        "key_name": "PRIVATE_KEY",
+        "key_value": null,
+        "required": true,
+        "type": "string"
+      }
+    },
+    {
+      "BasicConfig": {
+        "description": "The taker address for the swap",
+        "key_name": "TAKER_ADDRESS",
+        "key_value": null,
+        "required": true,
+        "type": "string"
+      }
+    }
+  ],
+  "configFormData": {
+    "PRIVATE_KEY": null,
+    "TAKER_ADDRESS": null
+  },
+  "configurations": {
+    "properties": {
+      "PRIVATE_KEY": {
+        "description": "The private key for the Solana wallet",
+        "type": "string"
+      },
+      "TAKER_ADDRESS": {
+        "description": "The taker address for the swap",
+        "type": "string"
+      }
+    },
+    "required": [
+      "PRIVATE_KEY",
+      "TAKER_ADDRESS"
+    ],
+    "type": "object"
+  },
+  "description": "Executes token swaps on the Solana blockchain using Jupiter Aggregator API",
+  "file_inbox": null,
+  "homepage": null,
+  "input_args": {
+    "properties": {
+      "SWAP_AMOUNT": {
+        "description": "The amount of input token to swap",
+        "type": "number"
+      },
+      "SWAP_INPUT_TOKEN": {
+        "description": "The input token symbol for the swap",
+        "type": "string"
+      },
+      "SWAP_OUTPUT_TOKEN": {
+        "description": "The output token symbol for the swap",
+        "type": "string"
+      }
+    },
+    "required": [
+      "SWAP_INPUT_TOKEN",
+      "SWAP_OUTPUT_TOKEN",
+      "SWAP_AMOUNT"
+    ],
+    "type": "object"
+  },
+  "keywords": [
+    "solana",
+    "token",
+    "swap",
+    "jupiter",
+    "crypto"
+  ],
+  "mcp_enabled": false,
+  "name": "Jupiter Token Swap Executor",
+  "oauth": [],
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "output_arg": {
+    "json": ""
+  },
+  "result": {
+    "properties": {
+      "executeResponse": {
+        "properties": {
+          "code": {
+            "type": "number"
+          },
+          "inputAmountResult": {
+            "type": "string"
+          },
+          "outputAmountResult": {
+            "type": "string"
+          },
+          "signature": {
+            "type": "string"
+          },
+          "slot": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "swapEvents": {
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "orderResponse": {
+        "properties": {
+          "inAmount": {
+            "type": "string"
+          },
+          "otherAmountThreshold": {
+            "type": "string"
+          },
+          "outAmount": {
+            "type": "string"
+          },
+          "priceImpactPct": {
+            "type": "string"
+          },
+          "requestId": {
+            "type": "string"
+          },
+          "routePlan": {
+            "type": "array"
+          },
+          "slippageBps": {
+            "type": "number"
+          },
+          "swapMode": {
+            "type": "string"
+          },
+          "swapType": {
+            "type": "string"
+          },
+          "transaction": {
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "type": "object"
+      }
+    },
+    "required": [],
+    "type": "object"
+  },
+  "runner": "any",
+  "sql_queries": [],
+  "sql_tables": [],
+  "tool_router_key": "local:::__official_shinkai:::jupiter_swap_executor",
+  "tool_set": "",
+  "tools": [],
+  "version": "1.0.0"
+}

@@ -1,0 +1,336 @@
+{
+  "activated": false,
+  "assets": [],
+  "author": "@@official.shinkai",
+  "config": [
+    {
+      "BasicConfig": {
+        "description": "Helius API key for Solana RPC access",
+        "key_name": "HELIUS_API_KEY",
+        "key_value": null,
+        "required": true,
+        "type": "string"
+      }
+    }
+  ],
+  "configFormData": {
+    "HELIUS_API_KEY": null
+  },
+  "configurations": {
+    "properties": {
+      "HELIUS_API_KEY": {
+        "description": "Helius API key for Solana RPC access",
+        "type": "string"
+      }
+    },
+    "required": [
+      "HELIUS_API_KEY"
+    ],
+    "type": "object"
+  },
+  "description": "Gets price quotes for swapping Solana tokens using Jupiter Aggregator API",
+  "file_inbox": null,
+  "homepage": null,
+  "input_args": {
+    "properties": {
+      "amount": {
+        "description": "Amount of input token to swap",
+        "type": "string"
+      },
+      "inputSymbol": {
+        "description": "Input token symbol (e.g., SOL, USDC)",
+        "type": "string"
+      },
+      "outputSymbol": {
+        "description": "Output token symbol (e.g., SOL, USDC)",
+        "type": "string"
+      }
+    },
+    "required": [
+      "inputSymbol",
+      "outputSymbol",
+      "amount"
+    ],
+    "type": "object"
+  },
+  "keywords": [
+    "solana",
+    "token",
+    "swap",
+    "quote",
+    "jupiter",
+    "helius"
+  ],
+  "mcp_enabled": false,
+  "name": "Jupiter Swap Quoter",
+  "oauth": [],
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "output_arg": {
+    "json": ""
+  },
+  "result": {
+    "properties": {
+      "inputTokenInfo": {
+        "properties": {
+          "address": {
+            "description": "Token mint address",
+            "type": "string"
+          },
+          "created_at": {
+            "description": "Creation timestamp",
+            "nullable": true,
+            "type": "string"
+          },
+          "daily_volume": {
+            "description": "Daily trading volume",
+            "nullable": true,
+            "type": "number"
+          },
+          "decimals": {
+            "description": "Token decimals",
+            "type": "number"
+          },
+          "extensions": {
+            "description": "Token extensions",
+            "nullable": true,
+            "type": "object"
+          },
+          "freeze_authority": {
+            "description": "Freeze authority address",
+            "nullable": true,
+            "type": "string"
+          },
+          "logoURI": {
+            "description": "Token logo URI",
+            "nullable": true,
+            "type": "string"
+          },
+          "mint_authority": {
+            "description": "Mint authority address",
+            "nullable": true,
+            "type": "string"
+          },
+          "minted_at": {
+            "description": "Mint timestamp",
+            "nullable": true,
+            "type": "null"
+          },
+          "name": {
+            "description": "Token name",
+            "type": "string"
+          },
+          "permanent_delegate": {
+            "description": "Permanent delegate",
+            "nullable": true,
+            "type": "null"
+          },
+          "symbol": {
+            "description": "Token symbol",
+            "type": "string"
+          },
+          "tags": {
+            "description": "Token tags",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true,
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "outputTokenInfo": {
+        "properties": {
+          "address": {
+            "description": "Token mint address",
+            "type": "string"
+          },
+          "created_at": {
+            "description": "Creation timestamp",
+            "nullable": true,
+            "type": "string"
+          },
+          "daily_volume": {
+            "description": "Daily trading volume",
+            "nullable": true,
+            "type": "number"
+          },
+          "decimals": {
+            "description": "Token decimals",
+            "type": "number"
+          },
+          "extensions": {
+            "description": "Token extensions",
+            "nullable": true,
+            "type": "object"
+          },
+          "freeze_authority": {
+            "description": "Freeze authority address",
+            "nullable": true,
+            "type": "string"
+          },
+          "logoURI": {
+            "description": "Token logo URI",
+            "nullable": true,
+            "type": "string"
+          },
+          "mint_authority": {
+            "description": "Mint authority address",
+            "nullable": true,
+            "type": "string"
+          },
+          "minted_at": {
+            "description": "Mint timestamp",
+            "nullable": true,
+            "type": "null"
+          },
+          "name": {
+            "description": "Token name",
+            "type": "string"
+          },
+          "permanent_delegate": {
+            "description": "Permanent delegate",
+            "nullable": true,
+            "type": "null"
+          },
+          "symbol": {
+            "description": "Token symbol",
+            "type": "string"
+          },
+          "tags": {
+            "description": "Token tags",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true,
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "quote": {
+        "properties": {
+          "contextSlot": {
+            "description": "Solana slot number",
+            "nullable": true,
+            "type": "number"
+          },
+          "inAmount": {
+            "description": "Input amount in raw units",
+            "type": "string"
+          },
+          "inputMint": {
+            "description": "Input token mint address",
+            "type": "string"
+          },
+          "otherAmountThreshold": {
+            "description": "Minimum output amount threshold",
+            "type": "string"
+          },
+          "outAmount": {
+            "description": "Output amount in raw units",
+            "type": "string"
+          },
+          "outputMint": {
+            "description": "Output token mint address",
+            "type": "string"
+          },
+          "platformFee": {
+            "nullable": true,
+            "properties": {
+              "amount": {
+                "description": "Fee amount",
+                "type": "string"
+              },
+              "feeBps": {
+                "description": "Fee in basis points",
+                "type": "number"
+              }
+            },
+            "type": "object"
+          },
+          "priceImpactPct": {
+            "description": "Price impact percentage",
+            "type": "string"
+          },
+          "routePlan": {
+            "items": {
+              "properties": {
+                "percent": {
+                  "description": "Percentage of swap routed through this AMM",
+                  "type": "number"
+                },
+                "swapInfo": {
+                  "properties": {
+                    "ammKey": {
+                      "description": "AMM identifier",
+                      "type": "string"
+                    },
+                    "feeAmount": {
+                      "description": "Fee amount",
+                      "type": "string"
+                    },
+                    "feeMint": {
+                      "description": "Fee mint address",
+                      "type": "string"
+                    },
+                    "inAmount": {
+                      "description": "Input amount",
+                      "type": "string"
+                    },
+                    "inputMint": {
+                      "description": "Input mint address",
+                      "type": "string"
+                    },
+                    "label": {
+                      "description": "AMM label",
+                      "type": "string"
+                    },
+                    "outAmount": {
+                      "description": "Output amount",
+                      "type": "string"
+                    },
+                    "outputMint": {
+                      "description": "Output mint address",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              },
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "slippageBps": {
+            "description": "Slippage in basis points",
+            "type": "number"
+          },
+          "swapMode": {
+            "description": "Swap mode (ExactIn/ExactOut)",
+            "type": "string"
+          },
+          "timeTaken": {
+            "description": "Time taken to compute quote",
+            "nullable": true,
+            "type": "number"
+          }
+        },
+        "type": "object"
+      }
+    },
+    "required": [],
+    "type": "object"
+  },
+  "runner": "any",
+  "sql_queries": [],
+  "sql_tables": [],
+  "tool_router_key": "local:::__official_shinkai:::jupiter_swap_quoter",
+  "tool_set": "",
+  "tools": [],
+  "version": "1.0.0"
+}

@@ -10,7 +10,11 @@
     "shinkai"
   ],
   "runner": "any",
-  "operating_system": ["linux", "macos", "windows"],
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
   "tool_set": "",
   "configurations": {
     "type": "object",
@@ -27,12 +31,12 @@
       "page": {
         "type": "number",
         "description": "Page number, starts from 1",
-        "default": 1
+        "default": "1"
       },
       "page_size": {
         "type": "number",
         "description": "Page size, 1 <= page_size <= 1000. Default 100. Large requests can be slow.",
-        "default": 100
+        "default": "100"
       }
     }
   },
@@ -44,16 +48,32 @@
         "items": {
           "type": "object",
           "properties": {
-            "id": { "type": "string" },
-            "symbol": { "type": "string" },
-            "name": { "type": "string" }
+            "id": {
+              "type": "string"
+            },
+            "symbol": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            }
           },
-          "required": ["id", "symbol", "name"]
+          "required": [
+            "id",
+            "symbol",
+            "name"
+          ]
         }
       },
-      "total": { "type": "number" },
-      "page": { "type": "number" },
-      "page_size": { "type": "number" }
+      "total": {
+        "type": "number"
+      },
+      "page": {
+        "type": "number"
+      },
+      "page_size": {
+        "type": "number"
+      }
     },
     "required": [
       "coins",
@@ -62,4 +82,4 @@
       "page_size"
     ]
   }
-} 
+}

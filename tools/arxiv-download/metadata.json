@@ -13,7 +13,11 @@
     "paper"
   ],
   "runner": "any",
-  "operating_system": ["linux", "macos", "windows"],
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
   "tool_set": "",
   "configurations": {
     "type": "object",
@@ -35,18 +39,29 @@
       "convert_to_md": {
         "type": "boolean",
         "description": "Whether to convert the downloaded PDF to .md",
-        "default": true
+        "default": "true"
       }
     },
-    "required": ["paper_id"]
+    "required": [
+      "paper_id"
+    ]
   },
   "result": {
     "type": "object",
     "properties": {
-      "status": { "type": "string" },
-      "message": { "type": "string" },
-      "md_file": { "type": "string" }
+      "status": {
+        "type": "string"
+      },
+      "message": {
+        "type": "string"
+      },
+      "md_file": {
+        "type": "string"
+      }
     },
-    "required": ["status", "message"]
+    "required": [
+      "status",
+      "message"
+    ]
   }
-} 
+}

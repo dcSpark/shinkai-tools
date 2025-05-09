@@ -2,6 +2,7 @@ interface ConfigurationBasicType {
   type: 'string' | 'number' | 'boolean' | 'date' | 'datetime';
   description: string;
   isDefault?: string;
+  default?: string;
 }
 
 interface ConfigurationArray {

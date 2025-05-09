@@ -13,7 +13,11 @@
     "multi-source"
   ],
   "runner": "any",
-  "operating_system": ["linux", "macos", "windows"],
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
   "tool_set": "",
   "configurations": {
     "type": "object",
@@ -26,17 +30,17 @@
       "number_threads": {
         "type": "integer",
         "description": "Number of threads for article processing",
-        "default": 10
+        "default": "10"
       },
       "request_timeout": {
         "type": "integer",
         "description": "Timeout in seconds for HTTP requests",
-        "default": 30
+        "default": "30"
       },
       "max_concurrent_sources": {
         "type": "integer",
         "description": "Maximum number of sources to process concurrently",
-        "default": 5
+        "default": "5"
       }
     },
     "required": []
@@ -55,19 +59,25 @@
       "articles_per_source": {
         "type": "integer",
         "description": "Maximum number of articles to fetch per source",
-        "default": 5
+        "default": "5"
       },
       "categories": {
         "type": "array",
         "items": {
           "type": "string",
           "description": "News category",
-          "enum": ["general", "tech", "business"]
+          "enum": [
+            "general",
+            "tech",
+            "business"
+          ]
         },
         "description": "Categories to fetch news from (uses default providers if no specific providers given)"
       }
     },
-    "required": ["providers"]
+    "required": [
+      "providers"
+    ]
   },
   "result": {
     "type": "object",
@@ -91,24 +101,46 @@
         "items": {
           "type": "object",
           "properties": {
-            "title": {"type": "string"},
-            "url": {"type": "string"},
-            "source": {"type": "string"},
-            "summary": {"type": "string"},
-            "publish_date": {"type": "string"},
+            "title": {
+              "type": "string"
+            },
+            "url": {
+              "type": "string"
+            },
+            "source": {
+              "type": "string"
+            },
+            "summary": {
+              "type": "string"
+            },
+            "publish_date": {
+              "type": "string"
+            },
             "authors": {
               "type": "array",
               "items": {
                 "type": "string"
               }
             },
-            "top_image": {"type": "string"},
-            "text": {"type": "string"}
+            "top_image": {
+              "type": "string"
+            },
+            "text": {
+              "type": "string"
+            }
           }
         }
       },
-      "processing_time": {"type": "number"}
+      "processing_time": {
+        "type": "number"
+      }
     },
-    "required": ["total_sources_processed", "total_articles_found", "failed_sources", "articles", "processing_time"]
+    "required": [
+      "total_sources_processed",
+      "total_articles_found",
+      "failed_sources",
+      "articles",
+      "processing_time"
+    ]
   }
-}    
+}

@@ -34,7 +34,7 @@
       "maxSources": {
         "type": "number",
         "description": "The maximum number of sources to return",
-        "default": 10
+        "default": "10"
       }
     },
     "required": []

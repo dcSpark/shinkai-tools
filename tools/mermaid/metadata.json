@@ -24,7 +24,7 @@
       "maxRetries": {
         "type": "number",
         "description": "Maximum number of retries for the tool",
-        "default": 5
+        "default": "5"
       }
     },
     "required": []

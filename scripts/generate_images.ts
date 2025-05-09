@@ -194,7 +194,13 @@ async function main() {
     Deno.exit(1);
   }
 
-  const __dirname = dirname(fromFileUrl(import.meta.url));
+  let __dirname: string;
+  if (!Deno.env.get("DIR_NAME")) {
+    __dirname = dirname(fromFileUrl(import.meta.url));
+  } else {
+    __dirname = Deno.env.get("DIR_NAME") as string;
+  }
+
   const toolsDir = join(__dirname, '..', 'tools');
   const agentsDir = join(__dirname, '..', 'agents');
   const scriptDir = __dirname;

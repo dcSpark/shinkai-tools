@@ -1,6 +1,7 @@
 tools/**/shinkai-local-support.ts
 tools/**/shinkai-local-tools.ts
 tools/.categories-cache.json
+node_dump
 .DS_Store
 packages**
 shinkai-node**

@@ -75,5 +75,17 @@
     "macos",
     "windows"
   ],
-  "tool_set": ""
+  "tool_set": "",
+  "configurations": {
+    "properties": {
+      "apiKey": {
+        "description": "Required SerpAPI api_key. You can create a free account at https://serpapi.com",
+        "type": "string"
+      }
+    },
+    "required": [
+      "apiKey"
+    ],
+    "type": "object"
+  }
 }

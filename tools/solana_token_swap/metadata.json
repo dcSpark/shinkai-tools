@@ -30,6 +30,23 @@
       }
     }
   ],
+  "configurations": {
+    "properties": {
+      "PRIVATE_KEY": {
+        "description": "The private key for the Solana wallet.",
+        "type": "string"
+      },
+      "TAKER_ADDRESS": {
+        "description": "The taker address for the swap.",
+        "type": "string"
+      }
+    },
+    "required": [
+      "PRIVATE_KEY",
+      "TAKER_ADDRESS"
+    ],
+    "type": "object"
+  },
   "oauth": [],
   "parameters": {
     "type": "object",

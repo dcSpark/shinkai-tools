@@ -31,6 +31,23 @@
     }
   ],
   "oauth": [],
+  "configurations": {
+    "properties": {
+      "SOLANA_PRIVATE_KEY": {
+        "description": "The Solana private key in base58 format",
+        "type": "string"
+      },
+      "HELIUS_API_KEY": {
+        "description": "The Helius API key",
+        "type": "string"
+      }
+    },
+    "required": [
+      "SOLANA_PRIVATE_KEY",
+      "HELIUS_API_KEY"
+    ],
+    "type": "object"
+  },
   "parameters": {
     "type": "object",
     "properties": {},

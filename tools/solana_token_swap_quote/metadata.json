@@ -22,6 +22,18 @@
       }
     }
   ],
+  "configurations": {
+    "properties": {
+      "HELIUS_API_KEY": {
+        "description": "Helius API key for Solana RPC access",
+        "type": "string"
+      }
+    },
+    "required": [
+      "HELIUS_API_KEY"
+    ],
+    "type": "object"
+  },
   "oauth": [],
   "parameters": {
     "type": "object",

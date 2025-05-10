@@ -1,0 +1,5 @@
+{
+  "categoryId": "5f10d0b4-6acd-477a-96e1-be35634465b2",
+  "name": "wait_1_5_seconds",
+  "description": "Runs an async function with a given configuration and inputs, returning a result after a delay."
+}

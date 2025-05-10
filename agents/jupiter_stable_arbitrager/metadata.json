@@ -10,7 +10,8 @@
     "local:::__official_shinkai:::solana_token_swap_quote",
     "local:::__official_shinkai:::solana_tokens_in_wallet",
     "local:::__official_shinkai:::solana_stablecoin_fetcher",
-    "local:::__official_shinkai:::solana_token_swap"
+    "local:::__official_shinkai:::solana_token_swap",
+    "local:::__official_shinkai:::wait_1_5_seconds"
   ],
   "debug_mode": false,
   "config": {

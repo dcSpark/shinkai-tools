@@ -1,7 +1,7 @@
 {
   "name": "Jupiter Stablecoin Arbitrager",
-  "agent_id": "jupiter_stable_arbitrager",
-  "full_identity_name": "@@official.sep-shinkai/main/agent/jupiter_stable_arbitrager",
+  "agent_id": "jupiter_stablecoin_arbitrager",
+  "full_identity_name": "@@official.sep-shinkai/main/agent/jupiter_stablecoin_arbitrager",
   "llm_provider_id": "shinkai_free_trial",
   "ui_description": "Find and trade stablecoin arbitrage opportunities in Jupiter",
   "knowledge": [],

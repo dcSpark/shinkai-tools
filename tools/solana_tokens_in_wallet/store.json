@@ -1,0 +1,5 @@
+{
+  "categoryId": "f004e0f9-4b2b-44f3-abee-d1fd42b9f9ba",
+  "name": "solana_tokens_in_wallet",
+  "description": "Fetches and returns the tokens from a Solana wallet using the Helius API"
+}

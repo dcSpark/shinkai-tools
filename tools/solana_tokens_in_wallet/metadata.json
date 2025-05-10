@@ -1,0 +1,83 @@
+{
+  "name": "Solana Tokens in Wallet",
+  "description": "Fetches and returns the tokens from a Solana wallet using the Helius API",
+  "keywords": [
+    "solana",
+    "wallet",
+    "tokens",
+    "helius",
+    "blockchain"
+  ],
+  "version": "1.0.0",
+  "author": "@@my_local_ai.sep-shinkai",
+  "config": [
+    {
+      "BasicConfig": {
+        "key_name": "SOLANA_PRIVATE_KEY",
+        "description": "The Helius API key",
+        "required": true,
+        "type": "string",
+        "key_value": null
+      }
+    },
+    {
+      "BasicConfig": {
+        "key_name": "HELIUS_API_KEY",
+        "description": "The Solana private key in base58 format",
+        "required": true,
+        "type": "string",
+        "key_value": null
+      }
+    }
+  ],
+  "oauth": [],
+  "parameters": {
+    "type": "object",
+    "properties": {},
+    "required": []
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "tokens": {
+        "description": "List of tokens in the wallet",
+        "items": {
+          "properties": {
+            "balance": {
+              "description": "The token balance",
+              "type": "number"
+            },
+            "mintAddress": {
+              "description": "The token mint address",
+              "type": "string"
+            },
+            "symbol": {
+              "description": "The token symbol",
+              "type": "string"
+            }
+          },
+          "required": [
+            "symbol",
+            "balance",
+            "mintAddress"
+          ],
+          "type": "object"
+        },
+        "type": "array"
+      }
+    },
+    "required": [
+      "tokens"
+    ]
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": [],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": ""
+}

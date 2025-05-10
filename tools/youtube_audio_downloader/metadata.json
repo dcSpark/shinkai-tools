@@ -1,0 +1,63 @@
+{
+  "name": "Youtube Audio Downloader",
+  "description": "Downloads audio from a YouTube video URL and converts it to MP3 format using yt-dlp.",
+  "keywords": [
+    "youtube",
+    "audio",
+    "download",
+    "mp3",
+    "yt-dlp"
+  ],
+  "version": "1.0.0",
+  "author": "@@official.sep-shinkai",
+  "config": [],
+  "oauth": [],
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "url": {
+        "type": "string",
+        "description": "The YouTube video URL to download audio from"
+      }
+    },
+    "required": [
+      "url"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "error_message": {
+        "description": "Error message if the process failed",
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "file_path": {
+        "description": "The file path of the downloaded mp3 file",
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "success": {
+        "description": "Indicates if the download and conversion were successful",
+        "type": "boolean"
+      }
+    },
+    "required": [
+      "success"
+    ]
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": [],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": ""
+}

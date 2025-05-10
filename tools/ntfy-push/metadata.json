@@ -1,7 +1,7 @@
 {
   "id": "ntfy-push",
   "name": "Ntfy Push Notifications",
-  "description": "Sends push notifications to specific groups using ntfy. Supports message priority, tags, and titles. Download the Apps and learn more here: http://nfty.sh",
+  "description": "Sends push notifications to specific groups using ntfy. Supports message priority, tags, and titles. Download the Apps and learn more here: https://ntfy.sh",
   "author": "Shinkai",
   "homePage": "",
   "configurations": {

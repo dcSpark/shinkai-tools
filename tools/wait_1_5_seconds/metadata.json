@@ -1,0 +1,38 @@
+{
+  "name": "Wait 1.5 seconds",
+  "description": "Runs an async function with a given configuration and inputs, returning a result after a delay.",
+  "keywords": [
+    ""
+  ],
+  "version": "1.0.0",
+  "author": "@@official.sep-shinkai",
+  "config": [],
+  "oauth": [],
+  "parameters": {
+    "type": "object",
+    "properties": {},
+    "required": []
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "result": {
+        "description": "The result of the executed function",
+        "type": "string"
+      }
+    },
+    "required": [
+      "result"
+    ]
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": [],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": ""
+}

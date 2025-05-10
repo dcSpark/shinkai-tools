@@ -1,0 +1,36 @@
+{
+  "name": "Youtube Expert",
+  "agent_id": "youtube_expert",
+  "full_identity_name": "@@official.sep-shinkai/main/agent/youtube_expert",
+  "llm_provider_id": "shinkai_free_trial",
+  "ui_description": "This expert has access to youtube search (using serpapi) and to download video transcripts. If a video doesn't have a transcript, it can download the audio and then process it to extract its transcript.",
+  "knowledge": [],
+  "storage_path": "",
+  "tools": [
+    "local:::__official_shinkai:::youtube_transcript_extractor",
+    "local:::__official_shinkai:::youtube_search_with_serpapi",
+    "local:::__official_shinkai:::audio_to_text_transcription",
+    "local:::__official_shinkai:::youtube_audio_downloader"
+  ],
+  "debug_mode": false,
+  "config": {
+    "custom_system_prompt": "You are an agent specialized in navigating youtube. You have two main tools for that: one to search in youtube and another one to download transcripts.\n\nIf a transcript is not enabled for a video then you should use a tool to download the audio and then another one to convert that audio to text (which will give you the transcript)",
+    "custom_prompt": "",
+    "temperature": 0.8,
+    "max_tokens": null,
+    "seed": null,
+    "top_k": 40,
+    "top_p": 0.9,
+    "stream": true,
+    "other_model_params": {},
+    "use_tools": true
+  },
+  "scope": {
+    "vector_fs_items": [],
+    "vector_fs_folders": [],
+    "vector_search_mode": "FillUpTo25k"
+  },
+  "cron_tasks": null,
+  "tools_config_override": {},
+  "edited": false
+}

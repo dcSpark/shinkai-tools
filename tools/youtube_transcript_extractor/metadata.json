@@ -1,0 +1,74 @@
+{
+  "name": "Youtube Transcript Extractor",
+  "description": "Extracts and saves YouTube video transcripts",
+  "keywords": [
+    "youtube",
+    "transcript",
+    "extractor",
+    "video"
+  ],
+  "version": "1.0.0",
+  "author": "@@official.sep-shinkai",
+  "config": [],
+  "oauth": [],
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "lang": {
+        "type": "string",
+        "description": "The language for the transcript"
+      },
+      "url": {
+        "type": "string",
+        "description": "The YouTube video URL"
+      }
+    },
+    "required": [
+      "url"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "transcript": {
+        "description": "The extracted transcript segments",
+        "items": {
+          "properties": {
+            "duration": {
+              "description": "The duration of the segment in milliseconds",
+              "type": "number"
+            },
+            "offset": {
+              "description": "The offset of the segment in milliseconds",
+              "type": "number"
+            },
+            "text": {
+              "description": "The transcript text segment",
+              "type": "string"
+            }
+          },
+          "required": [
+            "text",
+            "offset",
+            "duration"
+          ],
+          "type": "object"
+        },
+        "type": "array"
+      }
+    },
+    "required": [
+      "transcript"
+    ]
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": [],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": ""
+}

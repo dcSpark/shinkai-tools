@@ -1,0 +1,79 @@
+{
+  "name": "Youtube Search with SerpAPI",
+  "description": "Performs a YouTube search using SerpAPI and returns the results in JSON or HTML format.",
+  "keywords": [
+    "youtube",
+    "search",
+    "serpapi",
+    "video",
+    "api"
+  ],
+  "version": "1.0.0",
+  "author": "@@localhost.sep-shinkai",
+  "config": [
+    {
+      "BasicConfig": {
+        "key_name": "apiKey",
+        "description": "Required SerpAPI api_key. You can create a free account at https://serpapi.com",
+        "required": true,
+        "type": "string",
+        "key_value": null
+      }
+    }
+  ],
+  "oauth": [],
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "sp": {
+        "type": "string",
+        "description": "Pagination or filter token"
+      },
+      "no_cache": {
+        "type": "boolean",
+        "description": "Optional flag to disable cache"
+      },
+      "search_query": {
+        "type": "string",
+        "description": "The search query string to search on YouTube."
+      }
+    },
+    "required": [
+      "search_query"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "error": {
+        "description": "Error message if the search failed.",
+        "nullable": true,
+        "type": "string"
+      },
+      "results": {
+        "description": "The JSON response results from SerpAPI.",
+        "type": [
+          "object",
+          "null"
+        ]
+      },
+      "status": {
+        "description": "Status of the search operation, either 'success' or 'error'.",
+        "type": "string"
+      }
+    },
+    "required": [
+      "status"
+    ]
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": [],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": ""
+}

@@ -1,0 +1,5 @@
+{
+  "categoryId": "f004e0f9-4b2b-44f3-abee-d1fd42b9f9ba",
+  "name": "solana_stablecoin_fetcher",
+  "description": "Fetches a list of stablecoins from the Solana blockchain"
+}

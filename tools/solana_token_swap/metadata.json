@@ -1,0 +1,134 @@
+{
+  "name": "Solana Token Swap",
+  "description": "Executes token swaps on the Solana blockchain using Jupiter Aggregator API",
+  "keywords": [
+    "solana",
+    "token",
+    "swap",
+    "jupiter",
+    "crypto"
+  ],
+  "version": "1.0.0",
+  "author": "@@localhost.sep-shinkai",
+  "config": [
+    {
+      "BasicConfig": {
+        "key_name": "PRIVATE_KEY",
+        "description": "The private key for the Solana wallet",
+        "required": true,
+        "type": "string",
+        "key_value": null
+      }
+    },
+    {
+      "BasicConfig": {
+        "key_name": "TAKER_ADDRESS",
+        "description": "The taker address for the swap",
+        "required": true,
+        "type": "string",
+        "key_value": null
+      }
+    }
+  ],
+  "oauth": [],
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "SWAP_INPUT_TOKEN": {
+        "type": "string",
+        "description": "The input token symbol for the swap"
+      },
+      "SWAP_AMOUNT": {
+        "type": "number",
+        "description": "The amount of input token to swap"
+      },
+      "SWAP_OUTPUT_TOKEN": {
+        "type": "string",
+        "description": "The output token symbol for the swap"
+      }
+    },
+    "required": [
+      "SWAP_INPUT_TOKEN",
+      "SWAP_OUTPUT_TOKEN",
+      "SWAP_AMOUNT"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "executeResponse": {
+        "properties": {
+          "code": {
+            "type": "number"
+          },
+          "inputAmountResult": {
+            "type": "string"
+          },
+          "outputAmountResult": {
+            "type": "string"
+          },
+          "signature": {
+            "type": "string"
+          },
+          "slot": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "swapEvents": {
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "orderResponse": {
+        "properties": {
+          "inAmount": {
+            "type": "string"
+          },
+          "otherAmountThreshold": {
+            "type": "string"
+          },
+          "outAmount": {
+            "type": "string"
+          },
+          "priceImpactPct": {
+            "type": "string"
+          },
+          "requestId": {
+            "type": "string"
+          },
+          "routePlan": {
+            "type": "array"
+          },
+          "slippageBps": {
+            "type": "number"
+          },
+          "swapMode": {
+            "type": "string"
+          },
+          "swapType": {
+            "type": "string"
+          },
+          "transaction": {
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "type": "object"
+      }
+    },
+    "required": []
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": [],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": ""
+}

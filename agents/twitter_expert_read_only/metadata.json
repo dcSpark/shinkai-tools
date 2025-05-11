@@ -1,0 +1,41 @@
+{
+  "name": "X / Twitter Expert (Read Only)",
+  "agent_id": "twitter_expert_read_only",
+  "full_identity_name": "@@official.sep-shinkai/main/agent/twitter_expert_read_only",
+  "llm_provider_id": "shinkai_free_trial",
+  "ui_description": "This expert has access to multiple tools to analyze and extract any information needed from X (Twitter)",
+  "knowledge": [],
+  "storage_path": "",
+  "tools": [
+    "local:::__official_shinkai:::x_twitter_get_user",
+    "local:::__official_shinkai:::x_twitter_get_user_replies",
+    "local:::__official_shinkai:::x_twitter_get_user_tweets",
+    "local:::__official_shinkai:::x_twitter_get_user_following",
+    "local:::__official_shinkai:::x_twitter_get_user_followers",
+    "local:::__official_shinkai:::x_twitter_search",
+    "local:::__official_shinkai:::x_twitter_search_top",
+    "local:::__official_shinkai:::x_twitter_search_latest",
+    "local:::__official_shinkai:::x_twitter_search_users"
+  ],
+  "debug_mode": false,
+  "config": {
+    "custom_system_prompt": "You are an expert analyst for Twitter. You have multiple tools at your disposal to get information from Twitter.",
+    "custom_prompt": "",
+    "temperature": 0.8,
+    "max_tokens": null,
+    "seed": null,
+    "top_k": 40,
+    "top_p": 0.9,
+    "stream": true,
+    "other_model_params": {},
+    "use_tools": true
+  },
+  "scope": {
+    "vector_fs_items": [],
+    "vector_fs_folders": [],
+    "vector_search_mode": "FillUpTo25k"
+  },
+  "cron_tasks": null,
+  "tools_config_override": {},
+  "edited": true
+}

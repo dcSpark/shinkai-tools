@@ -1,5 +1,5 @@
 {
-  "name": "X / Twitter Expert (Read Only)",
+  "name": "Twitter Expert (Read Only)",
   "agent_id": "twitter_expert_read_only",
   "full_identity_name": "@@official.sep-shinkai/main/agent/twitter_expert_read_only",
   "llm_provider_id": "shinkai_free_trial",

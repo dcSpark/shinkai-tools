@@ -1,7 +1,7 @@
 {
   "name": "Twitter Expert - Read Only",
-  "agent_id": "twitter_expert_read_only",
-  "full_identity_name": "@@official.sep-shinkai/main/agent/twitter_expert_read_only",
+  "agent_id": "twitter_expert___read_only",
+  "full_identity_name": "@@official.sep-shinkai/main/agent/twitter_expert___read_only",
   "llm_provider_id": "shinkai_free_trial",
   "ui_description": "This expert has access to multiple tools to analyze and extract any information needed from X (Twitter)",
   "knowledge": [],

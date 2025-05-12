@@ -1,19 +1,9 @@
 {
     "name": "Linear Issue Updater",
-    "author": "Shinkai",
+    "author": "@@official.sep-shinkai",
     "description": "Updates an issue in Linear using the provided issue ID and optional fields.",
     "version": "1.0.0",
     "assets": [],
-    "config": [
-        {
-            "BasicConfig": {
-                "description": "API key for Linear.",
-                "key_name": "LINEAR_API_KEY",
-                "required": true,
-                "type": "string"
-            }
-        }
-    ],
     "configurations": {
         "properties": {
             "LINEAR_API_KEY": {

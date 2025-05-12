@@ -1,19 +1,9 @@
 {
-    "author": "Shinkai",
+    "author": "@@official.sep-shinkai",
     "name": "Linear Organization Fetcher",
     "version": "1.0.0",
     "description": "Fetches organization details including teams, labels and users from Linear API.",
     "assets": [],
-    "config": [
-        {
-            "BasicConfig": {
-                "description": "The API key for accessing the Linear API",
-                "key_name": "LINEAR_API_KEY",
-                "required": true,
-                "type": "string"
-            }
-        }
-    ],
     "configurations": {
         "properties": {
             "LINEAR_API_KEY": {

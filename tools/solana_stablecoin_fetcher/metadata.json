@@ -9,7 +9,6 @@
   ],
   "version": "1.0.0",
   "author": "@@my_local_ai.sep-shinkai",
-  "config": [],
   "oauth": [],
   "parameters": {
     "type": "object",

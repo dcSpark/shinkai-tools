@@ -2,18 +2,8 @@
     "name": "Linear Comment Creator",
     "version": "1.0.0",
     "description": "Creates comments on Linear issues and returns the comment and issue details.",
-    "author": "Shinkai",
+    "author": "@@official.sep-shinkai",
     "assets": [],
-    "config": [
-        {
-            "BasicConfig": {
-                "description": "The API key for Linear",
-                "key_name": "LINEAR_API_KEY",
-                "required": true,
-                "type": "string"
-            }
-        }
-    ],
     "configurations": {
         "properties": {
             "LINEAR_API_KEY": {

@@ -10,18 +10,7 @@
     "helius"
   ],
   "version": "1.0.0",
-  "author": "@@my_local_ai.sep-shinkai",
-  "config": [
-    {
-      "BasicConfig": {
-        "key_name": "HELIUS_API_KEY",
-        "description": "Helius API key for Solana RPC access",
-        "required": true,
-        "type": "string",
-        "key_value": null
-      }
-    }
-  ],
+  "author": "@@official.sep-shinkai",
   "configurations": {
     "properties": {
       "HELIUS_API_KEY": {

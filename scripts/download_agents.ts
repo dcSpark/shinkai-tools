@@ -1,6 +1,6 @@
-const SHINKAI_NODE_ADDR = "http://127.0.0.1:9550";
-const API_V2_KEY = "debug";
-const FOLDER_PATH = "node_dump";
+const SHINKAI_NODE_ADDR = Deno.env.get("SHINKAI_NODE_ADDR") || "http://127.0.0.1:9550";
+const API_V2_KEY = Deno.env.get("API_V2_KEY") || "debug";
+const FOLDER_PATH = Deno.env.get("FOLDER_PATH") || "node_dump";
 
 // Check if folder exists and ask for confirmation to delete
 try {

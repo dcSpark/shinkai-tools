@@ -115,82 +115,76 @@ for (const agentId of agentIds) {
                 }
             }
 
-            for (const tool of metadata.tools) {
-                const toolParts = tool.split(":::");
-                const toolName = toolParts[2];
-
-                if (toolName) {
+            for (const zipFile of toolFiles) {
+                if (zipFile.endsWith('.zip')) {
+                    const toolName = zipFile
+                        .replace('.zip', '')
+                        .replace('local_____official_shinkai___', '');
                     const toolDir = `${FOLDER_PATH}/tools/${toolName}`;
                     try {
                         await Deno.stat(toolDir);
                     } catch {
-                        // Find the zip file that ends with the toolName
-                        const zipFile = toolFiles.find(f => f.endsWith(`${toolName}.zip`));
-                        if (zipFile) {
-                            console.log(`Extracting tool: ${toolName}`);
-                            const unzipTool = new Deno.Command("unzip", {
-                                args: ["-q", `${agentDir}/__tools/${zipFile}`, "-d", toolDir],
-                            });
-                            await unzipTool.output();
+                        console.log(`Extracting tool: ${toolName}`);
+                        const unzipTool = new Deno.Command("unzip", {
+                            args: ["-q", `${agentDir}/__tools/${zipFile}`, "-d", toolDir],
+                        });
+                        await unzipTool.output();
 
-                            // After unzipping, process __tool.json if it exists
-                            const toolJsonPath = `${toolDir}/__tool.json`;
-                            try {
-                                const toolJsonContent = await Deno.readTextFile(toolJsonPath);
-                                const toolJson = JSON.parse(toolJsonContent);
-                                const toolObj = toolJson.content?.[0];
-                                const toolType = toolJson.type;
-                                if (toolObj && toolType) {
-                                    // Write metadata.json
-                                    const {
-                                        name, description, keywords, version, author, config, oauth,
-                                        input_args, result, sql_queries, sql_tables, tools,
-                                        runner, operating_system, tool_set,
-                                    } = toolObj;
-                                    const metadata = {
-                                        name, description, keywords, version: version || "1.0.0", author,
-                                        configurations: {
-                                            properties: config?.reduce((acc: Record<string, { description: string; type: string }>, curr: { BasicConfig: { key_name: string; description: string } }) => ({
-                                                ...acc,
-                                                [curr.BasicConfig.key_name]: {
-                                                    description: curr.BasicConfig.description,
-                                                    type: "string"
-                                                }
-                                            }), {}),
-                                            required: config?.filter((c: { BasicConfig: { required: boolean; key_name: string } }) => c.BasicConfig.required)
-                                                .map((c: { BasicConfig: { key_name: string } }) => c.BasicConfig.key_name) || []
-                                        },
-                                        oauth,
-                                        parameters: input_args, result, sqlQueries: sql_queries,
-                                        sqlTables: sql_tables, tools, runner, operating_system, tool_set
-                                    };
-                                    await Deno.writeTextFile(`${toolDir}/metadata.json`, JSON.stringify(metadata, null, 2));
-                                    // Write tool.ts or tool.py
-                                    if (toolType === "Python" && toolObj.py_code) {
-                                        await Deno.writeTextFile(`${toolDir}/tool.py`, toolObj.py_code);
-                                    } else if (toolType === "Deno" && toolObj.js_code) {
-                                        await Deno.writeTextFile(`${toolDir}/tool.ts`, toolObj.js_code);
-                                    }
-                                }
-
-                                await Deno.remove(toolJsonPath);
-
-                                // Create store.json
-                                const storeJson = {
-                                    categoryId: "5f10d0b4-6acd-477a-96e1-be35634465b2",
-                                    name: toolName,
-                                    description: toolObj.description,
+                        // After unzipping, process __tool.json if it exists
+                        const toolJsonPath = `${toolDir}/__tool.json`;
+                        try {
+                            const toolJsonContent = await Deno.readTextFile(toolJsonPath);
+                            const toolJson = JSON.parse(toolJsonContent);
+                            const toolObj = toolJson.content?.[0];
+                            const toolType = toolJson.type;
+                            if (toolObj && toolType) {
+                                // Write metadata.json
+                                const {
+                                    name, description, keywords, version, author, config, oauth,
+                                    input_args, result, sql_queries, sql_tables, tools,
+                                    runner, operating_system, tool_set,
+                                } = toolObj;
+                                const metadata = {
+                                    name, description, keywords, version: version || "1.0.0", author,
+                                    configurations: {
+                                        properties: config?.reduce((acc: Record<string, { description: string; type: string }>, curr: { BasicConfig: { key_name: string; description: string } }) => ({
+                                            ...acc,
+                                            [curr.BasicConfig.key_name]: {
+                                                description: curr.BasicConfig.description,
+                                                type: "string"
+                                            }
+                                        }), {}),
+                                        required: config?.filter((c: { BasicConfig: { required: boolean; key_name: string } }) => c.BasicConfig.required)
+                                            .map((c: { BasicConfig: { key_name: string } }) => c.BasicConfig.key_name) || []
+                                    },
+                                    oauth,
+                                    parameters: input_args, result, sqlQueries: sql_queries,
+                                    sqlTables: sql_tables, tools, runner, operating_system, tool_set
                                 };
-
-                                await Deno.writeTextFile(
-                                    `${toolDir}/store.json`,
-                                    JSON.stringify(storeJson, null, 2),
-                                );
-                            } catch (err) {
-                                console.warn(`No __tool.json found or error processing for ${toolDir}:`, err);
+                                await Deno.writeTextFile(`${toolDir}/metadata.json`, JSON.stringify(metadata, null, 2));
+                                // Write tool.ts or tool.py
+                                if (toolType === "Python" && toolObj.py_code) {
+                                    await Deno.writeTextFile(`${toolDir}/tool.py`, toolObj.py_code);
+                                } else if (toolType === "Deno" && toolObj.js_code) {
+                                    await Deno.writeTextFile(`${toolDir}/tool.ts`, toolObj.js_code);
+                                }
                             }
-                        } else {
-                            console.warn(`Tool zip for ${toolName} not found in __tools.`);
+
+                            await Deno.remove(toolJsonPath);
+
+                            // Create store.json
+                            const storeJson = {
+                                categoryId: "5f10d0b4-6acd-477a-96e1-be35634465b2",
+                                name: toolObj.name,
+                                description: toolObj.description,
+                            };
+
+                            await Deno.writeTextFile(
+                                `${toolDir}/store.json`,
+                                JSON.stringify(storeJson, null, 2),
+                            );
+                        } catch (err) {
+                            console.warn(`No __tool.json found or error processing for ${toolDir}:`, err);
                         }
                     }
                 }

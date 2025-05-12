@@ -1,0 +1,61 @@
+{
+  "name": "SERP Query Generator",
+  "description": "Generates SERP queries for a given topic, optionally incorporating previous learnings.",
+  "keywords": [
+    "SERP",
+    "query",
+    "generation",
+    "research",
+    "LLM"
+  ],
+  "version": "1.0.0",
+  "author": "@@my_local_ai.sep-shinkai",
+  "configurations": {
+    "properties": {},
+    "required": []
+  },
+  "oauth": [],
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "learnings": {
+        "type": "array",
+        "description": "List of learnings from previous research.",
+        "items": {
+          "type": "string",
+          "description": ""
+        },
+        "default": []
+      },
+      "numQueries": {
+        "type": "number",
+        "description": "The maximum number of queries to generate.",
+        "default": 3
+      },
+      "query": {
+        "type": "string",
+        "description": "The main research query."
+      }
+    },
+    "required": [
+      "query"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": null,
+    "required": []
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": [
+    "local:::__official_shinkai:::shinkai_llm_prompt_processor"
+  ],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": ""
+}

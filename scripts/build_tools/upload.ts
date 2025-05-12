@@ -68,7 +68,21 @@ export async function uploadTools(tools: DirectoryEntry[]) {
         });
         if (default_tool.status !== 200 && default_tool.status !== 409) {
           const message = await default_tool.text();
-          console.log(`Set default tool for ${entry.routerKey} (${default_tool.status}): ${message}`);
+          console.log(`Set default tool for ${entry.routerKey} failed (${default_tool.status}): ${message}`);
+        }
+        else {
+          console.log(`Set default tool for ${entry.routerKey} successfully.`);
+        }
+      }
+      else {
+        const default_tool = await fetch(`${store_addr}/store/defaults/${entry.routerKey}`, {
+          method: "DELETE",
+          headers: {
+            "Authorization": `Bearer ${store_token}`,
+          },
+        });
+        if (default_tool.status === 200) {
+          console.log(`Removed default tool for ${entry.routerKey}.`);
         }
       }
     }

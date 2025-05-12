@@ -1,20 +1,10 @@
 {
     "activated": false,
     "assets": [],
-    "author": "Shinkai",
+    "author": "@@official.sep-shinkai",
     "name": "Linear Fetch Issues By Team",
     "description": "Fetches open issues from a Linear team. It implements pagination",
     "version": "1.0.0",
-    "config": [
-        {
-            "BasicConfig": {
-                "description": "The API key for accessing the Linear API",
-                "key_name": "LINEAR_API_KEY",
-                "required": true,
-                "type": "string"
-            }
-        }
-    ],
     "configurations": {
         "properties": {
             "LINEAR_API_KEY": {

@@ -38,7 +38,6 @@ const response = await fetch(`${SHINKAI_NODE_ADDR}/v2/get_all_agents`, {
 });
 
 const agents = await response.json();
-console.log(agents);
 const agentIds = agents.map((agent: any) => agent.agent_id);
 
 // Download and process each agent
@@ -146,10 +145,22 @@ for (const agentId of agentIds) {
                                     const {
                                         name, description, keywords, version, author, config, oauth,
                                         input_args, result, sql_queries, sql_tables, tools,
-                                        runner, operating_system, tool_set
+                                        runner, operating_system, tool_set,
                                     } = toolObj;
                                     const metadata = {
-                                        name, description, keywords, version, author, config, oauth,
+                                        name, description, keywords, version: version || "1.0.0", author,
+                                        configurations: {
+                                            properties: config?.reduce((acc: Record<string, { description: string; type: string }>, curr: { BasicConfig: { key_name: string; description: string } }) => ({
+                                                ...acc,
+                                                [curr.BasicConfig.key_name]: {
+                                                    description: curr.BasicConfig.description,
+                                                    type: "string"
+                                                }
+                                            }), {}),
+                                            required: config?.filter((c: { BasicConfig: { required: boolean; key_name: string } }) => c.BasicConfig.required)
+                                                .map((c: { BasicConfig: { key_name: string } }) => c.BasicConfig.key_name) || []
+                                        },
+                                        oauth,
                                         parameters: input_args, result, sqlQueries: sql_queries,
                                         sqlTables: sql_tables, tools, runner, operating_system, tool_set
                                     };
@@ -224,13 +235,19 @@ for (const agentId of agentIds) {
 }
 
 // Generate images
-const generateImages = new Deno.Command("deno", {
-    args: ["run", "-A", "scripts/generate_images.ts"],
-    env: {
-        DIR_NAME: `${FOLDER_PATH}/agents`,
-        BFL_API_KEY: Deno.env.get("BFL_API_KEY") as string,
-    },
-});
-await generateImages.output();
+try {
+    if (!Deno.env.get("BFL_API_KEY")) throw new Error("BFL_API_KEY environment variable not found.");
+
+    const generateImages = new Deno.Command("deno", {
+        args: ["run", "-A", "scripts/generate_images.ts"],
+        env: {
+            DIR_NAME: `${FOLDER_PATH}/agents`,
+            BFL_API_KEY: Deno.env.get("BFL_API_KEY") as string,
+        },
+    });
+    await generateImages.output();
+} catch (error) {
+    console.error(`Error generating images: ${error instanceof Error ? error.message : String(error)}`);
+}
 
 console.log(`Process complete. Processed files are in the ${FOLDER_PATH} directory.`); 

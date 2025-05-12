@@ -1,18 +1,8 @@
 {
-    "author": "Shinkai",
+    "author": "@@official.sep-shinkai",
     "name": "Linear Fetch Issues By User",
     "description": "Fetches issues assigned to a user from Linear using an API key.",
     "assets": [],
-    "config": [
-        {
-            "BasicConfig": {
-                "description": "API key for Linear authentication",
-                "key_name": "LINEAR_API_KEY",
-                "required": true,
-                "type": "string"
-            }
-        }
-    ],
     "configurations": {
         "properties": {
             "LINEAR_API_KEY": {

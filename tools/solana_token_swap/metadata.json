@@ -10,26 +10,6 @@
   ],
   "version": "1.0.0",
   "author": "@@localhost.sep-shinkai",
-  "config": [
-    {
-      "BasicConfig": {
-        "key_name": "PRIVATE_KEY",
-        "description": "The private key for the Solana wallet",
-        "required": true,
-        "type": "string",
-        "key_value": null
-      }
-    },
-    {
-      "BasicConfig": {
-        "key_name": "TAKER_ADDRESS",
-        "description": "The taker address for the swap",
-        "required": true,
-        "type": "string",
-        "key_value": null
-      }
-    }
-  ],
   "configurations": {
     "properties": {
       "PRIVATE_KEY": {

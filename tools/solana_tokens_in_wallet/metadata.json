@@ -9,27 +9,7 @@
     "blockchain"
   ],
   "version": "1.0.0",
-  "author": "@@my_local_ai.sep-shinkai",
-  "config": [
-    {
-      "BasicConfig": {
-        "key_name": "SOLANA_PRIVATE_KEY",
-        "description": "The Helius API key",
-        "required": true,
-        "type": "string",
-        "key_value": null
-      }
-    },
-    {
-      "BasicConfig": {
-        "key_name": "HELIUS_API_KEY",
-        "description": "The Solana private key in base58 format",
-        "required": true,
-        "type": "string",
-        "key_value": null
-      }
-    }
-  ],
+  "author": "@@official.sep-shinkai",
   "oauth": [],
   "configurations": {
     "properties": {

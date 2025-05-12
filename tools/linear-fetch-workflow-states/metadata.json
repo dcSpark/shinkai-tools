@@ -1,20 +1,10 @@
 {
     "activated": false,
     "assets": [],
-    "author": "Shinkai",
+    "author": "@@official.sep-shinkai",
     "name": "Linear Fetch Workflow States",
     "description": "Fetches workflow states for all Teams or for a specific team using Linear API.",
     "version": "1.0.0",
-    "config": [
-        {
-            "BasicConfig": {
-                "description": "The API key for Linear",
-                "key_name": "LINEAR_API_KEY",
-                "required": true,
-                "type": "string"
-            }
-        }
-    ],
     "configurations": {
         "properties": {
             "LINEAR_API_KEY": {

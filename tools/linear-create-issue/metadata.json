@@ -1,19 +1,9 @@
 {
     "name": "Linear Create Issue",
-    "author": "Shinkai",
+    "author": "@@official.sep-shinkai",
     "description": "Creates a new issue in Linear using the Linear API.",
     "version": "1.0.0",
     "assets": [],
-    "config": [
-        {
-            "BasicConfig": {
-                "description": "The API key for accessing Linear.",
-                "key_name": "LINEAR_API_KEY",
-                "required": true,
-                "type": "string"
-            }
-        }
-    ],
     "configurations": {
         "properties": {
             "LINEAR_API_KEY": {

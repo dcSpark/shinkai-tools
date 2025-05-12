@@ -10,17 +10,6 @@
   ],
   "version": "1.0.0",
   "author": "@@official.sep-shinkai",
-  "config": [
-    {
-      "BasicConfig": {
-        "key_name": "apiKey",
-        "description": "Required SerpAPI api_key. You can create a free account at https://serpapi.com",
-        "required": true,
-        "type": "string",
-        "key_value": null
-      }
-    }
-  ],
   "oauth": [],
   "parameters": {
     "type": "object",

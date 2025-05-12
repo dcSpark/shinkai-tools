@@ -149,7 +149,7 @@ for (const agentId of agentIds) {
                                         runner, operating_system, tool_set
                                     } = toolObj;
                                     const metadata = {
-                                        name, description, keywords, version, author, config, oauth,
+                                        name, description, keywords, version, author, configurations, oauth,
                                         parameters: input_args, result, sqlQueries: sql_queries,
                                         sqlTables: sql_tables, tools, runner, operating_system, tool_set
                                     };

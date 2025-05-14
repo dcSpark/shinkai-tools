@@ -87,4 +87,18 @@ export async function uploadTools(tools: DirectoryEntry[]) {
       }
     }
   }
+
+  // Delete defaults cache
+  const delete_defaults_cache = await fetch(`${store_addr}/store/defaults/cache`, {
+    method: "DELETE",
+    headers: {
+      "Authorization": `Bearer ${store_token}`,
+    },
+  });
+  if (delete_defaults_cache.status !== 200) {
+    console.log(`Delete defaults cache failed (${delete_defaults_cache.status}): ${await delete_defaults_cache.text()}`);
+  }
+  if (delete_defaults_cache.status === 200) {
+    console.log("Deleted defaults cache successfully.");
+  }
 }

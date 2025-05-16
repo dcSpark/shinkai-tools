@@ -13,6 +13,7 @@ export STARTING_NUM_QR_DEVICES="1"
 export FIRST_DEVICE_NEEDS_REGISTRATION_CODE="false"
 export LOG_SIMPLE="true"
 export SKIP_IMPORT_FROM_DIRECTORY="true"
+export INSTALL_FOLDER_PATH="/dev/null"
 
 # Add these lines to enable all log options
 export LOG_ALL=1
@@ -47,6 +48,7 @@ if [ "$USE_DOCKER" = "true" ]; then
     -e API_V2_KEY \
     -e EMBEDDINGS_SERVER_URL \
     -e SKIP_IMPORT_FROM_DIRECTORY \
+    -e INSTALL_FOLDER_PATH \
     -p ${NODE_API_PORT}:${NODE_API_PORT} \
     -p ${NODE_WS_PORT}:${NODE_WS_PORT} \
     -p ${NODE_PORT}:${NODE_PORT} \

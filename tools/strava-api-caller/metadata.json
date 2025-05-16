@@ -1,0 +1,83 @@
+{
+  "name": "Strava API Caller",
+  "description": "Calls the Strava API for athlete activities, athlete profile, and zones data using OAuth access token. Read how to use this tool in the [Strava API Documentation](https://developers.strava.com/docs/reference/)",
+  "keywords": [
+    "strava",
+    "api",
+    "activities",
+    "athlete",
+    "zones",
+    "oauth",
+    "fitness",
+    "sports"
+  ],
+  "version": "1.0.0",
+  "author": "Shinkai",
+  "configurations": {
+    "properties": {},
+    "required": []
+  },
+  "oauth": [
+    {
+      "name": "strava-full",
+      "authorizationUrl": "https://www.strava.com/oauth/authorize",
+      "tokenUrl": "https://www.strava.com/oauth/token",
+      "clientId": "",
+      "clientSecret": "",
+      "redirectUrl": "https://secrets.shinkai.com/redirect",
+      "version": "2.0",
+      "responseType": "code",
+      "scopes": [
+        "read,activity:read,activity:read_all,profile:read_all"
+      ],
+      "pkceType": "",
+      "refreshToken": "true",
+      "requestTokenAuthHeader": null,
+      "requestTokenContentType": null
+    }
+  ],
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "endpoint": {
+        "type": "string",
+        "description": "The API endpoint to call"
+      },
+      "params": {
+        "type": "object",
+        "description": "Optional parameters for the API call"
+      }
+    },
+    "required": [
+      "endpoint"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "data": {
+        "description": "Response data from Strava API",
+        "type": [
+          "object",
+          "array",
+          "null"
+        ]
+      },
+      "error": {
+        "description": "Error message if the API call fails",
+        "type": "string"
+      }
+    },
+    "required": []
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": [],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": ""
+}

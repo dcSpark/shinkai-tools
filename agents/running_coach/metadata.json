@@ -7,7 +7,7 @@
   "knowledge": [],
   "storage_path": "",
   "tools": [
-    "local:::__localhost_sep_shinkai:::strava_api_caller"
+    "local:::__official_shinkai:::strava_api_caller"
   ],
   "debug_mode": false,
   "config": {

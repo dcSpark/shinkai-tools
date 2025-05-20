@@ -1,0 +1,59 @@
+{
+  "name": "Markdown Exporter",
+  "description": "A tool to export text content to a Markdown (.md) file.",
+  "keywords": [
+    "markdown",
+    "export",
+    "text file",
+    "file save"
+  ],
+  "version": "1.0.0",
+  "author": "@@gilles_test2.sep-shinkai",
+  "configurations": {
+    "properties": {},
+    "required": []
+  },
+  "oauth": [],
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "text_content": {
+        "type": "string",
+        "description": "The text content to be saved as markdown file"
+      }
+    },
+    "required": [
+      "text_content"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "md_filepath": {
+        "description": "The file path to the saved markdown file, or null if saving failed",
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "message": {
+        "description": "Result message describing success or error",
+        "type": "string"
+      }
+    },
+    "required": [
+      "message",
+      "md_filepath"
+    ]
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": [],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": ""
+}

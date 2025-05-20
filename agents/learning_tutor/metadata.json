@@ -2,7 +2,7 @@
     "name": "Learning Tutor",
     "agent_id": "learning_tutor",
     "full_identity_name": "@@official.sep-shinkai/main/agent/learning_tutor",
-    "llm_provider_id": "gpt_4_1",
+    "llm_provider_id": "shinkai_free_trial",
     "ui_description": "Creates a learning plan with videos to watch, webpages to read, and articles to study.",
     "knowledge": [],
     "storage_path": "",

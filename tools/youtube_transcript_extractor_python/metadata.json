@@ -1,0 +1,65 @@
+{
+  "name": "Youtube Transcript Extractor 2.0",
+  "description": "Extracts and saves YouTube video transcripts",
+  "keywords": [
+    "youtube",
+    "transcript",
+    "extractor",
+    "video"
+  ],
+  "version": "2.0.0",
+  "author": "@@official.sep-shinkai",
+  "oauth": [],
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "lang": {
+        "type": "string",
+        "description": "The language for the transcript"
+      },
+      "url": {
+        "type": "string",
+        "description": "The YouTube video URL"
+      }
+    },
+    "required": [
+      "url"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "transcript": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "text": {
+              "type": "string"
+            },
+            "start": {
+              "type": "number"
+            },
+            "duration": {
+              "type": "number"
+            }
+          }
+        },
+        "description": "The fetched transcript snippets"
+      }
+    },
+    "required": [
+      "transcript"
+    ]
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": [],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": ""
+}

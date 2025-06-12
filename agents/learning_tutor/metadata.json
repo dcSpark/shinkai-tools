@@ -7,7 +7,7 @@
     "knowledge": [],
     "storage_path": "",
     "tools": [
-        "local:::__official_shinkai:::youtube_transcript_summarizer",
+        "local:::__official_shinkai:::youtube_transcript_extractor_2_0",
         "local:::__official_shinkai:::youtube_search",
         "local:::__official_shinkai:::google_search",
         "local:::__official_shinkai:::download_pages",

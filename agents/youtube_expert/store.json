@@ -2,7 +2,7 @@
   "categoryId": "5f10d0b4-6acd-477a-96e1-be35634465b2",
   "name": "Youtube Expert",
   "description": "This expert has access to youtube search (using serpapi) and to download video transcripts. If a video doesn't have a transcript, it can download the audio and then process it to extract its transcript.",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": "@@official.sep-shinkai",
   "keywords": []
 }

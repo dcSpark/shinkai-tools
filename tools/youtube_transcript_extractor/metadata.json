@@ -7,7 +7,7 @@
     "extractor",
     "video"
   ],
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": "@@official.sep-shinkai",
   "oauth": [],
   "parameters": {
@@ -30,30 +30,22 @@
     "type": "object",
     "properties": {
       "transcript": {
-        "description": "The extracted transcript segments",
+        "type": "array",
         "items": {
+          "type": "object",
           "properties": {
-            "duration": {
-              "description": "The duration of the segment in milliseconds",
-              "type": "number"
-            },
-            "offset": {
-              "description": "The offset of the segment in milliseconds",
-              "type": "number"
-            },
             "text": {
-              "description": "The transcript text segment",
               "type": "string"
+            },
+            "start": {
+              "type": "number"
+            },
+            "duration": {
+              "type": "number"
             }
-          },
-          "required": [
-            "text",
-            "offset",
-            "duration"
-          ],
-          "type": "object"
+          }
         },
-        "type": "array"
+        "description": "The fetched transcript snippets"
       }
     },
     "required": [

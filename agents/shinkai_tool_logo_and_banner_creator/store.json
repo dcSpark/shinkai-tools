@@ -1,0 +1,8 @@
+{
+  "categoryId": "b04aabe6-4fce-46f1-b6f2-7a96d742b9d1",
+  "name": "Shinkai tool logo and banner creator",
+  "description": "Creates squared logos and rectangular banners for Shinkai tools to list on Shinkai AI store. Just provide your tool name and description, the number of logos and/or banners to generate, and optionaly add minimal instruction. Might need multiple runs to get a result you like.",
+  "version": "1.0.0",
+  "author": "@@official.sep-shinkai",
+  "keywords": []
+}

@@ -1,0 +1,89 @@
+{
+  "name": "Text to image generator - getimg.ai Flux.1",
+  "description": "Generates an image from a text prompt using the getimg.ai API and Flux.1 model.\n\nImage width and height from 256 to 1280 pixels (must be multiple of 8).\n\nFormat of the image can be jpeg or png (default is jpeg).\n\nNumber of denoising steps is from 1 to 6 (default is 4). More steps usually can produce higher quality images, but take more time to generate.",
+  "keywords": [
+    "image",
+    "image generation",
+    "text to image",
+    "getimg",
+    "flux"
+  ],
+  "version": "1",
+  "author": "@@official.shinkai",
+  "configurations": {
+    "properties": {
+      "api_key": {
+        "description": "Your getimg.ai API key for authentication. Get yours at https://getimg.ai/tools/api",
+        "type": "string"
+      },
+      "default_height": {
+        "description": "The default height for the image, in pixels (256 to 1280, multiple of 8, standard is 1024).",
+        "type": "string"
+      },
+      "default_width": {
+        "description": "The default width for the image, in pixels (256 to 1280, multiple of 8, standard is 1024).",
+        "type": "string"
+      }
+    },
+    "required": [
+      "api_key",
+      "default_height",
+      "default_width"
+    ]
+  },
+  "oauth": [],
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "output_format": {
+        "type": "string",
+        "description": "Format of the image file. Must be jpeg or png."
+      },
+      "height": {
+        "type": "integer",
+        "description": "Height of the image in pixels (256 to 1280, multiple of 8)."
+      },
+      "steps": {
+        "type": "integer",
+        "description": "The number of denoising steps. Integer from 1 to 6. Default is 4. More steps usually can produce higher quality images, but take more time to generate."
+      },
+      "width": {
+        "type": "integer",
+        "description": "Width of the image in pixels (256 to 1280, multiple of 8)."
+      },
+      "prompt": {
+        "type": "string",
+        "description": "he prompt describing the image to generate. Max length is 2048 characters."
+      }
+    },
+    "required": [
+      "prompt"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "remaining_balance": {
+        "description": "The remaining balance for the API service",
+        "type": "number"
+      },
+      "response_image_generated": {
+        "description": "The URL of the generated image",
+        "type": "string"
+      }
+    },
+    "required": [
+      "response_image_generated"
+    ]
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": [],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": ""
+}

@@ -1,0 +1,5 @@
+{
+  "categoryId": "5f10d0b4-6acd-477a-96e1-be35634465b2",
+  "name": "Math Problem Solver - With Python Script",
+  "description": "Evaluates a math problem and creates and executes a Python script to resolve it. Returns the result, presents it with language, and shows the script executed."
+}

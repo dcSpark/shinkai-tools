@@ -1,0 +1,95 @@
+{
+  "name": "Github Repository Ingestion",
+  "description": "Converts Git repositories (from URL) into structured text for LLM processing. Supports file include/exclude patterns. Optional export (MD, XML, TXT).\n\nNotes : Individual files larger than 10MB are skipped by default by the underlying gitingest library. Currently the 'include' option of the gitingest library does not recursively include nested directories.",
+  "keywords": [
+    "git",
+    "repository",
+    "ingest",
+    "code ingestion",
+    "repo",
+    "github",
+    "code"
+  ],
+  "version": "1.0.1",
+  "author": "@@official.shinkai",
+  "configurations": {
+    "properties": {
+      "export_format": {
+        "description": "The format to export the ingested content. Options: 'md', 'xml', 'txt', or 'none'.",
+        "type": "string"
+      }
+    },
+    "required": []
+  },
+  "oauth": [],
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "max_size_mb": {
+        "type": "number",
+        "description": "Optional max file size in megabytes. Only files smaller or equal to this size are included."
+      },
+      "repo_url": {
+        "type": "string",
+        "description": "Path or URL to the repository to ingest."
+      },
+      "include_patterns": {
+        "type": "string",
+        "description": "Optional. Use only to restrict file exctraction to the given file patterns exclusivly (e.g., '*.py, *.js')."
+      },
+      "exclude_patterns": {
+        "type": "string",
+        "description": "Optional comma-separated file patterns to exclude (e.g., '*.log, *.json')."
+      }
+    },
+    "required": [
+      "repo_url"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "content": {
+        "description": "The content extracted from the repository.",
+        "type": [
+          "object",
+          "string",
+          "null"
+        ]
+      },
+      "exported_document_path": {
+        "description": "File path to the exported document.",
+        "type": "string"
+      },
+      "summary": {
+        "description": "Summary of the repository content.",
+        "type": [
+          "object",
+          "string",
+          "null"
+        ]
+      },
+      "tree": {
+        "description": "Tree structure of the repository.",
+        "type": [
+          "object",
+          "string",
+          "null"
+        ]
+      }
+    },
+    "required": [
+      "exported_document_path"
+    ]
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": [],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": ""
+}

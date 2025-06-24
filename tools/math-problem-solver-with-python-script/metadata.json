@@ -1,0 +1,71 @@
+{
+  "name": "Math Problem Solver - With Python Script",
+  "description": "Evaluates a math problem and creates and executes a Python script to resolve it. Returns the result, presents it with language, and shows the script executed.",
+  "keywords": [
+    "problem",
+    "math",
+    "calculation",
+    "solve",
+    "python"
+  ],
+  "version": "1.0.0",
+  "author": "@@official.shinkai",
+  "configurations": {
+    "properties": {
+      "max_retries": {
+        "description": "The number of times to retry generating a valid script if an error occurs.",
+        "type": "string"
+      }
+    },
+    "required": []
+  },
+  "oauth": [],
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "prompt": {
+        "type": "string",
+        "description": "A natural language prompt describing the calculation or mathematical expression."
+      }
+    },
+    "required": [
+      "prompt"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "calculation_result": {
+        "description": "The result of executing the generated Python script, or null if execution failed.",
+        "type": "any"
+      },
+      "error": {
+        "description": "Error message if there was a problem generating or executing the script, or null if none.",
+        "type": "string"
+      },
+      "script": {
+        "description": "The clean Python script generated for the prompt (always returned if available).",
+        "type": "string"
+      },
+      "status": {
+        "description": "Execution status: 'success', or an error description including the attempt number.",
+        "type": "string"
+      },
+      "text_result": {
+        "description": "A short, natural language summary of the result in context, or null on error.",
+        "type": "string"
+      }
+    },
+    "required": []
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": [],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": ""
+}

@@ -1,0 +1,5 @@
+{
+  "categoryId": "b04aabe6-4fce-46f1-b6f2-7a96d742b9d1",
+  "name": "Text to image generator - getimg.ai Flux.1",
+  "description": "Generates an image from a text prompt using the getimg.ai API and Flux.1 model.\n\nImage width and height from 256 to 1280 pixels (must be multiple of 8).\n\nFormat of the image can be jpeg or png (default is jpeg).\n\nNumber of denoising steps is from 1 to 6 (default is 4). More steps usually can produce higher quality images, but take more time to generate."
+}

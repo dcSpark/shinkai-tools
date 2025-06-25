@@ -1,0 +1,59 @@
+{
+  "name": "Anna's Archive Ebook Search - Web Scrapping based",
+  "description": "Searches for eBooks from Anna's Archive, and returns information including title, author, year, Anna's archive page url, MD5.\n\nSupports searching by title, author and keywords. Includes optional category filter.\n\nIf a complex query fails, try searching just with a title, or just with an author.\n\nNote : the reliability of this tool might fluctuate.\n- It is based on web scrapping, so changes in Anna's Archive website might break the search feature. Feel free to fork and update the tool's code.\n- Anna's Archive search servers might be slow. You sometimes have to retry your search.",
+  "keywords": [
+    "book",
+    "search",
+    "library",
+    "archive",
+    "anna",
+    "ebook",
+    "epub"
+  ],
+  "version": "1.0.0",
+  "author": "@@official.shinkai",
+  "configurations": {
+    "properties": {},
+    "required": []
+  },
+  "oauth": [],
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "category": {
+        "type": "string",
+        "description": "Optional category filter: '', 'book_any', 'book_unknown', 'book_fiction', 'book_nonfiction', 'book_comic', 'magazine', 'standards_document', or 'journal_article'. Leave empty for all."
+      },
+      "search_query": {
+        "type": "string",
+        "description": "Book title, author, or other term to search."
+      },
+      "sort": {
+        "type": "string",
+        "description": "Sorting order: 'newest', 'oldest', 'largest', 'smallest'. Leave empty for default ordering."
+      },
+      "file_type": {
+        "type": "string",
+        "description": "Optional filter by file type: 'pdf', 'epub', 'cbr', or 'cbz'. Leave empty for all."
+      }
+    },
+    "required": [
+      "search_query"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": null,
+    "required": []
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": [],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": ""
+}

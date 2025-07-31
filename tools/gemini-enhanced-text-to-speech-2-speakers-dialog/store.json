@@ -1,0 +1,5 @@
+{
+  "categoryId": "5f10d0b4-6acd-477a-96e1-be35634465b2",
+  "name": "Gemini Enhanced Text to Speech - 2 Speakers Dialog",
+  "description": "This advanced TTS tool transforms a simple text script into a dynamic, two-speaker conversational audio file using Google's Gemini TTS models.\nIt automatically analyzes the dialogue to select the most fitting voices for each speaker, or allows for precise manual control. A key feature is its ability to enhance the script with stylistic directions (e.g., \"speak excitedly,\" \"sound tired\"), resulting in a significantly more natural and expressive performance. Ideal for creating engaging podcasts, dialogue for videos, or any application requiring realistic two-person conversations."
+}

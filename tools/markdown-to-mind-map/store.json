@@ -1,0 +1,5 @@
+{
+  "categoryId": "0569c7f5-2942-407e-9aae-4e979718683b",
+  "name": "Markdown to Mind Map",
+  "description": "Converts Markdown content into an interactive Markmap mind map HTML file, optionally opening the result in the browser. Supports export (PNG, JPG, SVG) and copying features."
+}

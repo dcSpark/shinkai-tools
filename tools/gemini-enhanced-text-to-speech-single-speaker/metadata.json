@@ -1,0 +1,91 @@
+{
+  "name": "Gemini Enhanced Text to Speech - Single Speaker",
+  "description": "This tool leverages a two-step AI process to create natural-sounding, single-speaker audio from your text. First, it uses a language model to analyze and refine your prompt, adding stylistic instructions for tone, pace, and emotion to achieve a more expressive result. Then, in its \"auto\" mode, it intelligently selects the most appropriate voice from a diverse list of over 30 options, matching the voice's characteristics to the content. The final output is a high-quality .wav audio file, perfect for a wide range of applications.",
+  "keywords": [
+    "text-to-speech",
+    "google",
+    "gemini",
+    "tts",
+    "voice selection",
+    "speech synthesis",
+    "speech",
+    "enhanced"
+  ],
+  "version": "1.0.0",
+  "author": "@@official.shinkai",
+  "configurations": {
+    "properties": {
+      "api_key": {
+        "description": "API key for Google Gemini TTS service",
+        "type": "string"
+      },
+      "model_name": {
+        "description": "Google Gemini TTS model name to use. Supports 'gemini-2.5-flash-preview-tts', 'gemini-2.5-pro-preview-tts'. Defaults to 2.5-flash.",
+        "type": "string"
+      },
+      "voice_name": {
+        "description": "Default voice name to use for speech synthesis, in manual voice selection mode.",
+        "type": "string"
+      }
+    },
+    "required": [
+      "api_key"
+    ]
+  },
+  "oauth": [],
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "voice_name": {
+        "type": "string",
+        "description": "Optional voice name to be used for speech synthesis, if manual voice mode. Overrides default from config if valid"
+      },
+      "prompt": {
+        "type": "string",
+        "description": "Raw text prompt to be processed and converted to speech. It can contain audio style instructions on top of the content to convert to speech. A text-to-speech session has a context window limit of max 32k tokens, which equals around max 22400 words."
+      },
+      "voice_selection_mode": {
+        "type": "string",
+        "description": "Mode of voice selection; 'manual' to use input voice or default, 'auto' to let model select the most suitable voice automatically. Default to 'auto'",
+        "default": "auto"
+      }
+    },
+    "required": [
+      "prompt"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "chosen_voice": {
+        "description": "The voice name selected for the speech synthesis",
+        "type": "string"
+      },
+      "file_path": {
+        "description": "File path where the generated WAV audio is saved",
+        "type": "string"
+      },
+      "processed_prompt": {
+        "description": "The processed prompt for conversion to audio after style and voice control refinement",
+        "type": "string"
+      }
+    },
+    "required": [
+      "file_path",
+      "processed_prompt",
+      "chosen_voice"
+    ]
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": [
+    "local:::__official_shinkai:::shinkai_llm_prompt_processor"
+  ],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": ""
+}

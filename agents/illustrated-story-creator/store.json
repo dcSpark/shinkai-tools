@@ -1,0 +1,8 @@
+{
+  "categoryId": "b31efbe7-2b3e-4fa1-bd7d-b19950705ea2",
+  "name": "Illustrated Story Creator",
+  "description": "This Agent transforms a simple story idea into a complete, richly illustrated narrative.\n\nAfter expanding the story, it identifies the most compelling scenes and generates high-quality, stylistically consistent images for them using detailed prompts.The final output is a single, ready-to-read story where the generated images are seamlessly embedded within the text, bringing the tale to life.\n\nFeel free to edit the Agent to pick a different image generation tool.",
+  "version": "1.0.0",
+  "author": "@@official.sep-shinkai",
+  "keywords": []
+}

@@ -1,0 +1,8 @@
+{
+  "categoryId": "0569c7f5-2942-407e-9aae-4e979718683b",
+  "name": "Salad Composer",
+  "description": "Composes salads according to the user's query and to its salad cooking guide, and creates detailed visuals for them.\nUse text to describe your dream salad, or even add pictures of your available ingredients.\nDon't hesitate to change its image generation tool for your preferred one.",
+  "version": "1.0.0",
+  "author": "@@official.sep-shinkai",
+  "keywords": []
+}

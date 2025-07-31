@@ -1,0 +1,122 @@
+{
+  "name": "Gemini Enhanced Text to Speech - 2 Speakers Dialog",
+  "description": "This advanced TTS tool transforms a simple text script into a dynamic, two-speaker conversational audio file using Google's Gemini TTS models.\nIt automatically analyzes the dialogue to select the most fitting voices for each speaker, or allows for precise manual control. A key feature is its ability to enhance the script with stylistic directions (e.g., \"speak excitedly,\" \"sound tired\"), resulting in a significantly more natural and expressive performance. Ideal for creating engaging podcasts, dialogue for videos, or any application requiring realistic two-person conversations.",
+  "keywords": [
+    "text-to-speech",
+    "tts",
+    "google",
+    "gemini",
+    "multi-speaker",
+    "dialogue",
+    "conversation",
+    "speech synthesis",
+    "audio generation",
+    "enhanced"
+  ],
+  "version": "1.0.0",
+  "author": "@@official.shinkai",
+  "configurations": {
+    "properties": {
+      "api_key": {
+        "description": "API key for the Google Gemini TTS service.",
+        "type": "string"
+      },
+      "model_name": {
+        "description": "Google Gemini TTS model to use. Supports 'gemini-2.5-flash-preview-tts', 'gemini-2.5-pro-preview-tts'. Defaults to 'gemini-2.5-flash-preview-tts'.",
+        "type": "string"
+      },
+      "speaker_1_default_name": {
+        "description": "Default name for the first speaker (e.g., 'Speaker1'). Used as a fallback in 'manual' mode or as a temporary placeholder in 'auto' mode.",
+        "type": "string"
+      },
+      "speaker_1_default_voice": {
+        "description": "Default voice for the first speaker. Used as a fallback. Available voices and their characteristics: Zephyr (Bright), Puck (Upbeat), Charon (Informative), Kore (Firm), Fenrir (Excitable), Leda (Youthful), Orus (Firm), Aoede (Breezy), Callirrhoe (Easy-going), Autonoe (Bright), Enceladus (Breathy), Iapetus (Clear), Umbriel (Easy-going), Algieba (Smooth), Despina (Smooth), Erinome (Clear), Algenib (Gravelly), Rasalgethi (Informative), Laomedeia (Upbeat), Achernar (Soft), Alnilam (Firm), Schedar (Even), Gacrux (Mature), Pulcherrima (Forward), Achird (Friendly), Zubenelgenubi (Casual), Vindemiatrix (Gentle), Sadachbia (Lively), Sadaltager (Knowledgeable), Sulafat (Warm).",
+        "type": "string"
+      },
+      "speaker_2_default_name": {
+        "description": "Default name for the second speaker (e.g., 'Speaker2'). Used as a fallback in 'manual' mode or as a temporary placeholder in 'auto' mode.",
+        "type": "string"
+      },
+      "speaker_2_default_voice": {
+        "description": "Default voice for the second speaker. Used as a fallback. See the description for 'speaker_1_default_voice' for a full list of available voices and their characteristics.",
+        "type": "string"
+      }
+    },
+    "required": [
+      "api_key"
+    ]
+  },
+  "oauth": [],
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "speaker_1_name": {
+        "type": "string",
+        "description": "Optional name for the first speaker. In 'auto' mode, providing a name helps guide voice selection to match the name's perceived gender; if omitted, the chosen voice's name is used. In 'manual' mode, it falls back to a default if omitted."
+      },
+      "speaker_1_voice": {
+        "type": "string",
+        "description": "Optional voice name for Speaker 1, used when 'voice_selection_mode' is 'manual'. See the 'speaker_1_default_voice' in the configuration for the full list of available voices."
+      },
+      "speaker_2_voice": {
+        "type": "string",
+        "description": "Optional voice name for Speaker 2, used when 'voice_selection_mode' is 'manual'. See the 'speaker_1_default_voice' in the configuration for the full list of available voices."
+      },
+      "prompt": {
+        "type": "string",
+        "description": "Raw conversational script to be processed and converted to a two-speaker audio file. The tool will analyze the dialogue to add stylistic performance cues. The context window limit is 32k tokens (approx. 22,400 words)."
+      },
+      "speaker_2_name": {
+        "type": "string",
+        "description": "Optional name for the second speaker. In 'auto' mode, providing a name helps guide voice selection to match the name's perceived gender; if omitted, the chosen voice's name is used. In 'manual' mode, it falls back to a default if omitted."
+      },
+      "voice_selection_mode": {
+        "type": "string",
+        "description": "Voice selection mode. 'manual' uses specified inputs/defaults. 'auto' has the model analyze the script to select voices, using provided names to guide gender and as fallback identifiers. Defaults to 'auto'.",
+        "default": "auto"
+      }
+    },
+    "required": [
+      "prompt"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "chosen_voice_speaker_1": {
+        "description": "The final voice name selected for the first speaker, either automatically or manually.",
+        "type": "string"
+      },
+      "chosen_voice_speaker_2": {
+        "description": "The final voice name selected for the second speaker, either automatically or manually.",
+        "type": "string"
+      },
+      "file_path": {
+        "description": "File path where the generated WAV audio file of the conversation is saved.",
+        "type": "string"
+      },
+      "processed_prompt": {
+        "description": "The enhanced, turn-by-turn conversational script with final speaker names that was used for audio generation.",
+        "type": "string"
+      }
+    },
+    "required": [
+      "file_path",
+      "processed_prompt",
+      "chosen_voice_speaker_1",
+      "chosen_voice_speaker_2"
+    ]
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": [
+    "local:::__official_shinkai:::shinkai_llm_prompt_processor"
+  ],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": ""
+}

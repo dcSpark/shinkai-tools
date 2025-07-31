@@ -1,0 +1,119 @@
+{
+  "name": "Windows Local Text-to-Speech",
+  "description": "Converts text to speech using local Windows TTS and voices.",
+  "keywords": [
+    "tts",
+    "text to speech",
+    "audio",
+    "Windows",
+    "local",
+    "speech",
+    "text"
+  ],
+  "version": "1.0.0",
+  "author": "@@official.shinkai",
+  "configurations": {
+    "properties": {
+      "default_voice_id": {
+        "description": "The default voice id to use for speech synthesis (e.g., 0, 1, 2). Use option 'list_voices' to see available voices.",
+        "type": "string"
+      }
+    },
+    "required": []
+  },
+  "oauth": [],
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "list_voices": {
+        "type": "boolean",
+        "description": "If true, list available voices instead of synthesizing speech",
+        "default": false
+      },
+      "voice_id": {
+        "type": "number",
+        "description": "The voice id to use for speech synthesis (e.g., 0, 1, 2), overrides default voice from config. "
+      },
+      "text": {
+        "type": "string",
+        "description": "The text to synthesize into speech"
+      },
+      "rate": {
+        "type": "number",
+        "description": "Speech rate (words per minute) to use for synthesis. Default normal speed : 175. Range : 50-400.",
+        "default": 175
+      }
+    },
+    "required": []
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "message": {
+        "description": "Informational or error message",
+        "type": "string"
+      },
+      "output_path": {
+        "description": "The file path of the saved WAV output",
+        "type": "string"
+      },
+      "success": {
+        "description": "Indicates if the operation succeeded",
+        "type": "boolean"
+      },
+      "voices": {
+        "description": "List of available voices, shown if list_voices is true",
+        "items": {
+          "additionalProperties": false,
+          "properties": {
+            "gender": {
+              "description": "Gender of the voice if available",
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "id": {
+              "description": "Voice index",
+              "type": "number"
+            },
+            "id_string": {
+              "description": "Voice identifier string",
+              "type": "string"
+            },
+            "languages": {
+              "description": "Supported languages for the voice",
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "name": {
+              "description": "Voice name",
+              "type": "string"
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "id_string",
+            "languages"
+          ],
+          "type": "object"
+        },
+        "type": "array"
+      }
+    },
+    "required": []
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": [],
+  "runner": "only_host",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": ""
+}

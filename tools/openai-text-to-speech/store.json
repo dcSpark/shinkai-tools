@@ -1,0 +1,5 @@
+{
+  "categoryId": "5f10d0b4-6acd-477a-96e1-be35634465b2",
+  "name": "OpenAI Text-to-Speech",
+  "description": "This tool converts text into high-quality spoken audio using OpenAI's Text-to-Speech (TTS) API. It allows users to customize the output by selecting from a variety of voices, choosing a TTS model (including tts-1, tts-1-hd, and gpt-4o-mini-tts), and adjusting the speech speed. For the gpt-4o-mini-tts model, users can provide specific instructions to control elements like emotion, accent, and tone. The final audio is saved in a user-selected format (e.g., MP3, WAV, FLAC) and the file path is returned."
+}

@@ -1,0 +1,8 @@
+{
+  "categoryId": "0569c7f5-2942-407e-9aae-4e979718683b",
+  "name": "Mind Map Creator",
+  "description": "Converts content into an interactive Mind Map. Can fetch content from URLs too.",
+  "version": "1.0.0",
+  "author": "@@official.sep-shinkai",
+  "keywords": []
+}

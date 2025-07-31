@@ -1,0 +1,50 @@
+{
+  "name": "Markdown to Mind Map",
+  "description": "Converts Markdown content into an interactive Markmap mind map HTML file, optionally opening the result in the browser. Supports export (PNG, JPG, SVG) and copying features.",
+  "keywords": [
+    "markdown",
+    "mindmap",
+    "markmap",
+    "visualization",
+    "mind",
+    "map"
+  ],
+  "version": "1.0.0",
+  "author": "@@official.shinkai",
+  "configurations": {
+    "properties": {},
+    "required": []
+  },
+  "oauth": [],
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "markdown": {
+        "type": "string",
+        "description": "The markdown text to convert into a mindmap"
+      },
+      "open_in_browser": {
+        "type": "string",
+        "description": "Whether to automatically open the resulting file in a browser ('yes' or 'no'). Defaults to yes."
+      }
+    },
+    "required": [
+      "markdown"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": null,
+    "required": []
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": [],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": ""
+}

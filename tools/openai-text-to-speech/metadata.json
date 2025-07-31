@@ -1,0 +1,93 @@
+{
+  "name": "OpenAI Text-to-Speech",
+  "description": "This tool converts text into high-quality spoken audio using OpenAI's Text-to-Speech (TTS) API. It allows users to customize the output by selecting from a variety of voices, choosing a TTS model (including tts-1, tts-1-hd, and gpt-4o-mini-tts), and adjusting the speech speed. For the gpt-4o-mini-tts model, users can provide specific instructions to control elements like emotion, accent, and tone. The final audio is saved in a user-selected format (e.g., MP3, WAV, FLAC) and the file path is returned.",
+  "keywords": [
+    "TTS",
+    "text-to-speech",
+    "OpenAI",
+    "audio generation",
+    "speech synthesis",
+    "speech"
+  ],
+  "version": "1.0.0",
+  "author": "@@official.shinkai",
+  "configurations": {
+    "properties": {
+      "api_key": {
+        "description": "API key for authorization to OpenAI TTS API",
+        "type": "string"
+      },
+      "default_audio_format": {
+        "description": "Default audio format output if not specified in inputs",
+        "type": "string"
+      },
+      "default_model": {
+        "description": "Default TTS model to use if not specified in inputs",
+        "type": "string"
+      },
+      "default_speed": {
+        "description": "Default speed of generated audio if not specified in inputs",
+        "type": "string"
+      }
+    },
+    "required": [
+      "api_key"
+    ]
+  },
+  "oauth": [],
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "text": {
+        "type": "string",
+        "description": "The text to convert to speech"
+      },
+      "voice": {
+        "type": "string",
+        "description": "Voice selection for speech synthesis. Possible values: alloy, ash, ballad, coral, echo, fable, nova, onyx (default), sage, shimmer"
+      },
+      "speed": {
+        "type": "number",
+        "description": "Speed of generated audio between 0.25 and 4.0. Default is config default_speed or 1.0"
+      },
+      "audio_format": {
+        "type": "string",
+        "description": "Audio format output. Supported formats: mp3, opus, aac, flac, wav, pcm. Defaults to config default_audio_format or 'mp3'"
+      },
+      "instructions": {
+        "type": "string",
+        "description": "Optional instructions to control speech aspects such as accent, emotional range, intonation, impressions, speed, tone, whispering, etc."
+      },
+      "model": {
+        "type": "string",
+        "description": "TTS model to use. Allowed values: tts-1, tts-1-hd, gpt-4o-mini-tts. Defaults to config default_model or 'gpt-4o-mini-tts'"
+      }
+    },
+    "required": [
+      "text"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "audio_file_path": {
+        "description": "The file path where the generated speech audio is saved",
+        "order": 1,
+        "type": "string"
+      }
+    },
+    "required": [
+      "audio_file_path"
+    ]
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": [],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": ""
+}

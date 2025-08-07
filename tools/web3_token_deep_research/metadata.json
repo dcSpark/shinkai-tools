@@ -1,0 +1,68 @@
+{
+  "name": "Web3 token deep research",
+  "description": "Generates a comprehensive markdown research report about a given cryptocurrency token by gathering web data, summarizing with LLM, and exporting the report.",
+  "keywords": [
+    "crypto",
+    "research",
+    "report",
+    "token",
+    "web3"
+  ],
+  "version": "1.0.0",
+  "author": "@@official.shinkai",
+  "configurations": {
+    "properties": {},
+    "required": []
+  },
+  "oauth": [],
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "tokenTicker": {
+        "type": "string",
+        "description": "The ticker symbol of the cryptocurrency token"
+      },
+      "tokenName": {
+        "type": "string",
+        "description": "The full name of the cryptocurrency token"
+      }
+    },
+    "required": [
+      "tokenName",
+      "tokenTicker"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "reportContent": {
+        "description": "The full content of the generated markdown report",
+        "type": "string"
+      },
+      "reportPath": {
+        "description": "The file path to the generated markdown report",
+        "type": "string"
+      }
+    },
+    "required": [
+      "reportPath",
+      "reportContent"
+    ]
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": [
+    "local:::__official_shinkai:::google_search",
+    "local:::__official_shinkai:::shinkai_llm_prompt_processor",
+    "local:::__official_shinkai:::markdown_exporter",
+    "local:::__official_shinkai:::wait_1_5_seconds",
+    "local:::__official_shinkai:::download_pages"
+  ],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": ""
+}

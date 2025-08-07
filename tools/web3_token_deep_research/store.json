@@ -1,0 +1,5 @@
+{
+  "categoryId": "f004e0f9-4b2b-44f3-abee-d1fd42b9f9ba",
+  "name": "Web3 token deep research",
+  "description": "Generates a comprehensive markdown research report about a given cryptocurrency token by gathering web data, summarizing with LLM, and exporting the report."
+}

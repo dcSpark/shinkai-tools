@@ -1,0 +1,5 @@
+{
+  "categoryId": "b31efbe7-2b3e-4fa1-bd7d-b19950705ea2",
+  "name": "Illustrated Story Generator",
+  "description": "This tool transforms a simple story idea into a complete, richly illustrated narrative.\n\nIt begins by expanding the user's description into a full story, then intelligently analyzes the new narrative to pinpoint the most visually compelling scenes. For each selected scene, it crafts a detailed, professional-grade prompt—incorporating any artistic style from the original description—to generate high-quality, stylistically coherent images. The final output is a single, ready-to-read story where the generated images are seamlessly embedded within the text, bringing the tale to life.\n\nFeel free to fork the tool to pick a different image generation tool : duplicate it, edit in the playground, unselect the current image generation tool and select yours, and instruct the AI tool builder to use this new image generation tool instead, without changing anything else."
+}

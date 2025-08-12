@@ -1,0 +1,71 @@
+{
+  "name": "GIF search - Giphy",
+  "description": "Searches the Giphy API for GIFs based on query and parameters.",
+  "keywords": [
+    "giphy",
+    "gif search",
+    "gif",
+    "search",
+    "media"
+  ],
+  "version": "1.0.0",
+  "author": "@@official.shinkai",
+  "configurations": {
+    "properties": {
+      "api_key": {
+        "description": "Your GIPHY API Key (get it at developers.giphy.com).",
+        "type": "string"
+      }
+    },
+    "required": [
+      "api_key"
+    ]
+  },
+  "oauth": [],
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "query": {
+        "type": "string",
+        "description": "The search text query (max 50 chars)"
+      },
+      "offset": {
+        "type": "number",
+        "description": "The offset in the results (default 0)",
+        "default": 0
+      },
+      "language": {
+        "type": "string",
+        "description": "2-letter language code for regional content (default \"en\")",
+        "default": "en"
+      },
+      "max_GIF_number": {
+        "type": "number",
+        "description": "The max number of gifs to return (1-50, default 10)",
+        "default": 10
+      },
+      "rating": {
+        "type": "string",
+        "description": "Content rating filter. Acceptable values include g, pg, pg-13, r. If you do not specify a rating, you will receive results from all possible ratings."
+      }
+    },
+    "required": [
+      "query"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": null,
+    "required": []
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": [],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": ""
+}

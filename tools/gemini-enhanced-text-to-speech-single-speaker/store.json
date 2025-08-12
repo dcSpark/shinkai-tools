@@ -1,0 +1,5 @@
+{
+  "categoryId": "5f10d0b4-6acd-477a-96e1-be35634465b2",
+  "name": "Gemini Enhanced Text to Speech - Single Speaker",
+  "description": "This tool leverages a two-step AI process to create natural-sounding, single-speaker audio from your text. First, it uses a language model to analyze and refine your prompt, adding stylistic instructions for tone, pace, and emotion to achieve a more expressive result. Then, in its \"auto\" mode, it intelligently selects the most appropriate voice from a diverse list of over 30 options, matching the voice's characteristics to the content. The final output is a high-quality .wav audio file, perfect for a wide range of applications."
+}

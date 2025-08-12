@@ -1,0 +1,90 @@
+{
+  "name": "Illustrated Story Generator",
+  "description": "This tool transforms a simple story idea into a complete, richly illustrated narrative.\n\nIt begins by expanding the user's description into a full story, then intelligently analyzes the new narrative to pinpoint the most visually compelling scenes. For each selected scene, it crafts a detailed, professional-grade prompt—incorporating any artistic style from the original description—to generate high-quality, stylistically coherent images. The final output is a single, ready-to-read story where the generated images are seamlessly embedded within the text, bringing the tale to life.\n\nFeel free to fork the tool to pick a different image generation tool : duplicate it, edit in the playground, unselect the current image generation tool and select yours, and instruct the AI tool builder to use this new image generation tool instead, without changing anything else.",
+  "keywords": [
+    "storytelling",
+    "image generation",
+    "illustration",
+    "story",
+    "illustrated story",
+    "image"
+  ],
+  "version": "1.0.0",
+  "author": "@@official.shinkai",
+  "configurations": {
+    "properties": {
+      "num_scenes": {
+        "description": "Default number of scenes to generate in the story. Defaults to 5.",
+        "type": "string"
+      },
+      "show_scene_descriptions": {
+        "description": "Whether to include the intermediary scene descriptions in the final output. Defaults to False.",
+        "type": "string"
+      },
+      "show_style_instruction": {
+        "description": "Whether to include the extracted style instructions in the output. Defaults to False.",
+        "type": "string"
+      }
+    },
+    "required": []
+  },
+  "oauth": [],
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "num_scenes": {
+        "type": "number",
+        "description": "Number of scenes (illustrations) to extract and generate (optional)"
+      },
+      "story_description": {
+        "type": "string",
+        "description": "The initial short story, scenario, or few ideas from which an illustrated story will be generated"
+      }
+    },
+    "required": [
+      "story_description"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "scene_descriptions": {
+        "description": "List of scene descriptions used to prompt image generation, if enabled by configuration",
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "story": {
+        "description": "The final story text, including embedded Markdown image placeholders replaced with generated image URLs",
+        "type": "string"
+      },
+      "story_reading_instructions_for_LLM": {
+        "description": "Explicit instructions for a downstream LLM to present the story in a specific way",
+        "type": "string"
+      },
+      "style_instruction": {
+        "description": "Summary of extracted style/mood/visual/art details for the story or image generation, if enabled by configuration",
+        "type": "string"
+      }
+    },
+    "required": [
+      "story",
+      "story_reading_instructions_for_LLM"
+    ]
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": [
+    "local:::__official_shinkai:::shinkai_llm_prompt_processor",
+    "local:::__official_shinkai:::wait_1_5_seconds",
+    "local:::__official_shinkai:::text_to_image_generator___getimg_ai_flux_1"
+  ],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": ""
+}

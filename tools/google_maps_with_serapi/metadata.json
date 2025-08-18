@@ -1,6 +1,7 @@
 {
   "name": "Google Maps with SerpAPI",
   "description": "Performs a Google Maps search using SerpAPI and returns the results in JSON or HTML format.",
+  "author": "Shinkai",
   "homePage": "",
   "configurations": {
     "type": "object",

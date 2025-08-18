@@ -1,0 +1,72 @@
+{
+  "name": "Web Search",
+  "homepage": "https://github.com/dcSpark/shinkai-tools/blob/main/tools/web-search/README.md",
+  "description": "This function takes a search query as input and returns a list of results from the web.",
+  "author": "Shinkai",
+  "version": "1.0.0",
+  "keywords": [
+    "search",
+    "web"
+  ],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": "",
+  "configurations": [],
+  "parameters": {
+    "properties": {
+      "query": {
+        "description": "The search query to look up on the web",
+        "type": "string"
+      }
+    },
+    "num_results": {
+      "description": "The number of results to return",
+      "type": "number"
+    },
+    "required": [
+      "query"
+    ],
+    "type": "object"
+  },
+  "result": {
+    "properties": {
+      "query": {
+        "type": "string"
+      },
+      "results": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "url": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "title",
+            "url",
+            "description"
+          ]
+        }
+      }
+    },
+    "required": [
+      "query",
+      "results"
+    ],
+    "type": "object"
+  },
+  "sqlTables": [],
+  "sqlQueries": [],
+  "tools": []
+}

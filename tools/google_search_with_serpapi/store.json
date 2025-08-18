@@ -1,0 +1,5 @@
+{
+  "categoryId": "5f10d0b4-6acd-477a-96e1-be35634465b2",
+  "name": "Google Search with SerpAPI",
+  "description": "Performs a Google search using SerpAPI and returns the results in JSON or HTML format."
+}

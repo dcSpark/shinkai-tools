@@ -1,0 +1,87 @@
+{
+  "name": "Google Search with SerpAPI",
+  "description": "Performs a Google search using SerpAPI and returns the results in JSON or HTML format.",
+  "author": "Shinkai",
+  "homePage": "",
+  "configurations": {
+    "type": "object",
+    "properties": {
+      "serpapi_api_key": {
+        "description": "The SerpApi API key",
+        "type": "string"
+      }
+    },
+    "required": [
+      "serpapi_api_key"
+    ]
+  },
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "query": {
+        "description": "The search query",
+        "type": "string"
+      }
+    },
+    "required": [
+      "query"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "search_metadata": {
+        "additionalProperties": true,
+        "description": "Metadata about the search",
+        "type": "object"
+      },
+      "search_results": {
+        "description": "Simplified search results",
+        "items": {
+          "properties": {
+            "link": {
+              "description": "URL of the search result",
+              "type": "string"
+            },
+            "snippet": {
+              "description": "Snippet/description of the search result",
+              "type": "string"
+            },
+            "title": {
+              "description": "Title of the search result",
+              "type": "string"
+            }
+          },
+          "required": [
+            "title",
+            "link",
+            "snippet"
+          ],
+          "type": "object"
+        },
+        "type": "array"
+      }
+    },
+    "required": [
+      "search_metadata",
+      "search_results"
+    ]
+  },
+  "sqlTables": [],
+  "sqlQueries": [],
+  "oauth": [],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": "",
+  "keywords": [
+    "google",
+    "search",
+    "serpapi",
+    "api"
+  ],
+  "version": "1.0.0"
+}

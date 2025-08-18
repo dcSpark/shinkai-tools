@@ -1,0 +1,64 @@
+{
+  "author": "Shinkai",
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": "",
+  "configurations": {
+    "properties": {},
+    "required": [],
+    "type": "object"
+  },
+  "description": "Downloads a PDF from a URL, saves it to user-specified location, extracts its text content, saves the content as a text file, and returns the file paths and extracted text.",
+  "homepage": null,
+  "keywords": [
+    "pdf",
+    "download",
+    "text extraction",
+    "url",
+    "pdf to text"
+  ],
+  "name": "PDF Text Extractor",
+  "oauth": [],
+  "parameters": {
+    "properties": {
+      "url": {
+        "description": "The URL of the PDF file to download",
+        "type": "string"
+      }
+    },
+    "required": [
+      "url"
+    ],
+    "type": "object"
+  },
+  "result": {
+    "properties": {
+      "pdf_file_path": {
+        "description": "The local file path to the downloaded PDF file",
+        "type": "string"
+      },
+      "text_content": {
+        "description": "The extracted text content from the PDF",
+        "type": "string"
+      },
+      "txt_file_path": {
+        "description": "The local file path to the extracted text file",
+        "type": "string"
+      }
+    },
+    "required": [
+      "pdf_file_path",
+      "txt_file_path",
+      "text_content"
+    ],
+    "type": "object"
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": [],
+  "version": "1.0.0"
+}

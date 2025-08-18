@@ -1,0 +1,107 @@
+{
+  "name": "Google Maps with SerpAPI",
+  "description": "Performs a Google Maps search using SerpAPI and returns the results in JSON or HTML format.",
+  "author": "Shinkai",
+  "homePage": "",
+  "configurations": {
+    "type": "object",
+    "properties": {
+      "api_key": {
+        "type": "string",
+        "description": "SerpApi API key"
+      }
+    },
+    "required": [
+      "api_key"
+    ]
+  },
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "query": {
+        "type": "string",
+        "description": "The search query"
+      },
+      "ll": {
+        "type": "string",
+        "description": "Optional geographic coordinate",
+        "nullable": true
+      }
+    },
+    "required": [
+      "query"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "results": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "position": {
+              "type": "number",
+              "description": "Position in search results"
+            },
+            "title": {
+              "type": "string",
+              "description": "Business name"
+            },
+            "place_id": {
+              "type": "string",
+              "description": "Google Maps place ID"
+            },
+            "rating": {
+              "type": "number",
+              "description": "Business rating",
+              "nullable": true
+            },
+            "address": {
+              "type": "string",
+              "description": "Business address",
+              "nullable": true
+            },
+            "phone": {
+              "type": "string",
+              "description": "Business phone number",
+              "nullable": true
+            },
+            "website": {
+              "type": "string",
+              "description": "Business website",
+              "nullable": true
+            }
+          },
+          "required": [
+            "position",
+            "title",
+            "place_id"
+          ]
+        },
+        "description": "List of business search results"
+      }
+    },
+    "required": [
+      "results"
+    ]
+  },
+  "sqlTables": [],
+  "sqlQueries": [],
+  "oauth": [],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": "",
+  "keywords": [
+    "google",
+    "maps",
+    "search",
+    "serpapi",
+    "business"
+  ],
+  "version": "1.0.0"
+}

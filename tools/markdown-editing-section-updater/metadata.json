@@ -1,0 +1,54 @@
+{
+  "name": "Markdown editing - Section Updater",
+  "description": "Updates only the most relevant section of a markdown file using an LLM, based on a user prompt.",
+  "keywords": [
+    "markdown",
+    "section update",
+    "text editing",
+    "file editing",
+    "section",
+    "update",
+    "md"
+  ],
+  "version": "1.0.0",
+  "author": "@@official.shinkai",
+  "configurations": {
+    "properties": {},
+    "required": []
+  },
+  "oauth": [],
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "prompt": {
+        "type": "string",
+        "description": "Instruction or prompt describing which section to update and how to update it"
+      },
+      "md_file_path": {
+        "type": "string",
+        "description": "Path to the target markdown file"
+      }
+    },
+    "required": [
+      "prompt",
+      "md_file_path"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": null,
+    "required": []
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": [
+    "local:::__official_shinkai:::shinkai_llm_prompt_processor"
+  ],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": ""
+}

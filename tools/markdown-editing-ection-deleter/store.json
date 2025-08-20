@@ -1,0 +1,5 @@
+{
+  "categoryId": "5f10d0b4-6acd-477a-96e1-be35634465b2",
+  "name": "Markdown Editing - Section Deleter",
+  "description": "Deletes a section (and its sub-sections) from a markdown file based on a natural language prompt, using LLM to identify the relevant section."
+}

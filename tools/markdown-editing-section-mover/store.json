@@ -1,0 +1,5 @@
+{
+  "categoryId": "5f10d0b4-6acd-477a-96e1-be35634465b2",
+  "name": "Markdown Editing - Section Mover",
+  "description": "Moves an existing section of a markdown file to another location (after or before another section) based on a user prompt, preserving the eventual section hierarchy."
+}

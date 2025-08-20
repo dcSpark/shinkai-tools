@@ -1,0 +1,47 @@
+{
+  "name": "Markdown Editing -  Section Architecture Parser",
+  "description": "Reads a markdown file and parses its section (heading) architecture, returning the file path and the parsed section architecture.",
+  "keywords": [
+    "markdown",
+    "section titles",
+    "heading extraction",
+    "file parser",
+    "architecture"
+  ],
+  "version": "1.0.0",
+  "author": "@@official.shinkai",
+  "configurations": {
+    "properties": {},
+    "required": []
+  },
+  "oauth": [],
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "md_file_path": {
+        "type": "string",
+        "description": "Path to the markdown (.md) file to extract section titles from"
+      }
+    },
+    "required": [
+      "md_file_path"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": null,
+    "required": []
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": [
+    "local:::__official_shinkai:::shinkai_llm_prompt_processor"
+  ],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": ""
+}

@@ -1,0 +1,8 @@
+{
+  "categoryId": "5f10d0b4-6acd-477a-96e1-be35634465b2",
+  "name": "Markdown content writer",
+  "description": "Generates and edits markdown files precisely, targeting specific sections.\nLink it to diverse search, file reader, and media generation tools to automate content creation in markdown.",
+  "version": "1.0.0",
+  "author": "@@official.sep-shinkai",
+  "keywords": []
+}

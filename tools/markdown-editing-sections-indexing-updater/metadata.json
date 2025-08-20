@@ -1,0 +1,98 @@
+{
+  "name": "Markdown Editing - Sections Indexing Updater",
+  "description": "Instantly fixes inconsistent and messy section numbering in any Markdown file. This tool logically re-calculates the entire heading hierarchy to ensure it's correct. It then uses an LLM to format the numbering according to your instructions (e.g., \"use roman numerals\") and safely remove old numerical prefixes from the titles. It's smart enough to preserve legitimate numbers that are part of a title, like \"2024 Project Goals.\"",
+  "keywords": [
+    "markdown",
+    "section numbering",
+    "update",
+    "title",
+    "numbering",
+    "indexing",
+    "numbers",
+    "md",
+    "file"
+  ],
+  "version": "1.0.0",
+  "author": "@@official.shinkai",
+  "configurations": {
+    "properties": {},
+    "required": []
+  },
+  "oauth": [],
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "show_intermediary_output": {
+        "type": "string",
+        "description": "Whether to include the deterministically numbered titles in the output for debugging purposes; 'yes' or 'no'.",
+        "default": "no"
+      },
+      "prompt": {
+        "type": "string",
+        "description": "User's instruction for how to format the numbering of markdown section titles. e.g., 'use roman letters', use 'A.1) format'."
+      },
+      "md_file_path": {
+        "type": "string",
+        "description": "Path to the Markdown file to process."
+      }
+    },
+    "required": [
+      "prompt",
+      "md_file_path"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "action_done": {
+        "description": "A brief status message describing the main action performed.",
+        "type": "string"
+      },
+      "error_message": {
+        "description": "Error message if any error occurred during processing.",
+        "type": "string"
+      },
+      "final_llm_formatted_section_titles": {
+        "description": "Final section titles after LLM formatting.",
+        "items": {
+          "description": "Section titles as formatted by the LLM after applying the user prompt.",
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "intermediary_deterministic_numbered_titles": {
+        "description": "Deterministically numbered section titles (for intermediary debugging).",
+        "items": {
+          "description": "Section titles after deterministic hierarchical numbering.",
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "original_titles": {
+        "description": "List of original section titles.",
+        "items": {
+          "description": "Original section titles extracted from the file.",
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "updated_file_path": {
+        "description": "The path to the updated Markdown file after formatting, if changed.",
+        "type": "string"
+      }
+    },
+    "required": []
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": [
+    "local:::__official_shinkai:::shinkai_llm_prompt_processor"
+  ],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": ""
+}

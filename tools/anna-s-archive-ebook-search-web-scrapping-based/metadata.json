@@ -22,19 +22,24 @@
     "properties": {
       "category": {
         "type": "string",
-        "description": "Optional category filter: '', 'book_any', 'book_unknown', 'book_fiction', 'book_nonfiction', 'book_comic', 'magazine', 'standards_document', or 'journal_article'. Leave empty for all."
-      },
-      "search_query": {
-        "type": "string",
-        "description": "Book title, author, or other term to search."
+        "description": "Optional content category: '', 'book_any', 'book_unknown', 'book_fiction', 'book_nonfiction', 'book_comic', 'magazine', 'standards_document', 'journal_article' or null/None."
       },
       "sort": {
         "type": "string",
-        "description": "Sorting order: 'newest', 'oldest', 'largest', 'smallest'. Leave empty for default ordering."
+        "description": "Optional sort order: 'newest', 'oldest', 'largest', 'smallest' or null/None for default."
+      },
+      "search_query": {
+        "type": "string",
+        "description": "Book title, author, or other query to search for on annas-archive.org"
       },
       "file_type": {
         "type": "string",
-        "description": "Optional filter by file type: 'pdf', 'epub', 'cbr', or 'cbz'. Leave empty for all."
+        "description": "Optional file extension filter: 'pdf', 'epub', 'cbr', 'cbz' or null/None for all. Case-insensitive."
+      },
+      "num_results": {
+        "type": "number",
+        "description": "How many relevant results to return (positive integer). Default: 5",
+        "default": 5
       }
     },
     "required": [
@@ -43,12 +48,70 @@
   },
   "result": {
     "type": "object",
-    "properties": null,
+    "properties": {
+      "error": {
+        "description": "Error message if an error occurred, otherwise null",
+        "type": "string"
+      },
+      "output_reading_instructions": {
+        "description": "Instructions about how to present results to the user (e.g., include clickable page_url and thumbnail markdown).",
+        "type": "string"
+      },
+      "results": {
+        "description": "Array of result items up to the requested number.",
+        "items": {
+          "properties": {
+            "MD5": {
+              "description": "32 hex MD5 string if available, otherwise null",
+              "type": "string"
+            },
+            "author": {
+              "description": "Author of the item, or null if not available",
+              "type": "string"
+            },
+            "date": {
+              "description": "Publication or upload date, or null",
+              "type": "string"
+            },
+            "format": {
+              "description": "File format (e.g., pdf, epub, cbz, cbr) or null",
+              "type": "string"
+            },
+            "language": {
+              "description": "Language of the book if available, or null",
+              "type": "string"
+            },
+            "page_url": {
+              "description": "Full absolute clickable URL to the book's page",
+              "type": "string"
+            },
+            "size": {
+              "description": "File size string if available (e.g., '12 MB') or null",
+              "type": "string"
+            },
+            "thumbnail": {
+              "description": "Markdown image insertion format like '![Alt text](URL)' or null",
+              "type": "string"
+            },
+            "title": {
+              "description": "Title of the book/item",
+              "type": "string"
+            }
+          },
+          "required": [],
+          "type": "object"
+        },
+        "type": "array"
+      }
+    },
     "required": []
   },
   "sqlQueries": [],
   "sqlTables": [],
-  "tools": [],
+  "tools": [
+    "local:::__official_shinkai:::download_pages",
+    "local:::__official_shinkai:::shinkai_llm_prompt_processor"
+  ],
   "runner": "any",
   "operating_system": [
     "linux",

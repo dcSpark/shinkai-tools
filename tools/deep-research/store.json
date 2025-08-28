@@ -1,0 +1,5 @@
+{
+  "categoryId": "cc6ba888-3987-4e2a-af7e-3b137d997262",
+  "name": "Deep Research",
+  "description": "This tool automates in-depth online research, and generates a comprehensive, multi-section report in a structured Markdown format, with sources.\n\nSimply provide a research topic.\nYou can be specific to narrow the focus or vague to encourage broader exploration.\n\nThe research depth is configurable, allowing you to control key parameters such as the number of sources to analyze per query, and the depth of its self-correction and reflection cycles.\n\nThe process includes:\n- creating a detailed research plan.\n- performing targeted web searches.\n- analyzing and synthesizing information from the best sources.\n- reflecting on the initial draft to identify and fill knowledge gaps.\n\nThe final output is a polished document complete with a title, abstract, table of contents, conclusion, and a full list of cited references, saved as a Markdown file.\n\nThe tool leverages parallel processing to efficiently gather and analaze information."
+}

@@ -1,0 +1,141 @@
+{
+  "name": "Deep Research",
+  "description": "This tool automates in-depth online research, and generates a comprehensive, multi-section report in a structured Markdown format, with sources.\n\nSimply provide a research topic.\nYou can be specific to narrow the focus or vague to encourage broader exploration.\n\nThe research depth is configurable, allowing you to control key parameters such as the number of sources to analyze per query, and the depth of its self-correction and reflection cycles.\n\nThe process includes:\n- creating a detailed research plan.\n- performing targeted web searches.\n- analyzing and synthesizing information from the best sources.\n- reflecting on the initial draft to identify and fill knowledge gaps.\n\nThe final output is a polished document complete with a title, abstract, table of contents, conclusion, and a full list of cited references, saved as a Markdown file.\n\nThe tool leverages parallel processing to efficiently gather and analaze information.",
+  "keywords": [
+    "deep research",
+    "research",
+    "report",
+    "search",
+    "biblio"
+  ],
+  "version": "1.0.0",
+  "author": "@@official.shinkai",
+  "configurations": {
+    "properties": {
+      "include_execution_log": {
+        "description": "Whether to include in the output the detailed execution log. Default: not included.",
+        "type": "string"
+      },
+      "max_additional_queries_per_section": {
+        "description": "Number of new queries to generate to fill section gaps during each reflection loop. Default: 2.",
+        "type": "string"
+      },
+      "max_concurrent_downloads": {
+        "description": "Max number of result webpages to download concurrently at any given time. Default: 60.",
+        "type": "string"
+      },
+      "max_concurrent_llm_calls": {
+        "description": "Max number of LLM calls to perform concurrently at any given time. Default: 15.",
+        "type": "string"
+      },
+      "max_reflection_loops": {
+        "description": "Number of reflection loops to perform to look for more information for each section. Default: 1.",
+        "type": "string"
+      },
+      "top_results_per_query": {
+        "description": "The number of top search results to identify and process for each query. A higher number provides more context but increases the risk of exceeding the LLM's context window. Adjust this value in conjunction with the truncation settings. Default: 4.",
+        "type": "string"
+      },
+      "truncate_first_chars": {
+        "description": "Maximum characters to extract from the BEGINNING of each source. This typically captures the introduction, abstract, methods, and main body. To extract ONLY the end of a document, set this to 0. IMPORTANT: If both this and `truncate_last_chars` are set to 0, the FULL, untruncated content of the source will be used. Default: 50000. As a reference, 50000 characters is roughly 10000 words or 13000 LLM tokens",
+        "type": "string"
+      },
+      "truncate_last_chars": {
+        "description": "Maximum characters to extract from the END of each source. This typically captures conclusions, final thoughts sections, etc. To extract ONLY the beginning of a document, set this to 0. IMPORTANT: If both this and `truncate_first_chars` are set to 0, the FULL, untruncated content of the source will be used. Default: 15000. As a reference, 15000 characters is roughly 3000 words or 4000 LLM tokens",
+        "type": "string"
+      }
+    },
+    "required": []
+  },
+  "oauth": [],
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "research_query": {
+        "type": "string",
+        "description": "The research query to search"
+      }
+    },
+    "required": [
+      "research_query"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "all_executed_queries": {
+        "description": "Mapping of executed search queries and metadata/results",
+        "name": "all_executed_queries",
+        "order": 2,
+        "properties": {},
+        "type": "object"
+      },
+      "execution_log": {
+        "description": "Optional detailed execution log entries",
+        "items": {
+          "description": "A single execution log entry",
+          "name": "log_entry",
+          "order": 1,
+          "type": "string"
+        },
+        "name": "execution_log",
+        "order": 4,
+        "type": "array"
+      },
+      "final_report": {
+        "description": "The final assembled report as text",
+        "name": "final_report",
+        "order": 1,
+        "type": "string"
+      },
+      "md_export_message": {
+        "description": "Message returned by the markdown exporter",
+        "name": "md_export_message",
+        "order": 6,
+        "type": "string"
+      },
+      "md_file_path": {
+        "description": "Path to the exported markdown file",
+        "name": "md_file_path",
+        "order": 5,
+        "type": "string"
+      },
+      "referenced_urls": {
+        "description": "List of URLs referenced in the report",
+        "items": {
+          "description": "A referenced URL",
+          "name": "url_item",
+          "order": 1,
+          "type": "string"
+        },
+        "name": "referenced_urls",
+        "order": 3,
+        "type": "array"
+      }
+    },
+    "required": [
+      "final_report",
+      "all_executed_queries",
+      "referenced_urls",
+      "md_file_path",
+      "md_export_message"
+    ]
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": [
+    "local:::__official_shinkai:::duckduckgo_search",
+    "local:::__official_shinkai:::download_pages",
+    "local:::__official_shinkai:::markdown_exporter",
+    "local:::__official_shinkai:::shinkai_llm_prompt_processor",
+    "local:::__official_shinkai:::wait_1_5_seconds",
+    "local:::__official_shinkai:::pdf_text_extractor"
+  ],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": ""
+}

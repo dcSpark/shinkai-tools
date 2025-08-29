@@ -1,0 +1,5 @@
+{
+  "categoryId": "b31efbe7-2b3e-4fa1-bd7d-b19950705ea2",
+  "name": "Music Generator - ElevenLabs",
+  "description": "Generates music using the ElevenLabs Music API.\nSupports both music creation and music modification.\n\nMusic creation: generates a new music according to the user's query, in a prompt-only mode.\n\nMusic modification: generates a music similar to the input music but with modifications according the user's query, using a composition plan.\n\nRequires a valid ElevenLabs API key with credits.\nQueries should respect ElevenLabs policies and terms of services."
+}

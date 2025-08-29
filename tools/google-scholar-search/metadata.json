@@ -1,0 +1,164 @@
+{
+  "name": "Google Scholar Search",
+  "description": "Searches for publications on Google Scholar.\nReturns a structured list of academic publications with details like titles, authors, abstracts, and citation counts.\n\nTo use it, simply provide a search query. You can optionally narrow the results by specifying a start and end year for your search.\n\nThe tool performs a robust search by first attempting to use the scholarly library to retrieve rich metadata. If that fails or returns no results, it automatically falls back to a direct web scraping method to ensure maximum reliability.\nThe output also indicates which search method was successfully used.",
+  "keywords": [
+    "scholar",
+    "google scholar",
+    "search",
+    "academic",
+    "papers",
+    "google",
+    "biblio"
+  ],
+  "version": "1.0.0",
+  "author": "@@official.shinkai",
+  "configurations": {
+    "properties": {
+      "max_results": {
+        "description": "Maximum number of results to return (applies to both methods). Default: 10",
+        "type": "string"
+      },
+      "timeout": {
+        "description": "Timeout (seconds) for HTTP requests in fallback. Default: 30",
+        "type": "string"
+      },
+      "user_agent": {
+        "description": "User-Agent header for web scraping fallback (can be overridden).",
+        "type": "string"
+      }
+    },
+    "required": []
+  },
+  "oauth": [],
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "year_low": {
+        "type": "number",
+        "description": "Optional lower bound year for search (inclusive). Used only when scholarly search method successful."
+      },
+      "query": {
+        "type": "string",
+        "description": "Query string to search (used by Scholarly and scraping)."
+      },
+      "year_high": {
+        "type": "number",
+        "description": "Optional upper bound year for search (inclusive). Used only when scholarly search method successful."
+      }
+    },
+    "required": [
+      "query"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "instructions_to_show_results": {
+        "description": "LLM-facing instructions on how to show the search results to the user.",
+        "name": "instructions_to_show_results",
+        "order": 5,
+        "type": "string"
+      },
+      "results": {
+        "description": "Array of unified publication records.",
+        "items": {
+          "description": "A unified publication record with normalized fields from scholarly or scraping.",
+          "name": "result_item",
+          "order": 1,
+          "properties": {
+            "author_id": {
+              "description": "Author identifier (if available from scholarly).",
+              "name": "author_id",
+              "order": 8,
+              "type": "string"
+            },
+            "authors": {
+              "description": "Authors string or representation.",
+              "name": "authors",
+              "order": 2,
+              "type": "string"
+            },
+            "eprint_url": {
+              "description": "E-print URL (if available).",
+              "name": "eprint_url",
+              "order": 9,
+              "type": "string"
+            },
+            "num_citations": {
+              "description": "Number of citations (if available).",
+              "name": "num_citations",
+              "order": 7,
+              "type": "number"
+            },
+            "pub_url": {
+              "description": "URL to the publication (if available).",
+              "name": "pub_url",
+              "order": 6,
+              "type": "string"
+            },
+            "snippet": {
+              "description": "Short snippet or abstract of the publication.",
+              "name": "snippet",
+              "order": 3,
+              "type": "string"
+            },
+            "title": {
+              "description": "Title of the publication.",
+              "name": "title",
+              "order": 1,
+              "type": "string"
+            },
+            "venue": {
+              "description": "Venue or journal/conference name.",
+              "name": "venue",
+              "order": 5,
+              "type": "string"
+            },
+            "year": {
+              "description": "Publication year (as string when discovered).",
+              "name": "year",
+              "order": 4,
+              "type": "string"
+            }
+          },
+          "required": [],
+          "type": "object"
+        },
+        "name": "results",
+        "order": 1,
+        "type": "array"
+      },
+      "scholarly_error": {
+        "description": "Error message from attempting the scholarly library method, if any.",
+        "name": "scholarly_error",
+        "order": 3,
+        "type": "string"
+      },
+      "scraping_error": {
+        "description": "Error message from the scraping fallback, if any.",
+        "name": "scraping_error",
+        "order": 4,
+        "type": "string"
+      },
+      "search_method_used": {
+        "description": "Which method was used to obtain results: 'scholarly library' or 'web scraping'.",
+        "name": "search_method_used",
+        "order": 2,
+        "type": "string"
+      }
+    },
+    "required": [
+      "results"
+    ]
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": [],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": ""
+}

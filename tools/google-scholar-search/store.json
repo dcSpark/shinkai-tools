@@ -1,0 +1,5 @@
+{
+  "categoryId": "cc6ba888-3987-4e2a-af7e-3b137d997262",
+  "name": "Google Scholar Search",
+  "description": "Searches for publications on Google Scholar.\nReturns a structured list of academic publications with details like titles, authors, abstracts, and citation counts.\n\nTo use it, simply provide a search query. You can optionally narrow the results by specifying a start and end year for your search.\n\nThe tool performs a robust search by first attempting to use the scholarly library to retrieve rich metadata. If that fails or returns no results, it automatically falls back to a direct web scraping method to ensure maximum reliability.\nThe output also indicates which search method was successfully used."
+}

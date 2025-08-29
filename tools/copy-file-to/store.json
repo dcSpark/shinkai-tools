@@ -1,0 +1,5 @@
+{
+  "categoryId": "5f10d0b4-6acd-477a-96e1-be35634465b2",
+  "name": "Copy File To",
+  "description": "Tool to copy a file from a source path to a target directory, preserving the filename and extension."
+}

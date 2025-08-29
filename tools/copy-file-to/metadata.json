@@ -1,0 +1,77 @@
+{
+  "name": "Copy File To",
+  "description": "Tool to copy a file from a source path to a target directory, preserving the filename and extension.",
+  "keywords": [
+    "file copy",
+    "move file",
+    "file management",
+    "paste",
+    "copy"
+  ],
+  "version": "1.0.0",
+  "author": "@@official.shinkai",
+  "configurations": {
+    "properties": {},
+    "required": []
+  },
+  "oauth": [],
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "overwrite": {
+        "type": "boolean",
+        "description": "Whether to overwrite the file if it already exists in the target directory",
+        "default": false
+      },
+      "target_directory_path": {
+        "type": "string",
+        "description": "The target directory path where the file should be copied"
+      },
+      "source_file_path": {
+        "type": "string",
+        "description": "The path of the source file to copy"
+      }
+    },
+    "required": [
+      "source_file_path",
+      "target_directory_path"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "error_message": {
+        "description": "Error message if any error occurred",
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "new_directory_created": {
+        "description": "The path of the newly created directory if a new directory was created",
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "saved_file_path": {
+        "description": "The path where the file was saved",
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "required": []
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": [],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": ""
+}

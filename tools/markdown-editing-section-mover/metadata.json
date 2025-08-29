@@ -1,0 +1,86 @@
+{
+  "name": "Markdown Editing - Section Mover",
+  "description": "Moves an existing section of a markdown file to another location (after or before another section) based on a user prompt, preserving the eventual section hierarchy.",
+  "keywords": [
+    "markdown",
+    "section",
+    "move section",
+    "move",
+    "file",
+    "update file",
+    "edit",
+    "before",
+    "after",
+    "md"
+  ],
+  "version": "1.0.0",
+  "author": "@@official.shinkai",
+  "configurations": {
+    "properties": {},
+    "required": []
+  },
+  "oauth": [],
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "prompt": {
+        "type": "string",
+        "description": "The user prompt describing how sections should be moved"
+      },
+      "md_file_path": {
+        "type": "string",
+        "description": "The file path of the markdown file to process"
+      }
+    },
+    "required": [
+      "prompt",
+      "md_file_path"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "action_details": {
+        "description": "Detailed description of the move action performed",
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "action_done": {
+        "description": "A short description of the action performed or error message",
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "moved_section_details": {
+        "description": "The content of the markdown section that was moved",
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "updated_file_path": {
+        "description": "The path of the updated markdown file after moving sections",
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "required": []
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": [
+    "local:::__official_shinkai:::shinkai_llm_prompt_processor"
+  ],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": ""
+}

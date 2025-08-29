@@ -1,0 +1,5 @@
+{
+  "categoryId": "5f10d0b4-6acd-477a-96e1-be35634465b2",
+  "name": "Markdown Editing - Section Reader",
+  "description": "Reads a markdown file and, given a user prompt, selects and returns the most relevant section's title, content and hierarchy, along with the file path."
+}

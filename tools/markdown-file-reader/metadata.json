@@ -1,0 +1,68 @@
+{
+  "name": "Markdown File Reader",
+  "description": "Reads the content of a markdown file from a given file path and returns the full markdown content or an explanation if an error occurs.",
+  "keywords": [
+    "markdown",
+    "file",
+    "read",
+    "reader",
+    "content",
+    "md"
+  ],
+  "version": "1.0.0",
+  "author": "@@official.shinkai",
+  "configurations": {
+    "properties": {},
+    "required": []
+  },
+  "oauth": [],
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "md_file_path": {
+        "type": "string",
+        "description": "The path to the markdown file to read"
+      }
+    },
+    "required": [
+      "md_file_path"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "error_message": {
+        "description": "An error message if the file could not be read",
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "file_path": {
+        "description": "The path of the markdown file that was read",
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "full_markdown_content": {
+        "description": "The full content of the markdown file",
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "required": []
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": [],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": ""
+}

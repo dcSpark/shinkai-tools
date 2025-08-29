@@ -1,0 +1,54 @@
+{
+  "name": "Markdown Editing - Section Deleter",
+  "description": "Deletes a section (and its sub-sections) from a markdown file based on a natural language prompt, using LLM to identify the relevant section.",
+  "keywords": [
+    "markdown",
+    "document editing",
+    "section removal",
+    "file update",
+    "delete",
+    "remove",
+    "section"
+  ],
+  "version": "1.0.0",
+  "author": "@@official.shinkai",
+  "configurations": {
+    "properties": {},
+    "required": []
+  },
+  "oauth": [],
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "prompt": {
+        "type": "string",
+        "description": "User prompt specifying what should be deleted from the markdown file"
+      },
+      "md_file_path": {
+        "type": "string",
+        "description": "The path to the markdown file to operate on"
+      }
+    },
+    "required": [
+      "prompt",
+      "md_file_path"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": null,
+    "required": []
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": [
+    "local:::__official_shinkai:::shinkai_llm_prompt_processor"
+  ],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": ""
+}

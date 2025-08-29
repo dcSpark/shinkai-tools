@@ -1,0 +1,5 @@
+{
+  "categoryId": "5f10d0b4-6acd-477a-96e1-be35634465b2",
+  "name": "Markdown Editing - Sections Indexing Updater",
+  "description": "Instantly fixes inconsistent and messy section numbering in any Markdown file. This tool logically re-calculates the entire heading hierarchy to ensure it's correct. It then uses an LLM to format the numbering according to your instructions (e.g., \"use roman numerals\") and safely remove old numerical prefixes from the titles. It's smart enough to preserve legitimate numbers that are part of a title, like \"2024 Project Goals.\""
+}

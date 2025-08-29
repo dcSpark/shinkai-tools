@@ -1,0 +1,53 @@
+{
+  "name": "Markdown Editing - Section Reader",
+  "description": "Reads a markdown file and, given a user prompt, selects and returns the most relevant section's title, content and hierarchy, along with the file path.",
+  "keywords": [
+    "markdown",
+    "section extraction",
+    "read",
+    "read section",
+    "section content",
+    "file"
+  ],
+  "version": "1.0.0",
+  "author": "@@official.shinkai",
+  "configurations": {
+    "properties": {},
+    "required": []
+  },
+  "oauth": [],
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "prompt": {
+        "type": "string",
+        "description": "A query or instruction indicating what kind of information or section the user is seeking in the markdown file"
+      },
+      "md_file_path": {
+        "type": "string",
+        "description": "Filesystem path to the markdown (.md) file to parse and analyze"
+      }
+    },
+    "required": [
+      "prompt",
+      "md_file_path"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": null,
+    "required": []
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": [
+    "local:::__official_shinkai:::shinkai_llm_prompt_processor"
+  ],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": ""
+}

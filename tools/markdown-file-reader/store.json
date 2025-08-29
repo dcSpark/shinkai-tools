@@ -1,0 +1,5 @@
+{
+  "categoryId": "5f10d0b4-6acd-477a-96e1-be35634465b2",
+  "name": "Markdown File Reader",
+  "description": "Reads the content of a markdown file from a given file path and returns the full markdown content or an explanation if an error occurs."
+}

@@ -1,0 +1,80 @@
+{
+  "name": "Deepresearch Step",
+  "description": "Runs a series of queries to search and fetch results from an API using specified breadth and depth.",
+  "keywords": [
+    "firecrawl",
+    "serp",
+    "scraping",
+    "web research"
+  ],
+  "version": "1.0.0",
+  "author": "@@my_local_ai.sep-shinkai",
+  "configurations": {
+    "properties": {
+      "FIRECRAWL_KEY": {
+        "description": "API key for Firecrawl service",
+        "type": "string"
+      }
+    },
+    "required": [
+      "FIRECRAWL_KEY"
+    ]
+  },
+  "oauth": [],
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "breadth": {
+        "type": "number",
+        "description": "The breadth of the search"
+      },
+      "depth": {
+        "type": "number",
+        "description": "The depth of the search"
+      },
+      "learnings": {
+        "type": "array",
+        "description": "Learnings acquired from previous searches",
+        "items": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "visitedUrls": {
+        "type": "array",
+        "description": "Previously visited URLs",
+        "items": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "query": {
+        "type": "string",
+        "description": "The search query string"
+      }
+    },
+    "required": [
+      "query",
+      "breadth",
+      "depth"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": null,
+    "required": []
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": [
+    "local:::__my_local_ai_sep_shinkai:::serp_query_generator",
+    "local:::__my_local_ai_sep_shinkai:::serp_result_analyzer"
+  ],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": ""
+}

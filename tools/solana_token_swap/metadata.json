@@ -8,8 +8,8 @@
     "jupiter",
     "crypto"
   ],
-  "version": "1.0.0",
-  "author": "@@localhost.sep-shinkai",
+  "version": "1.0.1",
+  "author": "@@official.sep-shinkai",
   "configurations": {
     "properties": {
       "PRIVATE_KEY": {

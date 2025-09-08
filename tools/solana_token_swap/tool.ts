@@ -42,6 +42,38 @@ interface OUTPUT {
   executeResponse: ExecuteResponse;
 }
 
+// Helper function to fetch JSON with fallback endpoints
+async function fetchJsonWithFallback<T>(urls: string[]): Promise<T> {
+  let lastErr: unknown;
+  for (const url of urls) {
+    try {
+      const res = await fetch(url, { headers: { Accept: "application/json" } });
+      if (res.ok) return (await res.json()) as T;
+      // try the next base if 4xx/5xx
+      lastErr = new Error(`HTTP ${res.status} ${res.statusText} for ${url}`);
+    } catch (e) { lastErr = e; }
+  }
+  throw lastErr instanceof Error ? lastErr : new Error(String(lastErr));
+}
+
+// Helper function to fetch JSON with POST request and fallback endpoints
+async function fetchPostJsonWithFallback<T>(urls: string[], body: object): Promise<T> {
+  let lastErr: unknown;
+  for (const url of urls) {
+    try {
+      const res = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body)
+      });
+      if (res.ok) return (await res.json()) as T;
+      // try the next base if 4xx/5xx
+      lastErr = new Error(`HTTP ${res.status} ${res.statusText} for ${url}`);
+    } catch (e) { lastErr = e; }
+  }
+  throw lastErr instanceof Error ? lastErr : new Error(String(lastErr));
+}
+
 // Helper function to fetch token address and decimals from Shinkai API
 async function getTokenAddress(symbol: string): Promise<{ address: string; decimals: number }> {
   const lowerSymbol = symbol.toLowerCase();
@@ -74,19 +106,21 @@ async function orderAndExecute(
 
   const rawAmount = (amount * Math.pow(10, inputToken.decimals)).toString();
 
-  const orderUrl = new URL("https://api.jup.ag/ultra/v1/order");
-  orderUrl.searchParams.append("inputMint", inputToken.address);
-  orderUrl.searchParams.append("outputMint", outputToken.address);
-  orderUrl.searchParams.append("amount", rawAmount);
-  orderUrl.searchParams.append("taker", taker);
-  
-  const orderRes = await fetch(orderUrl.toString());
-  if (!orderRes.ok) {
-    throw new Error(`Failed to get order: ${orderRes.statusText}`);
-  }
-  const orderResponse: OrderResponse = await orderRes.json();
+  const orderParams = new URLSearchParams({
+    inputMint: inputToken.address,
+    outputMint: outputToken.address,
+    amount: rawAmount,
+    taker: taker
+  });
+
+  const orderUrls = [
+    `https://api.jup.ag/ultra/v1/order?${orderParams.toString()}`,
+    `https://lite-api.jup.ag/ultra/v1/order?${orderParams.toString()}`
+  ];
+
+  const orderResponse: OrderResponse = await fetchJsonWithFallback(orderUrls);
   if (!orderResponse.transaction) {
-    throw new Error("No transaction received in order response");
+    throw new Error(`Failed processing order: ${orderResponse.errorMessage}`);
   }
 
   const secretKey = bs58.decode(privateKey);
@@ -97,25 +131,21 @@ async function orderAndExecute(
 
   const txnBytes = Buffer.from(orderResponse.transaction, "base64");
   const transaction = VersionedTransaction.deserialize(txnBytes);
-  
+
   transaction.sign([wallet]);
   const signedTxnBase64 = Buffer.from(transaction.serialize()).toString("base64");
 
-  const executeUrl = "https://api.jup.ag/ultra/v1/execute";
-  const executeRes = await fetch(executeUrl, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      signedTransaction: signedTxnBase64,
-      requestId: orderResponse.requestId
-    })
-  });
-  if (!executeRes.ok) {
-    throw new Error(`Failed to execute order: ${executeRes.statusText}`);
-  }
-  const executeResponse: ExecuteResponse = await executeRes.json();
+  const executeUrls = [
+    "https://api.jup.ag/ultra/v1/execute",
+    "https://lite-api.jup.ag/ultra/v1/execute"
+  ];
+
+  const executePayload = {
+    signedTransaction: signedTxnBase64,
+    requestId: orderResponse.requestId
+  };
+
+  const executeResponse: ExecuteResponse = await fetchPostJsonWithFallback(executeUrls, executePayload);
   return { orderResponse, executeResponse };
 }
 
@@ -135,7 +165,7 @@ export async function run(config: CONFIG, inputs: INPUTS): Promise<OUTPUT> {
   if (!inputs.SWAP_AMOUNT || inputs.SWAP_AMOUNT <= 0) {
     throw new Error("SWAP_AMOUNT must be a positive number");
   }
-  
+
   const { orderResponse, executeResponse } = await orderAndExecute(
     inputs.SWAP_INPUT_TOKEN,
     inputs.SWAP_OUTPUT_TOKEN,
@@ -143,6 +173,6 @@ export async function run(config: CONFIG, inputs: INPUTS): Promise<OUTPUT> {
     config.TAKER_ADDRESS,
     config.PRIVATE_KEY
   );
-  
+
   return { orderResponse, executeResponse };
 }

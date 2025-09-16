@@ -1,0 +1,111 @@
+{
+  "name": "Directory and Repo Ingestion",
+  "description": "Ingests local directories or remote GitHub repositories and consolidates their contents into a single, structured text file, optimized for LLM analysis.\n\nKey Features:\n\n*   Dual Source Ingestion: Processes code from either a local file path or a direct GitHub repository URL.\n*   Structured Output: Generates a clean document containing a summary, a visual directory tree, and the full content of each included file.\n*   Granular Content Filtering: Provides robust control over what gets included, with sensible defaults for:\n    *   Ignoring common directories (`.git`, `node_modules`, `__pycache__`, etc.).\n    *   Ignoring binary and non-text file extensions (`.pyc`, `.png`, `.pdf`, etc.).\n    *   Including only recognized code-like files (`.py`, `.js`, `.yml`, `.md`, etc.).\n*   File Size Capping: Prevents overly large outputs by skipping the content of individual files that exceed a configurable size limit.\n*   Flexible Export Formats: Outputs the final document as either Markdown (`.md`) for rich formatting or Plain Text (`.txt`) for maximum compatibility.\n*   LLM-Ready Metrics: Reports the total token count (using `cl100k_base`) and final file size upon completion.\n\nNotes:\n\n*   Individual files larger than 100 KB are skipped by default to manage output size. This limit is configurable via the `max_file_size_kb` input.\n*   The tool recursively scans all subdirectories, building a complete map of the project structure while applying the filtering rules.\n*   The `git` command-line tool must be installed and accessible in your system's PATH to process GitHub URLs.",
+  "keywords": [
+    "directory",
+    "repository",
+    "git",
+    "github",
+    "ingest",
+    "code",
+    "code base"
+  ],
+  "version": "1.0.0",
+  "author": "@@official.shinkai",
+  "configurations": {
+    "properties": {
+      "export_format": {
+        "description": "Output format for the exported content ('md' or 'txt')",
+        "type": "string"
+      }
+    },
+    "required": []
+  },
+  "oauth": [],
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "ignore_dirs": {
+        "type": "array",
+        "description": "List of directory names to ignore",
+        "items": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "max_file_size_kb": {
+        "type": "number",
+        "description": "Maximum file size in kilobytes to include",
+        "default": 100
+      },
+      "directory_path": {
+        "type": "string",
+        "description": "Local directory path or GitHub URL to ingest"
+      },
+      "ignore_extensions": {
+        "type": "array",
+        "description": "A blocklist of file extensions to explicitly ignore. Providing a custom list replaces the default set of ignored extensions (e.g., .log, .png, .lock).",
+        "items": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "code_extensions": {
+        "type": "array",
+        "description": "An allowlist of file extensions to include. Only files with extensions in this list will be processed (after passing the ignore check). Providing a custom list replaces the default set (e.g., .py, .js, .md).",
+        "items": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "output_file": {
+        "type": "string",
+        "description": "Base name for the output file (extension added automatically)",
+        "default": "ingested_directory"
+      }
+    },
+    "required": [
+      "directory_path"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "file_size_display": {
+        "description": "Human-readable display of total file size",
+        "name": "file_size_display",
+        "order": 4,
+        "type": "string"
+      },
+      "ingested_output": {
+        "description": "Primary output containing summary, tree and all file contents",
+        "name": "ingested_output",
+        "order": 1,
+        "type": "string"
+      },
+      "output_path": {
+        "description": "Filesystem path to the written output file",
+        "name": "output_path",
+        "order": 2,
+        "type": "string"
+      },
+      "token_count": {
+        "description": "Token count computed for the ingested output (uses tiktoken)",
+        "name": "token_count",
+        "order": 3,
+        "type": "number"
+      }
+    },
+    "required": []
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": [],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": ""
+}

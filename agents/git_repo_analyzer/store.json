@@ -1,8 +1,0 @@
-{
-  "categoryId": "3eb037bc-7d74-4c63-bfa8-6a225ef076de",
-  "name": "Git repo analyzer",
-  "description": "Ingests a github repo and can analyze it. Useful for code discovery and reviews, docs generation, codebase analysis and improvements.",
-  "version": "1.0.0",
-  "author": "@@official.sep-shinkai",
-  "keywords": []
-}

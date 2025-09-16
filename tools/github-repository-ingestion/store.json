@@ -1,5 +1,0 @@
-{
-  "categoryId": "3eb037bc-7d74-4c63-bfa8-6a225ef076de",
-  "name": "Github Repository Ingestion",
-  "description": "Converts Git repositories (from URL) into structured text for LLM processing. Supports file include/exclude patterns. Optional export (MD, XML, TXT).\n\nNotes : Individual files larger than 10MB are skipped by default by the underlying gitingest library. Currently the 'include' option of the gitingest library does not recursively include nested directories."
-}

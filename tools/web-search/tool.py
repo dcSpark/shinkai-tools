@@ -1,12 +1,19 @@
 # /// script
 # dependencies = [
-# "googlesearch-python"
+# "ddgs"
 # ]
 # ///
-from googlesearch import search, SearchResult
+
+from ddgs import DDGS
 from typing import List
 from dataclasses import dataclass
 import json
+
+@dataclass
+class SearchResult:
+    title: str
+    description: str
+    url: str
 
 class CONFIG:
     pass
@@ -25,10 +32,23 @@ async def run(c: CONFIG, p: INPUTS) -> OUTPUT:
         raise ValueError("No search query provided")
 
     results = []
+    
     try:
-        results = search(query, num_results=p.num_results, advanced=True)
+        with DDGS() as ddgs:
+            search_results = list(ddgs.text(query, max_results=p.num_results))
+            
+        for result in search_results:
+            results.append(SearchResult(
+                title=result.get('title', 'No title'),
+                description=result.get('body', 'No description'),
+                url=result.get('href', 'No URL')
+            ))
+
     except Exception as e:
-        raise RuntimeError(f"Search failed: {str(e)}")
+        raise RuntimeError(f"DDGS search failed: {str(e)}")
+
+    if not results:
+        raise RuntimeError("No search results found")
 
     output = OUTPUT()
     output.results = results

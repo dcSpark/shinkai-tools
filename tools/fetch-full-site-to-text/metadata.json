@@ -1,0 +1,67 @@
+{
+  "name": "Fetch Full Site to Text",
+  "description": "This tool fetches the content of an entire website starting from a given URL. It then saves all the text from the site into a single, organized text file on your computer. You can limit the max number of pages it downloads, and the concurrency.",
+  "keywords": [
+    "sitefetch",
+    "url",
+    "entire website",
+    "full site",
+    "fetch",
+    "extract",
+    "download website",
+    "text export"
+  ],
+  "version": "1.0.0",
+  "author": "@@official.shinkai",
+  "configurations": {
+    "properties": {},
+    "required": []
+  },
+  "oauth": [],
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "outputFileName": {
+        "type": "string",
+        "description": "Output file name to write in the user's home directory.",
+        "default": "site.txt"
+      },
+      "showFileContent": {
+        "type": "boolean",
+        "description": "If true, include the full generated text content in the result. Use 'true' to let the AI see the content. Use 'false' to simply create a .txt file.",
+        "default": false
+      },
+      "url": {
+        "type": "string",
+        "description": "The starting URL to fetch."
+      },
+      "limit": {
+        "type": "number",
+        "description": "Maximum number of pages to fetch."
+      },
+      "concurrency": {
+        "type": "number",
+        "description": "Maximum number of concurrent fetches.",
+        "default": 10
+      }
+    },
+    "required": [
+      "url"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": null,
+    "required": []
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": [],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": ""
+}

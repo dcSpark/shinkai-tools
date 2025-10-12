@@ -1,0 +1,5 @@
+{
+  "categoryId": "a7cc35cf-12c5-4375-ab40-1aac97d81980",
+  "name": "MP3 Concatenator",
+  "description": "Concatenates multiple MP3 files into a single MP3 using ffmpeg. It adds them one after another in the defined order."
+}

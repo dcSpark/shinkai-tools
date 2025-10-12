@@ -1,0 +1,61 @@
+{
+  "name": "Webpage clean text extractor",
+  "description": "Fetches the clean, readable text from any webpage using the Jina AI Reader service and saves it to a local file.",
+  "keywords": [
+    "web",
+    "webapge",
+    "url",
+    "http",
+    "jina",
+    "download",
+    "content",
+    "text",
+    "scrap",
+    "fetch",
+    "extract"
+  ],
+  "version": "1.0.0",
+  "author": "@@official.shinkai",
+  "configurations": {
+    "properties": {},
+    "required": []
+  },
+  "oauth": [],
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "show_content": {
+        "type": "boolean",
+        "description": "Whether to include the fetched text content in the result. Use 'true' to let the AI see the content. Use 'false' to simply create a .txt file.",
+        "default": true
+      },
+      "url": {
+        "type": "string",
+        "description": "The URL to fetch. If missing a scheme, https:// is prepended."
+      },
+      "timeout_seconds": {
+        "type": "integer",
+        "description": "HTTP request timeout in seconds. Default: 30.",
+        "default": 30
+      }
+    },
+    "required": [
+      "url"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": null,
+    "required": []
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": [],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": ""
+}

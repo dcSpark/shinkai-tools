@@ -1,0 +1,77 @@
+{
+  "name": "MP3 Concatenator",
+  "description": "Concatenates multiple MP3 files into a single MP3 using ffmpeg. It adds them one after another in the defined order.",
+  "keywords": [
+    "audio",
+    "mp3",
+    "ffmpeg",
+    "concatenate",
+    "merge",
+    "join"
+  ],
+  "version": "1.0.0",
+  "author": "@@official.shinkai",
+  "configurations": {
+    "properties": {},
+    "required": []
+  },
+  "oauth": [],
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "optional_output_path": {
+        "type": "string",
+        "description": "Optional destination path to also save a copy (can be a directory or a file path)."
+      },
+      "output_filename": {
+        "type": "string",
+        "description": "Optional filename for the output saved in the Shinkai home path ('.mp3' extension will be ensured)."
+      },
+      "input_files": {
+        "type": "array",
+        "description": "Absolute paths to MP3 files to concatenate, in order.",
+        "items": {
+          "type": "string",
+          "description": "Absolute path to an MP3 file"
+        }
+      }
+    },
+    "required": [
+      "input_files"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "home_saved_path": {
+        "description": "Path of the generated MP3 file saved in the home path.",
+        "type": "string"
+      },
+      "message": {
+        "description": "Result message.",
+        "type": "string"
+      },
+      "optional_saved_path": {
+        "description": "Path where the additional copy was saved, if provided.",
+        "nullable": true,
+        "type": "string"
+      }
+    },
+    "required": [
+      "home_saved_path",
+      "message"
+    ]
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": [
+    "local:::__official_shinkai:::shinkai_llm_prompt_processor"
+  ],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": ""
+}

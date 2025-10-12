@@ -1,0 +1,69 @@
+{
+  "name": "SmartScrape",
+  "description": "SmartScrape extracts specific data from web pages using a large language model. Users provide a URL and instructions for what content to extract, along with optional formatting guidelines. The tool processes the page and returns the requested data in the specified format. To use, input a URL and clear extraction instructions (e.g., \"Extract product prices\") with optional format rules (e.g., \"Return as: Price: $X\").",
+  "keywords": [
+    "extract",
+    "web",
+    "webpage",
+    "text extraction",
+    "web scraping",
+    "LLM scraping",
+    "formatted"
+  ],
+  "version": "1.0.0",
+  "author": "@@official.shinkai",
+  "configurations": {
+    "properties": {
+      "extract_instructions": {
+        "description": "Default free-text extraction instructions describing what to extract from the page. Be clear, detailed and specific for better results. Use this configuration to create a tool that always extracts the same content.",
+        "type": "string"
+      },
+      "format_instructions": {
+        "description": "Default free-text describing the output format(s) the LLM should follow. Be clear, specific, and give examples for better results. (e.g., 'Return lines as: field: value'. 'Return only a JSON format as:...). Use this configuration to create a tool that always outputs the content in the same format.",
+        "type": "string"
+      },
+      "url": {
+        "description": "Default URL to download the page from. Use this configuration to create a tool that always scrapes the same URL.",
+        "type": "string"
+      }
+    },
+    "required": []
+  },
+  "oauth": [],
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "format_instructions": {
+        "type": "string",
+        "description": "Free-text describing the output format(s) the LLM should follow (overrides config.format_instructions). Be clear, specific, and give examples for better results. (e.g., 'Return lines as: field: value'. 'Return only a JSON format as:...)."
+      },
+      "extract_instructions": {
+        "type": "string",
+        "description": "Free-text extraction instructions describing what to extract from the page (overrides config.extract_instructions). Be clear, detailed and specific for better results."
+      },
+      "url": {
+        "type": "string",
+        "description": "URL to scrape (overrides config.url)"
+      }
+    },
+    "required": []
+  },
+  "result": {
+    "type": "object",
+    "properties": null,
+    "required": []
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": [
+    "local:::__official_shinkai:::shinkai_llm_prompt_processor",
+    "local:::__official_shinkai:::download_pages"
+  ],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": ""
+}

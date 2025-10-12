@@ -1,0 +1,5 @@
+{
+  "categoryId": "5f10d0b4-6acd-477a-96e1-be35634465b2",
+  "name": "Webpage clean text extractor",
+  "description": "Fetches the clean, readable text from any webpage using the Jina AI Reader service and saves it to a local file."
+}

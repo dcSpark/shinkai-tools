@@ -1,0 +1,5 @@
+{
+  "categoryId": "5f10d0b4-6acd-477a-96e1-be35634465b2",
+  "name": "Fetch Full Site to Text",
+  "description": "This tool fetches the content of an entire website starting from a given URL. It then saves all the text from the site into a single, organized text file on your computer. You can limit the max number of pages it downloads, and the concurrency."
+}

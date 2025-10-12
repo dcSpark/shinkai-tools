@@ -1,0 +1,5 @@
+{
+  "categoryId": "5f10d0b4-6acd-477a-96e1-be35634465b2",
+  "name": "SmartScrape",
+  "description": "SmartScrape extracts specific data from web pages using a large language model. Users provide a URL and instructions for what content to extract, along with optional formatting guidelines. The tool processes the page and returns the requested data in the specified format. To use, input a URL and clear extraction instructions (e.g., \"Extract product prices\") with optional format rules (e.g., \"Return as: Price: $X\")."
+}

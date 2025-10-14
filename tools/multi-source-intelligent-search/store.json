@@ -1,0 +1,5 @@
+{
+  "categoryId": "cc6ba888-3987-4e2a-af7e-3b137d997262",
+  "name": "Multi-Source Intelligent Search",
+  "description": "This tool identifies the best sources for a user query.\n\nIt intelligently routes to the most adapted search tools (including web search, YouTube, arXiv, e-books, news, and PubMed), and aggregates best results.\n\nTo guide the tool on which search tools to use, be explicit.\n\nUse the parameters to customize the depth of your search.\n\nThis tool first requires the installation of all underlying search tools.\n\nFork this tool to add or remove search tools, and to customize the instructions for each search tool."
+}

@@ -1,0 +1,184 @@
+{
+  "name": "Multi-Source Intelligent Search",
+  "description": "This tool identifies the best sources for a user query.\n\nIt intelligently routes to the most adapted search tools (including web search, YouTube, arXiv, e-books, news, and PubMed), and aggregates best results.\n\nTo guide the tool on which search tools to use, be explicit.\n\nUse the parameters to customize the depth of your search.\n\nThis tool first requires the installation of all underlying search tools.\n\nFork this tool to add or remove search tools, and to customize the instructions for each search tool.",
+  "keywords": [
+    "search",
+    "multi source",
+    "source",
+    "best source",
+    "web",
+    "research"
+  ],
+  "version": "1.0.0",
+  "author": "@@official.shinkai",
+  "configurations": {
+    "properties": {
+      "alwaysIncludeYoutube": {
+        "description": "Whether to always include YouTube search regardless of suggestions. Set to 'true' if you always want video content about your searched topics. Default : false.",
+        "type": "string"
+      },
+      "debug": {
+        "description": "If true, include detailed debug information in the output. Default : false.",
+        "type": "string"
+      },
+      "llm": {
+        "description": "Optional override for the LLM to use to generate tool suggestions and evaluating results. Leave empty to use the default LLM. Use LLM IDs as displayed in Shinkai (e.g., 'shinkai_free_trial', 'gpt_5_mini', 'gemini_2_5_pro').",
+        "type": "string"
+      }
+    },
+    "required": []
+  },
+  "oauth": [],
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "prompt": {
+        "type": "string",
+        "description": "User prompt or research topic to search for."
+      },
+      "finalTop": {
+        "type": "number",
+        "description": "Number of final top sources to select and return in the final output. Default : 8."
+      },
+      "queriesPerTool": {
+        "type": "number",
+        "description": "Number of distinct queries to generate and execute per selected search tool. Defautl : 2. Max : 3. Increase to search your topic from more angles."
+      },
+      "topPerQuery": {
+        "type": "number",
+        "description": "Number of top results to keep from each search tool. Default : 4."
+      },
+      "resultsPerQuery": {
+        "type": "number",
+        "description": "Maximum number of results to retrieve per query. Default : 10."
+      }
+    },
+    "required": [
+      "prompt"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "debug_info": {
+        "description": "Optional debugging details including generated queries and raw tool results.",
+        "properties": {
+          "queries": {
+            "additionalProperties": {
+              "items": {
+                "properties": {
+                  "optionalParams": {
+                    "additionalProperties": true,
+                    "description": "Optional parameters passed to the tool for this query.",
+                    "type": "object"
+                  },
+                  "query": {
+                    "description": "The generated query.",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "query",
+                  "optionalParams"
+                ],
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "description": "Generated queries per tool.",
+            "type": "object"
+          },
+          "raw_results": {
+            "additionalProperties": {
+              "items": {
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "description": "Raw result arrays returned by each tool.",
+            "type": "object"
+          },
+          "selected_results": {
+            "additionalProperties": {
+              "items": {
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "description": "Pre-selected or filtered results per tool before final ranking.",
+            "type": "object"
+          }
+        },
+        "required": [],
+        "type": "object"
+      },
+      "errors": {
+        "description": "List of error messages gathered during execution.",
+        "items": {
+          "description": "Error message.",
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "final_best_sources": {
+        "description": "Consolidated and ranked list of the best sources across all tools.",
+        "items": {
+          "properties": {
+            "description": {
+              "description": "Short description or snippet for the source.",
+              "type": "string"
+            },
+            "source": {
+              "description": "Origin tool/provider of the source (e.g., web, arxiv, pubmed).",
+              "type": "string"
+            },
+            "title": {
+              "description": "Title of the source.",
+              "type": "string"
+            },
+            "type": {
+              "description": "Content type (e.g., article, video, paper).",
+              "type": "string"
+            },
+            "url": {
+              "description": "URL of the source.",
+              "type": "string"
+            }
+          },
+          "required": [
+            "title",
+            "url",
+            "description",
+            "source",
+            "type"
+          ],
+          "type": "object"
+        },
+        "type": "array"
+      }
+    },
+    "required": [
+      "final_best_sources",
+      "errors"
+    ]
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": [
+    "local:::__official_shinkai:::arxiv_search",
+    "local:::__official_shinkai:::anna_s_archive_ebook_search___web_scrapping_based",
+    "local:::__official_shinkai:::google_news_search",
+    "local:::__official_shinkai:::pubmed_search",
+    "local:::__official_shinkai:::shinkai_llm_prompt_processor",
+    "local:::__official_shinkai:::wait_1_5_seconds",
+    "local:::__official_shinkai:::web_search",
+    "local:::__official_shinkai:::youtube_search"
+  ],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": ""
+}

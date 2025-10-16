@@ -1,0 +1,5 @@
+{
+  "categoryId": "5f10d0b4-6acd-477a-96e1-be35634465b2",
+  "name": "Multi-LLM Prompt Processor and Synthesizer",
+  "description": "This tool enhances prompt results by querying multiple LLMs with a single prompt. It then uses a final \"synthesizer\" LLM to analyze all the individual responses and craft one superior, comprehensive answer that combines the best elements of each.\n\n## How to Use\n\n1.  Set the `processing_mode` to `parallel` (faster, staggered start) or 'sequential' (if using multiple local models).\n2.  List the processing LLMs, using their Shinkai IDs (e.g., `shinkai_free_trial, gpt_5_mini, gemini_2_5_pro`).\n3.  Choose a powerful synthesizer LLM in `default_synthesizer_LLM` to create the final answer, using its Shinkai ID (e.g., `shinkai_free_trial').\n4. Provide your prompt in the `user_prompt` input.\n"
+}

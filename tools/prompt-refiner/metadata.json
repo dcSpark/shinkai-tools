@@ -1,0 +1,66 @@
+{
+  "name": "Prompt Refiner",
+  "description": "Tool for refining user prompts to make them more effective for LLMs and AI Agents by classifying them into categories and adding specific instructions.\n\nUse this tool as a first step in an AI/LLM task to improve the quality of user inputs and obtain better outputs.\n\nFork this tool and define customized categories and related instructions to fit your specific use cases.",
+  "keywords": [
+    "improve",
+    "prompt",
+    "enhance",
+    "refine"
+  ],
+  "version": "1.0.0",
+  "author": "@@official.shinkai",
+  "configurations": {
+    "properties": {
+      "llm": {
+        "description": "Optional LLM to use, instead of default. Use LLM IDs as displayed in Shinkai (e.g., 'shinkai_free_trial', 'gpt_5_mini', 'gemini_2_5_pro').",
+        "type": "string"
+      },
+      "showCategory": {
+        "description": "Whether to include the classified category in the output",
+        "type": "string"
+      }
+    },
+    "required": []
+  },
+  "oauth": [],
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "prompt": {
+        "type": "string",
+        "description": "The user prompt to classify and enhance"
+      }
+    },
+    "required": [
+      "prompt"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "category": {
+        "description": "The classified category of the prompt, if requested",
+        "type": "string"
+      },
+      "enhancedPrompt": {
+        "description": "The refined and enhanced version of the input prompt",
+        "type": "string"
+      }
+    },
+    "required": [
+      "enhancedPrompt"
+    ]
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": [
+    "local:::__official_shinkai:::shinkai_llm_prompt_processor"
+  ],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": ""
+}

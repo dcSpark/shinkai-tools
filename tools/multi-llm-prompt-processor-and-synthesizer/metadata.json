@@ -1,0 +1,119 @@
+{
+  "name": "Multi-LLM Prompt Processor and Synthesizer",
+  "description": "This tool enhances prompt results by querying multiple LLMs with a single prompt. It then uses a final \"synthesizer\" LLM to analyze all the individual responses and craft one superior, comprehensive answer that combines the best elements of each.\n\n## How to Use\n\n1.  Set the `processing_mode` to `parallel` (faster, staggered start) or 'sequential' (if using multiple local models).\n2.  List the processing LLMs, using their Shinkai IDs (e.g., `shinkai_free_trial, gpt_5_mini, gemini_2_5_pro`).\n3.  Choose a powerful synthesizer LLM in `default_synthesizer_LLM` to create the final answer, using its Shinkai ID (e.g., `shinkai_free_trial').\n4. Provide your prompt in the `user_prompt` input.\n",
+  "keywords": [
+    "llm",
+    "synthesis",
+    "multi-LLM",
+    "prompt-processing",
+    "LLM panel"
+  ],
+  "version": "1.0.0",
+  "author": "@@official.shinkai",
+  "configurations": {
+    "properties": {
+      "default_prompt_processing_LLMs": {
+        "description": "Comma-separated list of default LLMs for prompt processing, using their Shinkai IDs (e.g., 'shinkai_free_trial, gpt_5, gemini_2_5_pro').",
+        "type": "string"
+      },
+      "default_synthesizer_LLM": {
+        "description": "Default LLM for synthesizing the results, using its Shinkai ID (e.g., 'shinkai_free_trial').",
+        "type": "string"
+      },
+      "processing_mode": {
+        "description": "Mode for processing prompts: 'parallel' or 'sequential'. In 'parallel' mode, use only 1 local model. Use 'sequential' mode when using multiple local models. Default : parallel.",
+        "type": "string"
+      },
+      "show_individual_answers": {
+        "description": "Whether to include individual answers from processing LLMs in the output. Default : false.",
+        "type": "string"
+      }
+    },
+    "required": []
+  },
+  "oauth": [],
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "additional_instructions": {
+        "type": "string",
+        "description": "Additional instructions to include in the synthesis prompt, to further guide the synthesizer towards the type of final answer you would like."
+      },
+      "user_prompt": {
+        "type": "string",
+        "description": "The main user prompt to process with the LLMs."
+      },
+      "prompt_processing_LLMs": {
+        "type": "string",
+        "description": "Optional override for processing LLMs, comma-separated, using their Shinkai IDs (e.g., 'shinkai_free_trial, gpt_5_mini')."
+      },
+      "synthesizer_LLM": {
+        "type": "string",
+        "description": "Optional override for the synthesizer LLM, using its Shinkai ID (e.g., 'shinkai_free_trial')."
+      }
+    },
+    "required": [
+      "user_prompt"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "failed_calls": {
+        "additionalProperties": {
+          "type": "string"
+        },
+        "description": "Details of any failed LLM calls.",
+        "type": "object"
+      },
+      "final_synthesized_answer": {
+        "description": "The final synthesized answer combining the best elements from processing LLMs.",
+        "type": "string"
+      },
+      "intermediary_individual_answers": {
+        "additionalProperties": {
+          "type": "string"
+        },
+        "description": "Individual responses from processing LLMs, if requested.",
+        "type": "object"
+      },
+      "provenance": {
+        "properties": {
+          "processing_llms": {
+            "description": "List of LLMs used for initial processing.",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "synthesizer_llm": {
+            "description": "The LLM used for synthesis.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "synthesizer_llm",
+          "processing_llms"
+        ],
+        "type": "object"
+      }
+    },
+    "required": [
+      "final_synthesized_answer",
+      "provenance"
+    ]
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": [
+    "local:::__official_shinkai:::shinkai_llm_prompt_processor",
+    "local:::__official_shinkai:::wait_1_5_seconds"
+  ],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": ""
+}

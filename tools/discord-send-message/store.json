@@ -1,0 +1,5 @@
+{
+  "categoryId": "e7b5efee-2eb9-446f-934f-2548305933e6",
+  "name": "Discord Send Message",
+  "description": "This tool sends a message to a specific Discord channel using a bot. It can also be used to reply to an existing message or mention a user.\n\nHow to Use:\n\n1.  Provide your Discord Bot Token for authentication. You need to set it up first (https://discord.com/developers/applications), and give the required permissions.\n2.  Set the ID of the channel where the message will be sent (numeric ID).\n3.  Write the text for your message.\n4.  Optional : Add the ID of a message to reply to it (numeric ID).\n5.  Optional : Add users' ID to mention them  (numeric ID)."
+}

@@ -1,0 +1,186 @@
+{
+  "name": "Discord Messages Fetcher",
+  "description": "Fetches a limited number of messages from a specified Discord channel using a bot token.\n\nSet your bot token in config.\nChoose the channel ID to fetch.\nSet a limit on the number of messages to fetch.\nFilter by user if needed.\n\nYou must first create a discord bot (https://discord.com/developers/applications), invite it to a server you administrate, and give it the permissions it requires.",
+  "keywords": [
+    "discord",
+    "message",
+    "fetch",
+    "read",
+    "bot"
+  ],
+  "version": "1.0.0",
+  "author": "@@official.shinkai",
+  "configurations": {
+    "properties": {
+      "discord_token": {
+        "description": "The Discord bot token for authentication",
+        "type": "string"
+      }
+    },
+    "required": [
+      "discord_token"
+    ]
+  },
+  "oauth": [],
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "limit": {
+        "type": "number",
+        "description": "Optional maximum number of messages to fetch (default: 25)."
+      },
+      "userIds": {
+        "type": "string",
+        "description": "Optional comma-separated user IDs to filter messages by (e.g., '123456789, 234567891', replace with actual user IDs, can be just one)"
+      },
+      "channelId": {
+        "type": "string",
+        "description": "The ID of the Discord channel to fetch messages from (e.g., '123456789012345678', replace with the actual channel ID)."
+      }
+    },
+    "required": [
+      "channelId"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "filterInfo": {
+        "description": "Filter statistics if user IDs were provided",
+        "properties": {
+          "totalFiltered": {
+            "description": "The number of messages after filtering",
+            "type": "number"
+          },
+          "totalWithoutFilter": {
+            "description": "The total number of messages before filtering",
+            "type": "number"
+          },
+          "userIds": {
+            "description": "The user IDs used for filtering",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "messages": {
+        "description": "Array of fetched message objects",
+        "items": {
+          "properties": {
+            "attachments": {
+              "description": "Array of attachment objects",
+              "items": {
+                "properties": {
+                  "filename": {
+                    "description": "The filename of the attachment",
+                    "type": "string"
+                  },
+                  "id": {
+                    "description": "The ID of the attachment",
+                    "type": "string"
+                  },
+                  "url": {
+                    "description": "The URL of the attachment",
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "author": {
+              "description": "The username of the author",
+              "type": "string"
+            },
+            "authorId": {
+              "description": "The ID of the author",
+              "type": "string"
+            },
+            "content": {
+              "description": "The content of the message",
+              "type": "string"
+            },
+            "embeds": {
+              "description": "Array of embed objects",
+              "items": {
+                "properties": {
+                  "description": {
+                    "description": "The description of the embed",
+                    "type": "string"
+                  },
+                  "title": {
+                    "description": "The title of the embed",
+                    "type": "string"
+                  },
+                  "url": {
+                    "description": "The URL of the embed",
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "id": {
+              "description": "The ID of the message",
+              "type": "string"
+            },
+            "reactions": {
+              "description": "Array of reaction objects",
+              "items": {
+                "properties": {
+                  "count": {
+                    "description": "The count of reactions",
+                    "type": "number"
+                  },
+                  "emoji": {
+                    "description": "The emoji of the reaction",
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "repliedTo": {
+              "description": "The message this message replies to, if any",
+              "properties": {
+                "author": {
+                  "description": "The author of the replied-to message",
+                  "type": "string"
+                },
+                "messageId": {
+                  "description": "The ID of the replied-to message",
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "timestamp": {
+              "description": "The timestamp of the message",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "type": "array"
+      }
+    },
+    "required": [
+      "messages"
+    ]
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": [],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": ""
+}

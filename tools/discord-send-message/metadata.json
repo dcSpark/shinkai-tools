@@ -1,0 +1,180 @@
+{
+  "name": "Discord Send Message",
+  "description": "This tool sends a message to a specific Discord channel using a bot. It can also be used to reply to an existing message or mention a user.\n\nHow to Use:\n\n1.  Provide your Discord Bot Token for authentication. You need to set it up first (https://discord.com/developers/applications), and give the required permissions.\n2.  Set the ID of the channel where the message will be sent (numeric ID).\n3.  Write the text for your message.\n4.  Optional : Add the ID of a message to reply to it (numeric ID).\n5.  Optional : Add users' ID to mention them  (numeric ID).",
+  "keywords": [
+    "discord",
+    "message",
+    "send",
+    "reply",
+    "bot"
+  ],
+  "version": "1.0.0",
+  "author": "@@official.shinkai",
+  "configurations": {
+    "properties": {
+      "discord_token": {
+        "description": "The Discord bot token",
+        "type": "string"
+      }
+    },
+    "required": [
+      "discord_token"
+    ]
+  },
+  "oauth": [],
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "mentionUser": {
+        "type": "string",
+        "description": "Optional coma-separated list of IDs of users to mention in the message (e.g., '123456789012345678, 012345678901234567', replace with actual user IDs, can be just one)."
+      },
+      "replyToMessageId": {
+        "type": "string",
+        "description": "Optional ID of the message to reply to, if any (e.g., '123456789012345678', replace with the actual message ID)."
+      },
+      "channelId": {
+        "type": "string",
+        "description": "The ID of the Discord channel to send the message to (e.g., '123456789012345678', replace with the actual channel ID)."
+      },
+      "content": {
+        "type": "string",
+        "description": "The message content"
+      }
+    },
+    "required": [
+      "channelId",
+      "content"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "error": {
+        "description": "Error message if the operation failed",
+        "nullable": true,
+        "type": "string"
+      },
+      "message": {
+        "properties": {
+          "author": {
+            "properties": {
+              "avatar": {
+                "nullable": true,
+                "type": "string"
+              },
+              "id": {
+                "type": "string"
+              },
+              "username": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "username"
+            ],
+            "type": "object"
+          },
+          "content": {
+            "description": "The content of the message",
+            "type": "string"
+          },
+          "editedTimestamp": {
+            "nullable": true,
+            "type": "string"
+          },
+          "embeds": {
+            "description": "List of embeds in the message",
+            "items": {
+              "properties": {
+                "description": {
+                  "nullable": true,
+                  "type": "string"
+                },
+                "title": {
+                  "nullable": true,
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string"
+                },
+                "url": {
+                  "nullable": true,
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "id": {
+            "description": "The ID of the sent message",
+            "type": "string"
+          },
+          "mentionEveryone": {
+            "type": "boolean"
+          },
+          "mentions": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "reactions": {
+            "description": "List of reactions on the message",
+            "items": {
+              "properties": {
+                "count": {
+                  "type": "number"
+                },
+                "emoji": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "repliedTo": {
+            "nullable": true,
+            "properties": {
+              "author": {
+                "type": "string"
+              },
+              "messageId": {
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "timestamp": {
+            "type": "string"
+          },
+          "webhookId": {
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "success": {
+        "description": "Whether the operation was successful",
+        "type": "boolean"
+      }
+    },
+    "required": [
+      "success"
+    ]
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": [],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": ""
+}

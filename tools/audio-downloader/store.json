@@ -1,0 +1,5 @@
+{
+  "categoryId": "5f10d0b4-6acd-477a-96e1-be35634465b2",
+  "name": "Audio Downloader",
+  "description": "Downloads audio from any URL on websites and platforms supported by yt-dlp and converts it to MP3 at 192kbps quality."
+}

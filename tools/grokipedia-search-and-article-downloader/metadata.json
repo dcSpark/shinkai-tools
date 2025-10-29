@@ -1,0 +1,101 @@
+{
+  "name": "Grokipedia Search and Article Downloader",
+  "description": "Searches Grokipedia for a given query, uses LLM to select and download content from the most relevant articles, or falls back to top result links.",
+  "keywords": [
+    "grokipedia",
+    "search",
+    "article",
+    "source"
+  ],
+  "version": "1.0.0",
+  "author": "@@official.shinkai",
+  "configurations": {
+    "properties": {
+      "LLM_to_rank_search_results": {
+        "description": "Optional LLM to use for ranking search results. Leave empty for default LLM. Use LLM IDs as shown in Shinkai (e.g., 'shinkai_free_trial', 'gpt_5', 'gemini_2_5_pro', 'o_qwen3_8b').",
+        "type": "string"
+      },
+      "max_fitting_articles": {
+        "description": "Maximum number of best fitting articles to select (default 3, max 10)",
+        "type": "string"
+      },
+      "top_results_if_none": {
+        "description": "Number of top results for fallback if no fitting articles (default 10, max 10)",
+        "type": "string"
+      }
+    },
+    "required": []
+  },
+  "oauth": [],
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "query": {
+        "type": "string",
+        "description": "The search query for Grokipedia"
+      },
+      "override_max_articles": {
+        "type": "number",
+        "description": "Optional override for the maximum number of fitting articles"
+      }
+    },
+    "required": [
+      "query"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "fallback_links": {
+        "description": "List of fallback links to top related articles if no fitting results",
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "fitting_results": {
+        "description": "List of the most fitting articles with their titles and markdown content",
+        "items": {
+          "properties": {
+            "content": {
+              "description": "The markdown content of the article",
+              "type": "string"
+            },
+            "title": {
+              "description": "The title of the article",
+              "type": "string"
+            }
+          },
+          "required": [
+            "title",
+            "content"
+          ],
+          "type": "object"
+        },
+        "type": "array"
+      },
+      "status": {
+        "description": "Status indicating the outcome of the search",
+        "type": "string"
+      }
+    },
+    "required": [
+      "fitting_results",
+      "fallback_links",
+      "status"
+    ]
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": [
+    "local:::__official_shinkai:::download_pages",
+    "local:::__official_shinkai:::shinkai_llm_prompt_processor"
+  ],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": ""
+}

@@ -7,15 +7,15 @@
     "type": "object",
     "properties": {
       "compute_type": {
-        "description": "The compute type to use for the model",
+        "description": "Compute precision for the model (\"int8\", \"float16\", \"int8_float16\"). Default : \"int8\"",
         "type": "string"
       },
       "device": {
-        "description": "The device to run the model on",
+        "description": "Device to run the model on (\"cpu\" or \"cuda\"). Default : \"cpu\"",
         "type": "string"
       },
       "model_name": {
-        "description": "The size of the Whisper model to use",
+        "description": "Whisper model size to use (e.g., \"base\", \"large-v3\", \"distil-large\"). Default : \"base\"",
         "type": "string"
       }
     },

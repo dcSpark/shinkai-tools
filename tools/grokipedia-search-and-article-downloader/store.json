@@ -1,0 +1,5 @@
+{
+  "categoryId": "cc6ba888-3987-4e2a-af7e-3b137d997262",
+  "name": "Grokipedia Search and Article Downloader",
+  "description": "Searches Grokipedia for a given query, uses LLM to select and download content from the most relevant articles, or falls back to top result links."
+}

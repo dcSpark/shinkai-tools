@@ -1,0 +1,68 @@
+{
+  "name": "Audio LLM Processor",
+  "description": "Ask questions about any local audio file. This tool passes your audio and prompt to a multimodal LLM for analysis.\n\nFor long audio files, you might prefer to convert the audio to text first, and the use a LLM on the text.",
+  "keywords": [
+    "audio",
+    "audio analysis",
+    "audio to text",
+    "transcription",
+    "mp3"
+  ],
+  "version": "1.0.0",
+  "author": "@@official.shinkai",
+  "configurations": {
+    "properties": {
+      "llm_provider": {
+        "description": "Optional default LLM to use. Leave it empty to use the default LLM from the Agent, chat or task. Make sure to use a LLM supporting audio input and processing. Use LLM IDs as displayed in Shinkai (e.g., 'gemini_2_5_pro').",
+        "type": "string"
+      }
+    },
+    "required": []
+  },
+  "oauth": [],
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "audio_path": {
+        "type": "string",
+        "description": "The path to the local audio file. Use file formats supported by the selected LLM."
+      },
+      "prompt": {
+        "type": "string",
+        "description": "The prompt for the LLM"
+      },
+      "llm_override": {
+        "type": "string",
+        "description": "Optional override for the LLM provider. Leave empty to use default. Make sure to use a LLM supporting audio input and processing. Use LLM IDs as displayed in Shinkai (e.g., 'gemini_2_5_pro')."
+      }
+    },
+    "required": [
+      "audio_path",
+      "prompt"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "message": {
+        "description": "The LLM response message",
+        "type": "string"
+      }
+    },
+    "required": [
+      "message"
+    ]
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": [
+    "local:::__official_shinkai:::shinkai_llm_prompt_processor"
+  ],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": ""
+}

@@ -1,0 +1,56 @@
+{
+  "name": "Audio Downloader",
+  "description": "Downloads audio from any URL on websites and platforms supported by yt-dlp and converts it to MP3 at 192kbps quality.",
+  "keywords": [
+    "audio",
+    "download",
+    "yt-dlp",
+    "mp3",
+    "extract audio"
+  ],
+  "version": "1.0.0",
+  "author": "@@official.shinkai",
+  "configurations": {
+    "properties": {},
+    "required": []
+  },
+  "oauth": [],
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "filename": {
+        "type": "string",
+        "description": "Optional custom base filename for the output MP3 file (without extension)"
+      },
+      "url": {
+        "type": "string",
+        "description": "The URL to download audio from (any platform or website supported by yt-dlp)."
+      }
+    },
+    "required": [
+      "url"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "audio_path": {
+        "description": "The full path to the downloaded MP3 file",
+        "type": "string"
+      }
+    },
+    "required": [
+      "audio_path"
+    ]
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": [],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": ""
+}

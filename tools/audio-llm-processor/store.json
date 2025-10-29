@@ -1,0 +1,5 @@
+{
+  "categoryId": "5f10d0b4-6acd-477a-96e1-be35634465b2",
+  "name": "Audio LLM Processor",
+  "description": "Ask questions about any local audio file. This tool passes your audio and prompt to a multimodal LLM for analysis.\n\nFor long audio files, you might prefer to convert the audio to text first, and the use a LLM on the text."
+}

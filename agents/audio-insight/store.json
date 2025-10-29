@@ -1,0 +1,8 @@
+{
+  "categoryId": "16fa3d8c-305c-410b-a7c9-6708f04c9976",
+  "name": "Audio Insight",
+  "description": "An AI assistant that analyzes audio from any video or podcast URL to answer your questions about its content.",
+  "version": "1.0.0",
+  "author": "@@official.sep-shinkai",
+  "keywords": []
+}

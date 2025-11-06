@@ -1,0 +1,5 @@
+{
+  "categoryId": "f004e0f9-4b2b-44f3-abee-d1fd42b9f9ba",
+  "name": "DeFi and Other Bitcoin Treasuries Fetcher",
+  "description": "Fetches and analyzes data on DeFi and other entities holding Bitcoin treasuries from bitcointreasuries.net, saves historical data to CSVs, and generates plots."
+}

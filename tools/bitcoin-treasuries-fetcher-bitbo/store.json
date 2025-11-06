@@ -1,0 +1,5 @@
+{
+  "categoryId": "f004e0f9-4b2b-44f3-abee-d1fd42b9f9ba",
+  "name": "Bitcoin Treasuries Fetcher Bitbo",
+  "description": "Fetches Bitcoin treasury data from bitbo.io using webpage extraction, parses it into structured overall totals, category totals, and detailed lists (public companies, private companies, countries, ETFs, miners, DeFi), saves historical data to CSV files, generates plots for category distribution and historical trends, and outputs formatted results with options to show full lists or top 10."
+}

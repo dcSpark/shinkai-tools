@@ -1,0 +1,525 @@
+{
+  "name": "Bitcoin Treasuries Fetcher Bitbo",
+  "description": "Fetches Bitcoin treasury data from bitbo.io using webpage extraction, parses it into structured overall totals, category totals, and detailed lists (public companies, private companies, countries, ETFs, miners, DeFi), saves historical data to CSV files, generates plots for category distribution and historical trends, and outputs formatted results with options to show full lists or top 10.",
+  "keywords": [
+    "bitcoin",
+    "treasuries",
+    "bitbo",
+    "BTC",
+    "categories",
+    "holdings"
+  ],
+  "version": "1.0.0",
+  "author": "@@official.shinkai",
+  "configurations": {
+    "properties": {
+      "folder_path": {
+        "description": "The path to the folder where output files (data and plots) will be saved",
+        "type": "string"
+      }
+    },
+    "required": []
+  },
+  "oauth": [],
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "show_full_list_private_companies": {
+        "type": "boolean",
+        "description": "Whether to include the full list of private companies (defaults to top 10 if false)",
+        "default": false
+      },
+      "show_full_list_etfs": {
+        "type": "boolean",
+        "description": "Whether to include the full list of ETFs (defaults to top 10 if false)",
+        "default": false
+      },
+      "show_full_list_public_companies": {
+        "type": "boolean",
+        "description": "Whether to include the full list of public companies (defaults to top 10 if false)",
+        "default": false
+      },
+      "show_full_list_miners": {
+        "type": "boolean",
+        "description": "Whether to include the full list of miners (defaults to top 10 if false)",
+        "default": false
+      },
+      "show_full_list_countries": {
+        "type": "boolean",
+        "description": "Whether to include the full list of countries (defaults to top 10 if false)",
+        "default": false
+      },
+      "show_full_list_defi": {
+        "type": "boolean",
+        "description": "Whether to include the full list of DeFi entities (defaults to top 10 if false)",
+        "default": false
+      }
+    },
+    "required": []
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "countries": {
+        "description": "Full list of countries' holdings (if specified, otherwise null)",
+        "items": {
+          "properties": {
+            "btc_holdings": {
+              "description": "Formatted BTC holdings",
+              "type": "string"
+            },
+            "entity": {
+              "description": "Country name",
+              "type": "string"
+            },
+            "percentage_of_21m": {
+              "description": "Percentage of total supply",
+              "type": "string"
+            },
+            "value_usd": {
+              "description": "Formatted USD value",
+              "type": "string"
+            }
+          },
+          "required": [
+            "entity",
+            "btc_holdings",
+            "value_usd",
+            "percentage_of_21m"
+          ],
+          "type": "object"
+        },
+        "type": "array"
+      },
+      "defi": {
+        "description": "Full list of DeFi entities' holdings (if specified, otherwise null)",
+        "items": {
+          "properties": {
+            "btc_holdings": {
+              "description": "Formatted BTC holdings",
+              "type": "string"
+            },
+            "entity": {
+              "description": "DeFi entity name",
+              "type": "string"
+            },
+            "percentage_of_21m": {
+              "description": "Percentage of total supply",
+              "type": "string"
+            },
+            "value_usd": {
+              "description": "Formatted USD value",
+              "type": "string"
+            }
+          },
+          "required": [
+            "entity",
+            "btc_holdings",
+            "value_usd",
+            "percentage_of_21m"
+          ],
+          "type": "object"
+        },
+        "type": "array"
+      },
+      "etfs": {
+        "description": "Full list of ETFs' holdings (if specified, otherwise null)",
+        "items": {
+          "properties": {
+            "btc_holdings": {
+              "description": "Formatted BTC holdings",
+              "type": "string"
+            },
+            "entity": {
+              "description": "ETF name",
+              "type": "string"
+            },
+            "percentage_of_21m": {
+              "description": "Percentage of total supply",
+              "type": "string"
+            },
+            "value_usd": {
+              "description": "Formatted USD value",
+              "type": "string"
+            }
+          },
+          "required": [
+            "entity",
+            "btc_holdings",
+            "value_usd",
+            "percentage_of_21m"
+          ],
+          "type": "object"
+        },
+        "type": "array"
+      },
+      "miners": {
+        "description": "Full list of miners' holdings (if specified, otherwise null)",
+        "items": {
+          "properties": {
+            "btc_holdings": {
+              "description": "Formatted BTC holdings",
+              "type": "string"
+            },
+            "entity": {
+              "description": "Miner name",
+              "type": "string"
+            },
+            "percentage_of_21m": {
+              "description": "Percentage of total supply",
+              "type": "string"
+            },
+            "value_usd": {
+              "description": "Formatted USD value",
+              "type": "string"
+            }
+          },
+          "required": [
+            "entity",
+            "btc_holdings",
+            "value_usd",
+            "percentage_of_21m"
+          ],
+          "type": "object"
+        },
+        "type": "array"
+      },
+      "overall_totals": {
+        "description": "Overall summary of Bitcoin holdings",
+        "properties": {
+          "btc_holdings": {
+            "description": "Total BTC holdings formatted",
+            "type": "string"
+          },
+          "entities": {
+            "description": "Number of entities holding Bitcoin",
+            "type": "string"
+          },
+          "last_updated": {
+            "description": "Last update timestamp from source",
+            "type": "string"
+          },
+          "percentage_of_21m": {
+            "description": "Percentage of total Bitcoin supply",
+            "type": "string"
+          },
+          "value_usd": {
+            "description": "Total value in USD formatted",
+            "type": "string"
+          }
+        },
+        "required": [
+          "entities",
+          "btc_holdings",
+          "value_usd",
+          "percentage_of_21m",
+          "last_updated"
+        ],
+        "type": "object"
+      },
+      "private_companies": {
+        "description": "Full list of private companies' holdings (if specified, otherwise null)",
+        "items": {
+          "properties": {
+            "btc_holdings": {
+              "description": "Formatted BTC holdings",
+              "type": "string"
+            },
+            "entity": {
+              "description": "Company name",
+              "type": "string"
+            },
+            "percentage_of_21m": {
+              "description": "Percentage of total supply",
+              "type": "string"
+            },
+            "value_usd": {
+              "description": "Formatted USD value",
+              "type": "string"
+            }
+          },
+          "required": [
+            "entity",
+            "btc_holdings",
+            "value_usd",
+            "percentage_of_21m"
+          ],
+          "type": "object"
+        },
+        "type": "array"
+      },
+      "public_companies": {
+        "description": "Full list of public companies' holdings (if specified, otherwise null)",
+        "items": {
+          "properties": {
+            "btc_holdings": {
+              "description": "Formatted BTC holdings",
+              "type": "string"
+            },
+            "entity": {
+              "description": "Company name",
+              "type": "string"
+            },
+            "percentage_of_21m": {
+              "description": "Percentage of total supply",
+              "type": "string"
+            },
+            "value_usd": {
+              "description": "Formatted USD value",
+              "type": "string"
+            }
+          },
+          "required": [
+            "entity",
+            "btc_holdings",
+            "value_usd",
+            "percentage_of_21m"
+          ],
+          "type": "object"
+        },
+        "type": "array"
+      },
+      "saved_files": {
+        "description": "List of paths to saved CSV and image files",
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "top_10_countries": {
+        "description": "Top 10 countries' holdings (or full list if specified)",
+        "items": {
+          "properties": {
+            "btc_holdings": {
+              "description": "Formatted BTC holdings",
+              "type": "string"
+            },
+            "entity": {
+              "description": "Country name",
+              "type": "string"
+            },
+            "percentage_of_21m": {
+              "description": "Percentage of total supply",
+              "type": "string"
+            },
+            "value_usd": {
+              "description": "Formatted USD value",
+              "type": "string"
+            }
+          },
+          "required": [
+            "entity",
+            "btc_holdings",
+            "value_usd",
+            "percentage_of_21m"
+          ],
+          "type": "object"
+        },
+        "type": "array"
+      },
+      "top_10_defi": {
+        "description": "Top 10 DeFi entities' holdings (or full list if specified)",
+        "items": {
+          "properties": {
+            "btc_holdings": {
+              "description": "Formatted BTC holdings",
+              "type": "string"
+            },
+            "entity": {
+              "description": "DeFi entity name",
+              "type": "string"
+            },
+            "percentage_of_21m": {
+              "description": "Percentage of total supply",
+              "type": "string"
+            },
+            "value_usd": {
+              "description": "Formatted USD value",
+              "type": "string"
+            }
+          },
+          "required": [
+            "entity",
+            "btc_holdings",
+            "value_usd",
+            "percentage_of_21m"
+          ],
+          "type": "object"
+        },
+        "type": "array"
+      },
+      "top_10_etfs": {
+        "description": "Top 10 ETFs' holdings (or full list if specified)",
+        "items": {
+          "properties": {
+            "btc_holdings": {
+              "description": "Formatted BTC holdings",
+              "type": "string"
+            },
+            "entity": {
+              "description": "ETF name",
+              "type": "string"
+            },
+            "percentage_of_21m": {
+              "description": "Percentage of total supply",
+              "type": "string"
+            },
+            "value_usd": {
+              "description": "Formatted USD value",
+              "type": "string"
+            }
+          },
+          "required": [
+            "entity",
+            "btc_holdings",
+            "value_usd",
+            "percentage_of_21m"
+          ],
+          "type": "object"
+        },
+        "type": "array"
+      },
+      "top_10_miners": {
+        "description": "Top 10 miners' holdings (or full list if specified)",
+        "items": {
+          "properties": {
+            "btc_holdings": {
+              "description": "Formatted BTC holdings",
+              "type": "string"
+            },
+            "entity": {
+              "description": "Miner name",
+              "type": "string"
+            },
+            "percentage_of_21m": {
+              "description": "Percentage of total supply",
+              "type": "string"
+            },
+            "value_usd": {
+              "description": "Formatted USD value",
+              "type": "string"
+            }
+          },
+          "required": [
+            "entity",
+            "btc_holdings",
+            "value_usd",
+            "percentage_of_21m"
+          ],
+          "type": "object"
+        },
+        "type": "array"
+      },
+      "top_10_private_companies": {
+        "description": "Top 10 private companies' holdings (or full list if specified)",
+        "items": {
+          "properties": {
+            "btc_holdings": {
+              "description": "Formatted BTC holdings",
+              "type": "string"
+            },
+            "entity": {
+              "description": "Company name",
+              "type": "string"
+            },
+            "percentage_of_21m": {
+              "description": "Percentage of total supply",
+              "type": "string"
+            },
+            "value_usd": {
+              "description": "Formatted USD value",
+              "type": "string"
+            }
+          },
+          "required": [
+            "entity",
+            "btc_holdings",
+            "value_usd",
+            "percentage_of_21m"
+          ],
+          "type": "object"
+        },
+        "type": "array"
+      },
+      "top_10_public_companies": {
+        "description": "Top 10 public companies' holdings (or full list if specified)",
+        "items": {
+          "properties": {
+            "btc_holdings": {
+              "description": "Formatted BTC holdings",
+              "type": "string"
+            },
+            "entity": {
+              "description": "Company name",
+              "type": "string"
+            },
+            "percentage_of_21m": {
+              "description": "Percentage of total supply",
+              "type": "string"
+            },
+            "value_usd": {
+              "description": "Formatted USD value",
+              "type": "string"
+            }
+          },
+          "required": [
+            "entity",
+            "btc_holdings",
+            "value_usd",
+            "percentage_of_21m"
+          ],
+          "type": "object"
+        },
+        "type": "array"
+      },
+      "totals_by_category": {
+        "description": "Totals for each category sorted by BTC holdings",
+        "items": {
+          "properties": {
+            "btc_holdings": {
+              "description": "Formatted BTC holdings for the category",
+              "type": "string"
+            },
+            "category": {
+              "description": "The category name",
+              "type": "string"
+            },
+            "percentage_of_21m": {
+              "description": "Percentage of total supply for the category",
+              "type": "string"
+            },
+            "value_usd": {
+              "description": "Formatted USD value for the category",
+              "type": "string"
+            }
+          },
+          "required": [
+            "category",
+            "btc_holdings",
+            "value_usd",
+            "percentage_of_21m"
+          ],
+          "type": "object"
+        },
+        "type": "array"
+      }
+    },
+    "required": [
+      "overall_totals",
+      "totals_by_category",
+      "saved_files"
+    ]
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": [
+    "local:::__official_shinkai:::webpage_clean_text_extractor"
+  ],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": ""
+}

@@ -1,0 +1,131 @@
+{
+  "name": "Private Companies BTC Treasuries Fetcher",
+  "description": "Scrapes and analyzes data on private companies' Bitcoin treasuries from bitcointreasuries.net, parses company details and totals, maintains historical CSV files, generates matplotlib visualizations of holdings and aggregates over time, and outputs an overview along with top 10 or full list of companies based on input.",
+  "keywords": [
+    "bitcoin",
+    "treasuries",
+    "private companies",
+    "bitcointreasuries.net",
+    "private"
+  ],
+  "version": "1.0.0",
+  "author": "@@official.shinkai",
+  "configurations": {
+    "properties": {
+      "folder_path": {
+        "description": "The path to the folder where CSV and plot files will be saved. If not provided, defaults to the user's home path.",
+        "type": "string"
+      }
+    },
+    "required": []
+  },
+  "oauth": [],
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "show_full_list": {
+        "type": "boolean",
+        "description": "Whether to return the full list of private companies with BTC holdings or only the top 10. Default: False, shows only top 10."
+      }
+    },
+    "required": []
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "overview_of_private_companies_with_BTC_treasuries": {
+        "description": "Overview statistics including count of companies, total BTC, USD value, and supply percentage.",
+        "type": "object"
+      },
+      "private_companies_with_BTC_holdings": {
+        "description": "Full list of private companies with BTC holdings (when show_full_list is true).",
+        "items": {
+          "properties": {
+            "btc_holdings": {
+              "description": "BTC holdings as formatted string.",
+              "type": "string"
+            },
+            "btc_holdings_value_in_USD": {
+              "description": "USD value of BTC holdings.",
+              "type": "string"
+            },
+            "company_name": {
+              "description": "Name of the company.",
+              "type": "string"
+            },
+            "country": {
+              "description": "Country of the company.",
+              "type": "string"
+            },
+            "percentage_of_total_supply": {
+              "description": "Percentage of total BTC supply.",
+              "type": "string"
+            },
+            "rank": {
+              "description": "Rank of the company.",
+              "type": "number"
+            }
+          },
+          "type": "object"
+        },
+        "type": "array"
+      },
+      "saved_files": {
+        "description": "List of paths to saved CSV and PNG files.",
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "top_10_private_companies_with_BTC_holdings": {
+        "description": "List of top 10 private companies with BTC holdings (when show_full_list is false).",
+        "items": {
+          "properties": {
+            "btc_holdings": {
+              "description": "BTC holdings as formatted string.",
+              "type": "string"
+            },
+            "btc_holdings_value_in_USD": {
+              "description": "USD value of BTC holdings.",
+              "type": "string"
+            },
+            "company_name": {
+              "description": "Name of the company.",
+              "type": "string"
+            },
+            "country": {
+              "description": "Country of the company.",
+              "type": "string"
+            },
+            "percentage_of_total_supply": {
+              "description": "Percentage of total BTC supply.",
+              "type": "string"
+            },
+            "rank": {
+              "description": "Rank of the company.",
+              "type": "number"
+            }
+          },
+          "type": "object"
+        },
+        "type": "array"
+      }
+    },
+    "required": [
+      "overview_of_private_companies_with_BTC_treasuries",
+      "saved_files"
+    ]
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": [
+    "local:::__official_shinkai:::webpage_clean_text_extractor"
+  ],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": ""
+}

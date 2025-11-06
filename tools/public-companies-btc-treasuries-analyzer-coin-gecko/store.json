@@ -1,0 +1,5 @@
+{
+  "categoryId": "f004e0f9-4b2b-44f3-abee-d1fd42b9f9ba",
+  "name": "Public Companies BTC Treasuries Analyzer Coin Gecko",
+  "description": "Fetches data on public companies holding Bitcoin treasuries from CoinGecko API, processes it, saves to CSVs, generates plots, and provides structured overview and top 10 list."
+}

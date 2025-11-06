@@ -1,0 +1,64 @@
+{
+  "name": "Image LLM processor",
+  "description": "Ask questions about any local image file. This tool passes your image and prompt to a multimodal LLM for analysis.",
+  "keywords": [
+    "image",
+    "analysis",
+    "vision"
+  ],
+  "version": "1.0.0",
+  "author": "@@official.shinkai",
+  "configurations": {
+    "properties": {
+      "llm_provider": {
+        "description": "Optional default LLM to use. Leave it empty to use the default LLM from the Agent, chat or task. Make sure to use a LLM supporting image processing. Use LLM IDs as displayed in Shinkai (e.g., 'shinkai_free_trial', 'gemini_2_5_pro').",
+        "type": "string"
+      }
+    },
+    "required": []
+  },
+  "oauth": [],
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "image_path": {
+        "type": "string",
+        "description": "The path to the local image file. Use file formats supported by the selected LLM."
+      },
+      "llm_override": {
+        "type": "string",
+        "description": "Optional override for the LLM provider. Leave empty to use default. Make sure to use a LLM supporting image processing. Use LLM IDs as displayed in Shinkai (e.g., 'shinkai_free_trial', 'gemini_2_5_pro')."
+      },
+      "prompt": {
+        "type": "string",
+        "description": "The prompt for the LLM analysis"
+      }
+    },
+    "required": [
+      "image_path",
+      "prompt"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "message": {
+        "description": "The response message from the LLM",
+        "type": "string"
+      }
+    },
+    "required": []
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": [
+    "local:::__official_shinkai:::shinkai_llm_prompt_processor"
+  ],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": ""
+}

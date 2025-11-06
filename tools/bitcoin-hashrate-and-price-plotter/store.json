@@ -1,0 +1,5 @@
+{
+  "categoryId": "f004e0f9-4b2b-44f3-abee-d1fd42b9f9ba",
+  "name": "Bitcoin Hashrate and Price Plotter",
+  "description": "Fetches historical Bitcoin hashrate and price data from Blockchain.info API, creates a plot with dual y-axes showing hashrate in TH/s and price in USD, saves the plot to a file in the home directory, and outputs the plot path along with current hashrate and price values."
+}

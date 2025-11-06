@@ -1,0 +1,57 @@
+{
+  "name": "Bitcoin Hashrate and Price Plotter",
+  "description": "Fetches historical Bitcoin hashrate and price data from Blockchain.info API, creates a plot with dual y-axes showing hashrate in TH/s and price in USD, saves the plot to a file in the home directory, and outputs the plot path along with current hashrate and price values.",
+  "keywords": [
+    "bitcoin",
+    "hashrate",
+    "price",
+    "plot",
+    "hash rate"
+  ],
+  "version": "1.0.0",
+  "author": "@@official.shinkai",
+  "configurations": {
+    "properties": {},
+    "required": []
+  },
+  "oauth": [],
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "period": {
+        "type": "string",
+        "description": "The time period for data: 'All Time', 'Last Month', 'Last 6 Months', 'Last Year', 'Last 5 Years', 'Last 10 Years'. Defaults to 'All Time'.",
+        "default": "All Time"
+      }
+    },
+    "required": []
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "current_bitcoin_hashrate": {
+        "description": "Current Bitcoin hashrate in TH/s",
+        "type": "string"
+      },
+      "current_bitcoin_price": {
+        "description": "Current Bitcoin price in USD",
+        "type": "string"
+      },
+      "plot_path": {
+        "description": "File path to the saved plot PNG",
+        "type": "string"
+      }
+    },
+    "required": []
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": [],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": ""
+}

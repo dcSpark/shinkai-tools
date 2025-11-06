@@ -1,0 +1,5 @@
+{
+  "categoryId": "5f10d0b4-6acd-477a-96e1-be35634465b2",
+  "name": "Image LLM processor",
+  "description": "Ask questions about any local image file. This tool passes your image and prompt to a multimodal LLM for analysis."
+}

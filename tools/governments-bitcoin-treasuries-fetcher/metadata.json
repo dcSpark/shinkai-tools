@@ -1,0 +1,150 @@
+{
+  "name": "Governments Bitcoin Treasuries Fetcher",
+  "description": "Scrapes government Bitcoin treasuries data from bitcointreasuries.net, parses holdings, maintains historical CSV records, generates summaries and lists (top 10 or full), and creates matplotlib visualizations of trends over time.",
+  "keywords": [
+    "bitcoin",
+    "government",
+    "treasuries",
+    "BTC",
+    "bitcointreasuries.net"
+  ],
+  "version": "1.0.0",
+  "author": "@@official.shinkai",
+  "configurations": {
+    "properties": {
+      "folder_path": {
+        "description": "Path to the folder for saving data and plot files.",
+        "type": "string"
+      }
+    },
+    "required": []
+  },
+  "oauth": [],
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "show_full_list": {
+        "type": "boolean",
+        "description": "Whether to return the full list of governments with BTC holdings (true) or top 10 only (false). Default: False.",
+        "default": false
+      }
+    },
+    "required": []
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "governments_with_BTC_holdings": {
+        "description": "Full list of governments with BTC holdings (if show_full_list is true).",
+        "items": {
+          "properties": {
+            "btc_holdings": {
+              "description": "BTC holdings amount.",
+              "type": "string"
+            },
+            "btc_holdings_value_in_USD": {
+              "description": "USD value of BTC holdings.",
+              "type": "string"
+            },
+            "country": {
+              "description": "Country associated with the government.",
+              "type": "string"
+            },
+            "government_name": {
+              "description": "Name of the government.",
+              "type": "string"
+            },
+            "percentage_of_total_supply": {
+              "description": "Percentage of total BTC supply.",
+              "type": "string"
+            },
+            "rank": {
+              "description": "Ranking by BTC holdings.",
+              "type": "number"
+            }
+          },
+          "type": "object"
+        },
+        "type": "array"
+      },
+      "overview_of_governments_with_BTC_treasuries": {
+        "description": "Summary overview of total government BTC treasuries.",
+        "properties": {
+          "count": {
+            "description": "Number of governments holding BTC.",
+            "type": "string"
+          },
+          "total_btc": {
+            "description": "Total BTC held by governments.",
+            "type": "string"
+          },
+          "total_supply_percentage": {
+            "description": "Percentage of total BTC supply held by governments.",
+            "type": "string"
+          },
+          "total_usd_value": {
+            "description": "Total USD value of BTC holdings.",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "saved_files": {
+        "description": "Paths to saved CSV history files and PNG plot files.",
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "top_10_governments_with_BTC_holdings": {
+        "description": "List of top 10 governments by BTC holdings (if show_full_list is false).",
+        "items": {
+          "properties": {
+            "btc_holdings": {
+              "description": "BTC holdings amount.",
+              "type": "string"
+            },
+            "btc_holdings_value_in_USD": {
+              "description": "USD value of BTC holdings.",
+              "type": "string"
+            },
+            "country": {
+              "description": "Country associated with the government.",
+              "type": "string"
+            },
+            "government_name": {
+              "description": "Name of the government.",
+              "type": "string"
+            },
+            "percentage_of_total_supply": {
+              "description": "Percentage of total BTC supply.",
+              "type": "string"
+            },
+            "rank": {
+              "description": "Ranking by BTC holdings.",
+              "type": "number"
+            }
+          },
+          "type": "object"
+        },
+        "type": "array"
+      }
+    },
+    "required": [
+      "overview_of_governments_with_BTC_treasuries",
+      "saved_files"
+    ]
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": [
+    "local:::__official_shinkai:::webpage_clean_text_extractor"
+  ],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": ""
+}

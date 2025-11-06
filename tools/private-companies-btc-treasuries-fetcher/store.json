@@ -1,0 +1,5 @@
+{
+  "categoryId": "f004e0f9-4b2b-44f3-abee-d1fd42b9f9ba",
+  "name": "Private Companies BTC Treasuries Fetcher",
+  "description": "Scrapes and analyzes data on private companies' Bitcoin treasuries from bitcointreasuries.net, parses company details and totals, maintains historical CSV files, generates matplotlib visualizations of holdings and aggregates over time, and outputs an overview along with top 10 or full list of companies based on input."
+}

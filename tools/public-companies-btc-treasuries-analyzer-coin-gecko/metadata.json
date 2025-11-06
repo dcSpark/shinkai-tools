@@ -1,0 +1,155 @@
+{
+  "name": "Public Companies BTC Treasuries Analyzer Coin Gecko",
+  "description": "Fetches data on public companies holding Bitcoin treasuries from CoinGecko API, processes it, saves to CSVs, generates plots, and provides structured overview and top 10 list.",
+  "keywords": [
+    "bitcoin",
+    "coingecko",
+    "public companies",
+    "treasuries",
+    "BTC treasury"
+  ],
+  "version": "1.0.0",
+  "author": "@@official.shinkai",
+  "configurations": {
+    "properties": {
+      "api_key": {
+        "description": "CoinGecko API key (x-cg-demo-api-key)",
+        "type": "string"
+      },
+      "save_folder": {
+        "description": "folder path where the data (CSV) and graphs will be saved",
+        "type": "string"
+      }
+    },
+    "required": [
+      "api_key",
+      "save_folder"
+    ]
+  },
+  "oauth": [],
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "show_full_list": {
+        "type": "boolean",
+        "description": "whether to include the full companies data in the output (default: False, equal just show the top 10)",
+        "default": false
+      }
+    },
+    "required": []
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "Overview_of_public_companies_with_bitcoin_treasuries": {
+        "description": "Overview of public companies with Bitcoin treasuries",
+        "properties": {
+          "count": {
+            "description": "Number of public companies",
+            "type": "string"
+          },
+          "market_cap_dominance": {
+            "description": "Market cap dominance percentage",
+            "type": "string"
+          },
+          "total_btc": {
+            "description": "Total BTC held",
+            "type": "string"
+          },
+          "total_usd": {
+            "description": "Total USD value",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "data_source": {
+        "description": "Source of the data",
+        "type": "string"
+      },
+      "error": {
+        "description": "Error message if any",
+        "type": "string"
+      },
+      "full_companies": {
+        "description": "Full list of companies if requested",
+        "items": {
+          "type": "object"
+        },
+        "type": "array"
+      },
+      "save_files": {
+        "description": "Saved files paths for plots and data",
+        "properties": {
+          "data_saved_paths": {
+            "description": "Paths to saved CSV data files",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "plot_saved_paths": {
+            "description": "Paths to saved plot files",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "top_10_public_companies_with_BTC_treasuries": {
+        "description": "List of top 10 public companies with BTC treasuries, including details like holdings, values, and gain factor",
+        "items": {
+          "properties": {
+            "country": {
+              "description": "Country of the company",
+              "type": "string"
+            },
+            "gain_factor": {
+              "description": "Gain factor based on entry vs current value",
+              "type": "number"
+            },
+            "name": {
+              "description": "Name of the company",
+              "type": "string"
+            },
+            "percentage_of_total_supply": {
+              "description": "Percentage of total BTC supply held",
+              "type": "string"
+            },
+            "symbol": {
+              "description": "Stock symbol of the company",
+              "type": "string"
+            },
+            "total_current_value_usd": {
+              "description": "Current USD value of holdings",
+              "type": "string"
+            },
+            "total_entry_value_usd": {
+              "description": "Entry USD value of holdings",
+              "type": "string"
+            },
+            "total_holdings": {
+              "description": "Total BTC holdings",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "type": "array"
+      }
+    },
+    "required": []
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": [],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": ""
+}

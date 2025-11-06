@@ -1,0 +1,5 @@
+{
+  "categoryId": "f004e0f9-4b2b-44f3-abee-d1fd42b9f9ba",
+  "name": "Governments Bitcoin Treasuries Fetcher",
+  "description": "Scrapes government Bitcoin treasuries data from bitcointreasuries.net, parses holdings, maintains historical CSV records, generates summaries and lists (top 10 or full), and creates matplotlib visualizations of trends over time."
+}

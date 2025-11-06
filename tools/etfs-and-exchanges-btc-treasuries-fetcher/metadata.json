@@ -1,0 +1,183 @@
+{
+  "name": "ETFs and Exchanges BTC Treasuries Fetcher",
+  "description": "Fetches, parses, and analyzes BTC treasury data for ETFs and exchanges from bitcointreasuries.net, stores historical data in CSVs, generates overviews and conditional lists, and creates plots for holdings and totals over time.",
+  "keywords": [
+    "btc",
+    "etf",
+    "exchange",
+    "treasury",
+    "bitcoin",
+    "bitcointreasuries.net"
+  ],
+  "version": "1.0.0",
+  "author": "@@official.shinkai",
+  "configurations": {
+    "properties": {
+      "folder_path": {
+        "description": "The folder path for saving data and plot files",
+        "type": "string"
+      }
+    },
+    "required": []
+  },
+  "oauth": [],
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "show_full_list": {
+        "type": "boolean",
+        "description": "If true, outputs the full list of entities instead of top 10. Default: False, shows only top 10.",
+        "default": false
+      }
+    },
+    "required": []
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "etfs_and_exchanges_with_BTC_holdings": {
+        "description": "Full list of entities with BTC holdings details, provided if show_full_list is true",
+        "items": {
+          "properties": {
+            "btc_holdings": {
+              "description": "BTC holdings amount",
+              "type": "string"
+            },
+            "btc_holdings_value_in_USD": {
+              "description": "USD value of holdings",
+              "type": "string"
+            },
+            "country": {
+              "description": "Country",
+              "type": "string"
+            },
+            "entity_name": {
+              "description": "Name of the entity",
+              "type": "string"
+            },
+            "percentage_of_total_supply": {
+              "description": "Percentage of total BTC supply",
+              "type": "string"
+            },
+            "rank": {
+              "description": "Rank position",
+              "type": "number"
+            },
+            "ticker": {
+              "description": "Ticker symbol",
+              "type": "string"
+            }
+          },
+          "required": [
+            "entity_name",
+            "ticker",
+            "rank",
+            "country",
+            "btc_holdings",
+            "btc_holdings_value_in_USD",
+            "percentage_of_total_supply"
+          ],
+          "type": "object"
+        },
+        "type": "array"
+      },
+      "overview_of_etfs_and_exchanges_with_BTC_treasuries": {
+        "description": "Overview summary of total BTC holdings, USD value, supply percentage, and entity count",
+        "properties": {
+          "count": {
+            "description": "Number of entities",
+            "type": "string"
+          },
+          "total_btc": {
+            "description": "Total BTC holdings",
+            "type": "string"
+          },
+          "total_supply_percentage": {
+            "description": "Percentage of total BTC supply",
+            "type": "string"
+          },
+          "total_usd_value": {
+            "description": "Total USD value",
+            "type": "string"
+          }
+        },
+        "required": [
+          "count",
+          "total_btc",
+          "total_usd_value",
+          "total_supply_percentage"
+        ],
+        "type": "object"
+      },
+      "saved_files": {
+        "description": "List of paths to saved CSV and PNG files",
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "top_10_etfs_and_exchanges_with_BTC_holdings": {
+        "description": "Top 10 entities with BTC holdings details, provided if show_full_list is false",
+        "items": {
+          "properties": {
+            "btc_holdings": {
+              "description": "BTC holdings amount",
+              "type": "string"
+            },
+            "btc_holdings_value_in_USD": {
+              "description": "USD value of holdings",
+              "type": "string"
+            },
+            "country": {
+              "description": "Country",
+              "type": "string"
+            },
+            "entity_name": {
+              "description": "Name of the entity",
+              "type": "string"
+            },
+            "percentage_of_total_supply": {
+              "description": "Percentage of total BTC supply",
+              "type": "string"
+            },
+            "rank": {
+              "description": "Rank position",
+              "type": "number"
+            },
+            "ticker": {
+              "description": "Ticker symbol",
+              "type": "string"
+            }
+          },
+          "required": [
+            "entity_name",
+            "ticker",
+            "rank",
+            "country",
+            "btc_holdings",
+            "btc_holdings_value_in_USD",
+            "percentage_of_total_supply"
+          ],
+          "type": "object"
+        },
+        "type": "array"
+      }
+    },
+    "required": [
+      "overview_of_etfs_and_exchanges_with_BTC_treasuries",
+      "saved_files"
+    ]
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": [
+    "local:::__official_shinkai:::webpage_clean_text_extractor"
+  ],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": ""
+}

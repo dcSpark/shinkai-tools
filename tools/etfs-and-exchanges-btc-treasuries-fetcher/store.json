@@ -1,0 +1,5 @@
+{
+  "categoryId": "f004e0f9-4b2b-44f3-abee-d1fd42b9f9ba",
+  "name": "ETFs and Exchanges BTC Treasuries Fetcher",
+  "description": "Fetches, parses, and analyzes BTC treasury data for ETFs and exchanges from bitcointreasuries.net, stores historical data in CSVs, generates overviews and conditional lists, and creates plots for holdings and totals over time."
+}

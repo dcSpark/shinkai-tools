@@ -1,0 +1,168 @@
+{
+  "name": "Public Companies Bitcoin Treasuries Fetcher",
+  "description": "Fetches and parses Bitcoin treasuries data for public companies from bitcointreasuries.net, extracting aggregate totals and per-company holdings using webpage content extraction. Saves data and plots graphs.",
+  "keywords": [
+    "bitcoin",
+    "treasuries",
+    "public companies",
+    "bitcointreasuries.net"
+  ],
+  "version": "1.0.0",
+  "author": "@@official.shinkai",
+  "configurations": {
+    "properties": {
+      "folder_path": {
+        "description": "The folder path to save CSV files and plots",
+        "type": "string"
+      }
+    },
+    "required": [
+      "folder_path"
+    ]
+  },
+  "oauth": [],
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "show_full_list": {
+        "type": "boolean",
+        "description": "Whether to return the full list of companies or only the top 10. Default: False, shows only top 10."
+      }
+    },
+    "required": [
+      "show_full_list"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "overview_of_public_companies_with_BTC_treasuries": {
+        "description": "Summary overview of public companies with BTC treasuries",
+        "properties": {
+          "count": {
+            "description": "Number of companies",
+            "type": "string"
+          },
+          "total_btc": {
+            "description": "Total BTC held",
+            "type": "string"
+          },
+          "total_supply_percentage": {
+            "description": "Percentage of total BTC supply",
+            "type": "string"
+          },
+          "total_usd_value": {
+            "description": "Total USD value",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "public_companies_with_BTC_holdings": {
+        "description": "Full list of companies with BTC holdings (if show_full_list is true)",
+        "items": {
+          "properties": {
+            "btc_holdings": {
+              "description": "BTC holdings amount",
+              "type": "string"
+            },
+            "btc_holdings_value_in_USD": {
+              "description": "USD value of BTC holdings",
+              "type": "string"
+            },
+            "company_name": {
+              "description": "Name of the company",
+              "type": "string"
+            },
+            "country": {
+              "description": "Country of the company",
+              "type": "string"
+            },
+            "market_cap": {
+              "description": "Market capitalization",
+              "type": "string"
+            },
+            "percentage_of_total_supply": {
+              "description": "Percentage of total BTC supply",
+              "type": "string"
+            },
+            "rank": {
+              "description": "Rank by BTC holdings",
+              "type": "number"
+            },
+            "ticker": {
+              "description": "Stock ticker symbol",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "type": "array"
+      },
+      "saved_files": {
+        "description": "Paths to saved files (CSVs and plots)",
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "top_10_public_companies_with_BTC_holdings": {
+        "description": "Top 10 companies with BTC holdings (if show_full_list is false)",
+        "items": {
+          "properties": {
+            "btc_holdings": {
+              "description": "BTC holdings amount",
+              "type": "string"
+            },
+            "btc_holdings_value_in_USD": {
+              "description": "USD value of BTC holdings",
+              "type": "string"
+            },
+            "company_name": {
+              "description": "Name of the company",
+              "type": "string"
+            },
+            "country": {
+              "description": "Country of the company",
+              "type": "string"
+            },
+            "market_cap": {
+              "description": "Market capitalization",
+              "type": "string"
+            },
+            "percentage_of_total_supply": {
+              "description": "Percentage of total BTC supply",
+              "type": "string"
+            },
+            "rank": {
+              "description": "Rank by BTC holdings",
+              "type": "number"
+            },
+            "ticker": {
+              "description": "Stock ticker symbol",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "type": "array"
+      }
+    },
+    "required": [
+      "overview_of_public_companies_with_BTC_treasuries",
+      "saved_files"
+    ]
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": [
+    "local:::__official_shinkai:::webpage_clean_text_extractor"
+  ],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": ""
+}

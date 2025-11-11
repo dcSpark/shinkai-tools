@@ -1,0 +1,5 @@
+{
+  "categoryId": "f004e0f9-4b2b-44f3-abee-d1fd42b9f9ba",
+  "name": "Bitcoin Market Data Fetcher",
+  "description": "This tool retrieves comprehensive, real-time market data for Bitcoin from the CoinGecko API. It fetches key metrics such as the current price in USD, all-time high, 24-hour trading range, market capitalization, circulating and maximum supply, and price performance over multiple timeframes (1h to 1y). Additionally, it provides Bitcoin's market dominance percentage."
+}

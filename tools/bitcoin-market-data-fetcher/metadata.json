@@ -1,0 +1,138 @@
+{
+  "name": "Bitcoin Market Data Fetcher",
+  "description": "This tool retrieves comprehensive, real-time market data for Bitcoin from the CoinGecko API. It fetches key metrics such as the current price in USD, all-time high, 24-hour trading range, market capitalization, circulating and maximum supply, and price performance over multiple timeframes (1h to 1y). Additionally, it provides Bitcoin's market dominance percentage.",
+  "keywords": [
+    "bitcoin",
+    "market data",
+    "crypto",
+    "price",
+    "dominance"
+  ],
+  "version": "1.0.0",
+  "author": "@@official.shinkai",
+  "configurations": {
+    "properties": {
+      "coingecko_api_key": {
+        "description": "CoinGecko API key for authentication (x-cg-demo-api-key)",
+        "type": "string"
+      }
+    },
+    "required": [
+      "coingecko_api_key"
+    ]
+  },
+  "oauth": [],
+  "parameters": {
+    "type": "object",
+    "properties": {},
+    "required": []
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "data": {
+        "additionalProperties": {
+          "properties": {
+            "all_time_high_USD": {
+              "description": "All-time high price in USD, formatted as $X,XXX.XX",
+              "type": "string"
+            },
+            "all_time_high_change_percentage": {
+              "description": "All-time high change percentage, formatted as +X.XX % or -X.XX %",
+              "type": "string"
+            },
+            "all_time_high_date": {
+              "description": "Date of all-time high in Month Day Year format",
+              "type": "string"
+            },
+            "circulating_supply": {
+              "description": "Circulating supply formatted as X,XXX BTC",
+              "type": "string"
+            },
+            "current_price_in_USD": {
+              "description": "Current price of Bitcoin in USD, formatted as $X,XXX.XX",
+              "type": "string"
+            },
+            "fully_diluted_valuation_in_USD": {
+              "description": "Fully diluted valuation in USD, formatted as $X,XXX.XX",
+              "type": "string"
+            },
+            "high_24h_in_USD": {
+              "description": "24-hour high price in USD, formatted as $X,XXX.XX",
+              "type": "string"
+            },
+            "low_24h_in_USD": {
+              "description": "24-hour low price in USD, formatted as $X,XXX.XX",
+              "type": "string"
+            },
+            "market_cap_dominance": {
+              "description": "Bitcoin market cap dominance percentage, formatted as X.XX %",
+              "type": "string"
+            },
+            "market_cap_in_usd": {
+              "description": "Market capitalization in USD, formatted as $X,XXX.XX",
+              "type": "string"
+            },
+            "market_cap_rank": {
+              "description": "Market capitalization rank",
+              "type": "number"
+            },
+            "max_supply": {
+              "description": "Maximum supply formatted as X,XXX BTC",
+              "type": "string"
+            },
+            "price_change_14d_usd": {
+              "description": "14-day price change percentage, formatted as +X.XX % or -X.XX %",
+              "type": "string"
+            },
+            "price_change_1h_usd": {
+              "description": "1-hour price change percentage, formatted as +X.XX % or -X.XX %",
+              "type": "string"
+            },
+            "price_change_1y_usd": {
+              "description": "1-year price change percentage, formatted as +X.XX % or -X.XX %",
+              "type": "string"
+            },
+            "price_change_200d_usd": {
+              "description": "200-day price change percentage, formatted as +X.XX % or -X.XX %",
+              "type": "string"
+            },
+            "price_change_24h_absolute_usd": {
+              "description": "24-hour absolute price change in USD, formatted as +$X,XXX.XX or -$X,XXX.XX",
+              "type": "string"
+            },
+            "price_change_24h_usd": {
+              "description": "24-hour price change percentage, formatted as +X.XX % or -X.XX %",
+              "type": "string"
+            },
+            "price_change_30d_usd": {
+              "description": "30-day price change percentage, formatted as +X.XX % or -X.XX %",
+              "type": "string"
+            },
+            "price_change_7d_usd": {
+              "description": "7-day price change percentage, formatted as +X.XX % or -X.XX %",
+              "type": "string"
+            }
+          },
+          "required": [],
+          "type": "object"
+        },
+        "description": "Dictionary containing Bitcoin data under a dynamic timestamped key",
+        "type": "object"
+      }
+    },
+    "required": [
+      "data"
+    ]
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": [],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": ""
+}

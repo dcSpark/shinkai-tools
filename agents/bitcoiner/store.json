@@ -1,0 +1,8 @@
+{
+  "categoryId": "f004e0f9-4b2b-44f3-abee-d1fd42b9f9ba",
+  "name": "Bitcoiner",
+  "description": "AI agent specialized in Bitcoin analysis.\n\nIt provides accurate, insightful, and up-to-date responses to user queries about the Bitcoin ecosystem. It can provide information on bitcoin treasuries, market data, hash rate, prices, and search online for more.\n\nThe agent utilizes a suite of dedicated tools to fetch real-time data from reliable sources, ensuring its answers are factual and current. It is designed to present findings clearly and to cite its sources for verification.\nFor queries outside of its data fetching tools, it searches the best sources on the web.",
+  "version": "1.0.0",
+  "author": "@@official.sep-shinkai",
+  "keywords": []
+}

@@ -1,0 +1,239 @@
+{
+  "name": "Liqwid Markets Data Fetcher",
+  "description": "Fetches Liqwid protocol's lending and borrowing markets data via their GraphQL API.",
+  "keywords": [
+    "liqwid",
+    "markets",
+    "DeFi",
+    "Cardano",
+    "lending",
+    "borrowing",
+    "supply APY",
+    "borrow APY"
+  ],
+  "version": "1.0.0",
+  "author": "@@official.shinkai",
+  "configurations": {
+    "properties": {
+      "app_name": {
+        "description": "Your app name used in the API request header, to help Liqwid identify API usage. Default: 'shinkai'",
+        "type": "string"
+      },
+      "show_delisted": {
+        "description": "Whether to include delisted markets in the output. Default: 'false' (= exclude delisted tokens)",
+        "type": "string"
+      }
+    },
+    "required": []
+  },
+  "oauth": [],
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "perPage": {
+        "type": "integer",
+        "description": "The number of results per page. Default: 30",
+        "default": 30
+      },
+      "page": {
+        "type": "integer",
+        "description": "The page number for pagination. Default: 0",
+        "default": 0
+      },
+      "tokens_filter": {
+        "type": "string",
+        "description": "Optional list of markets to display, or 'All' to show all. Use a comma-separated list of markets using their token display names (e.g., 'ADA, USDM, wanBTC'), or a single token display name (e.g., 'ADA'). Default: 'All'.",
+        "default": "All"
+      }
+    },
+    "required": []
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "delisted": {
+        "description": "List of delisted markets",
+        "items": {
+          "additionalProperties": {
+            "properties": {
+              "batching": {
+                "description": "Whether batching is enabled",
+                "type": "boolean"
+              },
+              "borrow_APY": {
+                "description": "Formatted borrow APY percentage",
+                "type": "string"
+              },
+              "currency_symbol": {
+                "description": "Asset currency symbol",
+                "type": "string"
+              },
+              "decimals": {
+                "description": "Asset decimals",
+                "type": "integer"
+              },
+              "hexName": {
+                "description": "Asset hex name",
+                "type": "string"
+              },
+              "logo": {
+                "description": "Asset logo URL",
+                "type": "string"
+              },
+              "lq_rewards_supply_APY": {
+                "description": "Formatted liquidity rewards supply APY percentage",
+                "type": "string"
+              },
+              "market_ID": {
+                "description": "Market identifier",
+                "type": "string"
+              },
+              "price": {
+                "description": "Formatted asset price",
+                "type": "string"
+              },
+              "private": {
+                "description": "Whether the market is private",
+                "type": "boolean"
+              },
+              "qToken_exchange_rate": {
+                "description": "qToken exchange rate",
+                "type": "number"
+              },
+              "qToken_receipt_asset_currency_symbol": {
+                "description": "qToken receipt asset currency symbol",
+                "type": "string"
+              },
+              "supply_APY": {
+                "description": "Formatted supply APY percentage",
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "description": "Delisted market entry with display name as key and details as value",
+          "type": "object"
+        },
+        "type": "array"
+      },
+      "info": {
+        "description": "Informational message about the APYs and qTokens",
+        "type": "string"
+      },
+      "listed": {
+        "description": "List of listed markets",
+        "items": {
+          "additionalProperties": {
+            "properties": {
+              "batching": {
+                "description": "Whether batching is enabled",
+                "type": "boolean"
+              },
+              "borrow_APY": {
+                "description": "Formatted borrow APY percentage",
+                "type": "string"
+              },
+              "currency_symbol": {
+                "description": "Asset currency symbol",
+                "type": "string"
+              },
+              "decimals": {
+                "description": "Asset decimals",
+                "type": "integer"
+              },
+              "hexName": {
+                "description": "Asset hex name",
+                "type": "string"
+              },
+              "logo": {
+                "description": "Asset logo URL",
+                "type": "string"
+              },
+              "lq_rewards_supply_APY": {
+                "description": "Formatted liquidity rewards supply APY percentage",
+                "type": "string"
+              },
+              "market_ID": {
+                "description": "Market identifier",
+                "type": "string"
+              },
+              "price": {
+                "description": "Formatted asset price",
+                "type": "string"
+              },
+              "private": {
+                "description": "Whether the market is private",
+                "type": "boolean"
+              },
+              "qToken_exchange_rate": {
+                "description": "qToken exchange rate",
+                "type": "number"
+              },
+              "qToken_receipt_asset_currency_symbol": {
+                "description": "qToken receipt asset currency symbol",
+                "type": "string"
+              },
+              "supply_APY": {
+                "description": "Formatted supply APY percentage",
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "description": "Listed market entry with display name as key and details as value",
+          "type": "object"
+        },
+        "type": "array"
+      },
+      "request_details": {
+        "description": "Details about the API request and pagination",
+        "properties": {
+          "markets_shown_count": {
+            "description": "Number of markets shown in this response",
+            "type": "integer"
+          },
+          "page": {
+            "description": "Current page number",
+            "type": "integer"
+          },
+          "pagesCount": {
+            "description": "Total number of pages",
+            "type": "integer"
+          },
+          "perPage": {
+            "description": "Results per page",
+            "type": "integer"
+          },
+          "total_market_count": {
+            "description": "Total number of markets",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "page",
+          "pagesCount",
+          "perPage",
+          "total_market_count",
+          "markets_shown_count"
+        ],
+        "type": "object"
+      }
+    },
+    "required": [
+      "request_details",
+      "listed",
+      "delisted",
+      "info"
+    ]
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": [],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": ""
+}

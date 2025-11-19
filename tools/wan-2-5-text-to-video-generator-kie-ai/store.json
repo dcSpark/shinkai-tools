@@ -1,0 +1,5 @@
+{
+  "categoryId": "b04aabe6-4fce-46f1-b6f2-7a96d742b9d1",
+  "name": "wan 2.5 Text to Video Generator Kie AI",
+  "description": "Tool for generating a video from text using the wan/2-5-text-to-video model via the kie.ai API.\nPricing (as of November 2025): ~$0.06 per second for 720p, ~$0.10 per second for 1080p.\nGet your API key at https://kie.ai/"
+}

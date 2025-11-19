@@ -1,0 +1,5 @@
+{
+  "categoryId": "b04aabe6-4fce-46f1-b6f2-7a96d742b9d1",
+  "name": "Google Imagen4 Text to Image Generator Kie AI",
+  "description": "Generates images from text prompts using Google Imagen4 models, through the Kie.ai API. Can generate up to 4 images at once.\nPricing (as of November 2025): $0.02 per image for imagen4-fast, $0.04 per image for imagen4, $0.06 per image for imagen4-ultra.\nGet your API key at https://kie.ai"
+}

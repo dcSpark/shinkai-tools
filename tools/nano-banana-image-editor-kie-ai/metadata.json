@@ -1,0 +1,103 @@
+{
+  "name": "Nano Banana Image Editor Kie AI",
+  "description": "Edits or combines image(s) according to text instructions using the Nano Banana model from Google, via the kie.ai API.\nSupports up to 10 local images inputs.\nPricing (as of November 2025): ~$0.02 per image.\nGet your API key at https://kie.ai",
+  "keywords": [
+    "kie ai",
+    "image editing",
+    "edit image",
+    "image combination",
+    "combine image",
+    "nano banana",
+    "text to image",
+    "image to image"
+  ],
+  "version": "1.0.0",
+  "author": "@@official.shinkai",
+  "configurations": {
+    "properties": {
+      "api_key": {
+        "description": "Required API key for kie.ai API authentication",
+        "type": "string"
+      },
+      "max_duration": {
+        "description": "Optional maximum duration in seconds to wait for task completion. Default: 300 (equal 5 minutes)",
+        "type": "string"
+      },
+      "polling_interval": {
+        "description": "Optional interval in seconds for polling the task status (how often to check if image generation is complete). Default: 5",
+        "type": "string"
+      }
+    },
+    "required": [
+      "api_key"
+    ]
+  },
+  "oauth": [],
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "filename": {
+        "type": "string",
+        "description": "Optional base filename for the created image (without extension). Defaults to None (uses task_id)"
+      },
+      "prompt": {
+        "type": "string",
+        "description": "The text prompt describing how to edit or combine the image(s). Max length : 5000 characters."
+      },
+      "output_format": {
+        "type": "string",
+        "description": "Optional output image format. Must be 'png' or 'jpeg'. Defaults to 'png'",
+        "default": "png"
+      },
+      "image_size": {
+        "type": "string",
+        "description": "Optional image size. Must be one of '1:1', '9:16', '16:9', '3:4', '4:3', '3:2', '2:3', '5:4', '4:5', '21:9', 'auto'. Defaults to 'auto'",
+        "default": "auto"
+      },
+      "input_image_paths": {
+        "type": "array",
+        "description": "Required list of local full paths to input images for editing, up to 10. Accepted types: .jpeg, .png, and .webp",
+        "items": {
+          "type": "string",
+          "description": ""
+        }
+      }
+    },
+    "required": [
+      "prompt",
+      "input_image_paths"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "saved_image_path": {
+        "description": "Local path where the image was saved",
+        "type": "string"
+      },
+      "status": {
+        "description": "Status of the operation",
+        "type": "string"
+      },
+      "task_id": {
+        "description": "ID of the created task",
+        "type": "string"
+      },
+      "temporary_image_url": {
+        "description": "Temporary URL of the generated image",
+        "type": "string"
+      }
+    },
+    "required": []
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": [],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": ""
+}

@@ -1,0 +1,5 @@
+{
+  "categoryId": "b04aabe6-4fce-46f1-b6f2-7a96d742b9d1",
+  "name": "Nano Banana Text to Image Generator Kie AI",
+  "description": "Generates images from text prompts using the google/nano-banana model via the Kie.ai API.\nPricing (as of November 2025): ~$0.02 per image.\nGet your API key at https://kie.ai"
+}

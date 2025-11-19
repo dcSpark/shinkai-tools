@@ -1,0 +1,112 @@
+{
+  "name": "wan 2.5 Text to Video Generator Kie AI",
+  "description": "Tool for generating a video from text using the wan/2-5-text-to-video model via the kie.ai API.\nPricing (as of November 2025): ~$0.06 per second for 720p, ~$0.10 per second for 1080p.\nGet your API key at https://kie.ai/",
+  "keywords": [
+    "text to video",
+    "kie ai",
+    "video generation",
+    "wan 2.5",
+    "generate video"
+  ],
+  "version": "1.0.0",
+  "author": "@@official.shinkai",
+  "configurations": {
+    "properties": {
+      "api_key": {
+        "description": "The API key for authenticating with the kie.ai API",
+        "type": "string"
+      },
+      "max_duration": {
+        "description": "Optional maximum duration in seconds to wait for task completion. Default: 420 (equal 7 minutes)",
+        "type": "string"
+      },
+      "polling_interval": {
+        "description": "Optional interval in seconds for polling the task status (how often to check if image generation is complete). Default: 10",
+        "type": "string"
+      }
+    },
+    "required": [
+      "api_key"
+    ]
+  },
+  "oauth": [],
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "aspect_ratio": {
+        "type": "string",
+        "description": "The aspect ratio of the video (16:9, 9:16, or 1:1). Default: 16:9",
+        "default": "16:9"
+      },
+      "negative_prompt": {
+        "type": "string",
+        "description": "Optional negative prompt to avoid in video generation. Default: None. Max length: 500 characters"
+      },
+      "resolution": {
+        "type": "string",
+        "description": "The resolution of the video (720p or 1080p). Default: 720p",
+        "default": "720p"
+      },
+      "duration": {
+        "type": "string",
+        "description": "The duration of the video in seconds (5 or 10). Default: 5",
+        "default": "5"
+      },
+      "seed": {
+        "type": "integer",
+        "description": "Optional seed for reproducible generation (integer). Default None, a random seed is chosen."
+      },
+      "filename": {
+        "type": "string",
+        "description": "Optional filename for the saved video (without extension). Default: None (uses the task_id as filename)"
+      },
+      "prompt": {
+        "type": "string",
+        "description": "The text prompt describing the video to generate. Max length : 800 characters."
+      },
+      "enable_prompt_expansion": {
+        "type": "boolean",
+        "description": "Whether to enable prompt expansion for better results (useful for short prompts, but longer processing time). Default: false.",
+        "default": false
+      }
+    },
+    "required": [
+      "prompt"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "local_path": {
+        "description": "Local path where the video is saved",
+        "type": "string"
+      },
+      "task_id": {
+        "description": "The task ID of the generation job",
+        "type": "string"
+      },
+      "video_urls": {
+        "description": "List of video URLs from the API",
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      }
+    },
+    "required": [
+      "video_urls",
+      "task_id",
+      "local_path"
+    ]
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": [],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": ""
+}

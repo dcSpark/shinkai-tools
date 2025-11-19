@@ -1,0 +1,130 @@
+{
+  "name": "Bytedance Seedream V4 Image Editor Kie AI",
+  "description": "Tool for editing and combining images using the ByteDance Seedream V4 model via the Kie.ai API.\nAccepts up to 10 images, and creates up to 6 images.\nPricing (as of November 2025): ~$0.0175 per image.\nGet your API key at https://kie.ai",
+  "keywords": [
+    "kie ai",
+    "image editing",
+    "edit image",
+    "image combination",
+    "combine image",
+    "bytedance",
+    "seedream v4",
+    "text to image",
+    "image to image"
+  ],
+  "version": "1.0.0",
+  "author": "@@official.shinkai",
+  "configurations": {
+    "properties": {
+      "api_key": {
+        "description": "Required API key for kie.ai API authentication",
+        "type": "string"
+      },
+      "max_duration": {
+        "description": "Optional maximum duration in seconds to wait for task completion. Default: 300 (equal 5 minutes)",
+        "type": "string"
+      },
+      "polling_interval": {
+        "description": "Optional interval in seconds for polling the task status (how often to check if image generation is complete). Default: 5",
+        "type": "string"
+      }
+    },
+    "required": [
+      "api_key"
+    ]
+  },
+  "oauth": [],
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "image_size": {
+        "type": "string",
+        "description": "Optional image size. Must be one of 'square', 'square_hd', 'portrait_4_3', 'portrait_3_2', 'portrait_16_9', 'landscape_4_3', 'landscape_3_2', 'landscape_16_9', 'landscape_21_9'. Defaults to None (omit for API default)"
+      },
+      "prompt": {
+        "type": "string",
+        "description": "The text prompt describing how to edit or combine the image(s). Max length : 5000 characters."
+      },
+      "filename": {
+        "type": "string",
+        "description": "Optional base filename for the created image(s) (without extension). Defaults to None (uses task_id)"
+      },
+      "max_images": {
+        "type": "integer",
+        "description": "Optional max number of images to generates. Must be 1-6. Defaults to 1. You should also state the exact number of images you want in the prompt so both settings align.",
+        "default": 1
+      },
+      "seed": {
+        "type": "integer",
+        "description": "Optional seed for reproducible generation. Default None, a random seed is chosen."
+      },
+      "output_format": {
+        "type": "string",
+        "description": "Optional format for the created image(s), must be 'png' or 'jpeg'. Defaults to 'png'.",
+        "default": "png"
+      },
+      "image_resolution": {
+        "type": "string",
+        "description": "Optional image resolution. Must be one of '1K', '2K', '4K'. Defaults to '2K'",
+        "default": "2K"
+      },
+      "input_image_paths": {
+        "type": "array",
+        "description": "Required list of local full paths to input images for editing, up to 10; Accepted types: .jpeg, .png, and .webp",
+        "items": {
+          "type": "string",
+          "description": "Local path to input image"
+        }
+      }
+    },
+    "required": [
+      "prompt",
+      "input_image_paths"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "saved_images_paths": {
+        "description": "List of local paths for successfully downloaded images",
+        "items": {
+          "description": "Local path to saved image",
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "status": {
+        "description": "Status of the operation, e.g., 'success', 'partial_success', or error messages",
+        "type": "string"
+      },
+      "task_id": {
+        "description": "The task ID from the API",
+        "type": "string"
+      },
+      "temporary_image_urls": {
+        "description": "List of temporary image URLs from the API",
+        "items": {
+          "description": "Temporary image URL",
+          "type": "string"
+        },
+        "type": "array"
+      }
+    },
+    "required": [
+      "temporary_image_urls",
+      "task_id",
+      "saved_images_paths",
+      "status"
+    ]
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": [],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": ""
+}

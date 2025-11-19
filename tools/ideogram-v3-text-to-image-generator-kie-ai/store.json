@@ -1,0 +1,5 @@
+{
+  "categoryId": "b04aabe6-4fce-46f1-b6f2-7a96d742b9d1",
+  "name": "Ideogram V3 Text to Image Generator Kie AI",
+  "description": "Generates images from text prompts using the Ideogram V3 model via the Kie.ai API, with options for style, speed, size, and more.\nCan generate up to 4 images at once.\nPricing (as of November 2025) per image: $0.0175 for Turbo, 7 $0.035 for Balanced, or $0.05 for Quality.\nGet your API key at https://kie.ai\n"
+}

@@ -1,0 +1,5 @@
+{
+  "categoryId": "b04aabe6-4fce-46f1-b6f2-7a96d742b9d1",
+  "name": "Grok Imagine Text to Image Generator Kie AI",
+  "description": "Tool for generating images from text prompts using the grok-imagine/text-to-image model, through the kie.ai API. It generates several images at once.\nPricing (as of November 2025): $0.02)per generation — get 6 images each time.\nGet your API key at https://kie.ai"
+}

@@ -1,0 +1,129 @@
+{
+  "name": "Ideogram Character Reshoot Image Editor Kie AI",
+  "description": "Generates consistent character images based on a reference character image and a text prompt, using the the Ideogram Character model via the kie.ai API. Generates up to 4 images at once.\nPricing (as of November 2025): per image, $0.06 for Turbo, $0.09 for Balanced, $0.12 for Quality.\nGet your API key at https://kie.ai",
+  "keywords": [
+    "kie ai",
+    "image generation",
+    "character",
+    "consistent character",
+    "image to image",
+    "character generation",
+    "ideogram",
+    "style transfer"
+  ],
+  "version": "1.0.0",
+  "author": "@@official.shinkai",
+  "configurations": {
+    "properties": {
+      "api_key": {
+        "description": "Required API key for kie.ai API authentication",
+        "type": "string"
+      },
+      "max_duration": {
+        "description": "Optional maximum duration in seconds to wait for task completion. Default: 300 (equal 5 minutes)",
+        "type": "string"
+      },
+      "polling_interval": {
+        "description": "Optional interval in seconds for polling the task status (how often to check if image generation is complete). Default: 5",
+        "type": "string"
+      }
+    },
+    "required": [
+      "api_key"
+    ]
+  },
+  "oauth": [],
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "rendering_speed": {
+        "type": "string",
+        "description": "Optional rendering speed to use. Must be one of 'TURBO', 'BALANCED', 'QUALITY'. Defaults to 'BALANCED'",
+        "default": "BALANCED"
+      },
+      "image_size": {
+        "type": "string",
+        "description": "Optional size for the created image(s). Must be one of 'square', 'square_hd', 'portrait_4_3', 'portrait_16_9', 'landscape_4_3', 'landscape_16_9'. Defaults to 'square_hd'",
+        "default": "square_hd"
+      },
+      "expand_prompt": {
+        "type": "boolean",
+        "description": "Wether to enable automated prompt improvement (may increase processing time). Defaults to False",
+        "default": true
+      },
+      "filename": {
+        "type": "string",
+        "description": "Optional base filename for the created image(s) (without extension); defaults to None (uses task_id)"
+      },
+      "num_images": {
+        "type": "number",
+        "description": "Optional number of images to generate. Must be 1-4. Defaults to 1",
+        "default": 1
+      },
+      "style": {
+        "type": "string",
+        "description": "Optional style type to generate with. Must be one of 'AUTO', 'GENERAL', 'REALISTIC', 'DESIGN'. Defaults to 'AUTO'",
+        "default": "AUTO"
+      },
+      "reference_image_path": {
+        "type": "string",
+        "description": "Required local full path to the reference image of the character. Accepted types: .jpeg, .png, and .webp. Max size : 10MB"
+      },
+      "negative_prompt": {
+        "type": "string",
+        "description": "Optional negative prompt to avoid in image editing. Max length : 5000 characters. Defaults to None (omit if not provided)",
+        "default": ""
+      },
+      "prompt": {
+        "type": "string",
+        "description": "The text prompt describing how to edit the character image. Max length : 5000 characters."
+      },
+      "seed": {
+        "type": "number",
+        "description": "Optional seed (integer) for reproducible generation. Defaults to None, a random seed is chosen."
+      }
+    },
+    "required": [
+      "prompt",
+      "reference_image_path"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "saved_images_paths": {
+        "description": "List of local paths where the generated images are saved",
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "status": {
+        "description": "Status of the operation, e.g., 'success' or 'error: message'",
+        "type": "string"
+      },
+      "task_id": {
+        "description": "The ID of the generation task",
+        "type": "string"
+      },
+      "temporary_image_urls": {
+        "description": "List of temporary URLs for the generated images",
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      }
+    },
+    "required": []
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": [],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": ""
+}

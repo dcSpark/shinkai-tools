@@ -1,0 +1,94 @@
+{
+  "name": "Grok imagine Text to Video Generator Kie AI",
+  "description": "Generates video from a text prompt using the Grok Imagine model via the kie.ai API.\nPricing (as of November 2025):  $0.10 per 6-second video.\nGet your API key at https://kie.ai",
+  "keywords": [
+    "kie ai",
+    "text to video",
+    "video generation",
+    "grok imagine",
+    "generate video"
+  ],
+  "version": "1.0.0",
+  "author": "@@official.shinkai",
+  "configurations": {
+    "properties": {
+      "api_key": {
+        "description": "Required API key for kie.ai API authentication",
+        "type": "string"
+      },
+      "max_duration": {
+        "description": "Optional maximum duration in seconds to wait for task completion. Default: 300 (equal 5 minutes)",
+        "type": "string"
+      },
+      "polling_interval": {
+        "description": "Optional interval in seconds for polling the task status (how often to check if image generation is complete). Default: 5",
+        "type": "string"
+      }
+    },
+    "required": [
+      "api_key"
+    ]
+  },
+  "oauth": [],
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "mode": {
+        "type": "string",
+        "description": "Mode, one of 'normal', 'fun', 'spicy'. Default: normal",
+        "default": "normal"
+      },
+      "aspect_ratio": {
+        "type": "string",
+        "description": "Aspect ratio, one of '3:2', '2:3', '1:1'. Default: 3:2",
+        "default": "3:2"
+      },
+      "prompt": {
+        "type": "string",
+        "description": "The text prompt describing the video to generate. Max length : 5000 characters."
+      },
+      "filename": {
+        "type": "string",
+        "description": "Optional filename for the saved video (without extension). Default: None (uses the task_id as filename)"
+      }
+    },
+    "required": [
+      "prompt"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "local_path": {
+        "description": "The local file path where the video is saved",
+        "type": "string"
+      },
+      "task_id": {
+        "description": "The task ID from the API",
+        "type": "string"
+      },
+      "video_urls": {
+        "description": "List of generated video URLs",
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      }
+    },
+    "required": [
+      "video_urls",
+      "task_id",
+      "local_path"
+    ]
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": [],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": ""
+}

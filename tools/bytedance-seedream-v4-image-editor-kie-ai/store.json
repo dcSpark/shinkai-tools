@@ -1,0 +1,5 @@
+{
+  "categoryId": "b04aabe6-4fce-46f1-b6f2-7a96d742b9d1",
+  "name": "Bytedance Seedream V4 Image Editor Kie AI",
+  "description": "Tool for editing and combining images using the ByteDance Seedream V4 model via the Kie.ai API.\nAccepts up to 10 images, and creates up to 6 images.\nPricing (as of November 2025): ~$0.0175 per image.\nGet your API key at https://kie.ai"
+}

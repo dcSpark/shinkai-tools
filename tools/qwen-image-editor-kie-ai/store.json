@@ -1,0 +1,5 @@
+{
+  "categoryId": "b04aabe6-4fce-46f1-b6f2-7a96d742b9d1",
+  "name": "Qwen Image Editor Kie AI",
+  "description": "Edits an input image based on a text prompt using the Qwen Image Edit model via the kie.ai API. Generates up to 4 images at once.\nPricing (as of November 2025): ≈ $0.03 per megapixel, depending on the image aspect ratio.\nGet your API key at https://kie.ai"
+}

@@ -1,0 +1,5 @@
+{
+  "categoryId": "b04aabe6-4fce-46f1-b6f2-7a96d742b9d1",
+  "name": "Ideogram Character Remix Image Editor Kie AI",
+  "description": "Remixes an input image with a specific character reference and text prompt using the Ideogram character remix model, via the kie.ai API. Generates up to 4 images at once.\nPricing (as of November 2025): per image,  $0.06 for Turbo, $0.09 for Balanced, $0.12 for Quality.\nGet your API key at https://kie.ai"
+}

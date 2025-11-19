@@ -1,0 +1,5 @@
+{
+  "categoryId": "b04aabe6-4fce-46f1-b6f2-7a96d742b9d1",
+  "name": "Nano Banana Image Editor Kie AI",
+  "description": "Edits or combines image(s) according to text instructions using the Nano Banana model from Google, via the kie.ai API.\nSupports up to 10 local images inputs.\nPricing (as of November 2025): ~$0.02 per image.\nGet your API key at https://kie.ai"
+}

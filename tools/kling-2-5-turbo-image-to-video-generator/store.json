@@ -1,0 +1,5 @@
+{
+  "categoryId": "b04aabe6-4fce-46f1-b6f2-7a96d742b9d1",
+  "name": "Kling 2.5 Turbo Image to Video Generator",
+  "description": "Generates videos from a single input image and a text prompt using the Kling 2.5 Turbo image-to-video model via the kie.ai API.\nSupports customization with prompt, duration, negative prompt, CFG scale, and filename for local save.\nPricing (as of November 2025): $0.21 per 5s video,  and $0.42 per 10s video.\nGet your API key at https://kie.ai"
+}

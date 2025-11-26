@@ -1,0 +1,5 @@
+{
+  "categoryId": "b04aabe6-4fce-46f1-b6f2-7a96d742b9d1",
+  "name": "Grok Imagine Image to Video Generator Kie AI",
+  "description": "Generates 6 seconds long videos from a local input image and a text prompt using Grok Imagine through the Kie.ai API.\nPricing (as of November 2025): ~$0.10 per 6-second video.\nGet your API key at https://kie.ai"
+}

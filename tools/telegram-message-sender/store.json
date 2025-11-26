@@ -1,0 +1,5 @@
+{
+  "categoryId": "e7b5efee-2eb9-446f-934f-2548305933e6",
+  "name": "Telegram Message Sender",
+  "description": "Tool to send text messages and file attachments to a Telegram chat using the Telegram Bot API.\nUse it to easily transfer AI answers and files from the Shinkai Desktop App to Telegram.\n\nTo set up a bot, send /newbot to @BotFather, create and configure your bot, then use /setjoingroups to prevent others from adding it to groups, and /setprivacy to enable privacy mode.\n\nTo obtain the chat ID, send a message to your bot, then visit:\nhttps://api.telegram.org/bot<TOKEN>/getUpdates\nand look for the chat.id field in the JSON response.\n\nThe chat ID is stored in the config so it stays private. You can clone this tool for different AI agents, each configured to send messages to a different chat.\n\n"
+}

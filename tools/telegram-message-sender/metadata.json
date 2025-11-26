@@ -1,0 +1,118 @@
+{
+  "name": "Telegram Message Sender",
+  "description": "Tool to send text messages and file attachments to a Telegram chat using the Telegram Bot API.\nUse it to easily transfer AI answers and files from the Shinkai Desktop App to Telegram.\n\nTo set up a bot, send /newbot to @BotFather, create and configure your bot, then use /setjoingroups to prevent others from adding it to groups, and /setprivacy to enable privacy mode.\n\nTo obtain the chat ID, send a message to your bot, then visit:\nhttps://api.telegram.org/bot<TOKEN>/getUpdates\nand look for the chat.id field in the JSON response.\n\nThe chat ID is stored in the config so it stays private. You can clone this tool for different AI agents, each configured to send messages to a different chat.\n\n",
+  "keywords": [
+    "telegram",
+    "bot",
+    "message",
+    "attachments",
+    "notifications"
+  ],
+  "version": "1.0.0",
+  "author": "@@official.shinkai",
+  "configurations": {
+    "properties": {
+      "api_base_url": {
+        "description": "Optional base URL for Telegram API. Defaults to https://api.telegram.org if not set or empty.",
+        "type": "string"
+      },
+      "bot_token": {
+        "description": "Telegram bot token obtained from BotFather. Must be a non-empty string.",
+        "type": "string"
+      },
+      "chat_id": {
+        "description": "Telegram chat identifier where the bot will send messages. Must be a numeric ID (e.g. 123456789 or -100123456789).",
+        "type": "string"
+      },
+      "validate_chat": {
+        "description": "Whether to validate that the configured chat_id exists and is accessible using Telegram getChat before sending. Defaults to true.",
+        "type": "string"
+      }
+    },
+    "required": [
+      "bot_token",
+      "chat_id"
+    ]
+  },
+  "oauth": [],
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "attachment_paths": {
+        "type": "array",
+        "description": "Optional list of file paths to send as document attachments. Each path must point to an existing readable file. If empty list, treated as no attachments.",
+        "items": {
+          "type": "string",
+          "description": "Path to a file to attach."
+        }
+      },
+      "attachment_captions": {
+        "type": "array",
+        "description": "Optional list of captions corresponding to attachment_paths. If non-empty, its length must match attachment_paths. Can contain null values for files without caption.",
+        "items": {
+          "type": "string",
+          "description": "Caption for the corresponding attachment. Can be null."
+        }
+      },
+      "text": {
+        "type": "string",
+        "description": "Optional text message to send. Whitespace-only text is treated as not provided. At least one of text or attachment_paths must be provided."
+      },
+      "disable_notification": {
+        "type": "boolean",
+        "description": "Optional flag to send messages silently (without sound)."
+      },
+      "parse_mode": {
+        "type": "string",
+        "description": "Optional parse mode for text and captions. Typical values: Markdown, MarkdownV2, HTML."
+      }
+    },
+    "required": []
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "message": {
+        "description": "Human-readable status or error message describing the outcome.",
+        "name": "message",
+        "order": 2,
+        "type": "string"
+      },
+      "success": {
+        "description": "True if all messages and attachments were sent successfully, otherwise False.",
+        "name": "success",
+        "order": 1,
+        "type": "boolean"
+      },
+      "telegram_responses": {
+        "description": "List of raw Telegram API responses for debugging or logging.",
+        "items": {
+          "additionalProperties": true,
+          "description": "Single Telegram API response object.",
+          "name": "telegram_response_item",
+          "order": 1,
+          "properties": {},
+          "type": "object"
+        },
+        "name": "telegram_responses",
+        "order": 3,
+        "type": "array"
+      }
+    },
+    "required": [
+      "success",
+      "message",
+      "telegram_responses"
+    ]
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": [],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": ""
+}

@@ -1,0 +1,100 @@
+{
+  "name": "Kling 2.5 Turbo Image to Video Generator",
+  "description": "Generates videos from a single input image and a text prompt using the Kling 2.5 Turbo image-to-video model via the kie.ai API.\nSupports customization with prompt, duration, negative prompt, CFG scale, and filename for local save.\nPricing (as of November 2025): $0.21 per 5s video,  and $0.42 per 10s video.\nGet your API key at https://kie.ai",
+  "keywords": [
+    "kie ai",
+    "kling",
+    "image to video",
+    "video generation",
+    "ai video",
+    "kling 2.5 Turbo"
+  ],
+  "version": "1.0.0",
+  "author": "@@official.shinkai",
+  "configurations": {
+    "properties": {
+      "api_key": {
+        "description": "Required API key for kie.ai API authentication",
+        "type": "string"
+      },
+      "max_duration": {
+        "description": "Optional maximum duration in seconds to wait for task completion. Default: 300 (equal 5 minutes)",
+        "type": "string"
+      },
+      "polling_interval": {
+        "description": "Optional interval in seconds for polling the task status (how often to check if image generation is complete). Default: 5",
+        "type": "string"
+      }
+    },
+    "required": [
+      "api_key"
+    ]
+  },
+  "oauth": [],
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "input_image_path": {
+        "type": "string",
+        "description": "Required full local path to the input reference image; supported: jpg, jpeg, png, webp; max size 10MB"
+      },
+      "cfg_scale": {
+        "type": "number",
+        "description": "Optional Classifier Free Guidance (CFG) scale from 0 to 1, step 0.1. The Classifier Free Guidance scale is a measure of how close you want the model to stick to your prompt. Uses the model default if not provided."
+      },
+      "filename": {
+        "type": "string",
+        "description": "Optional base filename for the created video (without extension). Defaults to None (uses task_id)"
+      },
+      "duration": {
+        "type": "string",
+        "description": "Optional duration of the video, in seconds, one of '5' or '10', default '5'",
+        "default": "5"
+      },
+      "negative_prompt": {
+        "type": "string",
+        "description": "Optional negative text prompt to describe what to avoid in the video. Max 2496 characters"
+      },
+      "prompt": {
+        "type": "string",
+        "description": "The text prompt describing the video motion. Max length : 2500 characters."
+      }
+    },
+    "required": [
+      "prompt",
+      "input_image_path"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "local_path": {
+        "description": "Local path to the downloaded first video file",
+        "type": "string"
+      },
+      "task_id": {
+        "description": "ID of the created task",
+        "type": "string"
+      },
+      "video_urls": {
+        "description": "List of generated video URLs",
+        "items": {
+          "description": "Video URL",
+          "type": "string"
+        },
+        "type": "array"
+      }
+    },
+    "required": []
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": [],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": ""
+}

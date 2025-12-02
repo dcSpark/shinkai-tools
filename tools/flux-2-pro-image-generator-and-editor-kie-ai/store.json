@@ -1,0 +1,5 @@
+{
+  "categoryId": "b04aabe6-4fce-46f1-b6f2-7a96d742b9d1",
+  "name": "Flux 2 Pro Image Generator and Editor Kie AI",
+  "description": "Generates, Edits or Combines image(s) according to text instructions and reference image(s) using the Flux 2 Pro model from Black Forest Labs, via the kie.ai API.\nSupports up to 8 local reference images.\nPricing (as of November 2025): ~$0.025 per image at 1K resolution, and ~$0.035 per image at 2K.\nGet your API key at https://kie.ai"
+}

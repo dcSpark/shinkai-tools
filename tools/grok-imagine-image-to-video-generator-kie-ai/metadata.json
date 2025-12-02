@@ -8,7 +8,7 @@
     "video generation",
     "ai video"
   ],
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "@@official.shinkai",
   "configurations": {
     "properties": {
@@ -21,7 +21,7 @@
         "type": "string"
       },
       "polling_interval": {
-        "description": "Optional interval in seconds for polling the task status (how often to check if image generation is complete). Default: 5",
+        "description": "Optional interval in seconds for polling the task status (how often to check if video generation is complete). Default: 5",
         "type": "string"
       }
     },

@@ -1,0 +1,107 @@
+{
+  "name": "Nano Banana Pro Image Generator and Editor Kie AI",
+  "description": "Generates, Edits or Combines image(s) according to text instructions using the Nano Banana Pro model from Google, via the kie.ai API.\nSupports up to 8 local images inputs.\nPricing (as of November 2025): ~$0.09 per image for 1K and 2K resolution, ~$0.12 per image for 4K.\nGet your API key at https://kie.ai",
+  "keywords": [
+    "kie ai",
+    "image editing",
+    "edit image",
+    "image combination",
+    "nano banana pro",
+    "text to image",
+    "image to image",
+    "image generation"
+  ],
+  "version": "1.0.0",
+  "author": "@@official.shinkai",
+  "configurations": {
+    "properties": {
+      "api_key": {
+        "description": "Required API key for kie.ai API authentication",
+        "type": "string"
+      },
+      "max_duration": {
+        "description": "Optional maximum duration in seconds to wait for task completion. Default: 300 (equal 5 minutes)",
+        "type": "string"
+      },
+      "polling_interval": {
+        "description": "Optional interval in seconds for polling the task status (how often to check if image generation is complete). Default: 5",
+        "type": "string"
+      }
+    },
+    "required": [
+      "api_key"
+    ]
+  },
+  "oauth": [],
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "output_format": {
+        "type": "string",
+        "description": "Optional output image format. Must be 'png' or 'jpeg'. Defaults to 'png'",
+        "default": "png"
+      },
+      "aspect_ratio": {
+        "type": "string",
+        "description": "Optional aspect ratio of the created image. Must be one one of '1:1', '2:3', '3:2', '3:4', '4:3', '4:5', '5:4', '9:16', '16:9', '21:9' or 'auto'; defaults to 'auto' (uses API default)",
+        "default": "auto"
+      },
+      "input_image_paths": {
+        "type": "array",
+        "description": "Optional list of local full paths to input images for editing or guidance, up to 8 images. Accepted types: .jpeg, .png, and .webp. Max file size: 30MB",
+        "items": {
+          "type": "string",
+          "description": "Local path to an input image"
+        }
+      },
+      "resolution": {
+        "type": "string",
+        "description": "Optional resolution of the output image, must be one of '1K', '2K', '4K'. Default to '2K'.",
+        "default": "2K"
+      },
+      "prompt": {
+        "type": "string",
+        "description": "The text prompt describing the image to generate, or how to edit or combine the input image(s). Max length : 5000 characters."
+      },
+      "filename": {
+        "type": "string",
+        "description": "Optional base filename for the created image (without extension). Defaults to None (uses task_id)"
+      }
+    },
+    "required": [
+      "prompt"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "saved_image_path": {
+        "description": "Local path where the generated image was saved",
+        "type": "string"
+      },
+      "status": {
+        "description": "Status of the operation, e.g. 'success', 'error: ...', or 'partial_success: ...'",
+        "type": "string"
+      },
+      "task_id": {
+        "description": "ID of the created task on Kie.ai",
+        "type": "string"
+      },
+      "temporary_image_url": {
+        "description": "Temporary URL of the generated image from Kie.ai",
+        "type": "string"
+      }
+    },
+    "required": []
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": [],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": ""
+}

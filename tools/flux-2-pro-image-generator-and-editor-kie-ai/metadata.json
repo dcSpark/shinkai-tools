@@ -1,0 +1,104 @@
+{
+  "name": "Flux 2 Pro Image Generator and Editor Kie AI",
+  "description": "Generates, Edits or Combines image(s) according to text instructions and reference image(s) using the Flux 2 Pro model from Black Forest Labs, via the kie.ai API.\nSupports up to 8 local reference images.\nPricing (as of November 2025): ~$0.025 per image at 1K resolution, and ~$0.035 per image at 2K.\nGet your API key at https://kie.ai",
+  "keywords": [
+    "kie ai",
+    "flux 2",
+    "image generation",
+    "text-to-image",
+    "image-to-image",
+    "edit image",
+    "combine images"
+  ],
+  "version": "1.0.0",
+  "author": "@@official.shinkai",
+  "configurations": {
+    "properties": {
+      "api_key": {
+        "description": "Required API key for kie.ai API authentication",
+        "type": "string"
+      },
+      "default_aspect_ratio": {
+        "description": "Optional default aspect ratio for the generated images. One of '1:1', '4:3', '3:4', '16:9', '9:16', '3:2', '2:3', 'reference' (matches the aspect ratio of the 1st reference image). Defaults to '4:3'",
+        "type": "string"
+      },
+      "max_duration": {
+        "description": "Optional maximum duration in seconds to wait for task completion. Default: 300 (equal 5 minutes)",
+        "type": "string"
+      },
+      "polling_interval": {
+        "description": "Optional interval in seconds for polling the task status (how often to check if image generation is complete). Default: 5",
+        "type": "string"
+      }
+    },
+    "required": [
+      "api_key"
+    ]
+  },
+  "oauth": [],
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "input_image_paths": {
+        "type": "array",
+        "description": "Optional list of full local paths to 1-8 reference input images for image-to-image. Accepted types: .jpeg, .png, .webp. Max 10MB per file. Omit for striclty text-to-image.",
+        "items": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "prompt": {
+        "type": "string",
+        "description": "Required text prompt describing the desired image to generate (for text-to-image), and eventually how to edit or combine the reference image(s) (for image-to-image), max 5000 characters"
+      },
+      "filename": {
+        "type": "string",
+        "description": "Optional base filename for the created image (without extension). Defaults to None (uses task_id)"
+      },
+      "aspect_ratio": {
+        "type": "string",
+        "description": "Optional override to set the aspect ratio of the generated image. One of '1:1', '4:3', '3:4', '16:9', '9:16', '3:2', '2:3', 'reference' (atches the aspect ratio of the 1st reference image). Defaults according to config if empty"
+      },
+      "resolution": {
+        "type": "string",
+        "description": "Optional resolution of the generated image. Must be '1K' or '2K'. Defaults to '1K'",
+        "default": "1K"
+      }
+    },
+    "required": [
+      "prompt"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "saved_image_path": {
+        "description": "Local path where the image was saved",
+        "type": "string"
+      },
+      "status": {
+        "description": "Status of the operation, e.g., 'success' or starts with 'error:' or 'partial_success:'",
+        "type": "string"
+      },
+      "task_id": {
+        "description": "ID of the created task",
+        "type": "string"
+      },
+      "temporary_image_url": {
+        "description": "Temporary URL of the generated image from the API",
+        "type": "string"
+      }
+    },
+    "required": []
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": [],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": ""
+}

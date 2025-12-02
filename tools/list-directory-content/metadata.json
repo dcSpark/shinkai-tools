@@ -1,0 +1,70 @@
+{
+  "name": "List Directory Content",
+  "description": "Scans a folder to list the files and optionally the directories contained immediately within it.",
+  "keywords": [
+    "directory",
+    "files",
+    "subfolders",
+    "list",
+    "folder"
+  ],
+  "version": "1.0.0",
+  "author": "@@official.shinkai",
+  "configurations": {
+    "properties": {},
+    "required": []
+  },
+  "oauth": [],
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "include_subfolders": {
+        "type": "boolean",
+        "description": "If True, also list subfolders (direct children only); default False (files only).",
+        "default": false
+      },
+      "folder_path": {
+        "type": "string",
+        "description": "Full or relative path to the directory (e.g., '/home/user/docs' or 'docs'). Required."
+      }
+    },
+    "required": [
+      "folder_path"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "error": {
+        "description": "Error message if validation or listing fails (e.g., path invalid, permissions).",
+        "nullable": true,
+        "type": "string"
+      },
+      "files": {
+        "description": "Sorted list of full absolute paths to files (not directories/subfolders).",
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "subfolders": {
+        "description": "Sorted list of full absolute paths to direct subfolders (empty list if include_subfolders=False).",
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      }
+    },
+    "required": []
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": [],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": ""
+}

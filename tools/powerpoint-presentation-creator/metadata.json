@@ -1,0 +1,73 @@
+{
+  "name": "PowerPoint Presentation Creator",
+  "description": "This tool creates a slide presentation locally using an intelligent layout engine that automatically arranges text and images into grids, split-screens, or cinematic stacks based on their shape.\n\nTo use it, just ask for a presentation, set the vibe, and provide your text and local images or graphs full paths to use per slide.",
+  "keywords": [
+    "pptx",
+    "slides",
+    "presentation",
+    "powerpoint"
+  ],
+  "version": "1.0.0",
+  "author": "@@official.shinkai",
+  "configurations": {
+    "properties": {},
+    "required": []
+  },
+  "oauth": [],
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "instruction": {
+        "type": "string",
+        "description": "Natural language request describing the slides to create (required)."
+      },
+      "filename": {
+        "type": "string",
+        "description": "Optional filename for the output (extension optional, no path)."
+      }
+    },
+    "required": [
+      "instruction"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "debug_info": {
+        "description": "Diagnostic or debug information.",
+        "name": "debug_info",
+        "order": 3,
+        "type": "string"
+      },
+      "saved_pptx_local_file_path": {
+        "description": "Full path to the saved .pptx file (empty string if error).",
+        "name": "saved_pptx_local_file_path",
+        "order": 1,
+        "type": "string"
+      },
+      "status": {
+        "description": "Operation status: 'success' or 'error'.",
+        "name": "status",
+        "order": 2,
+        "type": "string"
+      }
+    },
+    "required": [
+      "saved_pptx_local_file_path",
+      "status",
+      "debug_info"
+    ]
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": [
+    "local:::__official_shinkai:::shinkai_llm_prompt_processor"
+  ],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": ""
+}

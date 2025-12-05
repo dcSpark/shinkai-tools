@@ -169,20 +169,27 @@ async def run(config: CONFIG, inputs: INPUTS) -> OUTPUT:
                 return output
         effective_strength = inputs.strength if inputs.strength is not None else 0.8
 
-        # Upload remix image to get URL
+        # Upload remix image to get URL with timestamp
         upload_base_url = "https://kieai.redpandaai.co/api/file-stream-upload"
         upload_path = "images/user-uploads"
         auth_header = {"Authorization": f"Bearer {config.api_key}"}
+        
+        # Unique Name Logic for Remix Image
         remix_basename = os.path.basename(remix_path)
+        r_name, r_ext = os.path.splitext(remix_basename)
+        timestamp_str = str(int(time.time() * 1000))
+        unique_remix_filename = f"{r_name}_{timestamp_str}{r_ext}"
+
         remix_mime_type, _ = mimetypes.guess_type(remix_path)
         if remix_mime_type is None:
             remix_mime_type = "application/octet-stream"
         try:
             with open(remix_path, 'rb') as f:
-                files = {'file': (remix_basename, f, remix_mime_type)}
+                # Use unique filename
+                files = {'file': (unique_remix_filename, f, remix_mime_type)}
                 data = {
                     'uploadPath': upload_path,
-                    'fileName': remix_basename
+                    'fileName': unique_remix_filename
                 }
                 upload_response = requests.post(upload_base_url, data=data, files=files, headers=auth_header)
             if upload_response.status_code != 200:
@@ -206,17 +213,23 @@ async def run(config: CONFIG, inputs: INPUTS) -> OUTPUT:
             output.status = f"error: Exception uploading remix image {remix_path} - {str(upload_e)}"
             return output
 
-        # Upload reference image to get URL
+        # Upload reference image to get URL with timestamp
+        # Unique Name Logic for Reference Image
         ref_basename = os.path.basename(ref_path)
+        ref_name, ref_ext = os.path.splitext(ref_basename)
+        timestamp_str_ref = str(int(time.time() * 1000))
+        unique_ref_filename = f"{ref_name}_{timestamp_str_ref}{ref_ext}"
+
         ref_mime_type, _ = mimetypes.guess_type(ref_path)
         if ref_mime_type is None:
             ref_mime_type = "application/octet-stream"
         try:
             with open(ref_path, 'rb') as f:
-                files = {'file': (ref_basename, f, ref_mime_type)}
+                # Use unique filename
+                files = {'file': (unique_ref_filename, f, ref_mime_type)}
                 data = {
                     'uploadPath': upload_path,
-                    'fileName': ref_basename
+                    'fileName': unique_ref_filename
                 }
                 upload_response = requests.post(upload_base_url, data=data, files=files, headers=auth_header)
             if upload_response.status_code != 200:

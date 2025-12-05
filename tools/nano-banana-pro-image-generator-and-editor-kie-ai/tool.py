@@ -82,18 +82,30 @@ async def run(config: CONFIG, inputs: INPUTS) -> OUTPUT:
                 return output
 
             # Upload file to get URL
-            basename = os.path.basename(path)
+            # 1. Get the real filename
+            original_basename = os.path.basename(path)
+            name_part, ext_part = os.path.splitext(original_basename)
+            
+            # 2. Generate a unique name using a timestamp (milliseconds)
+            # This ensures even if the local file is 'image.png', the server gets 'image_1710000000.png'
+            timestamp_str = str(int(time.time() * 1000))
+            unique_filename = f"{name_part}_{timestamp_str}{ext_part}"
+            
             mime_type, _ = mimetypes.guess_type(path)
             if mime_type is None:
                 mime_type = "application/octet-stream"
+            
             try:
                 with open(path, 'rb') as f:
-                    files = {'file': (basename, f, mime_type)}
+                    # 3. Pass 'unique_filename' in the files tuple and the data dict
+                    # The tuple format is (filename_sent_to_server, file_object, mime_type)
+                    files = {'file': (unique_filename, f, mime_type)}
                     data = {
                         'uploadPath': upload_path,
-                        'fileName': basename
+                        'fileName': unique_filename 
                     }
                     upload_response = requests.post(upload_base_url, data=data, files=files, headers=auth_header)
+            
                 if upload_response.status_code != 200:
                     output.status = f"error: HTTP {upload_response.status_code} uploading {path} - {upload_response.text[:200]}"
                     return output

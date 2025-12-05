@@ -139,20 +139,29 @@ async def run(config: CONFIG, inputs: INPUTS) -> OUTPUT:
             output.status = "error: input_image_strength must be between 0.01 and 1"
             return output
 
-        # Upload input image to get URL
+        # Upload input image to get URL with timestamp
         upload_base_url = "https://kieai.redpandaai.co/api/file-stream-upload"
         upload_path = "images/user-uploads"
         auth_header = {"Authorization": f"Bearer {config.api_key}"}
-        basename = os.path.basename(path)
+        
+        # Get original name components
+        original_basename = os.path.basename(path)
+        name_part, ext_part = os.path.splitext(original_basename)
+
+        # Generate unique filename using timestamp to prevent caching issues
+        timestamp_str = str(int(time.time() * 1000))
+        unique_filename = f"{name_part}_{timestamp_str}{ext_part}"
+
         mime_type, _ = mimetypes.guess_type(path)
         if mime_type is None:
             mime_type = "application/octet-stream"
         try:
             with open(path, 'rb') as f:
-                files = {'file': (basename, f, mime_type)}
+                # Use unique_filename for the upload
+                files = {'file': (unique_filename, f, mime_type)}
                 data = {
                     'uploadPath': upload_path,
-                    'fileName': basename
+                    'fileName': unique_filename
                 }
                 upload_response = requests.post(upload_base_url, data=data, files=files, headers=auth_header)
             if upload_response.status_code != 200:

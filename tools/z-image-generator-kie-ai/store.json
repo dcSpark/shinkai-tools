@@ -1,0 +1,5 @@
+{
+  "categoryId": "b04aabe6-4fce-46f1-b6f2-7a96d742b9d1",
+  "name": "Z image generator kie AI",
+  "description": "Generates an image from a text prompt using the Z-Image model from Tongyi-MAI, through the kie.ai API.\nPricing (as of December 2025): ~$0.004 per image.\nGet your API key at https://kie.ai"
+}

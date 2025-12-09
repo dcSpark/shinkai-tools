@@ -1,0 +1,74 @@
+{
+  "name": "IPFS File Downloader",
+  "description": "Downloads files from IPFS networks using public gateways with configurable size limits and extension filtering.",
+  "keywords": [
+    "ipfs",
+    "download",
+    "file"
+  ],
+  "version": "1.0.0",
+  "author": "@@official.shinkai",
+  "configurations": {
+    "properties": {
+      "allowed_extensions": {
+        "description": "Optional comma-separated list of allowed file extensions. If provided, ONLY these extensions will be allowed, overriding the default list. Default : '.jpg, .jpeg, .png, .gif, .webp, .svg, .bmp, .tiff, .ico, .heic, .pdf, .txt, .md, .rtf, .csv, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .epub, .json, .xml, .yaml, .html, .css, .mp3, .wav, .ogg, .m4a, .flac, .mp4, .webm, .mkv, .mov, .avi, .zip, .tar, .gz, .rar, .7z'",
+        "type": "string"
+      },
+      "max_file_size_mb": {
+        "description": "Maximum file size in megabytes allowed for download. Default : 50",
+        "type": "string"
+      }
+    },
+    "required": []
+  },
+  "oauth": [],
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "base_filename": {
+        "type": "string",
+        "description": "Optional base filename (without extension) to rename the downloaded files. Suffixes (_1, _2, etc.) will be added if multiple files."
+      },
+      "folder_path": {
+        "type": "string",
+        "description": "Optional absolute local path to save a duplicate copy of the downloaded files."
+      },
+      "ipfs_urls": {
+        "type": "array",
+        "description": "List of IPFS URLs to download. Can be 'ipfs://<cid>' or gateway URLs.",
+        "items": {
+          "type": "string",
+          "description": ""
+        }
+      }
+    },
+    "required": [
+      "ipfs_urls"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "local_saved_ipfs_files_paths": {
+        "description": "List of absolute paths to the saved files.",
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      }
+    },
+    "required": [
+      "local_saved_ipfs_files_paths"
+    ]
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": [],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": ""
+}

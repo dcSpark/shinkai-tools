@@ -1,0 +1,91 @@
+{
+  "name": "Z image generator kie AI",
+  "description": "Generates an image from a text prompt using the Z-Image model from Tongyi-MAI, through the kie.ai API.\nPricing (as of December 2025): ~$0.004 per image.\nGet your API key at https://kie.ai",
+  "keywords": [
+    "image generation",
+    "text-to-image",
+    "z",
+    "z-image",
+    "kie ai"
+  ],
+  "version": "1.0.0",
+  "author": "@@official.shinkai",
+  "configurations": {
+    "properties": {
+      "api_key": {
+        "description": "equired API key for kie.ai API authentication",
+        "type": "string"
+      },
+      "max_duration": {
+        "description": "Optional maximum duration in seconds to wait for task completion. Default: 300 (equal 5 minutes)",
+        "type": "string"
+      },
+      "polling_interval": {
+        "description": "Optional interval in seconds for polling the task status (how often to check if image generation is complete). Default: 5",
+        "type": "string"
+      }
+    },
+    "required": [
+      "api_key"
+    ]
+  },
+  "oauth": [],
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "filename": {
+        "type": "string",
+        "description": "Optional base filename for the created image (without extension), defaults to None (uses task_id)"
+      },
+      "prompt": {
+        "type": "string",
+        "description": "Required string, max 1000 characters"
+      },
+      "aspect_ratio": {
+        "type": "string",
+        "description": "Optional aspect ration of the generated image, must be one of '1:1', '4:3', '3:4', '16:9', '9:16'. Defaults to '4:3'",
+        "default": "4:3"
+      }
+    },
+    "required": [
+      "prompt"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "saved_local_image_path": {
+        "description": "The local path where the image is saved",
+        "type": "string"
+      },
+      "status": {
+        "description": "The status of the execution",
+        "type": "string"
+      },
+      "task_id": {
+        "description": "The task ID",
+        "type": "string"
+      },
+      "temporary_image_url": {
+        "description": "The URL of the temporary image",
+        "type": "string"
+      }
+    },
+    "required": [
+      "temporary_image_url",
+      "task_id",
+      "saved_local_image_path",
+      "status"
+    ]
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": [],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": ""
+}

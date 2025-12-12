@@ -1,0 +1,105 @@
+{
+  "name": "Nano Banana Image Generator and Editor",
+  "description": "Generates or edits images using Google's Gemini models (Nano Banana/ Nano Banana Pro). Supports text-to-image and image-to-image/editing.\nRequires a Gemini API key.\n\nNotes:\n- Generates 1 image per API call.\n- Gemini 2.5 Flash (Nano Banana) is faster.\n- Gemini 3 Pro (Nano Banana Pro) uses a reasoning process (\"Thinking\") and supports higher resolutions.\n    \nBest Practices & Strategies:\n1. Be Hyper-Specific: Describe lighting, camera angles (e.g., \"low-angle perspective\"), and fine details.\n2. Context & Intent: Explain the purpose (e.g., \"Create a logo for a high-end brand\").\n3. Iteration: Use the conversational nature to refine (e.g., \"Make lighting warmer\").\n4. Step-by-Step: For complex scenes, break instructions into steps (Background -> Foreground -> Subject).\n5. Semantic Negative Prompts: Describe what you want positively (e.g., \"empty street\") rather than \"no cars\".\n6. Photorealism: Use terms like \"85mm lens\", \"bokeh\", \"golden hour\", \"studio-lit\".\n7. Text Rendering: Specify font style and placement clearly. Use 'pro' model for best text results.\n\nGemini 2.5 Flash Image (Nano Banana):\n- Works best with up to 3 images as input.\n\nGemini 3 Pro Image Preview (Nano Banana Pro):\n- Supports up to 14 images in total.\n- Up to 6 images of objects with high-fidelity.\n- Up to 5 images of humans to maintain character consistency.\n\n",
+  "keywords": [
+    "google",
+    "gemini",
+    "image generation",
+    "image editing",
+    "flash",
+    "pro",
+    "nano banana"
+  ],
+  "version": "1.0.0",
+  "author": "@@official.shinkai",
+  "configurations": {
+    "properties": {
+      "google_api_key": {
+        "description": "Mandatory API Key for Google GenAI.",
+        "type": "string"
+      }
+    },
+    "required": [
+      "google_api_key"
+    ]
+  },
+  "oauth": [],
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "output_filename": {
+        "type": "string",
+        "description": "Optional base filename (whithout extenstion) for the generated image. If None, a timestamp is used."
+      },
+      "output_folder": {
+        "type": "string",
+        "description": "Optional full local folder path where to save a copy of the image."
+      },
+      "model_selection": {
+        "type": "string",
+        "description": "Optional model to use: 'flash' (Gemini 2.5 - Fast, Cheaper, Efficient) or 'pro' (Gemini 3 Pro - High Quality, Reasoning). Default: 'flash'.",
+        "default": "flash"
+      },
+      "resolution": {
+        "type": "string",
+        "description": "Optional resolution of the generated image (Only for Pro model). One of: '1K, 2K, 4K'. Default: 1K",
+        "default": "1K"
+      },
+      "prompt": {
+        "type": "string",
+        "description": "The text description of the image to generate or edit. Max: 5 000 characters."
+      },
+      "reference_image_paths": {
+        "type": "array",
+        "description": "Optional list of full local file paths to reference images for editing or composition. Up to 3 images for nano banana flash, up to 14 images for nano banana pro.",
+        "items": {
+          "type": "string",
+          "description": ""
+        },
+        "default": []
+      },
+      "aspect_ratio": {
+        "type": "string",
+        "description": "Optional aspect ratio of the generated image. One of : '1:1, 2:3, 3:2, 3:4, 4:3, 4:5, 5:4, 9:16, 16:9, 21:9'. Default: '1:1'",
+        "default": "1:1"
+      }
+    },
+    "required": [
+      "prompt"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": {
+      "execution_details": {
+        "description": "Details about the execution, including warnings or error messages.",
+        "type": "string"
+      },
+      "local_saved_image_path": {
+        "description": "Full local path where the generated image was saved.",
+        "type": "string"
+      },
+      "thought_process": {
+        "description": "The thought process trace from the model (if available, e.g., in Pro model).",
+        "nullable": true,
+        "type": "string"
+      }
+    },
+    "required": [
+      "local_saved_image_path",
+      "execution_details"
+    ]
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": [
+    "local:::__official_shinkai:::shinkai_llm_prompt_processor"
+  ],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": ""
+}

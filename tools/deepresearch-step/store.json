@@ -1,0 +1,5 @@
+{
+  "categoryId": "5f10d0b4-6acd-477a-96e1-be35634465b2",
+  "name": "Deepresearch Step",
+  "description": "Runs a series of queries to search and fetch results from an API using specified breadth and depth."
+}

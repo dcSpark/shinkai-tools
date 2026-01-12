@@ -1,0 +1,61 @@
+{
+  "name": "SRT Subtitles Generator",
+  "description": "Process an audio or video file to generate an SRT subtitle file, using a multi-modal LLM.\n\nYou can:\n- Specify a custom filename for the output SRT file (defaults to the original filename with .srt extension).\n- Choose to display the full SRT content in the results (enabled by default) or just get the file path.\n- Add custom instructions to tailor the subtitles.\n\nThe formats supported depend on the LLM configured in the underlying Audio LLM Processor tool.",
+  "keywords": [
+    "SRT",
+    "subtitles",
+    "transcription",
+    "audio processing",
+    "video processing"
+  ],
+  "version": "1.0.0",
+  "author": "@@official.shinkai",
+  "configurations": {
+    "properties": {},
+    "required": []
+  },
+  "oauth": [],
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "additional_instructions": {
+        "type": "string",
+        "description": "Optional additional instructions to guide the subtitle generation (e.g., \"Use British English spelling\", \"Transcribe only the 2 main characters voices\")"
+      },
+      "file_path": {
+        "type": "string",
+        "description": "Full local path to the audio or video file"
+      },
+      "output_filename": {
+        "type": "string",
+        "description": "Optional custom filename for the .srt output (without extension)"
+      },
+      "show_content": {
+        "type": "boolean",
+        "description": "Whether to return the content of the generated SRT file",
+        "default": true
+      }
+    },
+    "required": [
+      "file_path"
+    ]
+  },
+  "result": {
+    "type": "object",
+    "properties": null,
+    "required": []
+  },
+  "sqlQueries": [],
+  "sqlTables": [],
+  "tools": [
+    "local:::__official_shinkai:::audio_llm_processor",
+    "local:::__official_shinkai:::shinkai_llm_prompt_processor"
+  ],
+  "runner": "any",
+  "operating_system": [
+    "linux",
+    "macos",
+    "windows"
+  ],
+  "tool_set": ""
+}

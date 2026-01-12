@@ -1,0 +1,5 @@
+{
+  "categoryId": "b04aabe6-4fce-46f1-b6f2-7a96d742b9d1",
+  "name": "SRT Subtitles Generator",
+  "description": "Process an audio or video file to generate an SRT subtitle file, using a multi-modal LLM.\n\nYou can:\n- Specify a custom filename for the output SRT file (defaults to the original filename with .srt extension).\n- Choose to display the full SRT content in the results (enabled by default) or just get the file path.\n- Add custom instructions to tailor the subtitles.\n\nThe formats supported depend on the LLM configured in the underlying Audio LLM Processor tool."
+}

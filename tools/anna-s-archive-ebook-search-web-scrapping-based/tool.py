@@ -141,7 +141,7 @@ async def run(config: CONFIG, inputs: INPUTS) -> OUTPUT:
 
         # Prepare improved prompt for the LLM to extract structured data and choose most relevant items
         prompt = (
-            "You are given the MARKDOWN content of a search results page from annas-archive.org and the original user query.\n"
+            "You are given the MARKDOWN content of a search results page from annas-archive.li and the original user query.\n"
             "Context:\n"
             f"- ORIGINAL_QUERY: {inputs.search_query}\n"
             f"- DESIRED_NUMBER_OF_RESULTS: {num_results}\n\n"

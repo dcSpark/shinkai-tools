@@ -1,8 +1,0 @@
-{
-  "categoryId": "3ebca96e-09a4-4f39-ba30-1699bbf6ade9",
-  "name": "E-Librarian",
-  "description": "This E-Librarian AI Agent is a digital librarian designed to help users locate and access ebooks.\n\nIt searches digital archives and provides detailed results for each title, including the author, publication year, a brief synopsis, a direct link, and a cover image.\nTo ensure comprehensive results, the agent supplements its archive searches with Google Search for more obscure information or to answer general book-related questions.\nIt also provides guidance on potential access issues, such as suggesting a VPN for region-restricted content.\n\nTo expand this agent's capabilities, users are invited to integrate additional ebook search tools or recommendation engines.",
-  "version": "1.0.0",
-  "author": "@@official.sep-shinkai",
-  "keywords": []
-}
